@@ -1,0 +1,6 @@
+{% comment %}
+    ARIA attributes linking a form control to its help and error texts (WCAG 3.3.1, 3.3.2).
+    Rendered inside the opening tag of the control. Expects field_id, help_text, error and, for roles that
+    do not support aria-invalid (e.g. a plain fieldset), invalid=False. The native required attribute
+    already announces required fields, so no aria-required is added.
+{% endcomment %}{% if error and invalid is not False %} aria-invalid="true" aria-errormessage="{{ field_id }}-error"{% endif %}{% if help_text or error %} aria-describedby="{% if help_text %}{{ field_id }}-help{% endif %}{% if help_text and error %} {% endif %}{% if error %}{{ field_id }}-error{% endif %}"{% endif %}

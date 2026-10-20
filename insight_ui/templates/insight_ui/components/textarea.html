@@ -24,6 +24,8 @@
         {% if textarea_config.disabled %}disabled{% endif %}
         {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
         {% data_attributes textarea_config.data_attrs %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error=textarea_config.error %}
         class="input w-full"
     >{{ textarea_config.value|default:"" }}</textarea>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error=textarea_config.error %}
 </div>

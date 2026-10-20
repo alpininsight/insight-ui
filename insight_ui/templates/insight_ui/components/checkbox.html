@@ -1,5 +1,6 @@
 {% load insight_tags %}
 
+<div>
 <label class="flex gap-1 items-center"{% if checkbox_config.disabled and checkbox_config.disabled_reason %} data-insight-tooltip="{{ checkbox_config.disabled_reason }}"{% endif %}>
     <input
         type="checkbox"
@@ -10,7 +11,10 @@
         {% if checkbox_config.required %}required{% endif %}
         {% if checkbox_config.disabled %}disabled{% endif %}
         {% data_attributes checkbox_config.data_attrs %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=checkbox_config.message_id help_text=checkbox_config.help_text error=checkbox_config.error %}
         class="accent-insight-primary"
     >
     <span class="{% if checkbox_config.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ checkbox_config.label }}{% if checkbox_config.required %} <span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}</span>
 </label>
+{% include "insight_ui/components/_form_field_messages.html" with field_id=checkbox_config.message_id help_text=checkbox_config.help_text error=checkbox_config.error %}
+</div>

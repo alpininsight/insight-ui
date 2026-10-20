@@ -21,6 +21,7 @@
         {% if select_config.disabled %}disabled{% endif %}
         {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
         {% data_attributes select_config.data_attrs %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=select_config.message_id help_text=select_config.help_text error=select_config.error %}
         class="input w-full"
     >
         {% for option, text in select_config.options.items %}
@@ -33,4 +34,5 @@
             </option>
         {% endfor %}
     </select>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=select_config.message_id help_text=select_config.help_text error=select_config.error %}
 </div>

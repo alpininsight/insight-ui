@@ -28,6 +28,8 @@
         {% if input_config.disabled %}disabled{% endif %}
         {% if input_config.disabled and input_config.disabled_reason %}data-insight-tooltip="{{ input_config.disabled_reason }}"{% endif %}
         {% data_attributes input_config.data_attrs %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=input_config.message_id help_text=input_config.help_text error=input_config.error %}
         class="input w-full"
     >
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=input_config.message_id help_text=input_config.help_text error=input_config.error %}
 </div>

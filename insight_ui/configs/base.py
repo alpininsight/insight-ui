@@ -193,6 +193,8 @@ class BaseFormFieldConfig:
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -214,6 +216,15 @@ class BaseFormFieldConfig:
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
+    )
+
+    @property
+    def message_id(self) -> str:
+        """Id prefix of the help and error texts: the tag_id, otherwise the name."""
+        return self.tag_id or self.name
 
     def __post_init__(self) -> None:
         """Require a non-empty name and warn if disabled without a reason.

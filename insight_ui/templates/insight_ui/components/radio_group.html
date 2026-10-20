@@ -1,8 +1,9 @@
 {% load insight_tags %}
 
-<fieldset {% data_attributes radio_group_config.data_attrs %}>
+{# role radiogroup lets the fieldset carry aria-invalid; the legend still names it via aria-labelledby. #}
+<fieldset role="radiogroup"{% if radio_group_config.label %} aria-labelledby="{{ radio_group_config.name }}-legend"{% endif %} {% data_attributes radio_group_config.data_attrs %}{% include "insight_ui/components/_form_field_aria.html" with field_id=radio_group_config.name help_text=radio_group_config.help_text error=radio_group_config.error %}>
     {% if radio_group_config.label %}
-        <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
+        <legend id="{{ radio_group_config.name }}-legend" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
     {% endif %}
     <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in radio_group_config.items %}
@@ -20,4 +21,5 @@
             </label>
         {% endfor %}
     </div>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=radio_group_config.name help_text=radio_group_config.help_text error=radio_group_config.error %}
 </fieldset>

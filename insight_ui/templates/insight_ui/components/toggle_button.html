@@ -1,5 +1,6 @@
 {% load insight_tags %}
 
+<div>
 {% if toggle_config.switch %}
     <label class="inline-flex flex-col w-fit h-fit cursor-pointer" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
         <span class="flex gap-1 mb-2 font-bold text-sm text-insight-headline">{{ toggle_config.label }}{% if toggle_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}</span>
@@ -13,6 +14,7 @@
             {% if toggle_config.disabled %}disabled{% endif %}
             {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
             {% data_attributes toggle_config.data_attrs %}
+            {% include "insight_ui/components/_form_field_aria.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error=toggle_config.error %}
             class="sr-only peer"
         >
         <span class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-surface after:border-insight-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary-action"></span>
@@ -29,6 +31,7 @@
             {% if toggle_config.disabled %}disabled{% endif %}
             {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
             {% data_attributes toggle_config.data_attrs %}
+            {% include "insight_ui/components/_form_field_aria.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error=toggle_config.error %}
             class="sr-only peer"
         >
         <label
@@ -42,3 +45,5 @@
         </label>
     </div>
 {% endif %}
+{% include "insight_ui/components/_form_field_messages.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error=toggle_config.error %}
+</div>
