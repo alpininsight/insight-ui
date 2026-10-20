@@ -708,23 +708,23 @@ class BulletPointItemConfig:
     Attributes:
         title: Title of the item.
         description: Additional description of the item below the title.
-        request_url: The URL to be called when clicking on the respective item.
-        completed: Displays a checkmark instead of a bullet point.
-        current: Highlights the title by color.
+        request_url: URL called when the user clicks on the item.
+        status: Status of the item.
 
     """
 
     __example__ = """
-        BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True)
+        BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the item.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the item below the title.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
-    )
-    completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
+    request_url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the item.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the item.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_step_status(self.status)
 
 
 @dataclass
@@ -742,8 +742,8 @@ class BulletPointListConfig:
     __example__ = """
         BulletPointListConfig(
             items=[
-                BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-                BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+                BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed"),
+                BulletPointItemConfig(title="Configure", description="Add settings", status="current"),
                 BulletPointItemConfig(title="Deploy", description="Push to production"),
             ],
         )
