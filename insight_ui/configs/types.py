@@ -99,16 +99,16 @@ type IconColor = Literal[
 # =============================================================================
 
 # Tuple of valid step status values (for stepper components)
-STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
+STEP_STATUS_VALUES: tuple[str, ...] = ("pending", "current", "completed", "failed")
 
 # Type alias for step status
-type StepStatus = Literal["active", "success", "failed", ""]
+type StepStatus = Literal["pending", "current", "completed", "failed"]
 
-# Tuple of valid alert/notification type values
-ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
+# Tuple of valid message severity values (alert, infobox, status screen)
+SEVERITY_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
 
-# Type alias for alert/notification types
-type AlertType = Literal["info", "success", "warning", "error"]
+# Type alias for message severity: what happened, as opposed to the color role (ColorType)
+type Severity = Literal["info", "success", "warning", "error"]
 
 # =============================================================================
 # HTML Element Types
@@ -158,32 +158,6 @@ type HtmlInputType = Literal[
     "hidden",
     "checkbox",
     "radio",
-]
-
-# Tuple of valid form field type values (high-level form abstraction)
-FORM_FIELD_TYPE_VALUES: tuple[str, ...] = (
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
-)
-
-# Type alias for form field types
-type FormFieldType = Literal[
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
 ]
 
 # =============================================================================
@@ -288,6 +262,25 @@ def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> 
         )
 
 
+def validate_not_empty(config: object, *field_names: str) -> None:
+    """Validate that fields which identify or locate a component are not empty.
+
+    An empty ID, name or URL renders without error but breaks the component, e.g. duplicate
+    element IDs, form values that are never submitted or HTMX requests to the current page.
+
+    Args:
+        config: The config instance to check.
+        *field_names: Names of the fields that must not be empty or None.
+
+    Raises:
+        ValueError: If one of the fields is empty or None.
+
+    """
+    for field_name in field_names:
+        if not getattr(config, field_name):
+            raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
 def validate_size(value: str, field_name: str = "size") -> None:
     """Validate that a size value is one of the allowed sizes.
 
@@ -358,18 +351,24 @@ def validate_step_status(value: str, field_name: str = "status") -> None:
     _validate_literal(value, STEP_STATUS_VALUES, field_name)
 
 
-def validate_alert_type(value: str, field_name: str = "type") -> None:
-    """Validate that an alert type value is one of the allowed values.
+def validate_severity(value: str, field_name: str = "severity") -> None:
+    """Validate that a severity value is one of the allowed values.
 
     Args:
-        value: The alert type value to validate.
+        value: The severity value to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid alert type.
+        ValueError: If the value is not a valid severity.
 
     """
-    _validate_literal(value, ALERT_TYPE_VALUES, field_name)
+    if value == "danger":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'danger'. Allowed values are: "
+            f"{', '.join(repr(s) for s in SEVERITY_VALUES)}. Use 'error': the severity says what happened, "
+            "'danger' is the color name."
+        )
+    _validate_literal(value, SEVERITY_VALUES, field_name)
 
 
 def validate_html_button_type(value: str, field_name: str = "button_type") -> None:
@@ -440,20 +439,6 @@ def validate_html_input_type(value: str, field_name: str = "input_type") -> None
 
     """
     _validate_literal(value, HTML_INPUT_TYPE_VALUES, field_name)
-
-
-def validate_form_field_type(value: str, field_name: str = "input_type") -> None:
-    """Validate that a form field type value is one of the allowed values.
-
-    Args:
-        value: The form field type value to validate.
-        field_name: Name of the field for error messages.
-
-    Raises:
-        ValueError: If the value is not a valid form field type.
-
-    """
-    _validate_literal(value, FORM_FIELD_TYPE_VALUES, field_name)
 
 
 def validate_htmx_swap_method(value: str, field_name: str = "swap_method") -> None:
@@ -618,9 +603,9 @@ def validate_icon_name(value: str) -> None:
 #   - description: Human-readable description for documentation
 
 TYPE_REGISTRY: dict[str, dict] = {
-    "AlertType": {
-        "values": ALERT_TYPE_VALUES,
-        "description": "Semantic types for alerts and notifications.",
+    "Severity": {
+        "values": SEVERITY_VALUES,
+        "description": "Message severity of alerts, infoboxes and status screens.",
     },
     "BadgeType": {
         "values": BADGE_TYPE_VALUES,
@@ -641,10 +626,6 @@ TYPE_REGISTRY: dict[str, dict] = {
     "FilterFieldType": {
         "values": FILTER_FIELD_TYPE_VALUES,
         "description": "Field types for query builder and filter components.",
-    },
-    "FormFieldType": {
-        "values": FORM_FIELD_TYPE_VALUES,
-        "description": "High-level form field types for the form component.",
     },
     "GeoMapMarkerType": {
         "values": GEO_MAP_MARKER_TYPE_VALUES,

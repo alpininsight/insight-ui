@@ -5,7 +5,7 @@
 import pytest
 from bs4 import BeautifulSoup
 from django.template import Context, Template
-from insight_ui.configs import FormConfig, HtmxConfig, TurnstileConfig
+from insight_ui.configs import FormConfig, HtmxConfig, InputFieldConfig, TextareaConfig, TurnstileConfig
 
 
 def render(template: str, **context: object) -> BeautifulSoup:
@@ -42,11 +42,41 @@ def test_form_renders_optional_challenge_inside_the_post_form() -> None:
     assert soup.select_one("form button[type=submit]") is not None
 
 
+def test_turnstile_tag_accepts_public_keyword_arguments_and_overrides_a_copy() -> None:
+    """The widget follows the shared config/keyword contract without changing its input config."""
+    config = TurnstileConfig(site_key="public", theme="auto")
+    soup = render('{% turnstile config=config theme="dark" action="contact" %}', config=config)
+    widget = soup.select_one("[data-insight-turnstile]")
+
+    assert widget["data-theme"] == "dark"
+    assert widget["data-action"] == "contact"
+    assert config.theme == "auto"
+    assert config.action == ""
+    assert render('{% turnstile site_key="public" %}').select_one('[data-sitekey="public"]') is not None
+
+
 def test_form_without_challenge_does_not_load_or_render_turnstile() -> None:
     """Existing and private forms remain unchanged by default."""
     soup = render("{% form config=config %}", config=FormConfig())
 
     assert soup.select_one("[data-insight-turnstile]") is None
+
+
+@pytest.mark.parametrize("show_loading_indicator", [True, False])
+def test_protected_form_preserves_field_configs_and_loading_indicator(show_loading_indicator: bool) -> None:
+    """Turnstile composes with the current field API and the per-form HTMX indicator."""
+    config = FormConfig(
+        fields=[InputFieldConfig(name="email", input_type="email"), TextareaConfig(name="message")],
+        htmx_config=HtmxConfig(request_url="/submit/", method="post"),
+        turnstile=TurnstileConfig(site_key="public"),
+        show_loading_indicator=show_loading_indicator,
+    )
+    soup = render("{% form config=config %}", config=config)
+
+    assert soup.select_one('form[hx-post="/submit/"] input[name="email"][type="email"]') is not None
+    assert soup.select_one('form textarea[name="message"]') is not None
+    assert soup.select_one("form [data-insight-turnstile]") is not None
+    assert bool(soup.select_one("form .htmx-indicator")) is show_loading_indicator
 
 
 @pytest.mark.parametrize(

@@ -10,19 +10,20 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
-    AlertType,
     BadgeType,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
     InlinePosition,
+    Severity,
     Size,
-    validate_alert_type,
     validate_badge_type,
     validate_color_type,
     validate_corner_position,
     validate_geo_map_marker_type,
     validate_inline_position,
+    validate_not_empty,
+    validate_severity,
     validate_size,
 )
 
@@ -35,23 +36,23 @@ class InfoboxConfig:
 
     Attributes:
         message: Descriptive message.
-        info_type: Importance level of the message.
+        severity: Severity of the message.
 
     """
 
     __example__ = """
         InfoboxConfig(
             message="Tip: You can drag and drop files here.",
-            info_type="info",
+            severity="info",
         )
         """
 
     message: str = field(metadata={"doc": _("Descriptive message.")})
-    info_type: AlertType = field(default="info", metadata={"doc": _("Importance level of the message.")})
+    severity: Severity = field(default="info", metadata={"doc": _("Severity of the message.")})
 
     def __post_init__(self) -> None:
-        """Validate info_type after initialization."""
-        validate_alert_type(self.info_type, "info_type")
+        """Validate severity after initialization."""
+        validate_severity(self.severity)
 
 
 @dataclass
@@ -202,7 +203,7 @@ class StatusScreenConfig:
     Attributes:
         title: Main status title.
         description: Supporting status description.
-        status: Visual status type.
+        severity: Severity of the status.
         brand: Optional brand mark shown above the card.
         notice_title: Optional notice heading.
         notice: Optional notice text.
@@ -218,7 +219,7 @@ class StatusScreenConfig:
         StatusScreenConfig(
             title="Sign-in failed",
             description="The SSO process could not be completed.",
-            status="error",
+            severity="error",
             notice_title="What happened?",
             notice="Please try again or contact support if the issue persists.",
             primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
@@ -228,7 +229,7 @@ class StatusScreenConfig:
 
     title: str = field(metadata={"doc": _("Main status title.")})
     description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
-    status: AlertType = field(default="info", metadata={"doc": _("Visual status type.")})
+    severity: Severity = field(default="info", metadata={"doc": _("Severity of the status.")})
     brand: BrandMarkConfig | None = field(
         default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
@@ -241,8 +242,8 @@ class StatusScreenConfig:
     card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
 
     def __post_init__(self) -> None:
-        """Validate status after initialization."""
-        validate_alert_type(self.status, "status")
+        """Validate severity after initialization."""
+        validate_severity(self.severity)
 
 
 @dataclass
@@ -603,6 +604,10 @@ class ChartConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label describing the chart's purpose.")})
     show_decal: bool = field(default=True, metadata={"doc": _("Show decal patterns for colorblind accessibility.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
+
 
 @dataclass
 class LiveContentConfig:
@@ -615,6 +620,7 @@ class LiveContentConfig:
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
+        show_global_loading_indicator: Whether the updates also show the global loading bar.
 
     """
 
@@ -631,6 +637,13 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
+    show_global_loading_indicator: bool = field(
+        default=False, metadata={"doc": _("Whether the updates also show the global loading bar.")}
+    )
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -666,6 +679,10 @@ class WebSocketConfig:
         },
     )
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -788,7 +805,5 @@ class BadgeListConfig:
 
     def __post_init__(self) -> None:
         """Require an ID and an accessible name, and a target for the remove-all request."""
-        for field_name in ("tag_id", "label"):
-            if not getattr(self, field_name):
-                raise ValueError(f"BadgeListConfig requires a non-empty {field_name}.")  # noqa: TRY003
+        validate_not_empty(self, "tag_id", "label")
         _require_htmx_target(self, "clear_all_htmx")

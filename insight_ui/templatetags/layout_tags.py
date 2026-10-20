@@ -207,13 +207,16 @@ Grid Examples
 from __future__ import annotations
 
 import uuid
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from django import template
 from django.template.base import Node, NodeList, TokenType, token_kwargs
 from django.template.loader import get_template
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+
+from insight_ui.configs import ModalConfig
+from insight_ui.templatetags.insight_tags import build_config
 
 if TYPE_CHECKING:
     from django.template.base import FilterExpression, Parser, Token
@@ -1082,7 +1085,8 @@ class ModalNode(LayoutNode):
     provides the actual content.
 
     Parameters:
-        id: Required. Unique ID for JavaScript targeting (data-insight-modal).
+        config: Optional ModalConfig; the single parameters below override its values.
+        id: Required unless set in config. Unique ID for JavaScript targeting (data-insight-modal).
         title: Optional heading displayed in the modal header.
         width: Maximum width in rem units. Default: 32
         show_close: Show the close button in the header. Default: True
@@ -1117,7 +1121,7 @@ class ModalNode(LayoutNode):
 
     """
 
-    valid_params: frozenset[str] = frozenset({"id", "title", "width", "show_close", "class"})
+    valid_params: frozenset[str] = frozenset({"config", "id", "title", "width", "show_close", "class"})
 
     def render(self, context: Context) -> str:
         """Render the modal container."""
@@ -1126,17 +1130,20 @@ class ModalNode(LayoutNode):
         # Validate no unknown parameters
         _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
-        # ID is required
-        modal_id = resolved.get("id")
-        if not modal_id:
-            msg = "{% modal %} requires an 'id' parameter"
+        # build_config rejects anything that is not a dataclass instance.
+        config = cast("ModalConfig | None", resolved.get("config"))
+        if config is None and not resolved.get("id"):
+            msg = "{% modal %} requires an 'id' parameter or a ModalConfig"
             raise ValueError(msg)
+        # Single parameters override the config, like the arguments of the component tags.
+        overrides = {key: resolved[key] for key in ("id", "title", "width", "show_close") if key in resolved}
+        modal_config = build_config(ModalConfig, config, **overrides)
 
         template_context = {
-            "modal_id": str(modal_id),
-            "title": str(resolved.get("title", "")),
-            "width": int(resolved.get("width", 32)),
-            "show_close": resolved.get("show_close", True),
+            "modal_id": modal_config.id,
+            "title": modal_config.title,
+            "width": modal_config.width,
+            "show_close": modal_config.show_close,
             "wrapper_class": str(resolved.get("class", "")),
             "content": self.nodelist.render(context),
         }
