@@ -7,83 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Changes on `develop` since v1.15.1. This version is not tagged.
+See [Migrating to 2.0](docs/migration-2.0.md).
+
 ### Bug Fixes
 
-- **license:** Use contact@alpininsight.ai for commercial licensing enquiries
-- **a11y:** Hide the idle HTMX loading indicator from the accessibility tree
-- **ci:** Preserve public contributor title validation
-- **release:** Correct package defaults and retire duplicate publisher
-- **deps:** Align tzdata lock with generated requirements
-- Remove unintended spaces if 'brand_mark' does not contain a logo or symbol
-- Remove unintended color transition from the 'sidebar'
-- Correct compponent parameter validation issues
-- Correct the if statements so that 'navbar' and 'footer' are not displayed when the corresponding configuration is None
-- Correct disabled button colors
-- Solve 'tooltip' overlaps trigger and is initial visible when opening modal or drawer
-- Make 'list' use VALID_SPACING_WITH_NONE for the gap parameter
-- Use correct user object in the navbar
-- **ci:** Enforce public workflow boundary for every trigger
-- **sidebar:** Use one mobile drawer lifecycle controller
-- **navbar:** Preserve language form return URL
-- **sidebar:** Use one mobile drawer lifecycle controller
-- **devtools:** Isolate and validate contributor tooling
-- **devtools:** Reject unexported config collisions
-- **devtools:** Preserve scaffold safety and validation gates
-- **build:** Pin Tailwind compiler and verify version consistency
-- **packaging:** Use absolute public documentation links
-- **readme:** Label hero bubble Django-Insight-UI
-- **readme:** Refresh Django Insight UI hero
-
-### CI/CD
-
-- Adopt the standard Alpine Insight workflow callers
-- **cdn:** Add a CDN asset verification gate
-
-### Documentation
-
-- **readme:** Name the product Django-Insight-UI
-- Update developer documentation
-- Update readme
-- **contributing:** Clarify documentation-ready component handoff
-- **readme:** Add Django Packages badge
+- **security:** Escape layout tag attributes and restrict surface href schemes (#748)
+- **layout:** Resolve layout tag arguments on each render, including filters and translations (#735)
+- **tabs:** Apply the group id and label, render tab icons as SVGs, and load the active HTMX tab (#735)
+- **a11y:** Label tab panels by their tab and swap tab arrow keys in right-to-left layouts (#735)
+- **a11y:** Make the global loading bar decorative and announce slow requests (#723)
+- **a11y:** Keep heading levels consecutive in sidebar navigation and the footer (#734)
+- **a11y:** Use phrasing content for icons, labels and buttons (#713)
+- **form:** Scope the loading indicator to the form and derive the error container id from tag_id (#711)
+- **forms:** Render the required attribute on select, checkbox and toggle (#726)
+- **base:** Apply the system color scheme before first paint (#707)
+- **rtl:** Mirror directional icons and swap 3D carousel arrow keys in right-to-left layouts (#736)
+- **configs:** Reject empty ids, names, URLs and button labels (#697)
+- **configs:** Validate data attribute names (#722)
+- **stepper:** Use the x-mark icon for a failed minimal step and stop warning on disabled pagination buttons (#698)
+- **legal-notice:** Improve dark-theme link contrast and ship the generated footer utilities (#690)
+- **js:** Cancel pending reset updates when a slider or checkbox group is destroyed
 
 ### Features
 
-- Set 'navbar_fixed' to False per default
-- Validate icon names and show suggestions for typos
-- Check for typos in the parameters of the 'button' component
-- Add validation for the layout tag parameters and add None as possible option for 'gap' and 'padding'
-- Add optional 'navbar' and 'footer' the the login template
-- Convert 'modal' component to a layout tag
-- Add parameters for the text colors to the 'brand_mark' component
-- Add new component 'list' as layout tag
-- Add config classes for the 'list' and 'modal' layout tag
-- Simplify the use of the horizontal list
-- Add sizes for icon only buttons and show the label automatically as tooltip
-- Remove hard reference of the dialog element for the 'modal' component
-- Add a gap between logo and titel on the login screen
-- Use the outline button variant for the 'user_dropdown'
-- Add 'id' as parameter to the layout tags
-- Add flag token parameter handling for the layout tags
-- Remove CopyrightNoticeConfig alias
-- Drastically simplify the preview app
-- Improve demo container controls
-- **devtools:** Integrate contributor playground from PR #651
+- **a11y:** Add a heading_level option to cards, accordion and infinite scroll (#734)
+- **dialog:** Add the message_dialog component and ModalConfig for the modal block tag (#719)
+- **tooltip:** Show tooltips after a configurable hover delay (#712)
+- **form:** Accept the concrete field configs in FormConfig.fields (#692)
+- **forms:** Add data_attrs on form fields (#722)
+- **badge:** Add removable badges and badge_list (#699)
+- **tags:** Add form submit and reset labels, an optional navbar config and the theme_toggle tag (#707)
+- **legal-notice:** Add an optional publisher link and logo (#690)
+- **htmx:** Add show_global_loading_indicator and settings-driven HTMX script URLs (#718, #707)
 
-### Miscellaneous
+### Refactoring
 
-- **sync:** Align release preparation with main
-- Set executable bit for the manage.py
-- Fix distribution check
-- Slightly adjust linting settings
-- Consolidate the 'Hatchling' configuration in one place
+- **tabs:** Reject unknown tab arguments, an empty TabsConfig, a config mixed with tab blocks, and more than one active tab [**BREAKING**] (#735)
+- **css:** Rename foreground tokens to text and the old text token to on-fill [**BREAKING**] (#693)
+- **configs:** Rename alert type, infobox info_type and status screen status to severity [**BREAKING**] (#720)
+- **stepper:** Replace step booleans and the old status strings with pending, current, completed and failed [**BREAKING**] (#721)
+- **htmx:** Render HtmxConfig through one tag and remove trigger [**BREAKING**] (#718)
+- **form:** Remove FormFieldConfig and require a non-empty name on every field [**BREAKING**] (#692)
+- Remove dictionary coercion from build_config [**BREAKING**] (#688)
 
-### Testing
+### CI/CD
 
-- Fix JavaScript tests
-- Fix license hashes
-- **cdn:** Guard the verification manifest against drift
-- **tailwind:** Align wrapper reproducibility pin
+- Restore the check that minified assets are not tracked (#749)
+- Verify that the committed tailwind.css matches a fresh build (#725)
+
+### Documentation
+
+- Add a consumer migration guide for 2.0
 
 ## [1.14.0] - 2026-09-09
 

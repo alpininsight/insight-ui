@@ -98,6 +98,7 @@ The following guides describe the public package and contributor workflow on Git
 | Guide | Description |
 |-------|-------------|
 | [Getting Started](https://github.com/alpininsight/insight-ui/blob/main/docs/getting-started.md) | Installation and configuration |
+| [Migrating to 2.0](https://github.com/alpininsight/insight-ui/blob/main/docs/migration-2.0.md) | Breaking changes from v1.15.1 |
 | [Components](https://github.com/alpininsight/insight-ui/blob/main/docs/components.md) | Template tag API and patterns |
 | [Design System](https://github.com/alpininsight/insight-ui/blob/main/docs/design-system.md) | Tokens, theming, and customization |
 | [Static Assets](https://github.com/alpininsight/insight-ui/blob/main/docs/static-assets.md) | Staticfiles and CDN configuration |
