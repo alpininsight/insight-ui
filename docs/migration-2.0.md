@@ -37,6 +37,7 @@ pattern for a host project.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
+- [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view) and `usermenu=` (navbar).
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
@@ -363,6 +364,36 @@ context = {"alert": AlertConfig(message="Saved", severity="success")}
 
 Search: `config=` in templates whose view puts a `dict` in that variable, and
 calls that used to rely on dict coercion.
+
+### Config fields are named by their role
+
+A field that holds another config is named after its role, without a
+`_config` suffix, and in the snake case of the class name. Four fields did
+not follow this:
+
+| Config | Before | After |
+| --- | --- | --- |
+| `HeroConfig` | `badge_config` | `badge` |
+| `ToggleViewConfig` | `table_config` | `table` |
+| `ToggleViewConfig` | `view_radio_config` | `view_switch` |
+| `NavbarConfig` | `usermenu` | `user_menu` |
+
+The `hero` and `toggle_view` tag arguments change the same way. The old names
+raise `TypeError`.
+
+Before:
+
+```python
+NavbarConfig(usermenu=UserMenuConfig(links=links))
+```
+
+After:
+
+```python
+NavbarConfig(user_menu=UserMenuConfig(links=links))
+```
+
+Search: `badge_config=`, `table_config=`, `view_radio_config=` and `usermenu=`.
 
 ### Severity
 

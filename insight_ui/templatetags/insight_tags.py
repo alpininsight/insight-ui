@@ -442,7 +442,7 @@ def hero(
     cta_primary: ButtonConfig | _Unset = UNSET,
     cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge_config: BadgeConfig | _Unset = UNSET,
+    badge: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1604,8 +1604,8 @@ def toggle_view(
     *,
     tag_id: str | _Unset = UNSET,
     cards: list[CardConfig] | _Unset = UNSET,
-    table_config: TableConfig | _Unset = UNSET,
-    view_radio_config: RadioBlockConfig | _Unset | None = UNSET,
+    table: TableConfig | _Unset = UNSET,
+    view_switch: RadioBlockConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
     config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})

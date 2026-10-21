@@ -6,9 +6,9 @@
     {% endif %}
 
     <div class="space-y-4 max-w-4xl xl:space-y-8{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
-        {% if hero_config.badge_config %}
+        {% if hero_config.badge %}
             <div class="mb-4">
-                {% badge config=hero_config.badge_config %}
+                {% badge config=hero_config.badge %}
             </div>
         {% endif %}
 
