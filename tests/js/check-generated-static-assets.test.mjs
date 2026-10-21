@@ -10,9 +10,9 @@ import { fileURLToPath } from "node:url";
 
 const script = fileURLToPath(new URL("../../scripts/check-generated-static-assets.mjs", import.meta.url));
 
-function run(command, args, cwd) {
+function run(command, args, cwd, env = process.env) {
     return new Promise((resolve, reject) => {
-        execFile(command, args, { cwd, encoding: "utf8" }, (error, stdout, stderr) => {
+        execFile(command, args, { cwd, env, encoding: "utf8" }, (error, stdout, stderr) => {
             if (error && error.code === "ENOENT") {
                 reject(error);
                 return;
@@ -21,6 +21,13 @@ function run(command, args, cwd) {
             resolve({ code, stdout, stderr });
         });
     });
+}
+
+function envWithoutParentGit(dir) {
+    const env = { ...process.env, GIT_CEILING_DIRECTORIES: dir };
+    delete env.GIT_DIR;
+    delete env.GIT_WORK_TREE;
+    return env;
 }
 
 async function initRepo() {
@@ -84,10 +91,27 @@ test("tracked names that only contain the minified suffix do not fail", async ()
     }
 });
 
-test("this repository does not track minified assets", async () => {
-    const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
-    const result = await run(process.execPath, [script], repoRoot);
+test("a temporary repository with no tracked minified assets passes", async () => {
+    const dir = await initRepo();
+    try {
+        const result = await run(process.execPath, [script], dir, envWithoutParentGit(dir));
 
-    assert.equal(result.code, 0, result.stderr);
-    assert.match(result.stdout, /No minified CSS or JavaScript assets are tracked/);
+        assert.equal(result.code, 0, result.stderr);
+        assert.match(result.stdout, /No minified CSS or JavaScript assets are tracked/);
+    } finally {
+        await rm(dir, { recursive: true, force: true });
+    }
+});
+
+test("a directory without git metadata fails cleanly", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "min-assets-nogit-"));
+    try {
+        const result = await run(process.execPath, [script], dir, envWithoutParentGit(dir));
+
+        assert.equal(result.code, 1);
+        assert.match(result.stderr, /Could not list tracked files/);
+        assert.match(result.stderr, /not a git repository/);
+    } finally {
+        await rm(dir, { recursive: true, force: true });
+    }
 });
