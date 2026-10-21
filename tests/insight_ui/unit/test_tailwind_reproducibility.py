@@ -36,7 +36,7 @@ def test_static_build_entrypoints_share_the_tailwind_compiler() -> None:
     assert "django tailwind build" in scripts["build:tailwind"]
     assert scripts["build:tailwind"].startswith("DJANGO_SETTINGS_MODULE=tests.tailwind_settings")
     assert "build:tailwind" in scripts["build:static-all"]
-    for name in ("build:js", "build:static", "verify:static-build", "check:static-build"):
+    for name in ("build:js", "build:static", "check:generated-assets", "verify:static-build", "check:static-build"):
         assert "tailwind build" not in scripts[name]
 
 
