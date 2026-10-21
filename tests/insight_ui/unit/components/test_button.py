@@ -37,8 +37,8 @@ class TestButton(TemplateTagsTestCase):
     def test_button_serializes_htmx_vals_as_json(self) -> None:
         """Button variant preserves typed additional HTMX values."""
         vals = {"parleq_id": "de--1", "tracked": False}
-        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
-        config = ButtonConfig(label="Track", htmx_config=htmx_config)
+        htmx = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        config = ButtonConfig(label="Track", htmx=htmx)
 
         rendered = self.render_template(
             "{% load insight_tags %}{% button config=config %}",
@@ -52,8 +52,8 @@ class TestButton(TemplateTagsTestCase):
     def test_anchor_serializes_htmx_vals_as_json(self) -> None:
         """Anchor variant preserves typed additional HTMX values."""
         vals = {"parleq_id": "de--1", "tracked": False}
-        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
-        config = ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config)
+        htmx = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        config = ButtonConfig(label="Track", request_url="/track/", htmx=htmx)
         rendered = self.render_template("{% load insight_tags %}{% button config=config %}", {"config": config})
 
         element = BeautifulSoup(rendered, "html.parser").find("a")
@@ -68,14 +68,14 @@ class TestButton(TemplateTagsTestCase):
 
     def test_htmx_url_without_link_renders_an_action_button(self) -> None:
         """Only an HTMX URL renders a <button> that sends the request."""
-        element = self.render_button(ButtonConfig(label="Save", htmx_config=HtmxConfig(request_url="/save/")))
+        element = self.render_button(ButtonConfig(label="Save", htmx=HtmxConfig(request_url="/save/")))
 
         assert element.name == "button"
         assert element["hx-get"] == "/save/"
 
-    def test_link_with_htmx_config_requests_the_link_url(self) -> None:
+    def test_link_with_htmx_requests_the_link_url(self) -> None:
         """A link with an HtmxConfig without URL works without JavaScript and loads the same URL via HTMX."""
-        config = ButtonConfig(label="Orders", request_url="/orders/", htmx_config=HtmxConfig(target="#main"))
+        config = ButtonConfig(label="Orders", request_url="/orders/", htmx=HtmxConfig(target="#main"))
         element = self.render_button(config)
 
         assert element.name == "a"
@@ -89,7 +89,7 @@ class TestButton(TemplateTagsTestCase):
             config = ButtonConfig(
                 label="Orders",
                 request_url="/orders/",
-                htmx_config=HtmxConfig(request_url="/orders/partial/", target="#main"),
+                htmx=HtmxConfig(request_url="/orders/partial/", target="#main"),
             )
         element = self.render_button(config)
 
@@ -103,7 +103,7 @@ class TestButton(TemplateTagsTestCase):
             request_url="/orders/",
             disabled=True,
             disabled_reason="",
-            htmx_config=HtmxConfig(target="#main"),
+            htmx=HtmxConfig(target="#main"),
         )
         element = self.render_button(config)
 
