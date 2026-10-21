@@ -99,3 +99,14 @@ def test_surface_rejects_schemes_that_can_run_code(href: str) -> None:
     """Escaping does not neutralise javascript: and friends, so the scheme is checked against an allowlist."""
     with pytest.raises(ValueError, match="is not allowed"):
         render("{% surface href=href %}x{% endsurface %}", {"href": href})
+
+
+def test_filtered_surface_href_is_resolved_before_the_scheme_check() -> None:
+    """Filters on href run at render time, then the resolved URL must use an allowed scheme."""
+    link = render('{% surface href="https://example.com"|add:path %}x{% endsurface %}', {"path": "/docs"}).find("a")
+
+    assert link is not None
+    assert link["href"] == "https://example.com/docs"
+
+    with pytest.raises(ValueError, match="is not allowed"):
+        render('{% surface href="java"|add:rest %}x{% endsurface %}', {"rest": "script:alert(1)"})
