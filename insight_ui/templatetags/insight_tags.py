@@ -337,6 +337,7 @@ def icon(
     name: str | _Unset = UNSET,
     size: Size | _Unset = UNSET,
     color: IconColor | _Unset = UNSET,
+    mirror_rtl: bool | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size and color."""
     config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -618,6 +619,7 @@ def button(
     on_click: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
     type: ButtonType | _Unset = UNSET,  # noqa: A002
@@ -653,7 +655,15 @@ def button(
     """
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     # Collect data_* kwargs and convert to DataAttrConfig list
     data_attrs: list[DataAttrConfig] | _Unset = UNSET
@@ -1285,6 +1295,7 @@ def badge(
     label: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     type: BadgeType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
@@ -1295,7 +1306,15 @@ def badge(
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     config = build_config(
         BadgeConfig,
