@@ -234,15 +234,15 @@ class NavbarConfig:
 
     Renders a full navigation bar with brand, links, and optional features.
 
-    The user menu behavior is controlled by LOGIN_URL and the usermenu config:
+    The user menu behavior is controlled by LOGIN_URL and the user_menu config:
     - If LOGIN_URL is set and user is not authenticated: show login button (unless hide_login=True)
-    - If user is authenticated: show user dropdown with logout (and custom links from usermenu)
+    - If user is authenticated: show user dropdown with logout (and custom links from user_menu)
 
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         search_bar: Configuration for the search bar. If None, no search bar is displayed.
-        usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
+        user_menu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
@@ -267,7 +267,7 @@ class NavbarConfig:
                 placeholder="Search...",
                 enable_search=True,
             ),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
                 ],
@@ -286,7 +286,7 @@ class NavbarConfig:
         default=None,
         metadata={"doc": _("Configuration for the search bar. If None, no search bar is displayed.")},
     )
-    usermenu: UserMenuConfig | None = field(
+    user_menu: UserMenuConfig | None = field(
         default=None,
         metadata={"doc": _("Configuration for the user dropdown menu. None uses defaults (logout only).")},
     )
