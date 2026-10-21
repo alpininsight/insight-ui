@@ -291,8 +291,9 @@ Unknown arguments raise `ValueError` (`Unknown parameter 'colour'`).
 A `{% tab %}` may sit inside `{% if %}` or `{% for %}`, and its arguments
 may be variables. Exactly one tab is active, chosen again on every render:
 the first with `active=True`, otherwise the first tab. Further `active=True`
-flags are ignored. v1.15.1 kept every marked tab selected, and it stored
-that choice on the compiled template.
+flags are ignored. v1.15.1 left every marked tab selected. When none
+were marked, it set `active` on the first compiled tab, and that flag
+stayed set for later renders.
 
 Every static panel is rendered, including an empty one, with
 `aria-labelledby` set to the tab id and `tabindex="0"`. Each tab button is
