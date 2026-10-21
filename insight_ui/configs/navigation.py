@@ -855,6 +855,7 @@ class TabsConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         tabs: List of tab buttons.
         label: Non-visible additional title that is to be read aloud by screen readers.
+        htmx: Shared request options such as push_url or a loading indicator.
 
     """
 
@@ -874,6 +875,9 @@ class TabsConfig:
     tabs: list[TabConfig] = field(metadata={"doc": _("List of tab buttons.")})
     label: str = field(
         default="", metadata={"doc": _("Non-visible additional title that is to be read aloud by screen readers.")}
+    )
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as push_url or a loading indicator.")}
     )
 
     def __post_init__(self) -> None:

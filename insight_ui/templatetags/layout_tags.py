@@ -218,7 +218,7 @@ from django.template.loader import get_template
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from insight_ui.configs import ModalConfig, TabsConfig
+from insight_ui.configs import HtmxConfig, ModalConfig, TabsConfig
 from insight_ui.templatetags.insight_tags import build_config
 
 if TYPE_CHECKING:
@@ -1407,9 +1407,10 @@ class TabsNode(Node):
 
         {% tabs config=my_tabs_config %}{% endtabs %}
 
-    3. **HTMX mode** - Tabs with URLs load content via HTMX::
+    3. **HTMX mode** - Tabs with URLs load content via HTMX; ``htmx`` takes an HtmxConfig
+       for shared request options. Target, swap and trigger stay fixed by the tabs::
 
-        {% tabs id="settings" label="Settings" %}
+        {% tabs id="settings" label="Settings" htmx=htmx %}
             {% tab id="general" label="General" request_url="/settings/general" active=True %}{% endtab %}
             {% tab id="security" label="Security" request_url="/settings/security" %}{% endtab %}
         {% endtabs %}
@@ -1417,7 +1418,7 @@ class TabsNode(Node):
     The active tab is the first one with ``active=True``, otherwise the first tab.
     """
 
-    valid_params: frozenset[str] = frozenset({"id", "label", "config"})
+    valid_params: frozenset[str] = frozenset({"id", "label", "config", "htmx"})
 
     def __init__(self, nodelist: NodeList, kwargs: dict[str, FilterExpression]) -> None:
         """Initialize the tabs container."""
@@ -1429,6 +1430,7 @@ class TabsNode(Node):
 
         Raises:
             ValueError: If both a config and {% tab %} blocks are given.
+            TypeError: If htmx is not an HtmxConfig.
 
         """
         resolved = {key: value.resolve(context) for key, value in self.kwargs.items()}
@@ -1445,11 +1447,14 @@ class TabsNode(Node):
                 raise ValueError(msg)
             # build_config rejects anything that is not a dataclass instance.
             overrides = {
-                target: resolved[key] for key, target in (("id", "tag_id"), ("label", "label")) if key in resolved
+                target: resolved[key]
+                for key, target in (("id", "tag_id"), ("label", "label"), ("htmx", "htmx"))
+                if key in resolved
             }
             tabs_config = build_config(TabsConfig, cast("TabsConfig", config), **overrides)
             tag_id = tabs_config.tag_id
             label = tabs_config.label
+            htmx = tabs_config.htmx
             collected = [
                 {"id": tab.tag_id, "label": tab.title, "active": tab.active, "url": tab.request_url, "icon": ""}
                 for tab in tabs_config.tabs
@@ -1457,6 +1462,10 @@ class TabsNode(Node):
         else:
             tag_id = str(resolved.get("id") or f"tabs-{uuid.uuid4().hex[:8]}")
             label = str(resolved.get("label", ""))
+            htmx = resolved.get("htmx")
+        if htmx is not None and not isinstance(htmx, HtmxConfig):
+            msg = f"{{% tabs %}} htmx must be an HtmxConfig, got {type(htmx).__name__}"
+            raise TypeError(msg)
 
         is_htmx = any(tab["url"] for tab in collected)
         # Exactly one active tab per render: the first marked one, otherwise the first tab.
@@ -1477,6 +1486,8 @@ class TabsNode(Node):
             "tag_id": tag_id,
             "label": label,
             "is_htmx": is_htmx,
+            "htmx": htmx or HtmxConfig(),
+            "panel_target": f"#{tag_id}-tab-content",
             "tabs": tabs_data,
             "active_tab_id": tabs_data[active_index]["id"] if tabs_data else "",
         }
