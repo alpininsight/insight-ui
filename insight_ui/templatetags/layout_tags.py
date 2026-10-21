@@ -212,15 +212,18 @@ from typing import TYPE_CHECKING, cast
 from urllib.parse import urlsplit
 
 from django import template
-from django.template.base import Node, NodeList, TokenType, token_kwargs
+from django.template.base import Node, NodeList, token_kwargs
+from django.template.exceptions import TemplateSyntaxError
 from django.template.loader import get_template
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from insight_ui.configs import ModalConfig
+from insight_ui.configs import ModalConfig, TabsConfig
 from insight_ui.templatetags.insight_tags import build_config
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from django.template.base import FilterExpression, Parser, Token
     from django.template.context import Context
 
@@ -433,6 +436,7 @@ def _validate_href(href: str, tag_name: str) -> str:
         ValueError: If the URL uses a scheme outside the allowlist.
 
     """
+    # Browsers ignore ASCII whitespace and control characters inside the scheme.
     scheme = urlsplit(re.sub(r"[\x00-\x20]", "", href)).scheme.lower()
     if scheme and scheme not in _ALLOWED_URL_SCHEMES:
         allowed = ", ".join(sorted(_ALLOWED_URL_SCHEMES))
@@ -444,33 +448,11 @@ def _validate_href(href: str, tag_name: str) -> str:
     return href
 
 
-def _parse_kwargs(kwargs: dict[str, FilterExpression]) -> dict[str, object]:
-    """
-    Convert token_kwargs FilterExpressions to usable values.
-
-    Literal values are resolved immediately; variable references are kept
-    for runtime resolution.
-    """
-    resolved: dict[str, object] = {}
-    for key, value in kwargs.items():
-        if hasattr(value, "var"):
-            var = value.var
-            # Check if it's a literal (number, True, False, None, or quoted string)
-            if hasattr(var, "literal") and var.literal is not None:
-                # Numeric or boolean literal
-                resolved[key] = var.literal
-            elif hasattr(var, "var") and var.var is not None:
-                # It's a variable reference, keep FilterExpression for runtime
-                resolved[key] = value
-            else:
-                # String literal (var contains the unquoted string value)
-                resolved[key] = str(var)
-        else:
-            resolved[key] = value
-    return resolved
+# Context key under which {% tab %} nodes register with the surrounding {% tabs %}.
+_TABS_CONTEXT_KEY = "_insight_tabs"
 
 
-def _make_block_tag(node_class: type[LayoutNode]) -> callable:
+def _make_block_tag(node_class: type[LayoutNode]) -> Callable[[Parser, Token], LayoutNode]:
     """Create a block tag parser function for the given node class."""
 
     def tag_func(parser: Parser, token: Token) -> LayoutNode:
@@ -487,7 +469,7 @@ def _make_block_tag(node_class: type[LayoutNode]) -> callable:
             else:
                 kwarg_bits.append(bit)
 
-        kwargs = token_kwargs(kwarg_bits, parser) if kwarg_bits else {}
+        kwargs: dict[str, object] = dict(token_kwargs(kwarg_bits, parser)) if kwarg_bits else {}
 
         # Add boolean flags
         for flag in flags:
@@ -496,7 +478,8 @@ def _make_block_tag(node_class: type[LayoutNode]) -> callable:
         nodelist = parser.parse((f"end{tag_name}",))
         parser.delete_first_token()
 
-        return node_class(nodelist, tag_name=tag_name, **_parse_kwargs(kwargs))
+        # Values stay template expressions and are resolved per render (variables, filters, _() translations).
+        return node_class(nodelist, tag_name=tag_name, **kwargs)
 
     return tag_func
 
@@ -829,11 +812,14 @@ class GridNode(LayoutNode):
         needs_container_wrapper = False
 
         if cols is not None:
-            # Fixed column mode
-            cols_int = int(cols)
+            # Fixed column mode; cols may arrive as a number literal, a string or a context value.
+            valid_str = ", ".join(str(c) for c in sorted(VALID_COLS))
+            msg = f"Invalid cols '{cols}' in {{% grid %}}. Must be one of: {valid_str}"
+            try:
+                cols_int = int(cast("int | str", cols))
+            except (TypeError, ValueError):
+                raise ValueError(msg) from None
             if cols_int not in VALID_COLS:
-                valid_str = ", ".join(str(c) for c in sorted(VALID_COLS))
-                msg = f"Invalid cols '{cols}' in {{% grid %}}. Must be one of: {valid_str}"
                 raise ValueError(msg)
 
             if fixed or cols_int == 1:
@@ -1359,37 +1345,49 @@ class TabNode(Node):
     """
     Single tab within a tabs container.
 
-    Used internally by TabsNode to collect tab definitions.
+    Renders nothing itself: it registers its resolved values with the surrounding
+    {% tabs %}, so tabs can come from {% if %} and {% for %} and from variables.
     """
 
-    def __init__(  # noqa: PLR0913
-        self,
-        nodelist: NodeList,
-        *,
-        tab_id: str,
-        label: str,
-        active: bool = False,
-        request_url: str = "",
-        icon: str = "",
-    ) -> None:
+    valid_params: frozenset[str] = frozenset({"id", "label", "active", "request_url", "icon"})
+
+    def __init__(self, nodelist: NodeList, kwargs: dict[str, FilterExpression]) -> None:
         """Initialize the tab node."""
         self.nodelist = nodelist
-        self.tab_id = tab_id
-        self.label = label
-        self.active = active
-        self.request_url = request_url
-        self.icon = icon
+        self.kwargs = kwargs
 
     def render(self, context: Context) -> str:
-        """Render the tab content (used for static tabs)."""
-        return self.nodelist.render(context)
+        """Register this tab with the surrounding {% tabs %}.
+
+        Raises:
+            TemplateSyntaxError: If the tab is not inside a {% tabs %} block.
+
+        """
+        collected = context.get(_TABS_CONTEXT_KEY)
+        if collected is None:
+            msg = "{% tab %} must be placed inside {% tabs %}"
+            raise TemplateSyntaxError(msg)
+
+        resolved = {key: value.resolve(context) for key, value in self.kwargs.items()}
+        _validate_unknown_params(resolved, self.valid_params, "tab")
+        collected.append(
+            {
+                "id": str(resolved.get("id") or f"tab-{uuid.uuid4().hex[:8]}"),
+                "label": str(resolved.get("label", "Tab")),
+                "active": bool(resolved.get("active", False)),
+                "url": str(resolved.get("request_url", "")),
+                "icon": str(resolved.get("icon", "")),
+                "content": self.nodelist.render(context),
+            }
+        )
+        return ""
 
 
 class TabsNode(Node):
     """
     Tabbed interface with support for both static content and HTMX loading.
 
-    Supports two modes:
+    Supports three modes:
 
     1. **Block mode** - Define tabs inline with content::
 
@@ -1402,7 +1400,10 @@ class TabsNode(Node):
             {% endtab %}
         {% endtabs %}
 
-    2. **Config mode** - Use a TabsConfig object (HTMX)::
+       Tabs may be wrapped in {% if %} or created in a {% for %} loop, and their
+       parameters may be template variables.
+
+    2. **Config mode** - Use a TabsConfig object (HTMX); ``id`` and ``label`` override it::
 
         {% tabs config=my_tabs_config %}{% endtabs %}
 
@@ -1413,162 +1414,106 @@ class TabsNode(Node):
             {% tab id="security" label="Security" request_url="/settings/security" %}{% endtab %}
         {% endtabs %}
 
+    The active tab is the first one with ``active=True``, otherwise the first tab.
     """
 
-    def __init__(
-        self,
-        tab_nodes: list[TabNode],
-        *,
-        tag_id: str = "",
-        label: str = "",
-        config: object | None = None,
-        **kwargs: object,
-    ) -> None:
+    valid_params: frozenset[str] = frozenset({"id", "label", "config"})
+
+    def __init__(self, nodelist: NodeList, kwargs: dict[str, FilterExpression]) -> None:
         """Initialize the tabs container."""
-        self.tab_nodes = tab_nodes
-        self.tag_id = tag_id
-        self.label = label
-        self.config = config
+        self.nodelist = nodelist
         self.kwargs = kwargs
 
-    def resolve_kwargs(self, context: Context) -> dict[str, object]:
-        """Resolve any template variables in kwargs."""
-        resolved: dict[str, object] = {}
-        for key, value in self.kwargs.items():
-            if hasattr(value, "resolve"):
-                resolved[key] = value.resolve(context)
-            else:
-                resolved[key] = value
-        return resolved
-
     def render(self, context: Context) -> str:
-        """Render the tabs container."""
-        resolved = self.resolve_kwargs(context)
-        config = resolved.get("config") or self.config
+        """Render the tabs container.
 
-        # Resolve config if it's a variable
-        if config is not None and hasattr(config, "resolve"):
-            config = config.resolve(context)
+        Raises:
+            ValueError: If both a config and {% tab %} blocks are given.
 
-        # Determine mode and build tabs list
+        """
+        resolved = {key: value.resolve(context) for key, value in self.kwargs.items()}
+        _validate_unknown_params(resolved, self.valid_params, "tabs")
+
+        collected: list[dict[str, object]] = []
+        with context.push({_TABS_CONTEXT_KEY: collected}):
+            self.nodelist.render(context)
+
+        config = resolved.get("config")
         if config is not None:
-            # Config mode (HTMX) - data comes from TabsConfig object
-            tag_id = config.tag_id
-            label = config.label
-            is_htmx = True
-            tabs_data = [
-                {
-                    "id": tab.tag_id,
-                    "label": tab.title,
-                    "active": tab.active,
-                    "url": tab.request_url,
-                    "icon": getattr(tab, "icon", ""),
-                    "panel_id": f"{tag_id}-{tab.tag_id}",
-                    "content": None,
-                }
-                for tab in config.tabs
+            if collected:
+                msg = "{% tabs %} takes either a config or {% tab %} blocks, not both"
+                raise ValueError(msg)
+            # build_config rejects anything that is not a dataclass instance.
+            overrides = {
+                target: resolved[key] for key, target in (("id", "tag_id"), ("label", "label")) if key in resolved
+            }
+            tabs_config = build_config(TabsConfig, cast("TabsConfig", config), **overrides)
+            tag_id = tabs_config.tag_id
+            label = tabs_config.label
+            collected = [
+                {"id": tab.tag_id, "label": tab.title, "active": tab.active, "url": tab.request_url, "icon": ""}
+                for tab in tabs_config.tabs
             ]
         else:
-            # Block mode - data comes from inline {% tab %} blocks
-            tag_id = str(resolved.get("id", f"tabs-{uuid.uuid4().hex[:8]}"))
+            tag_id = str(resolved.get("id") or f"tabs-{uuid.uuid4().hex[:8]}")
             label = str(resolved.get("label", ""))
-            is_htmx = any(tab.request_url for tab in self.tab_nodes)
 
-            # Ensure at least one tab is active
-            has_active = any(tab.active for tab in self.tab_nodes)
-            if not has_active and self.tab_nodes:
-                self.tab_nodes[0].active = True
-
-            tabs_data = [
-                {
-                    "id": tab.tab_id,
-                    "label": tab.label,
-                    "active": tab.active,
-                    "url": tab.request_url if is_htmx else "",
-                    "icon": tab.icon,
-                    "panel_id": f"{tag_id}-{tab.tab_id}",
-                    # Content comes from internal template rendering, not user input
-                    "content": mark_safe(tab.render(context)) if not is_htmx else None,  # noqa: S308  # nosec B308 B703
-                }
-                for tab in self.tab_nodes
-            ]
+        is_htmx = any(tab["url"] for tab in collected)
+        # Exactly one active tab per render: the first marked one, otherwise the first tab.
+        active_index = next((i for i, tab in enumerate(collected) if tab["active"]), 0)
+        tabs_data = [
+            {
+                **tab,
+                "active": index == active_index,
+                "url": tab["url"] if is_htmx else "",
+                "panel_id": f"{tag_id}-{tab['id']}",
+                # Content comes from internal template rendering, not user input
+                "content": None if is_htmx else mark_safe(str(tab.get("content", ""))),  # noqa: S308  # nosec B308 B703
+            }
+            for index, tab in enumerate(collected)
+        ]
 
         template_context = {
             "tag_id": tag_id,
             "label": label,
             "is_htmx": is_htmx,
             "tabs": tabs_data,
+            "active_tab_id": tabs_data[active_index]["id"] if tabs_data else "",
         }
 
         tpl = get_template("insight_ui/components/layout/tabs.html")
         return tpl.render(template_context)
 
 
-def do_tabs(parser: Parser, token: Token) -> TabsNode:
-    """
-    Parse the {% tabs %} block tag.
+def _parse_tag_kwargs(parser: Parser, token: Token) -> dict[str, FilterExpression]:
+    """Parse the key=value arguments of a tag into unresolved filter expressions.
 
-    Collects all {% tab %}...{% endtab %} blocks within.
+    Raises:
+        TemplateSyntaxError: If an argument is not of the form key=value.
+
     """
     bits = token.split_contents()
-    remaining_bits = bits[1:]
+    kwargs = token_kwargs(bits[1:], parser)
+    if len(kwargs) != len(bits) - 1:
+        msg = f"{{% {bits[0]} %}} only accepts key=value arguments"
+        raise TemplateSyntaxError(msg)
+    return kwargs
 
-    # Parse kwargs for the tabs container
-    kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
-    parsed_kwargs = _parse_kwargs(kwargs)
 
-    # Collect tab nodes
-    tab_nodes: list[TabNode] = []
-    nodelist = NodeList()
-
-    while True:
-        token = parser.next_token()
-
-        if token.token_type == TokenType.BLOCK:
-            tag_name = token.split_contents()[0]
-
-            if tag_name == "endtabs":
-                break
-            if tag_name == "tab":
-                # Parse the tab tag
-                tab_node = do_tab(parser, token)
-                tab_nodes.append(tab_node)
-            else:
-                # Other block tag, add to nodelist
-                nodelist.append(parser.compile_filter(token.contents))
-        else:
-            # Text or variable, ignore (whitespace between tabs)
-            pass
-
-    return TabsNode(
-        tab_nodes,
-        tag_id=str(parsed_kwargs.get("id", "")),
-        label=str(parsed_kwargs.get("label", "")),
-        config=parsed_kwargs.get("config"),
-        **{k: v for k, v in parsed_kwargs.items() if k not in ("id", "label", "config")},
-    )
+def do_tabs(parser: Parser, token: Token) -> TabsNode:
+    """Parse the {% tabs %} block tag; its content is parsed like any other template content."""
+    kwargs = _parse_tag_kwargs(parser, token)
+    nodelist = parser.parse(("endtabs",))
+    parser.delete_first_token()
+    return TabsNode(nodelist, kwargs)
 
 
 def do_tab(parser: Parser, token: Token) -> TabNode:
     """Parse a single {% tab %} block."""
-    bits = token.split_contents()
-    remaining_bits = bits[1:]
-
-    kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
-    parsed_kwargs = _parse_kwargs(kwargs)
-
-    # Parse content until {% endtab %}
+    kwargs = _parse_tag_kwargs(parser, token)
     nodelist = parser.parse(("endtab",))
     parser.delete_first_token()
-
-    return TabNode(
-        nodelist,
-        tab_id=str(parsed_kwargs.get("id", f"tab-{uuid.uuid4().hex[:8]}")),
-        label=str(parsed_kwargs.get("label", "Tab")),
-        active=bool(parsed_kwargs.get("active", False)),
-        request_url=str(parsed_kwargs.get("request_url", "")),
-        icon=str(parsed_kwargs.get("icon", "")),
-    )
+    return TabNode(nodelist, kwargs)
 
 
 # =============================================================================
@@ -1588,6 +1533,7 @@ register.tag("modal", _make_block_tag(ModalNode))
 register.tag("list", _make_block_tag(ListNode))
 register.tag("listitem", _make_block_tag(ListItemNode))
 register.tag("tabs", do_tabs)
+register.tag("tab", do_tab)
 
 
 # =============================================================================
