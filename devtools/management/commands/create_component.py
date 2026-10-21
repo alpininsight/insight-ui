@@ -183,7 +183,6 @@ class Command(BaseCommand):
         dry_run: bool = False,
     ) -> None:
         """Validate the complete scaffold before writing any package files."""
-        self._source_root = ui_path.parent.resolve()
         self._originals: dict[Path, bytes | None] = {}
         self._pending_writes: dict[Path, str] = {}
         self._validate_new_component(ui_path, names, category)
@@ -212,70 +211,39 @@ class Command(BaseCommand):
                     raise CommandError(message) from exc
         if dry_run:
             for path in self._pending_writes:
-                self.stdout.write(str(path.relative_to(ui_path.parent)))
+                self.stdout.write(path.relative_to(ui_path.parent).as_posix())
             self.stdout.write("Dry-run complete; no files written.")
             return
         self._apply_scaffold()
         self._print_success(names, category, needs_js)
 
     def _apply_scaffold(self) -> None:
-        """Restore previous contents on reported write failures, including truncation."""
-        for path in self._originals:
-            self._assert_unchanged(path)
+        """Write all planned files and restore previous contents on a write error, including truncation."""
         written = []
-        writing = None
         try:
             for path, content in self._pending_writes.items():
-                self._assert_unchanged(path)
                 written.append(path)
-                writing = path
-                path.write_text(content, encoding="utf-8")
-                writing = None
-        except (OSError, CommandError) as exc:
+                path.write_text(content, encoding="utf-8", newline="\n")
+        except OSError as exc:
             failed = []
             for path in reversed(written):
                 original = self._originals[path]
                 try:
-                    self._validate_path(path)
-                    if path != writing and path.read_bytes() != self._pending_writes[path].encode("utf-8"):
-                        failed.append(str(path))
-                        continue
                     if original is None:
                         path.unlink(missing_ok=True)
                     else:
                         path.write_bytes(original)
-                except (OSError, CommandError):
+                except OSError:
                     failed.append(str(path))
             detail = f"Manual recovery required: {', '.join(failed)}" if failed else "Changes rolled back"
             message = f"Scaffold write failed. {detail}: {exc}"
             raise CommandError(message) from exc
 
-    def _validate_path(self, path: Path) -> None:
-        """Reject redirected source files and targets outside this checkout."""
-        if not path.is_relative_to(self._source_root) or not path.resolve().is_relative_to(self._source_root):
-            message = f"Scaffold path escapes the source checkout: {path}"
-            raise CommandError(message)
-        for part in (path, *path.parents):
-            if part == self._source_root:
-                break
-            if part.is_symlink():
-                message = f"Scaffold path must not use symlinks: {path}"
-                raise CommandError(message)
-
     def _snapshot(self, path: Path) -> bytes | None:
         """Capture each planning input once, before deriving replacement content."""
-        self._validate_path(path)
         if path not in self._originals:
             self._originals[path] = path.read_bytes() if path.exists() else None
         return self._originals[path]
-
-    def _assert_unchanged(self, path: Path) -> None:
-        """Do not overwrite changes made after the plan was prepared."""
-        self._validate_path(path)
-        current = path.read_bytes() if path.exists() else None
-        if current != self._originals[path]:
-            message = f"{path} changed after planning; refusing to overwrite it."
-            raise CommandError(message)
 
     @staticmethod
     def _module_bindings(source: str, path: Path) -> set[str]:
