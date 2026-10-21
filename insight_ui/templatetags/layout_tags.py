@@ -206,8 +206,10 @@ Grid Examples
 
 from __future__ import annotations
 
+import re
 import uuid
 from typing import TYPE_CHECKING, cast
+from urllib.parse import urlsplit
 
 from django import template
 from django.template.base import Node, NodeList, TokenType, token_kwargs
@@ -408,6 +410,40 @@ def _validate_unknown_params(
     raise ValueError(msg)
 
 
+# Schemes a layout tag may put in href. A relative URL has no scheme.
+_ALLOWED_URL_SCHEMES = frozenset({"http", "https", "mailto"})
+
+
+def _validate_href(href: str, tag_name: str) -> str:
+    """
+    Allow relative URLs and the http, https and mailto schemes.
+
+    Other schemes are rejected. Escaping an attribute does not change which
+    scheme the browser follows. ASCII whitespace and control characters are
+    ignored when reading the scheme, because browsers ignore them there too.
+
+    Args:
+        href: Candidate URL from the layout tag.
+        tag_name: Name of the template tag, used in the error message.
+
+    Returns:
+        The original URL when its scheme is allowed.
+
+    Raises:
+        ValueError: If the URL uses a scheme outside the allowlist.
+
+    """
+    scheme = urlsplit(re.sub(r"[\x00-\x20]", "", href)).scheme.lower()
+    if scheme and scheme not in _ALLOWED_URL_SCHEMES:
+        allowed = ", ".join(sorted(_ALLOWED_URL_SCHEMES))
+        msg = (
+            f"Invalid href in {{% {tag_name} %}}: the scheme '{scheme}:' is not allowed. "
+            f"Use a relative URL or {allowed}."
+        )
+        raise ValueError(msg)
+    return href
+
+
 def _parse_kwargs(kwargs: dict[str, FilterExpression]) -> dict[str, object]:
     """
     Convert token_kwargs FilterExpressions to usable values.
@@ -527,9 +563,9 @@ class LayoutNode(Node):
 
         # Optional id attribute
         element_id = resolved.get("id", "")
-        id_attr = f' id="{element_id}"' if element_id else ""
+        id_attr = f' id="{escape(element_id)}"' if element_id else ""
 
-        return f'<div{id_attr} class="{class_str}">{content}</div>'
+        return f'<div{id_attr} class="{escape(class_str)}">{content}</div>'
 
 
 # =============================================================================
@@ -687,19 +723,19 @@ class SectionNode(LayoutNode):
         class_str = " ".join(classes)
 
         # Build attributes
-        attrs = [f'class="{class_str}"']
+        attrs = [f'class="{escape(class_str)}"']
 
         section_id = resolved.get("id")
         if section_id:
-            attrs.append(f'id="{section_id}"')
+            attrs.append(f'id="{escape(section_id)}"')
 
         aria_label = resolved.get("aria_label")
         if aria_label:
-            attrs.append(f'aria-label="{aria_label}"')
+            attrs.append(f'aria-label="{escape(aria_label)}"')
 
         aria_labelledby = resolved.get("aria_labelledby")
         if aria_labelledby:
-            attrs.append(f'aria-labelledby="{aria_labelledby}"')
+            attrs.append(f'aria-labelledby="{escape(aria_labelledby)}"')
 
         attrs_str = " ".join(attrs)
         return f"<section {attrs_str}>{content}</section>"
@@ -816,7 +852,7 @@ class GridNode(LayoutNode):
 
         # Optional id attribute
         element_id = resolved.get("id", "")
-        id_attr = f' id="{element_id}"' if element_id else ""
+        id_attr = f' id="{escape(element_id)}"' if element_id else ""
 
         content = self.nodelist.render(context)
 
@@ -830,10 +866,10 @@ class GridNode(LayoutNode):
             if extra_classes:
                 wrapper_classes = f"@container w-full {extra_classes}"
             if style:
-                grid_html = f'<div class="{grid_class_str}" style="{style}">{content}</div>'
+                grid_html = f'<div class="{grid_class_str}" style="{escape(style)}">{content}</div>'
             else:
                 grid_html = f'<div class="{grid_class_str}">{content}</div>'
-            return f'<div{id_attr} class="{wrapper_classes}">{grid_html}</div>'
+            return f'<div{id_attr} class="{escape(wrapper_classes)}">{grid_html}</div>'
 
         # No wrapper needed - apply extra classes directly to grid
         if extra_classes:
@@ -841,8 +877,8 @@ class GridNode(LayoutNode):
         class_str = " ".join(classes)
 
         if style:
-            return f'<div{id_attr} class="{class_str}" style="{style}">{content}</div>'
-        return f'<div{id_attr} class="{class_str}">{content}</div>'
+            return f'<div{id_attr} class="{escape(class_str)}" style="{escape(style)}">{content}</div>'
+        return f'<div{id_attr} class="{escape(class_str)}">{content}</div>'
 
 
 class SurfaceNode(LayoutNode):
@@ -915,7 +951,7 @@ class SurfaceNode(LayoutNode):
         # Validate no unknown parameters
         _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
-        href = resolved.get("href", "")
+        href = _validate_href(str(resolved.get("href") or ""), self.tag_name)
         is_link = bool(href)
 
         classes = self.build_classes(resolved, is_link=is_link)
@@ -930,18 +966,18 @@ class SurfaceNode(LayoutNode):
 
         # Build id attribute if provided
         element_id = resolved.get("id", "")
-        id_attr = f' id="{element_id}"' if element_id else ""
+        id_attr = f' id="{escape(element_id)}"' if element_id else ""
 
         if is_link:
             # Render as anchor element
             external = resolved.get("external", False)
-            attrs = f'href="{href}"{id_attr} class="{class_str}"'
+            attrs = f'href="{escape(href)}"{id_attr} class="{escape(class_str)}"'
             if external:
                 attrs += ' target="_blank" rel="noopener noreferrer"'
             return f"<a {attrs}>{content}</a>"
 
         # Render as div element
-        return f'<div{id_attr} class="{class_str}">{content}</div>'
+        return f'<div{id_attr} class="{escape(class_str)}">{content}</div>'
 
 
 class CollapsibleNode(LayoutNode):
@@ -1262,15 +1298,15 @@ class ListNode(LayoutNode):
 
         # Optional id attribute
         element_id = resolved.get("id", "")
-        id_attr = f' id="{element_id}"' if element_id else ""
+        id_attr = f' id="{escape(element_id)}"' if element_id else ""
 
         # Aria label
         aria_label = resolved.get("aria_label", "")
-        aria_attr = f' aria-label="{aria_label}"' if aria_label else ""
+        aria_attr = f' aria-label="{escape(aria_label)}"' if aria_label else ""
 
         content = self.nodelist.render(context)
 
-        return f'<{tag}{id_attr} class="{class_str}"{aria_attr}>{content}</{tag}>'
+        return f'<{tag}{id_attr} class="{escape(class_str)}"{aria_attr}>{content}</{tag}>'
 
 
 class ListItemNode(LayoutNode):
@@ -1308,9 +1344,9 @@ class ListItemNode(LayoutNode):
 
         attrs = []
         if element_id:
-            attrs.append(f'id="{element_id}"')
+            attrs.append(f'id="{escape(element_id)}"')
         if extra_classes:
-            attrs.append(f'class="{extra_classes}"')
+            attrs.append(f'class="{escape(extra_classes)}"')
 
         if attrs:
             attrs_str = " ".join(attrs)
