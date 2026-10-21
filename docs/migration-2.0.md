@@ -26,6 +26,9 @@ pattern for a host project.
 - [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
 - [ ] Expect `aria-disabled="true"` on a disabled link button, with no `href` and no `hx-*`.
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
+- [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
+- [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
+- [ ] In a right-to-left container, ArrowLeft moves to the next tab.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
@@ -235,11 +238,97 @@ report_url = "/reports/1/"
 Search: `{% surface` together with `href=`, and layout-tag attributes that are
 passed through `|escape` or `mark_safe`.
 
+[#735](https://github.com/alpininsight/insight-ui/pull/735) resolves every
+layout-tag argument when the template renders. That includes filters and
+`_()` translations. A quoted literal used to be fixed while the template was
+parsed, and a filter on that literal was dropped. The same compiled template
+can now render in the language of each request.
+
+`{% surface href %}` runs those filters first, then applies the scheme
+allowlist above. A filtered value such as `"java"|add:"script:alert(1)"`
+raises `ValueError`. [#748](https://github.com/alpininsight/insight-ui/pull/748)
+added the escaping and the allowlist. It did not resolve arguments per render.
+
+Before, this filter was dropped and the id stayed `tab-`:
+
+```text
+{% load layout_tags %}
+{% section id="tab-"|add:name %}...{% endsection %}
+```
+
+After, with `name` equal to `intro`, the id is `tab-intro`.
+
+Search: `{% section`, `{% surface`, `{% hbox`, `{% tabs` and `{% tab` with a
+`|` filter on a quoted argument, and `_("` inside those tags.
+
 `{% modal %}` accepts `config=ModalConfig(...)`. A single `id`, `title`,
 `width` or `show_close` argument overrides the config.
 `ModalConfig.id` must be non-empty ([#719](https://github.com/alpininsight/insight-ui/pull/719)).
 The modal shell adds the blocks `modal_body` and `modal_footer`. The blocks
 already on `base.html` are unchanged.
+
+## Tabs
+
+[#735](https://github.com/alpininsight/insight-ui/pull/735).
+
+`id` and `label` on `{% tabs %}` name the group. `id` is the
+`data-insight-tabs` value and the prefix of each panel id. `label` is the
+tablist `aria-label`, and the attribute is omitted when `label` is empty.
+In v1.15.1 those arguments were parsed and then ignored, so the group id
+changed on every render and the tablist label was empty.
+
+The same two arguments override a `TabsConfig`: `id` replaces `tag_id`.
+`config` has to be a `TabsConfig`. A dict raises `TypeError`. An empty
+`tabs` list raises `ValueError` (`needs at least one tab`) as soon as the
+config is built. `{% tabs config=... %}` together with `{% tab %}` blocks
+raises `ValueError`. `{% tab %}` outside `{% tabs %}` raises
+`TemplateSyntaxError`.
+
+Unknown arguments raise `ValueError` (`Unknown parameter 'colour'`).
+`{% tabs %}` accepts `id`, `label` and `config`. `{% tab %}` accepts `id`,
+`label`, `active`, `request_url` and `icon`.
+
+A `{% tab %}` may sit inside `{% if %}` or `{% for %}`, and its arguments
+may be variables. Exactly one tab is active, chosen again on every render:
+the first with `active=True`, otherwise the first tab. Further `active=True`
+flags are ignored. v1.15.1 kept every marked tab selected, and it stored
+that choice on the compiled template.
+
+Every static panel is rendered, including an empty one, with
+`aria-labelledby` set to the tab id and `tabindex="0"`. Each tab button is
+`type="button"`. `icon` is an icon name and renders an SVG. v1.15.1 printed
+the name as text inside `<span class="mr-2">`. The shipped stylesheet no
+longer contains `.mr-2`.
+
+HTMX tabs share one panel, `#<tag_id>-tab-content`, labelled by the active
+tab. That tab has `hx-trigger="load, click"`. The others have no
+`hx-trigger`, so they load on click. v1.15.1 set no `hx-trigger`, and the
+active panel stayed empty until a click. Config mode still renders no icon.
+`TabConfig` has no icon field.
+
+Inside a right-to-left container (`dir="rtl"` on the tabs element or an
+ancestor), ArrowLeft moves to the next tab and ArrowRight to the previous.
+The direction is read on each key press. Home and End stay the same. The
+icon mirror from [#736](https://github.com/alpininsight/insight-ui/pull/736)
+does not change these keys.
+
+Before, `id` and `label` were ignored, an icon name was printed as text, and
+the active HTMX tab did not load:
+
+```text
+{% load layout_tags %}
+{% tabs id="settings" label="Settings" %}
+    {% tab id="general" label="General" icon="cog-6-tooth" active=True request_url="/settings/general/" %}{% endtab %}
+    {% tab id="security" label="Security" active=True request_url="/settings/security/" %}{% endtab %}
+{% endtabs %}
+```
+
+After, the group id is `settings`, the tablist is labelled `Settings`, the
+icon is an SVG, only General is selected, and General requests its URL on
+load. A second `active=True` does not select Security.
+
+Search: `{% tabs`, `{% tab`, `TabsConfig(`, `role="tab"`, `data-insight-tabs`
+and `mr-2`.
 
 ## Template tags and configs
 
@@ -733,9 +822,6 @@ when it is set.
 
 These showed up in earlier notes. The current tree does not do them.
 
-- [#735](https://github.com/alpininsight/insight-ui/pull/735) is open. It is
-  not on `develop`. This guide does not describe its per-render layout-tag
-  arguments.
 - [#696](https://github.com/alpininsight/insight-ui/pull/696) removed `None`
   from list-argument annotations. It did not add a runtime rejection. Omit
   the argument, or pass `[]`. `ensure_list()` still turns `None` into `[]`

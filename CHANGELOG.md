@@ -13,6 +13,9 @@ See [Migrating to 2.0](docs/migration-2.0.md).
 ### Bug Fixes
 
 - **security:** Escape layout tag attributes and restrict surface href schemes (#748)
+- **layout:** Resolve layout tag arguments on each render, including filters and translations (#735)
+- **tabs:** Apply the group id and label, render tab icons as SVGs, and load the active HTMX tab (#735)
+- **a11y:** Label tab panels by their tab and swap tab arrow keys in right-to-left layouts (#735)
 - **a11y:** Make the global loading bar decorative and announce slow requests (#723)
 - **a11y:** Keep heading levels consecutive in sidebar navigation and the footer (#734)
 - **a11y:** Use phrasing content for icons, labels and buttons (#713)
@@ -40,6 +43,7 @@ See [Migrating to 2.0](docs/migration-2.0.md).
 
 ### Refactoring
 
+- **tabs:** Reject unknown tab arguments, an empty TabsConfig, a config mixed with tab blocks, and more than one active tab [**BREAKING**] (#735)
 - **css:** Rename foreground tokens to text and the old text token to on-fill [**BREAKING**] (#693)
 - **configs:** Rename alert type, infobox info_type and status screen status to severity [**BREAKING**] (#720)
 - **stepper:** Replace step booleans and the old status strings with pending, current, completed and failed [**BREAKING**] (#721)
