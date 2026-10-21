@@ -88,15 +88,18 @@ export class ThreeDCarousel {
      * @param {KeyboardEvent} e - The keyboard event
      */
     handleKeyDown(e) {
-        switch (e.key) {
-            case 'ArrowLeft':
-                e.preventDefault();
-                this.gotoPrevious();
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                this.gotoNext();
-                break;
+        // In right-to-left layouts "previous" sits on the right, so the arrow keys swap.
+        // Read on every key press: the direction can change at runtime (e.g. a language switch).
+        const rtl = this.element.closest('[dir]')?.getAttribute('dir') === 'rtl';
+        const previousKey = rtl ? 'ArrowRight' : 'ArrowLeft';
+        const nextKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+
+        if (e.key === previousKey) {
+            e.preventDefault();
+            this.gotoPrevious();
+        } else if (e.key === nextKey) {
+            e.preventDefault();
+            this.gotoNext();
         }
     }
 

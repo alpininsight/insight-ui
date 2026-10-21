@@ -413,20 +413,30 @@ def _validate_unknown_params(
     raise ValueError(msg)
 
 
-# URL schemes a layout tag may link to; anything else (javascript:, data:, vbscript: …) could run code on click.
+# Schemes a layout tag may put in href. A relative URL has no scheme.
 _ALLOWED_URL_SCHEMES = frozenset({"http", "https", "mailto"})
 
 
 def _validate_href(href: str, tag_name: str) -> str:
-    """Reject links whose scheme could run code; relative URLs and http, https and mailto pass.
+    """
+    Allow relative URLs and the http, https and mailto schemes.
 
-    Escaping keeps a value inside its attribute but does not make ``javascript:`` harmless.
+    Other schemes are rejected. Escaping an attribute does not change which
+    scheme the browser follows. ASCII whitespace and control characters are
+    ignored when reading the scheme, because browsers ignore them there too.
+
+    Args:
+        href: Candidate URL from the layout tag.
+        tag_name: Name of the template tag, used in the error message.
+
+    Returns:
+        The original URL when its scheme is allowed.
 
     Raises:
         ValueError: If the URL uses a scheme outside the allowlist.
 
     """
-    # Browsers ignore ASCII whitespace and control characters inside the scheme, e.g. "java<TAB>script:".
+    # Browsers ignore ASCII whitespace and control characters inside the scheme.
     scheme = urlsplit(re.sub(r"[\x00-\x20]", "", href)).scheme.lower()
     if scheme and scheme not in _ALLOWED_URL_SCHEMES:
         allowed = ", ".join(sorted(_ALLOWED_URL_SCHEMES))

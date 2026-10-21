@@ -13,12 +13,11 @@
       {% if static %}
         {% icon name="bars-3" size="s" %}
       {% else %}
-        <span class="ltr:inline rtl:hidden">{% icon name="chevron-right" size="s" %}</span>
-        <span class="ltr:hidden rtl:inline">{% icon name="chevron-left" size="s" %}</span>
+        {# Chevrons mirror themselves in right-to-left layouts. #}
+        {% icon name="chevron-right" size="s" %}
       {% endif %}
     {% else %}
-      <span class="ltr:inline rtl:hidden">{% icon name="chevron-left" size="s" %}</span>
-      <span class="ltr:hidden rtl:inline">{% icon name="chevron-right" size="s" %}</span>
+      {% icon name="chevron-left" size="s" %}
     {% endif %}
   </button>
 {% endif %}
