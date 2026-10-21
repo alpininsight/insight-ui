@@ -9,10 +9,11 @@
     "build:tailwind": "DJANGO_SETTINGS_MODULE=tests.tailwind_settings uv run python -m django tailwind build --force --no-minify",
     "build:static": "node scripts/build-static-assets.mjs",
     "build:static-all": "npm run build:tailwind && npm run build:static",
+    "check:generated-assets": "node scripts/check-generated-static-assets.mjs",
     "check:tailwind-sync": "node scripts/check-tailwind-theme-sync.mjs",
-    "verify:static-build": "npm run check:tailwind-sync && npm run build:static",
+    "verify:static-build": "npm run check:generated-assets && npm run check:tailwind-sync && npm run build:static",
     "check:static-build": "npm run verify:static-build",
-    "test": "vitest run",
+    "test": "vitest run && node --test tests/scripts/check-generated-static-assets.test.mjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
   },
