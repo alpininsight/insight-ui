@@ -26,6 +26,9 @@ keyword arguments or a dictionary. For example, `navbar` requires a `config`
 argument and does not use the shared Config builder. Type annotations alone do
 not validate every value; check the Config constructor and rendering tests.
 
+Public forms can opt into the [Turnstile component](turnstile.md). Its widget
+must be paired with server-side verification in the host application.
+
 ## Configs And Supported Overrides
 
 The button supports both inline arguments and Config objects:

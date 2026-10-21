@@ -105,6 +105,7 @@ from insight_ui.configs import (
     ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
+    TurnstileConfig,
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
@@ -1578,6 +1579,20 @@ def toggle_view(
 # =============================================================
 
 
+@register.inclusion_tag("insight_ui/components/turnstile.html")
+def turnstile(
+    config: TurnstileConfig | None = None,
+    *,
+    site_key: str | _Unset = UNSET,
+    theme: Literal["auto", "light", "dark"] | _Unset = UNSET,
+    size: Literal["normal", "flexible", "compact"] | _Unset = UNSET,
+    action: str | _Unset = UNSET,
+) -> dict[str, TurnstileConfig]:
+    """Render the public Turnstile widget; the host must verify its token."""
+    config = build_config(TurnstileConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"turnstile_config": config}
+
+
 # Tag and template that render each field config supported by the form component.
 _FORM_FIELD_RENDERERS: dict[type, tuple[Callable[..., dict[str, Any]], str]] = {
     InputFieldConfig: (input_field, "insight_ui/components/input.html"),
@@ -1630,6 +1645,7 @@ def form(
     request_url: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
+    turnstile: TurnstileConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
