@@ -9,7 +9,7 @@ from email.message import EmailMessage
 from pathlib import Path
 
 import pytest
-from scripts.check_distribution import REQUIRED, SOURCE_ONLY, check_archive, check_metadata
+from scripts.check_distribution import REQUIRED, SOURCE_ONLY, WHEEL_ONLY, check_archive, check_metadata
 
 
 @pytest.mark.parametrize(
@@ -26,7 +26,7 @@ def test_archive_check_rejects_non_package_payload(tmp_path: Path, path: str) ->
     """A valid-looking wheel must fail when docs or Enterprise code is added."""
     wheel = tmp_path / "example.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
-        for name in [*REQUIRED, path]:
+        for name in [*REQUIRED, *WHEEL_ONLY, path]:
             archive.writestr(name, "fixture")
     with pytest.raises(SystemExit, match="unexpected="):
         check_archive(wheel)
@@ -40,7 +40,7 @@ def test_archive_check_accepts_public_package_payload(
     if kind == "wheel":
         path = tmp_path / "example.whl"
         with zipfile.ZipFile(path, "w") as archive:
-            for name in REQUIRED:
+            for name in REQUIRED | WHEEL_ONLY:
                 archive.writestr(name, "fixture")
             archive.writestr("insight_ui-1.0.0.dist-info/METADATA", distribution_metadata.as_bytes())
     else:
@@ -92,11 +92,24 @@ def test_sdist_requires_reproducible_javascript_dependencies(
     assert missing in str(error.value)
 
 
+@pytest.mark.parametrize("missing", sorted(WHEEL_ONLY))
+def test_wheel_requires_compiled_catalogs(tmp_path: Path, missing: str, distribution_metadata: EmailMessage) -> None:
+    """Django ignores .po files, so a wheel without compiled catalogs must fail."""
+    path = tmp_path / "example.whl"
+    with zipfile.ZipFile(path, "w") as archive:
+        for name in (REQUIRED | WHEEL_ONLY) - {missing}:
+            archive.writestr(name, "fixture")
+        archive.writestr("insight_ui-1.0.0.dist-info/METADATA", distribution_metadata.as_bytes())
+    with pytest.raises(SystemExit, match="missing=") as error:
+        check_archive(path)
+    assert missing in str(error.value)
+
+
 def test_distribution_requires_metadata(tmp_path: Path) -> None:
     """A payload-only archive cannot pass without its public metadata."""
     path = tmp_path / "example.whl"
     with zipfile.ZipFile(path, "w") as archive:
-        for name in REQUIRED:
+        for name in REQUIRED | WHEEL_ONLY:
             archive.writestr(name, "fixture")
     with pytest.raises(SystemExit, match="exactly one distribution metadata"):
         check_archive(path)
@@ -106,7 +119,7 @@ def test_duplicate_metadata_is_rejected(tmp_path: Path, distribution_metadata: E
     """A ZIP duplicate must not disappear when archive paths are deduplicated."""
     path = tmp_path / "example.whl"
     with zipfile.ZipFile(path, "w") as archive:
-        for name in REQUIRED:
+        for name in REQUIRED | WHEEL_ONLY:
             archive.writestr(name, "fixture")
         name = "insight_ui-1.0.0.dist-info/METADATA"
         archive.writestr(name, distribution_metadata.as_bytes())

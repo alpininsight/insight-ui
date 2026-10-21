@@ -23,16 +23,22 @@ FORBIDDEN = {
 }
 DOC_ASSETS = {"insight-ui-demo-container", "insight-ui-demo-sandbox", "insight-ui-mockup-toc"}
 METADATA_PATH_DEPTH = 2
-REQUIRED = {
+CATALOGS = {
+    f"insight_ui/locale/{locale}/LC_MESSAGES/{domain}" for locale in ("en", "de") for domain in ("django", "djangojs")
+}
+REQUIRED = {f"{catalog}.po" for catalog in CATALOGS} | {
     "insight_ui/__init__.py",
     "insight_ui/templates/insight_ui/base.html",
     "insight_ui/utils/input.css",
     "insight_ui/static/insight_ui/css/tailwind.css",
     "insight_ui/static/insight_ui/js/insight-ui-init.js",
 }
+# Django loads only compiled catalogs; hatch_build.py adds them to wheels.
+WHEEL_ONLY = {f"{catalog}.mo" for catalog in CATALOGS}
 SOURCE_ONLY = {
     "package.json",
     "package-lock.json",
+    "hatch_build.py",
     "tests/__init__.py",
     "tests/settings.py",
 }
@@ -93,7 +99,7 @@ def check_archive(archive: Path) -> None:
         for name in names
         if FORBIDDEN.intersection(name.parts) or any(name.name.startswith(asset) for asset in DOC_ASSETS)
     )
-    required = REQUIRED if is_wheel else REQUIRED | SOURCE_ONLY
+    required = REQUIRED | (WHEEL_ONLY if is_wheel else SOURCE_ONLY)
     missing = sorted(required - {str(name) for name in names})
     if leaked or missing:
         message = f"{archive.name}: unexpected={leaked}; missing={missing}"
