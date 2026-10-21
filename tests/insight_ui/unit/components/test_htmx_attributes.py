@@ -125,10 +125,10 @@ def test_values_are_escaped() -> None:
     assert not element.has_attr("onclick")
 
 
-def test_templates_render_htmx_configs_only_through_the_renderer() -> None:
+def test_templates_render_htmxs_only_through_the_renderer() -> None:
     """Hand-written attributes drifted apart before (e.g. reading a non-existent htmx.swap), so none are left."""
     field_access = re.compile(
-        r"\b(?:htmx_config|htmx)\.(?:request_url|method|target|swap\w*|push_url|loading_indicator_id|indicator|"
+        r"\bhtmx\.(?:request_url|method|target|swap\w*|push_url|loading_indicator_id|indicator|"
         r"confirm|vals|trigger|show_global_loading_indicator)\b"
     )
     offenders = [
@@ -152,14 +152,14 @@ def find_requesting_element(soup: BeautifulSoup) -> Tag:
 @pytest.mark.parametrize(
     ("template", "context"),
     [
-        pytest.param("{% button config=c %}", {"c": ButtonConfig(label="Save", htmx_config=FULL_CONFIG)}, id="button"),
+        pytest.param("{% button config=c %}", {"c": ButtonConfig(label="Save", htmx=FULL_CONFIG)}, id="button"),
         pytest.param(
             "{% button config=c %}",
-            {"c": ButtonConfig(label="Save", request_url="/save/", htmx_config=replace(FULL_CONFIG, request_url=""))},
+            {"c": ButtonConfig(label="Save", request_url="/save/", htmx=replace(FULL_CONFIG, request_url=""))},
             id="link-button",
         ),
-        pytest.param("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx_config=FULL_CONFIG)}, id="form"),
-        pytest.param("{% search_bar config=c %}", {"c": SearchBarConfig(htmx_config=FULL_CONFIG)}, id="search-bar"),
+        pytest.param("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx=FULL_CONFIG)}, id="form"),
+        pytest.param("{% search_bar config=c %}", {"c": SearchBarConfig(htmx=FULL_CONFIG)}, id="search-bar"),
         pytest.param(
             "{% dropdown c %}",
             {
@@ -182,7 +182,7 @@ def test_components_render_the_shared_request_options(template: str, context: di
 
 def test_link_button_requests_its_href() -> None:
     """A link button without its own HTMX URL requests the URL of the link, like the navigation links."""
-    config = ButtonConfig(label="Docs", request_url="/docs/", htmx_config=HtmxConfig(target="#main"))
+    config = ButtonConfig(label="Docs", request_url="/docs/", htmx=HtmxConfig(target="#main"))
     link = render("{% button config=c %}", {"c": config}).a
 
     assert link["href"] == "/docs/"
@@ -191,14 +191,14 @@ def test_link_button_requests_its_href() -> None:
 
 def test_button_without_trigger_uses_the_click_default() -> None:
     """Buttons no longer get trigger="submit" from the config, which never fired on a button."""
-    button = render("{% button config=c %}", {"c": ButtonConfig(label="Load", htmx_config=HtmxConfig("/items/"))})
+    button = render("{% button config=c %}", {"c": ButtonConfig(label="Load", htmx=HtmxConfig("/items/"))})
 
     assert not button.find("button").has_attr("hx-trigger")
 
 
 def test_form_fixes_its_trigger_and_indicator() -> None:
     """The form always submits on submit and shows only its own indicator."""
-    form = render("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx_config=HtmxConfig("/save/"))}).form
+    form = render("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx=HtmxConfig("/save/"))}).form
 
     assert form["hx-trigger"] == "submit"
     assert form["hx-indicator"] == "find .htmx-indicator"
@@ -207,7 +207,7 @@ def test_form_fixes_its_trigger_and_indicator() -> None:
 def test_search_bar_sends_on_submit_only() -> None:
     """The search runs on the search button and Return, the default trigger of its form."""
     element = find_requesting_element(
-        render("{% search_bar config=c %}", {"c": SearchBarConfig(htmx_config=HtmxConfig("/search/"))})
+        render("{% search_bar config=c %}", {"c": SearchBarConfig(htmx=HtmxConfig("/search/"))})
     )
 
     assert element.name == "form"
@@ -228,7 +228,7 @@ def test_breadcrumbs_request_their_own_item_urls() -> None:
 
 def test_generic_filter_keeps_its_fixed_trigger_and_history_entry() -> None:
     """Filters send on submit and change and always update the browser URL."""
-    config = GenericFilterConfig(request_url="/orders/", htmx_config=HtmxConfig(target="#results"))
+    config = GenericFilterConfig(request_url="/orders/", htmx=HtmxConfig(target="#results"))
     element = find_requesting_element(render("{% generic_filter config=c %}", {"c": config}))
 
     assert element["hx-get"] == "/orders/"

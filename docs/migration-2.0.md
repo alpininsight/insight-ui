@@ -39,6 +39,7 @@ pattern for a host project.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
+- [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
@@ -978,6 +979,36 @@ HtmxConfig(request_url="/search/", target="#results")
 ```
 
 Search: `HtmxConfig(` and `trigger=`.
+
+### `htmx_config` is now `htmx`
+
+`ButtonConfig`, `FormConfig`, `SearchBarConfig` and `GenericFilterConfig`
+named their `HtmxConfig` field `htmx_config`. Every other component calls it
+`htmx`, so these four follow. The tag arguments of `button`, `form`,
+`search_bar` and `generic_filter` change the same way. The old name raises
+`TypeError`.
+
+Before:
+
+```python
+ButtonConfig(label="Delete", htmx_config=HtmxConfig("/items/7/delete/", method="post"))
+```
+
+```text
+{% button label="Load" htmx_config=htmx %}
+```
+
+After:
+
+```python
+ButtonConfig(label="Delete", htmx=HtmxConfig("/items/7/delete/", method="post"))
+```
+
+```text
+{% button label="Load" htmx=htmx %}
+```
+
+Search: `htmx_config`.
 
 ### `swap_method` is applied
 

@@ -649,7 +649,7 @@ def button(
     size: Size | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
@@ -734,7 +734,7 @@ def button(
         size=size,
         round=round,
         tooltip=tooltip,
-        htmx_config=htmx_config,
+        htmx=htmx,
         hidden=hidden,
         disabled=disabled,
         disabled_reason=disabled_reason,
@@ -1385,7 +1385,7 @@ def badge(
             round=True,
             size="xs",
             button_type="button",
-            htmx_config=config.remove_htmx,
+            htmx=config.remove_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-remove")],
             # Compensate the button padding and border, so the badge keeps its height.
             extra_classes="-my-1.5 -me-2",
@@ -1413,7 +1413,7 @@ def badge_list(
             variant="subtle",
             size="s",
             button_type="button",
-            htmx_config=config.clear_all_htmx,
+            htmx=config.clear_all_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
         )
     return {"badge_list_config": config, "clear_all_button": clear_all_button}
@@ -1543,7 +1543,7 @@ def search_bar(
     request_url: str | _Unset = UNSET,
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
     search_index_url: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -1559,7 +1559,7 @@ def generic_filter(
     filters: list[FilterConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     vertical: bool | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
     config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1762,7 +1762,7 @@ def form(
     reset_label: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""

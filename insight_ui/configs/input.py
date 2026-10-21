@@ -31,7 +31,7 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    Renders a <button>, or an <a> if request_url is set. An htmx without its own request_url
     requests the link URL, so the link also works without JavaScript.
 
     Attributes:
@@ -48,7 +48,7 @@ class ButtonConfig:
         size: Defines the size of the button.
         round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
-        htmx_config: Configuration for asynchronous requests.
+        htmx: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
         disabled: **True** to disable the button.
         disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
@@ -74,7 +74,7 @@ class ButtonConfig:
             size="xl",
             round=False,
             tooltip="Click to calculate something",
-            htmx_config=HtmxConfig(...),
+            htmx=HtmxConfig(...),
             hidden=False,
             button_type="submit",
             extra_classes="w-full",
@@ -107,7 +107,7 @@ class ButtonConfig:
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
