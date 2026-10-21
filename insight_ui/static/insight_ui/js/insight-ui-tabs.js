@@ -90,20 +90,20 @@ export class Tabs {
     handleKeyDown(e, index) {
         let newIndex = null;
         const length = this.tabs.length;
+        // In right-to-left layouts the next tab sits on the left, so the arrow keys swap.
+        // Read on every key press: the direction can change at runtime (e.g. a language switch).
+        const rtl = this.element.closest('[dir]')?.getAttribute('dir') === 'rtl';
+        const nextKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+        const previousKey = rtl ? 'ArrowRight' : 'ArrowLeft';
 
-        switch (e.key) {
-            case 'ArrowRight':
-                newIndex = (index + 1) % length;
-                break;
-            case 'ArrowLeft':
-                newIndex = (index - 1 + length) % length;
-                break;
-            case 'Home':
-                newIndex = 0;
-                break;
-            case 'End':
-                newIndex = length - 1;
-                break;
+        if (e.key === nextKey) {
+            newIndex = (index + 1) % length;
+        } else if (e.key === previousKey) {
+            newIndex = (index - 1 + length) % length;
+        } else if (e.key === 'Home') {
+            newIndex = 0;
+        } else if (e.key === 'End') {
+            newIndex = length - 1;
         }
 
         if (newIndex !== null) {
@@ -149,9 +149,9 @@ export class Tabs {
             }
         });
 
-        // HTMX mode: update panel aria-label
+        // HTMX mode: the shared panel is labelled by the selected tab
         if (!this.isStatic && this.panelContainer) {
-            this.panelContainer.setAttribute('aria-label', selectedTab.id);
+            this.panelContainer.setAttribute('aria-labelledby', selectedTab.id);
         }
     }
 

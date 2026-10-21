@@ -136,6 +136,31 @@ describe('ThreeDCarousel Component', () => {
       expect(instance.currentIndex).toBe(-1);
     });
 
+    it('should go to the previous item with ArrowLeft and the next with ArrowRight', () => {
+      const container = TestUtils.create3DCarousel('carousel-keys-ltr');
+      const element = container.querySelector('[data-insight-3D-carousel]');
+      const instance = new InsightUI.ThreeDCarousel(element);
+
+      TestUtils.keydown(element, 'ArrowLeft');
+      expect(instance.currentIndex).toBe(1);
+
+      TestUtils.keydown(element, 'ArrowRight');
+      expect(instance.currentIndex).toBe(0);
+    });
+
+    it('should swap the arrow keys in right-to-left layouts', () => {
+      const container = TestUtils.create3DCarousel('carousel-keys-rtl');
+      container.setAttribute('dir', 'rtl');
+      const element = container.querySelector('[data-insight-3D-carousel]');
+      const instance = new InsightUI.ThreeDCarousel(element);
+
+      TestUtils.keydown(element, 'ArrowRight');
+      expect(instance.currentIndex).toBe(1);
+
+      TestUtils.keydown(element, 'ArrowLeft');
+      expect(instance.currentIndex).toBe(0);
+    });
+
     it('should call animate on carousel when navigating', () => {
       const container = TestUtils.create3DCarousel('carousel-animate');
       const element = container.querySelector('[data-insight-3D-carousel]');
