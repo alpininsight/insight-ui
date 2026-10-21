@@ -41,6 +41,7 @@ pattern for a host project.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
@@ -1035,6 +1036,54 @@ A link button whose `HtmxConfig` has no `request_url` now requests the link
 `href`. Setting both `ButtonConfig.request_url` and
 `HtmxConfig.request_url` no longer warns. The HTMX URL is the config URL
 when it is set.
+
+### Live content, chat and tabs take an `HtmxConfig`
+
+`live_content`, `chat` and `{% tabs %}` now render their requests through
+`htmx_attributes` and accept an optional `htmx` for the shared options
+(`vals`, `loading_indicator_id`, `swap_settle`, `confirm`,
+`show_global_loading_indicator`, and where it fits `target`, `swap_method` and
+`push_url`). What the mechanism needs stays fixed by the component:
+
+| Component | Fixed by the component |
+| --- | --- |
+| `live_content` | URL, trigger `load, every <interval>s`, its own indicator |
+| `chat` | URL, `hx-post`, target `#<tag_id>-response`, swap `beforeend` |
+| `{% tabs %}` | tab URL, target `#<id>-tab-content`, swap `innerHTML`, trigger |
+
+`LiveContentConfig.show_global_loading_indicator` is gone. Polling still stays
+out of the global loading bar by default.
+
+Before:
+
+```text
+{% live_content request_url="/stats/" show_global_loading_indicator=True %}
+```
+
+After:
+
+```python
+HtmxConfig(show_global_loading_indicator=True)
+```
+
+```text
+{% live_content request_url="/stats/" htmx=htmx %}
+```
+
+`HtmxConfig.show_global_loading_indicator` now defaults to `None`, which keeps
+the default of the component: shown for user actions, hidden for
+`live_content`. `True` and `False` behave as before.
+
+`chat` used the fixed IDs `response` and `msg`. They are now
+`<tag_id>-response` and `<tag_id>-message`, with `tag_id` defaulting to
+`chat`. The input name stays `msg`. Two chats on one page need different
+`tag_id` values.
+
+Tabs with `push_url=True` push the URL of a clicked tab. The active tab loads
+on page view without pushing its fragment URL.
+
+Search: `show_global_loading_indicator=` on `live_content`, `#response` and
+`#msg` in host CSS, JavaScript or tests.
 
 ## Pagination
 

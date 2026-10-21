@@ -173,7 +173,7 @@ class HtmxConfig:
         push_url: Whether to push URL to browser history (hx-push-url).
         confirm: Confirmation message before request (hx-confirm).
         vals: Additional JSON values to include in the request (hx-vals).
-        show_global_loading_indicator: Whether the request shows the global loading bar.
+        show_global_loading_indicator: Whether the request shows the global loading bar; None keeps the component default.
 
     """
 
@@ -203,8 +203,9 @@ class HtmxConfig:
     vals: dict[str, Any] = field(
         default_factory=dict, metadata={"doc": _("Additional JSON values to include in the request (hx-vals).")}
     )
-    show_global_loading_indicator: bool = field(
-        default=True, metadata={"doc": _("Whether the request shows the global loading bar.")}
+    show_global_loading_indicator: bool | None = field(
+        default=None,
+        metadata={"doc": _("Whether the request shows the global loading bar; None keeps the component default.")},
     )
 
     def __post_init__(self) -> None:

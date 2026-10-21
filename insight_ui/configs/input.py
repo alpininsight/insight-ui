@@ -935,8 +935,12 @@ class ChatConfig:
 
     Renders a chat interface with an input line and a response container.
 
+    The message is posted as ``msg``; the response is appended to the response container.
+
     Attributes:
         request_url: URL for sending chat messages via HTMX POST.
+        tag_id: Prefix of the element IDs, unique on the page.
+        htmx: Shared request options such as vals or a loading indicator.
 
     """
 
@@ -945,7 +949,11 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+    tag_id: str = field(default="chat", metadata={"doc": _("Prefix of the element IDs, unique on the page.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as vals or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "request_url")
+        validate_not_empty(self, "request_url", "tag_id")

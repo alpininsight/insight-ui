@@ -81,15 +81,38 @@ def test_no_config_renders_nothing() -> None:
 def test_component_values_take_precedence() -> None:
     """Values the component fixes or derives win over the config."""
     rendered = attributes(
-        'request_url="/item/7/" trigger="submit" indicator="find .htmx-indicator" push_url=False '
-        'swap_modifiers="show:window:top"'
+        'request_url="/item/7/" method="get" target="#own" swap="beforeend" trigger="submit" '
+        'indicator="find .htmx-indicator" push_url=False swap_modifiers="show:window:top" global_indicator=True'
     )
 
-    assert rendered["hx-post"] == "/item/7/"
+    assert rendered["hx-get"] == "/item/7/"
+    assert "hx-post" not in rendered
+    assert rendered["hx-target"] == "#own"
     assert rendered["hx-trigger"] == "submit"
     assert rendered["hx-indicator"] == "find .htmx-indicator"
     assert "hx-push-url" not in rendered
-    assert rendered["hx-swap"] == "outerHTML settle:300ms show:window:top"
+    assert rendered["hx-swap"] == "beforeend settle:300ms show:window:top"
+    # An explicit config value wins over the component default.
+    assert rendered["data-insight-global-indicator"] == "false"
+
+
+@pytest.mark.parametrize(
+    ("config_value", "component_default", "shown"),
+    [
+        pytest.param(None, True, True, id="default-shown"),
+        pytest.param(None, False, False, id="background-request-hidden"),
+        pytest.param(True, False, True, id="config-opts-in"),
+        pytest.param(False, True, False, id="config-opts-out"),
+    ],
+)
+def test_global_loading_bar_falls_back_to_the_component_default(
+    config_value: bool | None, component_default: bool, shown: bool
+) -> None:
+    """Without a value in the config, the component decides whether the global bar shows."""
+    htmx = HtmxConfig(request_url="/items/", show_global_loading_indicator=config_value)
+    rendered = attributes(f"global_indicator={component_default}", htmx=htmx)
+
+    assert ("data-insight-global-indicator" not in rendered) is shown
 
 
 def test_values_are_escaped() -> None:
