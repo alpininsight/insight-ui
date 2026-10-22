@@ -244,7 +244,8 @@ VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "
 VALID_SURFACE_VARIANT: frozenset[str] = frozenset({"surface", "raised", "outline"})
 VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
 VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
-VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
+VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide", "fit"})
+VALID_WIDTH_LIMIT: frozenset[str] = frozenset({"narrow", "normal", "wide"})
 VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
 VALID_WEIGHT: frozenset[str] = frozenset({"thin", "medium", "thick"})
 VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
@@ -345,7 +346,11 @@ SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
     "narrow": "w-56",  # 14rem (224px)
     "normal": "w-72",  # 18rem (288px) - default
     "wide": "w-96",  # 24rem (384px)
+    "fit": "w-fit",  # content width, limited by min_width and max_width
 }
+SIDEBAR_WIDTH_ORDER: tuple[str, ...] = ("narrow", "normal", "wide")
+SIDEBAR_MIN_WIDTH_CLASSES: dict[str, str] = {"narrow": "min-w-56", "normal": "min-w-72", "wide": "min-w-96"}
+SIDEBAR_MAX_WIDTH_CLASSES: dict[str, str] = {"narrow": "max-w-56", "normal": "max-w-72", "wide": "max-w-96"}
 
 
 # =============================================================================
@@ -1026,7 +1031,9 @@ class SidebarNode(LayoutNode):
             when used inside ``{% block sidebar_left %}`` or ``{% block sidebar_right %}``.
             Falls back to "right" if not specified and not in a sidebar block.
         static: If True, sidebar is sticky; if False, it's a drawer. Default: True
-        width: Sidebar width ("narrow", "normal", "wide"). Default: "normal"
+        width: Sidebar width ("narrow", "normal", "wide", "fit"). "fit" follows the content. Default: "normal"
+        min_width: Lower limit for width="fit" ("narrow", "normal", "wide"). Default: none
+        max_width: Upper limit for width="fit" ("narrow", "normal", "wide"). Default: "wide"
         mobile_behavior: How to behave on mobile ("hidden", "drawer"). Default: "hidden"
         class: Additional CSS classes to append.
 
@@ -1045,6 +1052,11 @@ class SidebarNode(LayoutNode):
             {% endsidebar %}
         {% endblock %}
 
+        {# Content width between narrow and wide #}
+        {% sidebar width="fit" min_width="narrow" %}
+            <nav>...</nav>
+        {% endsidebar %}
+
         {# Outside blocks, specify side explicitly #}
         {% sidebar width="wide" %}
             <h2>Custom Title</h2>
@@ -1053,10 +1065,17 @@ class SidebarNode(LayoutNode):
 
     """
 
-    valid_params: frozenset[str] = frozenset({"side", "static", "width", "mobile_behavior", "class"})
+    valid_params: frozenset[str] = frozenset(
+        {"side", "static", "width", "min_width", "max_width", "mobile_behavior", "class"}
+    )
 
     def render(self, context: Context) -> str:
-        """Render the sidebar container."""
+        """Render the sidebar container.
+
+        Raises:
+            ValueError: If min_width or max_width is set without width="fit", or min_width exceeds max_width.
+
+        """
         resolved = self.resolve_kwargs(context)
 
         # Validate no unknown parameters
@@ -1074,6 +1093,21 @@ class SidebarNode(LayoutNode):
 
         width = str(resolved.get("width", "normal"))
         _validate(width, VALID_WIDTH, "width", self.tag_name)
+        width_class = SIDEBAR_WIDTH_CLASSES[width]
+        if width == "fit":
+            min_width = str(resolved.get("min_width") or "")
+            max_width = str(resolved.get("max_width") or "wide")
+            _validate(max_width, VALID_WIDTH_LIMIT, "max_width", self.tag_name)
+            if min_width:
+                _validate(min_width, VALID_WIDTH_LIMIT, "min_width", self.tag_name)
+                if SIDEBAR_WIDTH_ORDER.index(min_width) > SIDEBAR_WIDTH_ORDER.index(max_width):
+                    msg = f"min_width '{min_width}' is wider than max_width '{max_width}' in {{% {self.tag_name} %}}"
+                    raise ValueError(msg)
+                width_class += f" {SIDEBAR_MIN_WIDTH_CLASSES[min_width]}"
+            width_class += f" {SIDEBAR_MAX_WIDTH_CLASSES[max_width]}"
+        elif "min_width" in resolved or "max_width" in resolved:
+            msg = f'min_width and max_width only apply to width="fit" in {{% {self.tag_name} %}}'
+            raise ValueError(msg)
 
         mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
         _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
@@ -1087,7 +1121,7 @@ class SidebarNode(LayoutNode):
             "side": side,
             "static": static,
             "width": width,
-            "width_class": SIDEBAR_WIDTH_CLASSES[width],
+            "width_class": width_class,
             "mobile_behavior": mobile_behavior,
             "navbar_fixed": navbar_fixed,
             "wrapper_class": str(resolved.get("class", "")),
