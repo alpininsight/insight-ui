@@ -40,7 +40,7 @@ pattern for a host project.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
-- [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view) and `usermenu=` (navbar).
+- [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view), `usermenu=` (navbar) and `empty_msg=` (table).
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
@@ -457,6 +457,9 @@ not follow this:
 | `ToggleViewConfig` | `view_radio_config` | `view_switch` |
 | `NavbarConfig` | `usermenu` | `user_menu` |
 
+`TableConfig.empty_msg` is now `empty_text`, like the other `*_text`
+fields.
+
 The `hero` and `toggle_view` tag arguments change the same way. The old names
 raise `TypeError`.
 
@@ -472,7 +475,7 @@ After:
 NavbarConfig(user_menu=UserMenuConfig(links=links))
 ```
 
-Search: `badge_config=`, `table_config=`, `view_radio_config=` and `usermenu=`.
+Search: `badge_config=`, `table_config=`, `view_radio_config=`, `usermenu=` and `empty_msg`.
 
 ### Severity
 
