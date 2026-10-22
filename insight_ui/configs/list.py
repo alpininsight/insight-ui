@@ -106,7 +106,7 @@ class TableConfig:
         headers: List of column header texts.
         rows: List of row data (each row is a list of cell values).
         caption: Optional table caption.
-        empty_msg: Message shown when no data available.
+        empty_text: Message shown when no data available.
 
     """
 
@@ -118,7 +118,7 @@ class TableConfig:
                 ["John Doe", "john@example.com", "Active"],
                 ["Jane Smith", "jane@example.com", "Inactive"],
             ],
-            empty_msg="No users found.",
+            empty_text="No users found.",
         )
         """
 
@@ -127,7 +127,7 @@ class TableConfig:
         default_factory=list, metadata={"doc": _("List of row data (each row is a list of cell values).")}
     )
     caption: str = field(default="", metadata={"doc": _("Optional table caption.")})
-    empty_msg: str = field(
+    empty_text: str = field(
         default=_("No data available."), metadata={"doc": _("Message shown when no data available.")}
     )
 

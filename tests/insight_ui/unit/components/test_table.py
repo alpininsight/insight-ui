@@ -42,3 +42,12 @@ class TestTable(TemplateTagsTestCase):
 
         first_row = [td.get_text(strip=True) for td in rows[0].find_all("td")]
         assert first_row == ["Max Mustermann", "max@example.com", "Active", "Edit"]
+
+    def test_empty_text_is_shown_without_rows(self) -> None:
+        """A table without rows shows empty_text in the body."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% table config=c %}",
+            {"c": TableConfig(["Name"], [], empty_text="No users found.")},
+        )
+
+        assert BeautifulSoup(rendered, "html.parser").find("tbody").get_text(strip=True) == "No users found."
