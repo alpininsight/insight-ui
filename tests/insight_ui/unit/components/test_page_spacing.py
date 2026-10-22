@@ -141,3 +141,28 @@ def test_page_header_content_sits_in_the_content_box() -> None:
     soup = render('{% page_header title="Title" %}')
 
     assert soup.select_one(".insight-content-box h1") is not None
+
+
+# --- Sticky navbar -------------------------------------------------------------------
+
+
+def test_fixed_navbar_is_a_sticky_header_in_the_flow() -> None:
+    """navbar_fixed makes the header sticky; the main area no longer reserves the navbar's height."""
+    with override_settings(INSIGHT_UI={**settings.INSIGHT_UI, "navbar_fixed": True}):
+        soup = render_base()
+
+    assert {"sticky", "top-0"} <= classes(soup.find(id="header"))
+    assert "pt-16" not in classes(soup.find(id="main"))
+
+
+def test_header_is_not_sticky_by_default() -> None:
+    """Without navbar_fixed the header scrolls away with the page."""
+    assert "sticky" not in classes(render_base().find(id="header"))
+
+
+def test_static_sidebar_sticks_below_a_fixed_navbar() -> None:
+    """The sidebar starts below the navbar and is exactly as tall as the rest of the window."""
+    with override_settings(INSIGHT_UI={**settings.INSIGHT_UI, "navbar_fixed": True}):
+        aside = render('{% sidebar side="left" %}x{% endsidebar %}', {"INSIGHT_UI": get_config()["INSIGHT_UI"]}).aside
+
+    assert {"top-(--insight-navbar-height)", "h-[calc(100dvh-var(--insight-navbar-height))]"} <= classes(aside)

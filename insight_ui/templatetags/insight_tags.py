@@ -514,7 +514,6 @@ def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs
     return {
         "user": context.get("user"),
         "navbar_config": config,
-        "fixed": get_config("navbar_fixed"),
         "align_to_content": get_config("align_navbar_footer_to_content"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),

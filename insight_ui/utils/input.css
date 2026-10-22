@@ -437,10 +437,13 @@
     *   window from 1rem (phones) to 2rem (from about 64rem); override it with one value.
     * --insight-content-max-width: width of the content box; base.html overrides it from
     *   INSIGHT_UI["content_max_width"] or the content_max_width template variable.
+    * --insight-navbar-height: height of the navbar. Sticky sidebars, the drawer button and the scroll
+    *   padding for anchor targets start below it; change it here, not per element.
     */
     :root {
         --insight-gutter: clamp(var(--spacing-insight-m), 4vw - 0.5rem, var(--spacing-insight-l));
         --insight-content-max-width: 80rem;
+        --insight-navbar-height: 4rem;
     }
 
     /*

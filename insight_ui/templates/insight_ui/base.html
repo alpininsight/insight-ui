@@ -4,7 +4,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-[calc(var(--insight-navbar-height)+2rem)]" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,12 +80,13 @@
             {% endblock background_image %}
         </div>
 
-        <header id="header">
+        {# A sticky header stays in the flow, so nothing has to reserve its height. #}
+        <header id="header"{% if INSIGHT_UI.navbar_fixed %} class="sticky top-0 z-50"{% endif %}>
             {% block navbar %}
             {% endblock navbar %}
         </header>
 
-        <main id="main" class="flex grow {% if INSIGHT_UI.navbar_fixed %}pt-16{% endif %}">
+        <main id="main" class="flex grow">
             <div id="left-aside" class="flex">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>
