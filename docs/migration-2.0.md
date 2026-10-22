@@ -971,8 +971,10 @@ These showed up in earlier notes. The current tree does not do them.
 
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
-`required` on checkbox and toggle, removable badges, and
-`LegalNoticeConfig.holder_url` / `holder_logo`.
+`required` on checkbox and toggle, removable badges,
+`LegalNoticeConfig.holder_url` / `holder_logo`, and the `method`, `target`,
+`swap` and `global_indicator` overrides of `{% htmx_attributes %}` for host
+markup that fixes those values itself.
 
 ## Pending before 2.0.0
 
