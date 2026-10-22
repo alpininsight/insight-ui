@@ -515,6 +515,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs
         "user": context.get("user"),
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
+        "align_to_content": get_config("align_navbar_footer_to_content"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),
         "redirect_to": context.get("redirect_to", ""),
@@ -536,7 +537,7 @@ def theme_toggle() -> dict[str, Any]:
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a legal notice line."""
     config = build_config(FooterConfig, config)
-    return {"footer_config": config}
+    return {"footer_config": config, "align_to_content": get_config("align_navbar_footer_to_content")}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")

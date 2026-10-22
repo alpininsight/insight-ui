@@ -1567,6 +1567,9 @@
   .px-8 {
     padding-inline: calc(var(--spacing) * 8);
   }
+  .py-0 {
+    padding-block: 0px;
+  }
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
   }
@@ -1588,20 +1591,26 @@
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
   }
+  .py-insight-l {
+    padding-block: var(--spacing-insight-l);
+  }
+  .py-insight-m {
+    padding-block: var(--spacing-insight-m);
+  }
+  .py-insight-s {
+    padding-block: var(--spacing-insight-s);
+  }
+  .py-insight-xs {
+    padding-block: var(--spacing-insight-xs);
+  }
   .ps-3 {
     padding-inline-start: calc(var(--spacing) * 3);
-  }
-  .ps-4 {
-    padding-inline-start: calc(var(--spacing) * 4);
   }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
   .pe-2 {
     padding-inline-end: calc(var(--spacing) * 2);
-  }
-  .pe-4 {
-    padding-inline-end: calc(var(--spacing) * 4);
   }
   .pe-6 {
     padding-inline-end: calc(var(--spacing) * 6);
@@ -2177,23 +2186,17 @@
     .md\:p-insight-xl {
       padding: var(--spacing-insight-xl);
     }
-    .md\:px-6 {
-      padding-inline: calc(var(--spacing) * 6);
-    }
     .md\:px-12 {
       padding-inline: calc(var(--spacing) * 12);
-    }
-    .md\:px-16 {
-      padding-inline: calc(var(--spacing) * 16);
     }
     .md\:py-12 {
       padding-block: calc(var(--spacing) * 12);
     }
-    .md\:ps-6 {
-      padding-inline-start: calc(var(--spacing) * 6);
+    .md\:py-insight-l {
+      padding-block: var(--spacing-insight-l);
     }
-    .md\:pe-6 {
-      padding-inline-end: calc(var(--spacing) * 6);
+    .md\:py-insight-xl {
+      padding-block: var(--spacing-insight-xl);
     }
     .md\:text-2xl {
       font-size: var(--text-2xl);
@@ -2573,6 +2576,8 @@
 @layer base {
   :root {
     color-scheme: light;
+    --insight-gutter: clamp(var(--spacing-insight-m), 4vw - 0.5rem, var(--spacing-insight-l));
+    --insight-content-max-width: 80rem;
   }
   [data-theme="dark"] {
     color-scheme: dark;
@@ -2786,6 +2791,30 @@
     border: 1px solid var(--color-insight-border-overlay);
     box-shadow: var(--shadow-insight-overlay);
     border-radius: var(--radius-insight-overlay);
+  }
+  .insight-gutter {
+    padding-inline: var(--insight-gutter);
+  }
+  .insight-content-box {
+    width: 100%;
+    max-width: calc(var(--insight-content-max-width) + 2 * var(--insight-gutter));
+    margin-inline: auto;
+    padding-inline: var(--insight-gutter);
+  }
+  .insight-content-grid {
+    display: grid;
+    grid-template-columns: [full-start] minmax(var(--insight-gutter), 1fr) [content-start] minmax(0, var(--insight-content-max-width)) [content-end] minmax(var(--insight-gutter), 1fr) [full-end];
+    align-content: start;
+  }
+  .insight-content-grid > * {
+    grid-column: content;
+  }
+  .insight-content-grid > .insight-full-bleed {
+    grid-column: full;
+  }
+  .insight-content-box .insight-content-box, .insight-content-grid > :not(.insight-full-bleed) .insight-content-box {
+    max-width: none;
+    padding-inline: 0;
   }
   .page-peek {
     min-height: calc(100vh - 10rem);
