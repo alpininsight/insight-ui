@@ -74,8 +74,8 @@ def test_build_config_rejects_non_dataclass_config(config: object) -> None:
 
 # Tag arguments that are not config fields but are converted into one (icon_name/icon_size -> icon).
 CONVENIENCE_ARGUMENTS: dict[str, set[str]] = {
-    "badge": {"icon_name", "icon_size"},
-    "button": {"icon_name", "icon_size"},
+    "badge": {"icon_name", "icon_size", "icon_mirror_rtl"},
+    "button": {"icon_name", "icon_size", "icon_mirror_rtl"},
 }
 
 # Tags that only accept a complete config and offer no field arguments.

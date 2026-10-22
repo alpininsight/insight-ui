@@ -77,7 +77,7 @@ describe('Tabs Component', () => {
       expect(tabs[0].classList.contains('text-insight-body')).toBe(true);
     });
 
-    it('should update tab content aria-label', () => {
+    it('should label the shared panel with the selected tab', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
       const tabs = element.querySelectorAll('[role="tab"]');
@@ -87,7 +87,8 @@ describe('Tabs Component', () => {
 
       TestUtils.click(tabs[1]);
 
-      expect(content.getAttribute('aria-label')).toBe('tab-1');
+      expect(content.getAttribute('aria-labelledby')).toBe('tab-1');
+      expect(content.hasAttribute('aria-label')).toBe(false);
     });
   });
 
@@ -101,6 +102,36 @@ describe('Tabs Component', () => {
 
       tabs[0].focus();
       TestUtils.keydown(tabs[0], 'ArrowRight');
+
+      expect(document.activeElement).toBe(tabs[1]);
+    });
+
+    it('should swap the arrow keys in right-to-left layouts', () => {
+      const container = createTabsDOM();
+      container.setAttribute('dir', 'rtl');
+      const element = container.querySelector('[data-insight-tabs]');
+      const tabs = element.querySelectorAll('[role="tab"]');
+
+      new InsightUI.Tabs(element);
+
+      tabs[0].focus();
+      TestUtils.keydown(tabs[0], 'ArrowLeft');
+      expect(document.activeElement).toBe(tabs[1]);
+
+      TestUtils.keydown(tabs[1], 'ArrowRight');
+      expect(document.activeElement).toBe(tabs[0]);
+    });
+
+    it('should follow a direction change at runtime', () => {
+      const container = createTabsDOM();
+      const element = container.querySelector('[data-insight-tabs]');
+      const tabs = element.querySelectorAll('[role="tab"]');
+
+      new InsightUI.Tabs(element);
+      container.setAttribute('dir', 'rtl');
+
+      tabs[0].focus();
+      TestUtils.keydown(tabs[0], 'ArrowLeft');
 
       expect(document.activeElement).toBe(tabs[1]);
     });
