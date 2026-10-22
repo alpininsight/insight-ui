@@ -8,7 +8,7 @@ from typing import Any
 from django.core.paginator import Page
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.types import validate_not_empty
+from insight_ui.configs.types import HeadingLevel, validate_heading_level, validate_not_empty
 
 
 @dataclass
@@ -25,6 +25,7 @@ class InfiniteScrollConfig:
         has_next: Whether more items are available.
         auto_fetch: If True, auto-load on scroll. If False, show button.
         threshold: Pixel threshold before loading more.
+        heading_level: Heading level of the item titles.
 
     """
 
@@ -47,10 +48,12 @@ class InfiniteScrollConfig:
     has_next: bool = field(default=True, metadata={"doc": _("Whether more items are available.")})
     auto_fetch: bool = field(default=True, metadata={"doc": _("If True, auto-load on scroll. If False, show button.")})
     threshold: int = field(default=100, metadata={"doc": _("Pixel threshold before loading more.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the item titles.")})
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
+        """Reject an empty request_url and validate heading_level."""
         validate_not_empty(self, "request_url")
+        validate_heading_level(self.heading_level)
 
 
 @dataclass

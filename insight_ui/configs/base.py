@@ -61,6 +61,27 @@ class DataAttrConfig:
             )
 
 
+# Built-in icons that point along the reading direction; they are mirrored in right-to-left layouts by default.
+DIRECTIONAL_ICON_NAMES: frozenset[str] = frozenset(
+    {
+        "arrow-left",
+        "arrow-right",
+        "arrow-left-circle",
+        "arrow-right-circle",
+        "arrow-long-left",
+        "arrow-long-right",
+        "arrow-small-left",
+        "arrow-small-right",
+        "arrow-uturn-left",
+        "arrow-uturn-right",
+        "chevron-left",
+        "chevron-right",
+        "chevron-double-left",
+        "chevron-double-right",
+    }
+)
+
+
 @dataclass
 class IconConfig:
     """Configuration for an icon.
@@ -69,11 +90,13 @@ class IconConfig:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
         color: Color token for the icon (e.g., 'primary', 'danger', 'text-body').
+        mirror_rtl: **True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows.
 
     """
 
     __example__ = """
         IconConfig(name="home", size="s", color="primary")
+        IconConfig(name="my-custom-arrow", mirror_rtl=True)
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
@@ -81,6 +104,19 @@ class IconConfig:
     color: IconColor = field(
         default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-body').")}
     )
+    mirror_rtl: bool | None = field(
+        default=None,
+        metadata={
+            "doc": _(
+                "**True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows."
+            )
+        },
+    )
+
+    @property
+    def mirrors_in_rtl(self) -> bool:
+        """Whether the icon is mirrored in right-to-left layouts."""
+        return self.name in DIRECTIONAL_ICON_NAMES if self.mirror_rtl is None else self.mirror_rtl
 
     def __post_init__(self) -> None:
         """Validate name, size and color after initialization."""
