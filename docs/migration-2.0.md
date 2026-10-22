@@ -1240,7 +1240,9 @@ These showed up in earlier notes. The current tree does not do them.
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
-`LegalNoticeConfig.holder_url` / `holder_logo`, and
+`LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
+`swap` and `global_indicator` overrides of `{% htmx_attributes %}` for host
+markup that fixes those values itself, and
 `{% sidebar width="fit" %}` with `min_width` / `max_width` (`narrow`,
 `normal`, `wide`; the upper limit defaults to `wide`). The sidebar content
 column now fills the sidebar height, so `mt-auto` moves an element to the
