@@ -16,12 +16,12 @@ class SearchBarConfig:
     """Configuration for the search_bar component.
 
     Attributes:
-        request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
+        request_url: URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
         placeholder: Placeholder text for the search input.
         button_label: Label for the search button.
-        htmx_config: HTMX configuration for AJAX requests.
+        htmx: HTMX configuration for AJAX requests.
         enable_search: If True, enable client-side documentation search with Fuse.js.
         search_index_url: Optional URL for the client-side documentation search index.
 
@@ -40,8 +40,7 @@ class SearchBarConfig:
         default="",
         metadata={
             "doc": _(
-                "URL for form action. Do not use together with htmx_config; "
-                "use htmx_config.request_url instead for HTMX requests."
+                "URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests."
             )
         },
     )
@@ -49,9 +48,7 @@ class SearchBarConfig:
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
     placeholder: str = dc_field(default="", metadata={"doc": _("Placeholder text for the search input.")})
     button_label: str = dc_field(default="", metadata={"doc": _("Label for the search button.")})
-    htmx_config: HtmxConfig | None = dc_field(
-        default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
-    )
+    htmx: HtmxConfig | None = dc_field(default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")})
     enable_search: bool = dc_field(
         default=False, metadata={"doc": _("If True, enable client-side documentation search with Fuse.js.")}
     )
@@ -61,12 +58,12 @@ class SearchBarConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx_config.request_url are not both set."""
-        if self.request_url and self.htmx_config and self.htmx_config.request_url:
+        """Validate that request_url and htmx.request_url are not both set."""
+        if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
-                f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
+                f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
-                "'htmx_config.request_url' for HTMX requests, but not both.",
+                "'htmx.request_url' for HTMX requests, but not both.",
                 UserWarning,
                 stacklevel=2,
             )
@@ -118,9 +115,9 @@ class GenericFilterConfig:
 
     Attributes:
         filters: List of filter configurations.
-        request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
+        request_url: URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.
         vertical: If True, arrange filters vertically.
-        htmx_config: HTMX configuration for AJAX requests.
+        htmx: HTMX configuration for AJAX requests.
 
     """
 
@@ -138,7 +135,7 @@ class GenericFilterConfig:
                     options={"": "All", "tech": "Technology", "science": "Science"},
                 ),
             ],
-            htmx_config=HtmxConfig(target="#results", swap_method="innerHTML"),
+            htmx=HtmxConfig(target="#results", swap_method="innerHTML"),
         )
         """
 
@@ -147,23 +144,20 @@ class GenericFilterConfig:
         default="",
         metadata={
             "doc": _(
-                "URL for form action. Do not use together with htmx_config; "
-                "use htmx_config.request_url instead for HTMX requests."
+                "URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests."
             )
         },
     )
     vertical: bool = dc_field(default=False, metadata={"doc": _("If True, arrange filters vertically.")})
-    htmx_config: HtmxConfig | None = dc_field(
-        default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
-    )
+    htmx: HtmxConfig | None = dc_field(default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")})
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx_config.request_url are not both set."""
-        if self.request_url and self.htmx_config and self.htmx_config.request_url:
+        """Validate that request_url and htmx.request_url are not both set."""
+        if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
-                f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
+                f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
-                "'htmx_config.request_url' for HTMX requests, but not both.",
+                "'htmx.request_url' for HTMX requests, but not both.",
                 UserWarning,
                 stacklevel=2,
             )

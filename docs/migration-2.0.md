@@ -36,8 +36,11 @@ pattern for a host project.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
+- [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
+- [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view), `usermenu=` (navbar) and `empty_msg=` (table).
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Leave button `type`, pagination helpers and `explanation` as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
 
 ## Color tokens are a silent break
@@ -361,6 +364,39 @@ context = {"alert": AlertConfig(message="Saved", severity="success")}
 
 Search: `config=` in templates whose view puts a `dict` in that variable, and
 calls that used to rely on dict coercion.
+
+### Config fields are named by their role
+
+A field that holds another config is named after its role, without a
+`_config` suffix, and in the snake case of the class name. Four fields did
+not follow this:
+
+| Config | Before | After |
+| --- | --- | --- |
+| `HeroConfig` | `badge_config` | `badge` |
+| `ToggleViewConfig` | `table_config` | `table` |
+| `ToggleViewConfig` | `view_radio_config` | `view_switch` |
+| `NavbarConfig` | `usermenu` | `user_menu` |
+
+`TableConfig.empty_msg` is now `empty_text`, like the other `*_text`
+fields.
+
+The `hero` and `toggle_view` tag arguments change the same way. The old names
+raise `TypeError`.
+
+Before:
+
+```python
+NavbarConfig(usermenu=UserMenuConfig(links=links))
+```
+
+After:
+
+```python
+NavbarConfig(user_menu=UserMenuConfig(links=links))
+```
+
+Search: `badge_config=`, `table_config=`, `view_radio_config=`, `usermenu=` and `empty_msg`.
 
 ### Severity
 
@@ -761,6 +797,36 @@ HtmxConfig(request_url="/search/", target="#results")
 
 Search: `HtmxConfig(` and `trigger=`.
 
+### `htmx_config` is now `htmx`
+
+`ButtonConfig`, `FormConfig`, `SearchBarConfig` and `GenericFilterConfig`
+named their `HtmxConfig` field `htmx_config`. Every other component calls it
+`htmx`, so these four follow. The tag arguments of `button`, `form`,
+`search_bar` and `generic_filter` change the same way. The old name raises
+`TypeError`.
+
+Before:
+
+```python
+ButtonConfig(label="Delete", htmx_config=HtmxConfig("/items/7/delete/", method="post"))
+```
+
+```text
+{% button label="Load" htmx_config=htmx %}
+```
+
+After:
+
+```python
+ButtonConfig(label="Delete", htmx=HtmxConfig("/items/7/delete/", method="post"))
+```
+
+```text
+{% button label="Load" htmx=htmx %}
+```
+
+Search: `htmx_config`.
+
 ### `swap_method` is applied
 
 These templates used to read a `swap` attribute that `HtmxConfig` does not
@@ -819,6 +885,54 @@ A link button whose `HtmxConfig` has no `request_url` now requests the link
 `HtmxConfig.request_url` no longer warns. The HTMX URL is the config URL
 when it is set.
 
+### Live content, chat and tabs take an `HtmxConfig`
+
+`live_content`, `chat` and `{% tabs %}` now render their requests through
+`htmx_attributes` and accept an optional `htmx` for the shared options
+(`vals`, `loading_indicator_id`, `swap_settle`, `confirm`,
+`show_global_loading_indicator`, and where it fits `target`, `swap_method` and
+`push_url`). What the mechanism needs stays fixed by the component:
+
+| Component | Fixed by the component |
+| --- | --- |
+| `live_content` | URL, trigger `load, every <interval>s`, its own indicator |
+| `chat` | URL, `hx-post`, target `#<tag_id>-response`, swap `beforeend` |
+| `{% tabs %}` | tab URL, target `#<id>-tab-content`, swap `innerHTML`, trigger |
+
+`LiveContentConfig.show_global_loading_indicator` is gone. Polling still stays
+out of the global loading bar by default.
+
+Before:
+
+```text
+{% live_content request_url="/stats/" show_global_loading_indicator=True %}
+```
+
+After:
+
+```python
+HtmxConfig(show_global_loading_indicator=True)
+```
+
+```text
+{% live_content request_url="/stats/" htmx=htmx %}
+```
+
+`HtmxConfig.show_global_loading_indicator` now defaults to `None`, which keeps
+the default of the component: shown for user actions, hidden for
+`live_content`. `True` and `False` behave as before.
+
+`chat` used the fixed IDs `response` and `msg`. They are now
+`<tag_id>-response` and `<tag_id>-message`, with `tag_id` defaulting to
+`chat`. The input name stays `msg`. Two chats on one page need different
+`tag_id` values.
+
+Tabs with `push_url=True` push the URL of a clicked tab. The active tab loads
+on page view without pushing its fragment URL.
+
+Search: `show_global_loading_indicator=` on `live_content`, `#response` and
+`#msg` in host CSS, JavaScript or tests.
+
 ## Checked, and not a 2.0 break
 
 These showed up in earlier notes. The current tree does not do them.
@@ -857,8 +971,10 @@ These showed up in earlier notes. The current tree does not do them.
 
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
-`required` on checkbox and toggle, removable badges, and
-`LegalNoticeConfig.holder_url` / `holder_logo`.
+`required` on checkbox and toggle, removable badges,
+`LegalNoticeConfig.holder_url` / `holder_logo`, and the `method`, `target`,
+`swap` and `global_indicator` overrides of `{% htmx_attributes %}` for host
+markup that fixes those values itself.
 
 ## Pending before 2.0.0
 

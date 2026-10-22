@@ -2,8 +2,8 @@
 
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
-  {% if form_config.htmx_config %}
-    {% htmx_attributes form_config.htmx_config trigger="submit" indicator=form_indicator %}
+  {% if form_config.htmx %}
+    {% htmx_attributes form_config.htmx trigger="submit" indicator=form_indicator %}
   {% else %}
     action="{{ form_config.request_url }}"
     method="{{ form_config.method }}"
@@ -33,7 +33,7 @@
     {% button label=form_config.submit_label|default:_("Submit") type="primary" button_type="submit" %}
   </div>
 
-  {% if form_config.htmx_config and form_config.show_loading_indicator %}
+  {% if form_config.htmx and form_config.show_loading_indicator %}
     {# HTMX Loading Indicator. The live region wrapper stays in the accessibility #}
     {# tree; only the indicator inside it is revealed while a request is running, #}
     {# so idle pages expose no stray loading text and the reveal is announced as  #}
@@ -48,7 +48,7 @@
       </div>
     </div>
   {% endif %}
-  {% if form_config.htmx_config %}
+  {% if form_config.htmx %}
     {# Container for server-side errors, e.g. via HX-Retarget. Derived from tag_id, so several forms can share a page. #}
     <div id="{% if form_config.tag_id %}{{ form_config.tag_id }}-error{% else %}form-error{% endif %}" class="mt-4"></div>
   {% endif %}

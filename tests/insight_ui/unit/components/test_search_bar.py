@@ -21,7 +21,7 @@ class TestSearchBar(TemplateTagsTestCase):
             {
                 "config": SearchBarConfig(
                     request_url="/search/",
-                    htmx_config=HtmxConfig(target="#results", vals=vals),
+                    htmx=HtmxConfig(target="#results", vals=vals),
                 )
             },
         )

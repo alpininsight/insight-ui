@@ -15,11 +15,12 @@
         aria-controls="{% if is_htmx %}{{ tag_id }}-tab-content{% else %}{{ tab.panel_id }}{% endif %}"
         tabindex="{% if tab.active %}0{% else %}-1{% endif %}"
         {% if tab.url %}
-          hx-get="{{ tab.url }}"
-          hx-target="#{{ tag_id }}-tab-content"
-          hx-swap="innerHTML"
-          {# The active tab loads its content right away; the others on click. #}
-          {% if tab.active %}hx-trigger="load, click"{% endif %}
+          {# The active tab loads its content right away; the others on click. The load on page view does not push the fragment URL. #}
+          {% if tab.active %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" trigger="load, click" push_url=False %}
+          {% else %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" %}
+          {% endif %}
         {% elif not is_htmx %}
           data-tab-panel="{{ tab.panel_id }}"
         {% endif %}

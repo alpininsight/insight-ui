@@ -69,6 +69,7 @@ from insight_ui.configs import (
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
+    HttpMethod,
     IconColor,
     IconConfig,
     ImageCarouselConfig,
@@ -283,10 +284,14 @@ def htmx_attributes(
     htmx: HtmxConfig | None,
     *,
     request_url: str = "",
+    method: HttpMethod | None = None,
+    target: str = "",
+    swap: str = "",
     trigger: str = "",
     indicator: str = "",
     push_url: bool | None = None,
     swap_modifiers: str = "",
+    global_indicator: bool = True,
 ) -> SafeString:
     """Render the HTMX attributes of an HtmxConfig in one consistent way.
 
@@ -296,10 +301,15 @@ def htmx_attributes(
     Args:
         htmx: The request options. Renders nothing if None.
         request_url: URL of the component, e.g. of a breadcrumb item, used instead of htmx.request_url.
+        method: HTTP method the component needs, used instead of htmx.method.
+        target: Target the component needs, e.g. its own response container, used instead of htmx.target.
+        swap: Swap method the component needs, used instead of htmx.swap_method.
         trigger: hx-trigger of the component. Empty keeps the HTMX default of the element.
         indicator: hx-indicator of the component, used instead of htmx.loading_indicator_id.
         push_url: Forces hx-push-url on or off. None uses htmx.push_url.
         swap_modifiers: Appended to hx-swap, e.g. "show:window:top".
+        global_indicator: Whether the component shows the global loading bar when
+            htmx.show_global_loading_indicator is None; background requests like polling pass False.
 
     Returns:
         The attributes, separated by spaces.
@@ -310,11 +320,13 @@ def htmx_attributes(
         return format_html_join(" ", '{}="{}"', attributes)
     url = request_url or htmx.request_url
     if url:
-        attributes.append((f"hx-{htmx.method}", url))
-    if htmx.target:
-        attributes.append(("hx-target", htmx.target))
+        attributes.append((f"hx-{method or htmx.method}", url))
+    if target or htmx.target:
+        attributes.append(("hx-target", target or htmx.target))
     settle = f"settle:{htmx.swap_settle}" if htmx.swap_settle else ""
-    attributes.append(("hx-swap", " ".join(part for part in (htmx.swap_method, settle, swap_modifiers) if part)))
+    attributes.append(
+        ("hx-swap", " ".join(part for part in (swap or htmx.swap_method, settle, swap_modifiers) if part))
+    )
     if trigger:
         attributes.append(("hx-trigger", trigger))
     if htmx.push_url if push_url is None else push_url:
@@ -325,7 +337,8 @@ def htmx_attributes(
         attributes.append(("hx-confirm", htmx.confirm))
     if htmx.vals:
         attributes.append(("hx-vals", json_attribute(htmx.vals)))
-    if not htmx.show_global_loading_indicator:
+    show_global = htmx.show_global_loading_indicator
+    if not (global_indicator if show_global is None else show_global):
         attributes.append(("data-insight-global-indicator", "false"))
     return format_html_join(" ", '{}="{}"', attributes)
 
@@ -429,7 +442,7 @@ def hero(
     cta_primary: ButtonConfig | _Unset = UNSET,
     cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge_config: BadgeConfig | _Unset = UNSET,
+    badge: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -628,7 +641,7 @@ def button(
     subtle: bool | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
@@ -714,7 +727,7 @@ def button(
         subtle=subtle,
         round=round,
         tooltip=tooltip,
-        htmx_config=htmx_config,
+        htmx=htmx,
         hidden=hidden,
         disabled=disabled,
         disabled_reason=disabled_reason,
@@ -962,10 +975,16 @@ def multiselect(
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
-def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
+def chat(
+    config: ChatConfig | None = None,
+    *,
+    request_url: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
     config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"request_url": config.request_url}
+    return {"chat_config": config, "htmx": config.htmx or HtmxConfig(), "response_target": f"#{config.tag_id}-response"}
 
 
 # =============================================================
@@ -1262,17 +1281,15 @@ def live_content(
     request_url: str | _Unset = UNSET,
     interval: int | _Unset = UNSET,
     initial_content: str | _Unset = UNSET,
-    show_global_loading_indicator: bool | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    live_request = {
-        "request_url": config.request_url,
+    return {
+        "live_content_config": config,
+        "htmx": config.htmx or HtmxConfig(),
         "trigger": f"load, every {config.interval}s",
-        "swap": "innerHTML",
     }
-
-    return {"live_content_config": config, "live_request": live_request}
 
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
@@ -1340,7 +1357,7 @@ def badge(
             round=True,
             size="xs",
             button_type="button",
-            htmx_config=config.remove_htmx,
+            htmx=config.remove_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-remove")],
             # Compensate the button padding and border, so the badge keeps its height.
             extra_classes="-my-1.5 -me-2",
@@ -1368,7 +1385,7 @@ def badge_list(
             subtle=True,
             size="s",
             button_type="button",
-            htmx_config=config.clear_all_htmx,
+            htmx=config.clear_all_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
         )
     return {"badge_list_config": config, "clear_all_button": clear_all_button}
@@ -1434,7 +1451,7 @@ def search_bar(
     request_url: str | _Unset = UNSET,
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
     search_index_url: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -1450,7 +1467,7 @@ def generic_filter(
     filters: list[FilterConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     vertical: bool | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
     config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1587,8 +1604,8 @@ def toggle_view(
     *,
     tag_id: str | _Unset = UNSET,
     cards: list[CardConfig] | _Unset = UNSET,
-    table_config: TableConfig | _Unset = UNSET,
-    view_radio_config: RadioBlockConfig | _Unset | None = UNSET,
+    table: TableConfig | _Unset = UNSET,
+    view_switch: RadioBlockConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
     config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1653,7 +1670,7 @@ def form(
     reset_label: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""

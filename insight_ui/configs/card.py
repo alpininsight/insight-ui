@@ -309,8 +309,8 @@ class ToggleViewConfig:
     Attributes:
         tag_id: Unique ID for the component.
         cards: The cards to be displayed.
-        table_config: Configuration of the table view.
-        view_radio_config: Radio block config for view switching.
+        table: Configuration of the table view.
+        view_switch: Radio block for switching the view.
         current_view: Currently active view ('card', 'table', 'carousel').
 
     """
@@ -319,8 +319,8 @@ class ToggleViewConfig:
         ToggleViewConfig(
             tag_id="products-view",
             cards=products_list,
-            table_config=TableConfig(headers, rows),
-            view_radio_config=RadioBlockConfig(
+            table=TableConfig(headers, rows),
+            view_switch=RadioBlockConfig(
                 name="view",
                 items=[
                     RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
@@ -333,9 +333,9 @@ class ToggleViewConfig:
 
     tag_id: str = field(metadata={"doc": _("Unique ID for the component.")})
     cards: list[CardConfig] = field(default_factory=list, metadata={"doc": _("The cards to be displayed.")})
-    table_config: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
-    view_radio_config: RadioBlockConfig | None = field(
-        default=None, metadata={"doc": _("Radio block config for view switching.")}
+    table: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
+    view_switch: RadioBlockConfig | None = field(
+        default=None, metadata={"doc": _("Radio block for switching the view.")}
     )
     current_view: ToggleViewType = field(
         default="card", metadata={"doc": _("Currently active view ('card', 'table', 'carousel').")}

@@ -9,8 +9,8 @@
 >
     <form
         role="search"
-        {% if search_bar_config.htmx_config %}
-            {% htmx_attributes search_bar_config.htmx_config %}
+        {% if search_bar_config.htmx %}
+            {% htmx_attributes search_bar_config.htmx %}
         {% else %}
             action="{{ search_bar_config.request_url }}"
             method="get"
