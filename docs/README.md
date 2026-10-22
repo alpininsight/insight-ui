@@ -12,6 +12,7 @@ not a second documentation application or a deployment system.
 | Guide | Purpose |
 | --- | --- |
 | [Getting started](getting-started.md) | Integrate the package, settings and base template into your own Django app. |
+| [Migrating to 2.0](migration-2.0.md) | Consumer changes from v1.15.1 to the unreleased 2.0 line. |
 | [Components](components.md) | Configs, template tags, composition and declarative examples. |
 | [Conventions](conventions.md) | Naming, HTML, JavaScript lifecycle and source ownership. |
 | [Design system](design-system.md) | Existing semantic tokens and safe changes to the styling contract. |

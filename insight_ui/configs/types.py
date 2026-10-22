@@ -24,6 +24,16 @@ from functools import lru_cache
 from typing import Literal
 
 # =============================================================================
+# Heading Level
+# =============================================================================
+
+# Heading levels a component title can use; h1 is reserved for the page title
+HEADING_LEVEL_VALUES: tuple[int, ...] = (2, 3, 4, 5, 6)
+
+# Type alias for the heading level of component titles
+type HeadingLevel = Literal[2, 3, 4, 5, 6]
+
+# =============================================================================
 # Size
 # =============================================================================
 
@@ -279,6 +289,23 @@ def validate_not_empty(config: object, *field_names: str) -> None:
     for field_name in field_names:
         if not getattr(config, field_name):
             raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
+def validate_heading_level(value: int, field_name: str = "heading_level") -> None:
+    """Validate that a heading level is between 2 and 6.
+
+    Args:
+        value: The heading level to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid heading level.
+
+    """
+    if value not in HEADING_LEVEL_VALUES:
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} {value!r}. Allowed values are: {', '.join(map(str, HEADING_LEVEL_VALUES))}"
+        )
 
 
 def validate_size(value: str, field_name: str = "size") -> None:
@@ -659,6 +686,10 @@ TYPE_REGISTRY: dict[str, dict] = {
     "InlinePosition": {
         "values": INLINE_POSITION_VALUES,
         "description": "Inline positions respecting text direction (RTL-aware).",
+    },
+    "HeadingLevel": {
+        "values": HEADING_LEVEL_VALUES,
+        "description": "Heading level of component titles; h1 is reserved for the page title.",
     },
     "Size": {
         "values": SIZE_VALUES,
