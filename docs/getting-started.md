@@ -180,7 +180,9 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 
 | Key | Default | Purpose |
 | --- | --- | --- |
-| `navbar_fixed` | `True` | Stick the navbar to the top of the window. |
+| `navbar_fixed` | `False` | Stick the navbar to the top of the window; sidebars adjust their offset. |
+| `stylesheet` | `"insight_ui/css/tailwind.css"` | Static path of the stylesheet; point it at your own Tailwind build. |
+| `tooltip_show_delay` | `400` | Milliseconds before a tooltip appears on hover; keyboard focus shows it at once. |
 | `register_url` | `""` | URL or URL name for a register button; empty hides it. |
 | `content_max_width` | `""` | CSS width of the content box, e.g. `"64rem"`; empty keeps `80rem`. A page can pass `content_max_width` in its context. |
 | `align_navbar_footer_to_content` | `False` | `True` puts the navbar and footer content into the content box instead of spanning the window. |
@@ -189,7 +191,7 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 | `meta.seo.{description,keywords,author}` | placeholder text | `<meta>` tags rendered by the base template. |
 | `load_prism`, `load_leaflet`, `load_echarts` | `False` | Opt-in third-party libraries (syntax highlighting, maps, charts). |
 | `JS_DEBUG` | `False` | Enable the package's browser console logging. |
-| `use_tailwind_cli` | `False` | Serve packaged CSS instead of a project-run Tailwind CLI build. |
+| `use_tailwind_cli` | `False` | `True` serves the output of a project-run `django-tailwind-cli` build instead of the packaged CSS. |
 | `assets.{use_minified,cdn_enabled,cdn_base_url,cdn_prefix,cdn_version}` | local, unminified | Static delivery mode; see [Static assets](static-assets.md). |
 | `htmx.{src,integrity,ws_src,ws_integrity}` | jsdelivr URLs with SRI | HTMX and its WebSocket extension loaded by the base template, independent of `assets`; see [self-hosted HTMX](static-assets.md#self-hosted-htmx). |
 

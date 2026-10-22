@@ -68,7 +68,7 @@ migration; authentication and application endpoints need a separate test host.
 
 ## 2. Choose The Component Shape
 
-Check the [component reference](https://insight-ui.com/docs/configs) and existing
+Check the [component reference](https://django-insight-ui.com/docs/configs) and existing
 source before adding a new component. Prefer composing existing components over
 copying their markup or behavior.
 
