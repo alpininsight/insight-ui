@@ -7,6 +7,14 @@
  * a toolbar showing language and optional filename, and a copy-to-clipboard button.
  * Automatically removes common leading indentation for cleaner display.
  *
+ * Options (data attributes on the element):
+ * - data-filename: shown in the toolbar.
+ * - data-diff: the content is a diff with one marker column per line ("+" added, "-" removed,
+ *   " " unchanged). Lines are highlighted as added/removed and the code keeps its markers.
+ * - data-diff-marks: JSON [[start, end], ...] with the changed parts inside changed lines, as character
+ *   offsets in the diff text. Marked with <mark class="insight-diff-mark">.
+ * - data-copy="false": hide the copy button. A diff has none.
+ *
  * @example
  * // HTML structure (before initialization)
  * <pre id="example" data-insight-code-block="javascript" data-filename="app.js">
@@ -36,6 +44,9 @@ export class CodeBlock {
         this.id = originalElement.id;
         this.lang = originalElement.getAttribute('data-insight-code-block');
         this.filename = originalElement.getAttribute('data-filename') || "";
+        this.isDiff = originalElement.hasAttribute('data-diff');
+        this.diffMarks = this.isDiff ? CodeBlock.parseDiffMarks(originalElement.getAttribute('data-diff-marks')) : [];
+        this.showCopy = !this.isDiff && originalElement.getAttribute('data-copy') !== 'false';
         this.code = originalElement.textContent;
         this.copyButton = undefined;
         this.copyEvent = undefined;
@@ -143,7 +154,7 @@ export class CodeBlock {
         svg.appendChild(path2);
 
         button.appendChild(svg);
-        button.appendChild(document.createTextNode('Copy'));
+        button.appendChild(document.createTextNode(gettext('Copy')));
 
         return { button, icon: svg };
     }
@@ -162,11 +173,21 @@ export class CodeBlock {
         wrapper.dir = 'ltr';
 
         const pre = document.createElement('pre');
-        pre.classList.add('line-numbers', `language-${lang}`, '!overflow-visible', '!m-0', 'rounded-insight-surface');
+        pre.classList.add('!overflow-visible', '!m-0', 'rounded-insight-surface');
+        if (this.isDiff) {
+            // Prism's diff-highlight plugin: diff markers plus the language's syntax highlighting.
+            // Line numbers would count old and new lines together, so a diff has none.
+            pre.classList.add(`language-diff-${lang}`, 'diff-highlight');
+        } else {
+            pre.classList.add('line-numbers', `language-${lang}`);
+        }
 
         const codeElement = document.createElement('code');
-        codeElement.classList.add('block', 'w-fit', 'pe-6');
-        codeElement.textContent = this.cleanIndentation(code).trim();
+        codeElement.classList.add('block', 'pe-6', this.isDiff ? 'min-w-full' : 'w-fit');
+        // A diff keeps its first column (the markers), so only blank lines around it are removed.
+        codeElement.textContent = this.isDiff
+            ? code.replace(/^(?:[ \t]*\n)+/, '').trimEnd()
+            : this.cleanIndentation(code).trim();
 
         pre.appendChild(codeElement);
         wrapper.appendChild(pre);
@@ -182,13 +203,14 @@ export class CodeBlock {
      */
     #setupCopyHandler(codeElement, icon) {
         this.copyEvent = async () => {
+            const text = codeElement.textContent;
             try {
-                await navigator.clipboard.writeText(codeElement.textContent);
+                await navigator.clipboard.writeText(text);
                 this.copyButton.textContent = gettext('✔ copied');
             } catch (err) {
                 // Fallback for older browsers
                 const textarea = document.createElement('textarea');
-                textarea.value = codeElement.textContent;
+                textarea.value = text;
                 document.body.appendChild(textarea);
                 textarea.select();
 
@@ -206,11 +228,79 @@ export class CodeBlock {
             setTimeout(() => {
                 this.copyButton.textContent = '';
                 this.copyButton.appendChild(icon);
-                this.copyButton.appendChild(document.createTextNode('Copy'));
+                this.copyButton.appendChild(document.createTextNode(gettext('Copy')));
             }, 1200);
         };
 
         this.copyButton.addEventListener('click', this.copyEvent);
+    }
+
+    /** @type {WeakMap<HTMLElement, Array<[number, number]>>} Diff marks of each highlighted code element */
+    static pendingMarks = new WeakMap();
+
+    /** @type {boolean} Whether the Prism hook that applies the diff marks is registered */
+    static #hookRegistered = false;
+
+    /**
+     * Apply the diff marks after every highlighting pass. Prism's autoloader highlights again once the
+     * grammar has loaded and replaces the content, so marks set right after highlightElement would be lost.
+     */
+    static #watchHighlighting() {
+        if (CodeBlock.#hookRegistered || !Prism.hooks) return;
+        Prism.hooks.add('complete', (env) => {
+            const ranges = CodeBlock.pendingMarks.get(env.element);
+            if (ranges) CodeBlock.markRanges(env.element, ranges);
+        });
+        CodeBlock.#hookRegistered = true;
+    }
+
+    /**
+     * Read the diff marks attribute; anything but a JSON list means no marks.
+     *
+     * @param {string|null} value The attribute value.
+     * @returns {Array<[number, number]>} Sorted [start, end) offsets in the code text.
+     */
+    static parseDiffMarks(value) {
+        if (!value) return [];
+        try {
+            const marks = JSON.parse(value);
+            return Array.isArray(marks) ? marks : [];
+        } catch {
+            return [];
+        }
+    }
+
+    /**
+     * Wrap character ranges of an element's text in <mark> elements.
+     * Works on the text nodes, so ranges may span the token spans Prism created.
+     *
+     * @param {HTMLElement} root The element whose text is marked.
+     * @param {Array<[number, number]>} ranges Sorted [start, end) offsets in root.textContent.
+     */
+    static markRanges(root, ranges) {
+        if (!ranges.length) return;
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+
+        let position = 0;
+        for (const node of nodes) {
+            const nodeStart = position;
+            const nodeEnd = nodeStart + node.data.length;
+            position = nodeEnd;
+            // Collect the parts of this node that fall into a range, then wrap them from the end.
+            const parts = ranges
+                .map(([start, end]) => [Math.max(start, nodeStart) - nodeStart, Math.min(end, nodeEnd) - nodeStart])
+                .filter(([start, end]) => end > start);
+            for (const [start, end] of parts.reverse()) {
+                const marked = node.splitText(start);
+                marked.splitText(end - start);
+                const mark = document.createElement('mark');
+                mark.className = 'insight-diff-mark';
+                marked.replaceWith(mark);
+                mark.appendChild(marked);
+            }
+        }
     }
 
     /**
@@ -228,9 +318,13 @@ export class CodeBlock {
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);
-        const { button, icon } = this.#createCopyButton();
-        this.copyButton = button;
-        toolbar.appendChild(this.copyButton);
+        let icon;
+        if (this.showCopy) {
+            const created = this.#createCopyButton();
+            this.copyButton = created.button;
+            icon = created.icon;
+            toolbar.appendChild(this.copyButton);
+        }
 
         const { wrapper: codeWrapper, codeElement } = this.#createCodeArea(lang, code);
 
@@ -239,9 +333,19 @@ export class CodeBlock {
 
         // Temporarily add to DOM for Prism to process
         document.body.appendChild(wrapper);
+        if (this.isDiff) {
+            CodeBlock.pendingMarks.set(codeElement, this.diffMarks);
+            CodeBlock.#watchHighlighting();
+        }
         Prism.highlightElement(codeElement);
+        // Without Prism hooks (no highlighting library), mark the plain text right away.
+        if (this.isDiff && !Prism.hooks) {
+            CodeBlock.markRanges(codeElement, CodeBlock.pendingMarks.get(codeElement));
+        }
 
-        this.#setupCopyHandler(codeElement, icon);
+        if (this.copyButton) {
+            this.#setupCopyHandler(codeElement, icon);
+        }
 
         return wrapper;
     }
@@ -253,7 +357,7 @@ export class CodeBlock {
     destroy() {
         debugLog("Destroy code block: ", this.element);
 
-        this.copyButton.removeEventListener("click", this.copyEvent);
+        this.copyButton?.removeEventListener("click", this.copyEvent);
 
         CodeBlock.instances.delete(this.originalElement);
         delete this.element.__insightInstance;
