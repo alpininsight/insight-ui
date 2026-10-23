@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Configuration classes for utility components (differentiator, charts, maps, etc.)."""
+"""Configuration classes for utility components (diffs, charts, maps, etc.)."""
 
 import warnings
 from dataclasses import dataclass, field
@@ -807,3 +807,61 @@ class BadgeListConfig:
         """Require an ID and an accessible name, and a target for the remove-all request."""
         validate_not_empty(self, "tag_id", "label")
         _require_htmx_target(self, "clear_all_htmx")
+
+
+@dataclass
+class TextDiffConfig:
+    """Configuration for the text_diff component.
+
+    Marks the changes between two texts for readers without a developer background: removed words
+    are struck through, added words are underlined, so the meaning does not depend on color.
+
+    Attributes:
+        before: Original text.
+        after: Changed text.
+        show_legend: Explain the markings below the text.
+
+    """
+
+    __example__ = """
+        TextDiffConfig(before="The meeting is on Monday.", after="The meeting is on Tuesday at noon.")
+        """
+
+    before: str = field(metadata={"doc": _("Original text.")})
+    after: str = field(metadata={"doc": _("Changed text.")})
+    show_legend: bool = field(default=True, metadata={"doc": _("Explain the markings below the text.")})
+
+
+@dataclass
+class CodeDiffConfig:
+    """Configuration for the code_diff component.
+
+    Shows the changes between two short code snippets as a unified diff in a code block, with
+    syntax highlighting. Needs INSIGHT_UI["load_prism"].
+
+    Attributes:
+        before: Original code.
+        after: Changed code.
+        language: Language for the syntax highlighting, e.g. python.
+        filename: Optional file name shown in the toolbar.
+        tag_id: Optional ID of the code block.
+
+    """
+
+    __example__ = """
+        CodeDiffConfig(
+            before='ButtonConfig(label="Save", type="primary")',
+            after='ButtonConfig(label="Save", color="primary")',
+            language="python",
+        )
+        """
+
+    before: str = field(metadata={"doc": _("Original code.")})
+    after: str = field(metadata={"doc": _("Changed code.")})
+    language: str = field(default="text", metadata={"doc": _("Language for the syntax highlighting, e.g. python.")})
+    filename: str = field(default="", metadata={"doc": _("Optional file name shown in the toolbar.")})
+    tag_id: str = field(default="", metadata={"doc": _("Optional ID of the code block.")})
+
+    def __post_init__(self) -> None:
+        """Require a language, because it selects the grammar of the code block."""
+        validate_not_empty(self, "language")

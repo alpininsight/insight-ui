@@ -312,6 +312,108 @@ describe('CodeBlock Component', () => {
     });
   });
 
+  describe('Diff Mode And Copy Option', () => {
+    const diff = ' def greet(name):\n-    return "Hi " + name\n+    return f"Hello, {name}!"';
+
+    function createDiffBlock(id, extra = '') {
+      return TestUtils.createDOM(`<pre id="${id}" data-insight-code-block="python" data-diff ${extra}>\n${diff}\n</pre>`)
+        .querySelector('[data-insight-code-block]');
+    }
+
+    it('should use the diff-highlight classes and keep the marker column', () => {
+      new InsightUI.CodeBlock(createDiffBlock('cb-diff'));
+
+      const pre = document.querySelector('#cb-diff pre');
+      expect(pre.classList.contains('language-diff-python')).toBe(true);
+      expect(pre.classList.contains('diff-highlight')).toBe(true);
+      expect(pre.classList.contains('line-numbers')).toBe(false);
+      expect(pre.querySelector('code').textContent).toBe(diff);
+    });
+
+    it('should show the language, not the diff grammar, in the toolbar', () => {
+      new InsightUI.CodeBlock(createDiffBlock('cb-diff-lang'));
+
+      expect(document.querySelector('#cb-diff-lang span').textContent).toBe('python');
+    });
+
+    it('should not have a copy button in a diff', () => {
+      new InsightUI.CodeBlock(createDiffBlock('cb-diff-nocopy'));
+
+      expect(document.querySelector('#cb-diff-nocopy button')).toBeNull();
+    });
+
+    it('should hide the copy button of a normal block with data-copy="false"', () => {
+      const element = TestUtils.createDOM('<pre id="cb-nocopy" data-insight-code-block="python" data-copy="false">x = 1</pre>')
+        .querySelector('[data-insight-code-block]');
+
+      const instance = new InsightUI.CodeBlock(element);
+
+      expect(document.querySelector('#cb-nocopy button')).toBeNull();
+      expect(() => instance.destroy()).not.toThrow();
+    });
+
+    it('should mark the changed parts of changed lines', () => {
+      const code = ' <div>\n-  <a type="x">\n+  <a color="x">';
+      const element = TestUtils.createDOM(
+        `<pre id="cb-marks" data-insight-code-block="html" data-diff data-diff-marks='[[13, 17], [29, 34]]'>${code.replace(/</g, '&lt;')}</pre>`
+      ).querySelector('[data-insight-code-block]');
+
+      new InsightUI.CodeBlock(element);
+
+      const marked = [...document.querySelectorAll('#cb-marks mark.insight-diff-mark')].map(mark => mark.textContent);
+      expect(marked).toEqual(['type', 'color']);
+      expect(document.querySelector('#cb-marks code').textContent).toBe(code);
+    });
+
+    it('should mark again after Prism re-highlights the code', () => {
+      const hooks = [];
+      const originalPrism = globalThis.Prism;
+      // Simulates the autoloader: every pass replaces the content, then runs the complete hooks.
+      globalThis.Prism = {
+        hooks: { add: (name, callback) => hooks.push(callback) },
+        highlightElement: (element) => {
+          element.textContent = element.textContent;
+          hooks.forEach(callback => callback({ element }));
+        },
+      };
+      try {
+        const element = TestUtils.createDOM(
+          `<pre id="cb-rehighlight" data-insight-code-block="python" data-diff data-diff-marks='[[1, 2]]'>-a = 1\n+b = 1</pre>`
+        ).querySelector('[data-insight-code-block]');
+
+        new InsightUI.CodeBlock(element);
+        const code = document.querySelector('#cb-rehighlight code');
+        Prism.highlightElement(code);
+
+        expect([...code.querySelectorAll('mark')].map(mark => mark.textContent)).toEqual(['a']);
+      } finally {
+        globalThis.Prism = originalPrism;
+      }
+    });
+
+    it('should mark ranges across several text nodes', () => {
+      const root = TestUtils.createDOM('<code id="split"><span>ab</span><span>cd</span>ef</code>').querySelector('#split');
+
+      InsightUI.CodeBlock.markRanges(root, [[1, 3], [5, 6]]);
+
+      expect([...root.querySelectorAll('mark')].map(mark => mark.textContent)).toEqual(['b', 'c', 'f']);
+      expect(root.textContent).toBe('abcdef');
+    });
+
+    it('should ignore invalid diff marks', () => {
+      expect(InsightUI.CodeBlock.parseDiffMarks('not json')).toEqual([]);
+      expect(InsightUI.CodeBlock.parseDiffMarks('{"0": [[0, 1]]}')).toEqual([]);
+      expect(InsightUI.CodeBlock.parseDiffMarks(null)).toEqual([]);
+    });
+
+    it('should translate the copy label', () => {
+      const container = TestUtils.createCodeBlock('cb-label', 'python', 'x = 1');
+      new InsightUI.CodeBlock(container.querySelector('[data-insight-code-block]'));
+
+      expect(gettext).toHaveBeenCalledWith('Copy');
+    });
+  });
+
   describe('Static Methods', () => {
     it('should initialize all code blocks with initAll', () => {
       TestUtils.createCodeBlock('cb-all-1', 'javascript', 'const h = 8;');

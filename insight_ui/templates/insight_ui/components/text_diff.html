@@ -1,0 +1,22 @@
+{% load i18n %}
+{% comment %}
+    Removed words are struck through, added words underlined; color only reinforces that.
+    Screen readers hear "Removed:" / "Added:" before each change. The legend repeats the visual
+    convention for sighted readers and is hidden from assistive technology.
+{% endcomment %}
+<div class="insight-text-diff">
+    <p class="text-insight-body whitespace-pre-line">
+        {% for part in parts %}
+            {% if part.kind == "equal" %}
+                {{ part.text }}
+            {% elif part.kind == "delete" %}
+                <del class="insight-diff-delete"><span class="sr-only">{% translate "Removed:" %} </span>{{ part.text }}</del>
+            {% else %}
+                <ins class="insight-diff-insert"><span class="sr-only">{% translate "Added:" %} </span>{{ part.text }}</ins>
+            {% endif %}
+        {% endfor %}
+    </p>
+    {% if show_legend %}
+        <p class="mt-2 text-sm text-insight-muted" aria-hidden="true"><del class="insight-diff-delete">{% translate "removed" %}</del> <ins class="insight-diff-insert">{% translate "added" %}</ins></p>
+    {% endif %}
+</div>

@@ -176,6 +176,7 @@ from insight_ui.configs.utils import (
     BrandMarkConfig,
     ChartConfig,
     ChartDatasetConfig,
+    CodeDiffConfig,
     CornerRibbonConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
@@ -185,6 +186,7 @@ from insight_ui.configs.utils import (
     LogoConfig,
     ProgressBarConfig,
     StatusScreenConfig,
+    TextDiffConfig,
     WebSocketConfig,
 )
 
@@ -232,6 +234,7 @@ __all__ = [
     "CheckboxConfig",
     "CheckboxGroupConfig",
     "CheckboxItemConfig",
+    "CodeDiffConfig",
     "ColorType",
     "CornerPosition",
     "CornerRibbonConfig",
@@ -312,6 +315,7 @@ __all__ = [
     "TabConfig",
     "TableConfig",
     "TabsConfig",
+    "TextDiffConfig",
     "TextareaConfig",
     "ThreeDCarouselConfig",
     "ToggleConfig",
