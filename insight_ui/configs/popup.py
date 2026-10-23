@@ -72,8 +72,8 @@ class MessageDialogConfig(ModalConfig):
             message="The project and all its data will be deleted. This cannot be undone.",
             alert=True,
             actions=[
-                ButtonConfig(label="Cancel", type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
-                ButtonConfig(label="Delete", type="danger", htmx_config=HtmxConfig("/projects/7/delete/", method="post")),
+                ButtonConfig(label="Cancel", color="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
+                ButtonConfig(label="Delete", color="danger", htmx_config=HtmxConfig("/projects/7/delete/", method="post")),
             ],
         )
         """
