@@ -38,7 +38,8 @@ pattern for a host project.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
-- [ ] Leave button `type`, pagination helpers and `explanation` as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
+- [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
+- [ ] Leave pagination helpers and `explanation` as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
 
 ## Color tokens are a silent break
 
@@ -377,8 +378,8 @@ The values are still `info`, `success`, `warning` and `error`. `"danger"`
 raises `ValueError` and the message tells you to use `"error"`. Map Django
 message tags onto `error`, not `danger`.
 
-Button `type` and badge `type` are still the color token. This rename does
-not touch them.
+Button and badge `type` are not part of this rename; they became `color`, see
+[Button and badge color and variant](#button-and-badge-color-and-variant).
 
 Before:
 
@@ -468,6 +469,70 @@ MinimalStepperConfig(steps=["completed", "current", "pending"])
 Search: `success=True` and `failed=True` on `StepperItemConfig`, `items=` on
 `{% minimal_stepper` and `MinimalStepperConfig`, and the strings `"active"`
 and `"success"` in step lists. `{% stepper items=` stays valid.
+
+### Button and badge color and variant
+
+[#733](https://github.com/alpininsight/insight-ui/pull/733).
+
+`ButtonConfig.type` mixed the color with the look (`"link"`), and `outline` /
+`subtle` were two booleans that could both be set. A button now has a `color`
+and a `variant`:
+
+| Field | Values | Default |
+| --- | --- | --- |
+| `color` | `primary`, `secondary`, `light`, `info`, `success`, `warning`, `danger` | `primary` |
+| `variant` | `solid`, `outline`, `subtle`, `link`, `plain` | `solid` |
+
+`light` is for buttons on dark or colored surfaces. `plain` is an icon-style
+button in the text color. `link` and `plain` ignore the color.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `type="primary"` (any color) | `color="primary"` |
+| `outline=True` / `subtle=True` | `variant="outline"` / `variant="subtle"` |
+| `type="link"` | `variant="link"` |
+| `type="neutral"` | `color="light"` on dark or colored surfaces, otherwise `variant="plain"` |
+| `ButtonType`, `BUTTON_TYPE_VALUES`, `validate_button_type` | `ButtonColor` / `ButtonVariant`, `BUTTON_COLOR_VALUES` / `BUTTON_VARIANT_VALUES`, `validate_button_color` / `validate_button_variant` |
+
+A badge has `color` (`primary`, `secondary`, `neutral`, `info`, `success`,
+`warning`, `danger`) and `disabled`. `type="disabled"` becomes
+`disabled=True`. `BadgeType`, `BADGE_TYPE_VALUES` and `validate_badge_type`
+are replaced by `ColorType`, `COLOR_TYPE_VALUES` and `validate_color_type`.
+
+Before:
+
+```python
+ButtonConfig(label="Cancel", type="secondary", outline=True)
+BadgeConfig(label="Archived", type="disabled")
+```
+
+After:
+
+```python
+ButtonConfig(label="Cancel", color="secondary", variant="outline")
+BadgeConfig(label="Archived", color="neutral", disabled=True)
+```
+
+`disabled=True` no longer replaces the color. The look comes from the
+`disabled` attribute (or `aria-disabled="true"` on links), so a button that
+JavaScript enables again shows its color. Combinations that used to be ignored
+now raise `ValueError`: `external=True` without `request_url`, and `on_click` or
+`button_type` together with `request_url`.
+
+The CSS classes follow the same split. `.btn` alone is a solid primary button;
+color and variant are modifiers:
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `btn-primary` | `btn btn-primary` |
+| `btn-outline-primary` | `btn btn-outline btn-primary` |
+| `btn-subtle-primary` | `btn btn-subtle btn-primary` |
+| `btn-neutral`, `btn-outline-neutral` | `btn btn-light`, `btn btn-outline btn-light` |
+| `btn-subtle-neutral` | `btn btn-plain` |
+| `btn-disabled`, `btn-outline-disabled`, `btn-subtle-disabled` | the `disabled` attribute or `aria-disabled="true"`; `.btn-disabled` remains for labels styled as buttons |
+
+Search: `type=` on buttons and badges, `outline=`, `subtle=`, `ButtonType`,
+`BadgeType` and `btn-` classes in host templates, CSS and tests.
 
 ### `flip_card` tag arguments
 
@@ -681,7 +746,8 @@ Search: `footer h4`, `button > div`, `aria-label="Required"`,
 
 [#718](https://github.com/alpininsight/insight-ui/pull/718).
 
-`ButtonConfig(disabled=True)` still sets `type` to `"disabled"`.
+`ButtonConfig(disabled=True)` keeps its color; see
+[Button and badge color and variant](#button-and-badge-color-and-variant).
 A link (`request_url` set) renders `aria-disabled="true"` and omits `href`,
 `htmx_attributes` and `hx_*`. v1.15.1 already omitted `href`, and it still
 wrote `disabled` plus the HTMX attributes. A `<button>` still uses the
@@ -871,8 +937,7 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#733](https://github.com/alpininsight/insight-ui/pull/733) | Open | Button and badge `type` / `outline` / `subtle` would become `color` and `variant` (`solid`, `outline`, `subtle`, `link`, `plain`). |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, stacked on #733 | A `download` attribute on link buttons. It cannot merge without #733. |
+| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, stacked on #733 | A `download` attribute on link buttons. |
 | [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #733 and #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
 | [#738](https://github.com/alpininsight/insight-ui/pull/738) | Open | Pagination would render plain links unless you pass an `HtmxConfig`. `surrounding_pages` and `insight_ui.utils.pagination.get_page` would be removed in favor of Django's `Paginator.get_page` and `get_elided_page_range`. |
 | [#746](https://github.com/alpininsight/insight-ui/pull/746) | Open | `explanation` would be removed from input, textarea, select, `FilterConfig` and `PaginationIppConfig`. The replacement name in that pull request is `help_text`. `disabled_reason` on form fields would become visible text linked with `aria-describedby`. |
