@@ -61,17 +61,17 @@ COLOR_TYPE_VALUES: tuple[str, ...] = (
 # Type alias for base color types
 type ColorType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger"]
 
-# Tuple of valid badge type values (colors + disabled)
-BADGE_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled")
+# Tuple of valid button colors: the color roles plus "light" for dark or colored surfaces (no grey button)
+BUTTON_COLOR_VALUES: tuple[str, ...] = ("primary", "secondary", "light", "info", "success", "warning", "danger")
 
-# Type alias for badge types
-type BadgeType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled"]
+# Type alias for button colors
+type ButtonColor = Literal["primary", "secondary", "light", "info", "success", "warning", "danger"]
 
-# Tuple of valid button type values (colors + link)
-BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "link")
+# Tuple of valid button variants (visual style); "link" and "plain" ignore the color
+BUTTON_VARIANT_VALUES: tuple[str, ...] = ("solid", "outline", "subtle", "link", "plain")
 
-# Type alias for button types
-type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "link"]
+# Type alias for button variants
+type ButtonVariant = Literal["solid", "outline", "subtle", "link", "plain"]
 
 # Icon color values: semantic colors + text colors
 ICON_COLOR_VALUES: tuple[str, ...] = (
@@ -322,7 +322,7 @@ def validate_size(value: str, field_name: str = "size") -> None:
     _validate_literal(value, SIZE_VALUES, field_name)
 
 
-def validate_color_type(value: str, field_name: str = "type") -> None:
+def validate_color_type(value: str, field_name: str = "color") -> None:
     """Validate that a color type value is one of the allowed types.
 
     Args:
@@ -336,32 +336,37 @@ def validate_color_type(value: str, field_name: str = "type") -> None:
     _validate_literal(value, COLOR_TYPE_VALUES, field_name)
 
 
-def validate_badge_type(value: str, field_name: str = "type") -> None:
-    """Validate that a badge type value is one of the allowed types.
+def validate_button_color(value: str, field_name: str = "color") -> None:
+    """Validate that a button color is one of the allowed colors.
 
     Args:
-        value: The badge type value to validate.
+        value: The button color to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid badge type.
+        ValueError: If the value is not a valid button color.
 
     """
-    _validate_literal(value, BADGE_TYPE_VALUES, field_name)
+    if value == "neutral":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'neutral'. Use color='light' on dark or colored surfaces, "
+            "or variant='plain' for an icon button in the text color."
+        )
+    _validate_literal(value, BUTTON_COLOR_VALUES, field_name)
 
 
-def validate_button_type(value: str, field_name: str = "type") -> None:
-    """Validate that a button type value is one of the allowed types.
+def validate_button_variant(value: str, field_name: str = "variant") -> None:
+    """Validate that a button variant is one of the allowed variants.
 
     Args:
-        value: The button type value to validate.
+        value: The button variant to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid button type.
+        ValueError: If the value is not a valid button variant.
 
     """
-    _validate_literal(value, BUTTON_TYPE_VALUES, field_name)
+    _validate_literal(value, BUTTON_VARIANT_VALUES, field_name)
 
 
 def validate_step_status(value: str, field_name: str = "status") -> None:
@@ -634,13 +639,13 @@ TYPE_REGISTRY: dict[str, dict] = {
         "values": SEVERITY_VALUES,
         "description": "Message severity of alerts, infoboxes and status screens.",
     },
-    "BadgeType": {
-        "values": BADGE_TYPE_VALUES,
-        "description": "Extended color palette for badges, includes 'disabled' state.",
+    "ButtonColor": {
+        "values": BUTTON_COLOR_VALUES,
+        "description": "Button colors; 'light' is for dark or colored surfaces.",
     },
-    "ButtonType": {
-        "values": BUTTON_TYPE_VALUES,
-        "description": "Extended color palette for buttons, includes 'link' variant.",
+    "ButtonVariant": {
+        "values": BUTTON_VARIANT_VALUES,
+        "description": "Visual style of buttons; 'link' and 'plain' ignore the color.",
     },
     "ColorType": {
         "values": COLOR_TYPE_VALUES,

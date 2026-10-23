@@ -1120,8 +1120,8 @@ class ModalNode(LayoutNode):
         {% modal id="confirm-delete" title="Confirm Deletion" %}
             <p>Are you sure you want to delete this item?</p>
             {% hbox gap="s" h_align="end" %}
-                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
-                {% button label="Delete" type="danger" on_click="deleteItem()" %}
+                {% button label="Cancel" color="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" color="danger" on_click="deleteItem()" %}
             {% endhbox %}
         {% endmodal %}
 

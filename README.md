@@ -83,7 +83,7 @@ Use components in your templates:
 {% block title %}My application{% endblock %}
 
 {% block content %}
-    {% button label="Get started" type="primary" %}
+    {% button label="Get started" color="primary" %}
     {% card title="Welcome" subtitle="Your first card" content="Card content goes here." %}
     {% alert severity="success" message="Component rendered successfully." %}
 {% endblock %}
