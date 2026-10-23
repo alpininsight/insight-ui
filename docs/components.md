@@ -22,8 +22,9 @@ catalog. Start with [getting started](getting-started.md) for host setup or
 | Regression tests | [Python tests](../tests/insight_ui/) and [Vitest tests](../tests/js/) | Public behavior, escaping, edge cases and lifecycle. |
 
 Use the Config's real fields and tag signature. Not every tag accepts arbitrary
-keyword arguments or a dictionary. For example, `navbar` requires a `config`
-argument and does not use the shared Config builder. Type annotations alone do
+keyword arguments or a dictionary. `{% navbar %}` without a config renders the
+brand from `INSIGHT_UI["brand"]` and no links. A `NavbarConfig` is passed
+through `build_config()`, which rejects a dictionary. Type annotations alone do
 not validate every value; check the Config constructor and rendering tests.
 
 ## Configs And Supported Overrides
@@ -33,18 +34,18 @@ The button supports both inline arguments and Config objects:
 ```python
 from insight_ui.configs import ButtonConfig
 
-save_button = ButtonConfig(label="Save", type="primary", button_type="submit")
+save_button = ButtonConfig(label="Save", color="primary", button_type="submit")
 ```
 
 ```django
 {% load insight_tags %}
-{% button label="Save" type="primary" button_type="submit" %}
+{% button label="Save" color="primary" button_type="submit" %}
 {% button config=save_button %}
 {% button config=save_button label="Save changes" %}
 ```
 
-Pass `save_button` in the host view's template context. `type` selects the visual
-variant; `button_type` selects the HTML button type.
+Pass `save_button` in the host view's template context. `color` and `variant`
+(solid, outline, subtle, link, plain) select the look; `button_type` selects the HTML button type.
 
 With an existing Config, `build_config()` returns a copy with supplied overrides.
 Generated tags forward only supplied `**kwargs`; they do not declare `UNSET`

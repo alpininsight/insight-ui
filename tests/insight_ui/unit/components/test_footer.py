@@ -41,7 +41,7 @@ class TestFooter(TemplateTagsTestCase):
         soup = BeautifulSoup(rendered, "html.parser")
 
         # --- Assert: description ---
-        desc_title = soup.find("h4")
+        desc_title = soup.find("h2")
         assert desc_title.get_text() == "Insight UI"
 
         desc_text = soup.find("p")
@@ -77,3 +77,20 @@ class TestFooter(TemplateTagsTestCase):
         license_el = copyright_p.find("a", href="/license/")
         assert license_el is not None
         assert license_el.get_text(strip=True) == "AGPL-3.0"
+
+
+def test_footer_section_headings_are_h2() -> None:
+    """Footer sections are top-level sections of the page, so they must not jump from h1/h2 to h4."""
+    from django.template import Context, Template  # noqa: PLC0415
+
+    footer = FooterConfig(
+        FooterDescriptionConfig("Insight UI", "Summary"),
+        [NavbarLinkConfig("Startpage", "/")],
+        FooterContactConfig("support@example.com"),
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    soup = BeautifulSoup(html, "html.parser")
+
+    headings = soup.find("footer").find_all(["h2", "h3", "h4"])
+    assert [h.name for h in headings] == ["h2", "h2", "h2"]
+    assert [h.get_text(strip=True) for h in headings] == ["Insight UI", "Links", "Contact"]

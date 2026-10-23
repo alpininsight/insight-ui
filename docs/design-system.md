@@ -13,7 +13,9 @@ Insight UI's roles describe the design purpose.
 
 ## Existing Roles
 
-Use the current names, not earlier token names from old examples:
+Use the current names. The v1.15.1 family tokens `foreground` and `text` were
+renamed, and the old `text` name changed meaning. Follow the two-pass replace
+in [Migrating to 2.0](migration-2.0.md) before editing a host stylesheet:
 
 | Purpose | Token source | Preferred class / use |
 | --- | --- | --- |

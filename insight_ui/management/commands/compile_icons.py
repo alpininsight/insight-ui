@@ -273,7 +273,8 @@ class Command(BaseCommand):
             "{% elif icon_config.size == 's' %}size-5"
             "{% elif icon_config.size == 'xs' %}size-4"
             "{% else %}size-6{% endif %}"
-            '{% if icon_config.color %} text-insight-{{ icon_config.color }}{% endif %}">'
+            "{% if icon_config.color %} text-insight-{{ icon_config.color }}{% endif %}"
+            '{% if icon_config.mirrors_in_rtl %} rtl:-scale-x-100{% endif %}">'
         ]
 
         sorted_icons = sorted(icons.items())
