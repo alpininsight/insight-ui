@@ -90,10 +90,10 @@
         {# Controls #}
         <div class="flex gap-2 items-center">
             {% if progress_bar_config.show_cancel %}
-                {% button type="link" size="s" label=progress_bar_config.cancel_label|default:_("Cancel") data_progress_cancel="" %}
+                {% button variant="link" size="s" label=progress_bar_config.cancel_label|default:_("Cancel") data_progress_cancel="" %}
             {% endif %}
             {% if progress_bar_config.show_retry %}
-                {% button type="link" size="s" label=progress_bar_config.retry_label|default:_("Retry") data_progress_retry="" hidden=True %}
+                {% button variant="link" size="s" label=progress_bar_config.retry_label|default:_("Retry") data_progress_retry="" hidden=True %}
             {% endif %}
         </div>
     </div>

@@ -33,7 +33,7 @@
         >
         <label
             for="{{ toggle_config.tag_id }}"
-            class="btn btn-s btn-primary outline-insight-primary-action-hover cursor-pointer select-none peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active"
+            class="btn btn-primary btn-s{% if toggle_config.disabled %} btn-disabled{% else %} cursor-pointer{% endif %} outline-insight-primary-action-hover select-none peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active"
         >
             {% if toggle_config.icon %}
                 {% icon toggle_config.icon %}

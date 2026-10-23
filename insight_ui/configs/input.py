@@ -4,18 +4,21 @@
 
 import warnings
 from dataclasses import dataclass, field
+from unicodedata import category
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
 from insight_ui.configs.types import (
-    ButtonType,
+    ButtonColor,
+    ButtonVariant,
     HtmlButtonType,
     HtmlInputType,
     HtmxSwapMethod,
     Size,
     SliderLegendMode,
-    validate_button_type,
+    validate_button_color,
+    validate_button_variant,
     validate_html_button_type,
     validate_html_input_type,
     validate_htmx_swap_method,
@@ -36,15 +39,14 @@ class ButtonConfig:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL of the link (renders as <a>).
-        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
+        external: **True** to open the link in a new tab.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
         icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
-        type: Defines the color of the button (primary, secondary, danger, etc.).
+        color: Color of the button.
+        variant: Visual style of the button.
         size: Defines the size of the button.
-        outline: **True** to use the outline design of the button.
-        subtle: **True** to use the subtle design of the button.
         round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
@@ -56,6 +58,7 @@ class ButtonConfig:
         data_attrs: List of custom data attributes to add to the button element.
         aria_attrs: List of ARIA attributes to add to the button element.
         hx_attrs: List of HTMX attributes to add to the button element.
+        download: Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename.
 
     """
 
@@ -68,10 +71,9 @@ class ButtonConfig:
             icon=IconConfig("rocket-launch", "m"),
             icon_end=True,
             icon_only=False,
-            type="primary",
+            color="primary",
+            variant="solid",
             size="xl",
-            outline=False,
-            subtle=False,
             round=False,
             tooltip="Click to calculate something",
             htmx_config=HtmxConfig(...),
@@ -85,12 +87,7 @@ class ButtonConfig:
     label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     request_url: str = field(default="", metadata={"doc": "URL of the link (renders as <a>)."})
-    external: bool = field(
-        default=False,
-        metadata={
-            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
-        },
-    )
+    external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
     on_click: str = field(
         default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
     )
@@ -107,12 +104,9 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: ButtonType = field(
-        default="primary", metadata={"doc": "Defines the color of the button (primary, secondary, danger, etc.)."}
-    )
+    color: ButtonColor = field(default="primary", metadata={"doc": _("Color of the button.")})
+    variant: ButtonVariant = field(default="solid", metadata={"doc": _("Visual style of the button.")})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
-    outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
-    subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
     htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
@@ -142,25 +136,53 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
+    # Append to preserve positional construction of all existing fields.
+    download: bool | str = field(
+        default=False,
+        metadata={
+            "doc": "Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename."
+        },
+    )
+
+    @property
+    def download_enabled(self) -> bool:
+        """An empty filename still requests native download behavior."""
+        return self.download is not False
 
     def __post_init__(self) -> None:
-        """Require a label and validate type, size, and button_type after initialization."""
+        """Require a label, validate the values and reject options that would be silently ignored.
+
+        Raises:
+            ValueError: If a value is invalid or an option does not apply to the rendered element.
+
+        """
         # The label is the accessible name, also for icon-only buttons (aria-label).
         validate_not_empty(self, "label")
-        # Override type when disabled=True
-        if self.disabled:
-            object.__setattr__(self, "type", "disabled")
-            if self.disabled_reason is None:
-                warnings.warn(
-                    f"ButtonConfig {self.label} is disabled without a disabled_reason. "
-                    "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
-                    stacklevel=2,
-                )
-        else:
-            validate_button_type(self.type, "type")
-
+        if not isinstance(self.download, (bool, str)):
+            raise TypeError("ButtonConfig.download must be a bool or a filename string.")  # noqa: TRY003
+        if self.download_enabled:
+            validate_not_empty(self, "request_url")
+            if self.htmx_config is not None or self.hx_attrs:
+                raise ValueError("Native downloads cannot be combined with HTMX request attributes.")  # noqa: TRY003
+            if isinstance(self.download, str) and any(category(char) == "Cc" for char in self.download):
+                raise ValueError("Download filenames must not contain control characters.")  # noqa: TRY003
+        validate_button_color(self.color)
+        validate_button_variant(self.variant)
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
+        # A request_url renders an <a>: it has no type or onclick of a button, and without it there is no link.
+        if self.external and not self.request_url:
+            raise ValueError(f"ButtonConfig {self.label}: external only applies together with request_url.")  # noqa: TRY003
+        if self.request_url and (self.on_click or self.button_type != "button"):
+            raise ValueError(  # noqa: TRY003
+                f"ButtonConfig {self.label}: on_click and button_type only apply to buttons without request_url."
+            )
+        if self.disabled and self.disabled_reason is None:
+            warnings.warn(
+                f"ButtonConfig {self.label} is disabled without a disabled_reason. "
+                "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                stacklevel=2,
+            )
 
 
 @dataclass
