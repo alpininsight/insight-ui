@@ -1,0 +1,54 @@
+{% load i18n insight_tags %}
+
+{% with config=query_builder_config script_id=query_builder_config.tag_id|add:"-fields" %}
+    <form
+        id="{{ config.tag_id }}"
+        role="search"
+        aria-label="{% translate 'Filter' %}"
+        aria-describedby="{{ config.tag_id }}-help"
+        action="{{ config.request_url }}"
+        method="get"
+        {% if config.htmx %}{% htmx_attributes config.htmx request_url=config.request_url push_url=True %} hx-disabled-elt="#{{ config.tag_id }} button[type='submit']"{% endif %}
+        data-insight-query-builder
+        data-param-name="{{ config.param_name }}"
+        data-max-filters="{{ config.max_filters }}"
+        class="flex flex-col gap-insight-m w-full"
+    >
+    {# hx-disabled-elt is inherited by the reset link, so it names the submit button by the form ID. #}
+        {{ field_definitions|json_script:script_id }}
+
+    {# The precedence only matters once there are two filters; the script shows the text then. #}
+        <p id="{{ config.tag_id }}-help" class="text-sm text-insight-body"{% if rows|length < 2 %} hidden{% endif %} data-insight-query-builder-help>
+            {% translate 'AND binds tighter than OR: "A AND B OR C" finds entries that match both A and B, or C.' %}
+        </p>
+
+        <div class="flex flex-col gap-insight-s" data-insight-query-builder-rows>
+            {% for row in rows %}
+                {% include "insight_ui/components/query_builder_filter.html" with index=forloop.counter0 %}
+            {% endfor %}
+        </div>
+
+        <template data-insight-query-builder-template>
+            {% include "insight_ui/components/query_builder_filter.html" with row=None index=0 %}
+        </template>
+
+        <div class="flex flex-wrap gap-insight-s items-center">
+            {% button label=_("Add filter") icon_name="plus" type="primary" outline=True data_insight_query_builder_add="" %}
+            {% button label=_("Apply") type="primary" button_type="submit" %}
+            {% if config.filters %}
+                {% button label=_("Reset") type="neutral" subtle=True request_url=reset_url htmx_config=reset_htmx %}
+            {% endif %}
+            <p class="text-sm text-insight-body" hidden data-insight-query-builder-limit>
+                {% blocktranslate count max=config.max_filters %}You can combine up to {{ max }} filter.{% plural %}You can combine up to {{ max }} filters.{% endblocktranslate %}
+            </p>
+        </div>
+
+        {% if config.show_summary %}
+            <p class="text-sm text-insight-body" data-insight-query-builder-summary>
+                {% if summary %}{% blocktranslate %}Active filters: {{ summary }}{% endblocktranslate %}{% else %}{% translate "No active filters." %}{% endif %}
+            </p>
+        {% endif %}
+
+        <p class="sr-only" role="status" data-insight-query-builder-status></p>
+    </form>
+{% endwith %}
