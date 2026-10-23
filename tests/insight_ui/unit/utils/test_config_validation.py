@@ -856,20 +856,28 @@ def test_validate_filter_field_type_custom_field_name() -> None:
 def test_query_builder_field_config_accepts_valid_type() -> None:
     """Test QueryBuilderFieldConfig accepts valid type values."""
     for field_type in FILTER_FIELD_TYPE_VALUES:
-        config = QueryBuilderFieldConfig(field="test", label="Test", type=field_type)
+        config = QueryBuilderFieldConfig(
+            field="test", label="Test", type=field_type, operations={"exact": "is"}, values={"a": "A"}
+        )
         assert config.type == field_type
 
 
 def test_query_builder_field_config_rejects_invalid_type() -> None:
     """Test QueryBuilderFieldConfig raises ValueError for invalid type."""
     with pytest.raises(ValueError, match="Invalid type"):
-        QueryBuilderFieldConfig(field="test", label="Test", type="invalid")
+        QueryBuilderFieldConfig(field="test", label="Test", type="invalid", operations={"exact": "is"})
 
 
 def test_query_builder_field_config_default_type() -> None:
     """Test QueryBuilderFieldConfig has correct default type."""
-    config = QueryBuilderFieldConfig(field="test", label="Test")
+    config = QueryBuilderFieldConfig(field="test", label="Test", operations={"exact": "is"})
     assert config.type == "text"
+
+
+def test_query_builder_choice_field_requires_values() -> None:
+    """A choice field without values could never be filtered."""
+    with pytest.raises(ValueError, match="needs values"):
+        QueryBuilderFieldConfig(field="status", label="Status", type="choice", operations={"exact": "is"})
 
 
 # =============================================================================

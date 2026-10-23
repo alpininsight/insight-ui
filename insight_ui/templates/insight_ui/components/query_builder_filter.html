@@ -1,0 +1,67 @@
+{% load i18n insight_tags layout_tags %}
+
+{% with tag_id=query_builder_config.tag_id param_name=query_builder_config.param_name number=index|add:1 %}
+{% comment %}
+    From md on, all rows share the same columns, so only the first row shows the column labels.
+    The labels of the other rows stay for screen readers, together with the legend "Filter N".
+{% endcomment %}
+    <fieldset class="flex flex-col gap-insight-s md:grid md:grid-cols-[auto_12rem_12rem_minmax(0,28rem)] md:justify-start md:items-end" data-insight-query-builder-row>
+        <legend class="sr-only" data-insight-query-builder-legend>{% blocktranslate %}Filter {{ number }}{% endblocktranslate %}</legend>
+
+    {# OR starts a new group. The radio buttons already name the choice, so screen readers skip the divider. #}
+        {% translate "OR" context "query builder" as or_label %}
+        <div class="md:col-span-full" aria-hidden="true"{% if index == 0 or row.filter.logic != "OR" %} hidden{% endif %} data-insight-query-builder-divider>
+            {% divider label=or_label spacing="xs" %}
+        </div>
+
+        <fieldset class="flex gap-insight-s items-center h-9{% if index == 0 %} max-md:hidden invisible{% endif %}" data-insight-query-builder-logic{% if index == 0 %} disabled{% endif %}>
+            <legend class="sr-only">{% translate "Combine with the previous filter" %}</legend>
+            <label class="flex gap-insight-xs items-center text-sm text-insight-headline">
+                <input type="radio" name="{{ param_name }}-{{ index }}-logic" value="AND"{% if row.filter.logic != "OR" %} checked{% endif %} data-insight-query-builder-part="logic">
+                {% translate "AND" context "query builder" %}
+            </label>
+            <label class="flex gap-insight-xs items-center text-sm text-insight-headline">
+                <input type="radio" name="{{ param_name }}-{{ index }}-logic" value="OR"{% if row.filter.logic == "OR" %} checked{% endif %} data-insight-query-builder-part="logic">
+                {% translate "OR" context "query builder" %}
+            </label>
+        </fieldset>
+
+        <div class="flex flex-col">
+            <label for="{{ tag_id }}-{{ index }}-field" class="mb-1 font-bold text-sm text-insight-headline{% if index %} md:sr-only{% endif %}" data-insight-query-builder-label="field">{% translate "Field" %}</label>
+            <select id="{{ tag_id }}-{{ index }}-field" name="{{ param_name }}-{{ index }}-field" class="input" required data-insight-query-builder-part="field">
+                <option value="">{% translate "Choose a field" %}</option>
+                {% for definition in field_definitions %}
+                    <option value="{{ definition.field }}"{% if definition.field == row.filter.field %} selected{% endif %}>{{ definition.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="{{ tag_id }}-{{ index }}-operator" class="mb-1 font-bold text-sm text-insight-headline{% if index %} md:sr-only{% endif %}" data-insight-query-builder-label="operator">{% translate "Condition" %}</label>
+            <select id="{{ tag_id }}-{{ index }}-operator" name="{{ param_name }}-{{ index }}-operator" class="input" required data-insight-query-builder-part="operator"{% if not row.operations %} disabled{% endif %}>
+                {% for operator, label in row.operations.items %}
+                    <option value="{{ operator }}"{% if operator == row.filter.operator %} selected{% endif %}>{{ label }}</option>
+                {% empty %}
+                    <option value="">{% translate "Choose a field first" %}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="{{ tag_id }}-{{ index }}-value" class="mb-1 font-bold text-sm text-insight-headline{% if index %} md:sr-only{% endif %}" data-insight-query-builder-label="value">{% translate "Value" %}</label>
+        {# The remove button is smaller than the value control and stretches to its height. #}
+            <div class="flex gap-insight-s">
+                {% if row.choices %}
+                    <select id="{{ tag_id }}-{{ index }}-value" name="{{ param_name }}-{{ index }}-value" class="input w-full" required data-insight-query-builder-part="value">
+                        {% for value, label in row.choices.items %}
+                            <option value="{{ value }}"{% if value == row.value %} selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input id="{{ tag_id }}-{{ index }}-value" name="{{ param_name }}-{{ index }}-value" type="{{ row.input_type|default:'text' }}" value="{{ row.value }}"{% if row.input_type == "number" %} step="any"{% endif %} class="input w-full" required data-insight-query-builder-part="value"{% if not row.operations %} placeholder="{% translate 'Choose a field first' %}" disabled{% endif %}>
+                {% endif %}
+                {% button label=_("Remove filter") icon_name="trash" icon_size="s" icon_only=True type="danger" outline=True size="s" extra_classes="shrink-0" data_insight_query_builder_remove="" %}
+            </div>
+        </div>
+    </fieldset>
+{% endwith %}
