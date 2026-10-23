@@ -3,7 +3,7 @@
 {# Open button for drawers (static=False) or mobile toggle (static + mobile_behavior="drawer") #}
 {% if not static or mobile_behavior == "drawer" %}
   <button
-    class="fixed top-20 {% if side == 'right' %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 p-2 text-white bg-insight-primary-action rounded-insight-full shadow-insight-subtle hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active{% if static %} lg:hidden{% endif %}"
+    class="fixed top-[calc(var(--insight-navbar-height)+1rem)] {% if side == 'right' %}end-(--insight-gutter){% else %}start-(--insight-gutter){% endif %} z-40 p-2 text-white bg-insight-primary-action rounded-insight-full shadow-insight-subtle hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active{% if static %} lg:hidden{% endif %}"
     {% if static %}data-sidebar-toggle="{{ side }}"{% else %}data-sidebar-target="{{ side }}"{% endif %}
     aria-label="{% trans 'Open sidebar' %}"
     aria-expanded="false"
@@ -39,9 +39,9 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{{ width_class }} {% if static %} {% if mobile_behavior == 'hidden' %}hidden lg:block {% elif mobile_behavior == 'drawer' %}hidden lg:block {% endif %} sticky {% if navbar_fixed %}top-16 h-[calc(100dvh-4rem)]{% else %}top-0 h-dvh{% endif %} {% else %} fixed h-dvh {% endif %} {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-surface border-insight-surface shadow-insight-surface transition-transform overflow-y-auto"
+    class="{{ width_class }} {% if static %} {% if mobile_behavior == 'hidden' %}hidden lg:block {% elif mobile_behavior == 'drawer' %}hidden lg:block {% endif %} sticky {% if navbar_fixed %}top-(--insight-navbar-height) h-[calc(100dvh-var(--insight-navbar-height))]{% else %}top-0 h-dvh{% endif %} {% else %} fixed h-dvh {% endif %} {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-surface border-insight-surface shadow-insight-surface transition-transform overflow-y-auto"
   >
-    <div class="flex flex-col {% if side == 'right' %}ps-4 pe-4 md:pe-6{% else %}ps-4 pe-4 md:ps-6{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
+    <div class="insight-gutter flex flex-col {% if static %}py-8{% else %}pb-8{% endif %}">
       {# Close button (only for drawers) #}
       {% if not static %}
         <div class="flex justify-end pt-4">
@@ -69,7 +69,7 @@
       aria-label="{% trans 'Side navigation' %}"
       class="{{ width_class }} fixed h-dvh {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-base border-insight-surface shadow-insight-surface transition-transform overflow-y-auto"
     >
-      <div class="flex flex-col {% if side == 'right' %}ps-4 pe-4 md:pe-6{% else %}ps-4 pe-4 md:ps-6{% endif %} pb-8">
+      <div class="insight-gutter flex flex-col pb-8">
         <div class="flex justify-end pt-4">
           {% button label=_("Close sidebar") icon_name="x-mark" icon_only=True variant="subtle" color="secondary" data_insight_dismiss="sidebar" %}
         </div>

@@ -21,6 +21,8 @@ pattern for a host project.
 - [ ] Rename the six color-family tokens in two passes. Do this before any other class edit.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
+- [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
+- [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
 - [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
@@ -156,6 +158,80 @@ content polling does not show the bar.
 
 Search: `hx-indicator` on elements that have no indicator of their own, and
 `show_global_loading_indicator`.
+
+### Spacing and content width
+
+All parts of the page now share one distance to the window edge,
+`--insight-gutter` (1rem on phones, growing to 2rem from about 64rem). In
+v1.15.1 each part had its own: navbar `px-4`, footer and sidebars `px-4` /
+`md:px-6`, page header `px-4` / `md:px-16` with a `max-w-4xl` column, and the
+content none at all.
+
+The content is limited to a centered box of `--insight-content-max-width`
+(default `80rem`). `#content` is a three-column grid: its direct children sit
+in the content column, and `{% page %}` bands span the whole content area
+(up to the sidebars) while their text stays in the column. Add the class
+`insight-full-bleed` to your own direct children for the same effect.
+
+| Setting or context | Effect |
+| --- | --- |
+| `INSIGHT_UI["content_max_width"]` | Content width for all pages, e.g. `"64rem"` |
+| `content_max_width` (template context) | Content width for one page |
+| `content_full_width=True` (template context) | No box and no grid; the page manages its own width |
+| `INSIGHT_UI["align_navbar_footer_to_content"]` | Navbar and footer put their content into the content box instead of spanning the window |
+| `content_fill=True` (template context) | Unchanged flex column for filling pages such as a login, now boxed |
+
+`{% page padding=... %}` pads only vertically; the box provides the horizontal
+gutter. The page header's text now uses the content width instead of
+`max-w-4xl`.
+
+Before:
+
+```text
+{% block content %}
+    <div class="px-4 mx-auto max-w-7xl">{% page padding="m" %}...{% endpage %}</div>
+{% endblock %}
+```
+
+After, drop the wrapper; the base template boxes the content:
+
+```text
+{% block content %}
+    {% page padding="m" %}...{% endpage %}
+{% endblock %}
+```
+
+Because direct children of `#content` are grid items, `float` has no effect on
+them and their vertical margins add up instead of collapsing (`mb-4` followed
+by `mt-8` is now 48px, not 32px). Elements one level deeper behave as before.
+A `{% page %}` nested in another container stays in the content column.
+
+Search: host base templates and pages for `px-`, `max-w-` and `mx-auto`
+wrappers around the content, `{% page padding=`, and floated or margin-spaced
+top-level elements.
+
+### Fixed navbar is sticky
+
+With `INSIGHT_UI["navbar_fixed"]`, v1.15.1 positioned the navbar with
+`position: fixed` and reserved its height with `pt-16` on `#main`. The header
+is now `position: sticky` and stays in the page flow, so `#main` no longer has
+`pt-16`. On screen it behaves the same: the navbar stays at the top while the
+page scrolls.
+
+The navbar height is one variable, `--insight-navbar-height` (default `4rem`).
+Sticky sidebars, the drawer button and the scroll padding for anchor targets
+start below it. A host with a taller navbar sets the variable
+once instead of overriding `top-16`, `pt-16` and `calc(100dvh - 4rem)`.
+
+```css
+:root {
+    --insight-navbar-height: 5rem;
+}
+```
+
+Search: host CSS or templates that compensate the fixed navbar with `pt-16`,
+`mt-16` or `top-16`, and scripts that expect the navbar to be
+`position: fixed`.
 
 ### Theme before first paint
 
