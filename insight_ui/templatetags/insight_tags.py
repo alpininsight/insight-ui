@@ -89,6 +89,7 @@ from insight_ui.configs import (
     PaginationIppConfig,
     QueryBuilderConfig,
     QueryBuilderFieldConfig,
+    QueryBuilderFilterConfig,
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
@@ -109,6 +110,7 @@ from insight_ui.configs import (
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
+from insight_ui.utils import query_builder as query_builder_utils
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -1457,13 +1459,45 @@ def generic_filter(
     return {"generic_filter_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
+@register.inclusion_tag("insight_ui/components/query_builder.html")
 def query_builder(
-    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | _Unset = UNSET
+    config: QueryBuilderConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    fields: list[QueryBuilderFieldConfig] | _Unset = UNSET,
+    filters: list[QueryBuilderFilterConfig] | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    param_name: str | _Unset = UNSET,
+    max_filters: int | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+    show_summary: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a filter for constructing custom search queries."""
+    """Render a form to combine filters on model fields."""
     config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"model_fields": config.model_fields}
+    by_name = {field.field: field for field in config.fields}
+    rows = []
+    active: list[QueryBuilderFilterConfig | None] = list(config.filters) or [None]
+    for item in active:
+        field = by_name.get(item.field) if item else None
+        definition = query_builder_utils.field_definition(field) if field else {}
+        rows.append(
+            {
+                "filter": item,
+                "operations": definition.get("operations", {}),
+                "choices": definition.get("choices", {}),
+                "input_type": definition.get("input_type", "text"),
+                "value": query_builder_utils.format_value(item.value) if item else "",
+            }
+        )
+    return {
+        "query_builder_config": config,
+        "field_definitions": [query_builder_utils.field_definition(field) for field in config.fields],
+        "rows": rows,
+        "summary": query_builder_utils.describe_filters(config.filters, config.fields) if config.show_summary else "",
+        # Reset loads the request URL without filters; with HTMX it also resets the browser URL.
+        "reset_url": config.request_url or "?",
+        "reset_htmx": replace(config.htmx, push_url=True) if config.htmx else None,
+    }
 
 
 # =============================================================

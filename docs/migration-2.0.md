@@ -38,6 +38,7 @@ pattern for a host project.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Rebuild query builder views on `parse_filters` and `build_query`, and rename `model_fields` to `fields`.
 - [ ] Leave button `type`, pagination helpers and `explanation` as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
 
 ## Color tokens are a silent break
@@ -818,6 +819,60 @@ A link button whose `HtmxConfig` has no `request_url` now requests the link
 `href`. Setting both `ButtonConfig.request_url` and
 `HtmxConfig.request_url` no longer warns. The HTMX URL is the config URL
 when it is set.
+
+## Query builder
+
+The `query_builder` component was rebuilt. Its markup, its submitted parameters and
+its Python helpers changed, so treat it as a new component.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `QueryBuilderConfig(model_fields=[...])` | `QueryBuilderConfig(fields=[...])`, plus `tag_id`, `filters`, `request_url`, `param_name`, `max_filters`, `htmx` and `show_summary` |
+| `QueryBuilderFieldConfig` without `operations` | `operations` is required; a `choice` field also needs `values` |
+| A host view named `get_allowed_operators`, reversed by the template | Not needed. The field definitions are rendered into the page. |
+| A JSON `custom_filters` parameter, the page is reloaded by a script | A plain GET form with `filters-<n>-field`, `-operator`, `-value` and `-logic`, or HTMX with `htmx=HtmxConfig(...)` |
+| `insight_ui.utils.query_builder_utils` | `insight_ui.utils.query_builder` |
+| `get_filter_settings_for_field()` | Removed |
+| `build_dynamic_query(filters)` returning `(Q, {}, {})` | `build_query(parse_filters(request.GET, config))` returning a `Q` |
+
+`parse_filters` takes the config, so it reads the same `param_name` and stops at
+the same `max_filters` (default 20) as the form. It keeps only filters whose
+field, operator and value the field configs allow, and converts values to the
+field type. `build_query` keeps the
+submitted order and binds AND tighter than OR: "A AND B OR C" is
+"(A AND B) OR C". v1.15.1 grouped the filters by field first.
+
+Field, condition and value are required in the browser, so an incomplete
+filter is not sent. With active filters a Reset link loads `request_url`
+without them. `describe_filters(filters, fields)` returns the active
+filters as a sentence with the labels, e.g. for a page title or an HTMX
+response; `show_summary=True` renders it below the form.
+
+Before:
+
+```python
+from insight_ui.utils.query_builder_utils import build_dynamic_query
+
+filters = json.loads(request.GET.get("custom_filters", "[]"))
+query, _, _ = build_dynamic_query(filters)
+context["query_builder"] = QueryBuilderConfig(model_fields=FIELDS)
+```
+
+After:
+
+```python
+from insight_ui.utils.query_builder import build_query, parse_filters
+
+config = QueryBuilderConfig(tag_id="book-filter", fields=FIELDS)
+config.filters = parse_filters(request.GET, config)
+books = Book.objects.filter(build_query(config.filters))
+context["query_builder"] = config
+```
+
+Remove the `get_allowed_operators` view and its URL pattern.
+
+Search: `model_fields=`, `query_builder_utils`, `get_filter_settings_for_field`,
+`build_dynamic_query`, `get_allowed_operators` and `custom_filters`.
 
 ## Checked, and not a 2.0 break
 
