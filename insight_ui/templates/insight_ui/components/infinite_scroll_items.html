@@ -1,8 +1,9 @@
 {% load i18n insight_tags %}
+{# Pass heading_level in the response context when the feed's InfiniteScrollConfig uses a level other than 3. #}
 
 {% for item in items %}
     <article class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
-        <h3>{{ item.title }}</h3>
+        <h{{ heading_level|default:3 }} class="font-medium text-xl text-insight-headline md:text-2xl">{{ item.title }}</h{{ heading_level|default:3 }}>
         <p class="text-insight-body">{{ item.content }}</p>
     </article>
 {% endfor %}

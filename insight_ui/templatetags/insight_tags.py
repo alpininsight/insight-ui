@@ -64,6 +64,7 @@ from insight_ui.configs import (
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
+    HeadingLevel,
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
@@ -341,6 +342,7 @@ def icon(
     name: str | _Unset = UNSET,
     size: Size | _Unset = UNSET,
     color: IconColor | _Unset = UNSET,
+    mirror_rtl: bool | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size and color."""
     config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -623,6 +625,7 @@ def button(
     on_click: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
     color: ButtonColor | _Unset = UNSET,
@@ -657,7 +660,15 @@ def button(
     """
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     # Collect data_* kwargs and convert to DataAttrConfig list
     data_attrs: list[DataAttrConfig] | _Unset = UNSET
@@ -1291,6 +1302,7 @@ def badge(
     label: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
     size: Size | _Unset = UNSET,
@@ -1302,7 +1314,15 @@ def badge(
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     config = build_config(
         BadgeConfig,
@@ -1383,6 +1403,7 @@ def infinite_scroll(
     has_next: bool | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
     threshold: int | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for infinite scroll."""
     config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1472,6 +1493,7 @@ def card(
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
     actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1488,6 +1510,7 @@ def app_card(
     request_url: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
     actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1507,6 +1530,7 @@ def flip_card(
     back_title: str | _Unset = UNSET,
     back_content: str | _Unset = UNSET,
     back_actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
     config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
