@@ -5,6 +5,8 @@
 import pytest
 from bs4 import BeautifulSoup
 from django.template import Context, Template
+from django.template.loader import render_to_string
+from insight_ui.config import get_config
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -174,3 +176,11 @@ def test_content_column_fills_the_sidebar_height() -> None:
     soup = BeautifulSoup(render_sidebar('mobile_behavior="drawer"'), "html.parser")
 
     assert all("min-h-full" in aside.find("div")["class"] for aside in soup.find_all("aside"))
+
+
+def test_base_aside_columns_do_not_shrink_fit_width_sidebars() -> None:
+    """The base layout preserves the intrinsic width selected by a sidebar."""
+    soup = BeautifulSoup(render_to_string("insight_ui/base.html", get_config()), "html.parser")
+
+    assert "shrink-0" in soup.find(id="left-aside")["class"]
+    assert "shrink-0" in soup.find(id="right-aside")["class"]
