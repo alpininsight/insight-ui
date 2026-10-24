@@ -10,10 +10,10 @@
             <div class="flex flex-1 flex-col px-4 py-2">
                 {% if flip_card_config.request_url %}
                     <a href="{{ flip_card_config.request_url }}">
-                        <h3 class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ flip_card_config.title }}</h3>
+                        <h{{ flip_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ flip_card_config.title }}</h{{ flip_card_config.heading_level }}>
                     </a>
                 {% else %}
-                    <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.title }}</h3>
+                    <h{{ flip_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.title }}</h{{ flip_card_config.heading_level }}>
                 {% endif %}
                 <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ flip_card_config.content|safe }}</p>
             </div>
@@ -52,7 +52,7 @@
         <div class="backface-hidden flex flex-col absolute inset-0 size-full bg-insight-surface border border-insight-surface rounded-insight-surface shadow-insight-surface rotate-y-180 overflow-hidden" data-flip-back aria-hidden="true" inert>
             <div class="flex flex-1 flex-col p-4">
                 {% if flip_card_config.back_title %}
-                    <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.back_title }}</h3>
+                    <h{{ flip_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.back_title }}</h{{ flip_card_config.heading_level }}>
                 {% endif %}
                 {% if flip_card_config.back_content %}
                     <div class="flex-1 text-insight-body text-base overflow-auto">{{ flip_card_config.back_content|safe }}</div>

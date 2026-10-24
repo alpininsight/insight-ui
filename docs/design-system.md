@@ -13,7 +13,9 @@ Insight UI's roles describe the design purpose.
 
 ## Existing Roles
 
-Use the current names, not earlier token names from old examples:
+Use the current names. The v1.15.1 family tokens `foreground` and `text` were
+renamed, and the old `text` name changed meaning. Follow the two-pass replace
+in [Migrating to 2.0](migration-2.0.md) before editing a host stylesheet:
 
 | Purpose | Token source | Preferred class / use |
 | --- | --- | --- |
@@ -25,9 +27,9 @@ Use the current names, not earlier token names from old examples:
 | Main content text | `--color-insight-text-body` | `text-insight-body` |
 | Heading text | `--color-insight-text-headline` | `text-insight-headline` |
 | Secondary content | `--color-insight-text-muted` | `text-insight-muted` |
-| Semantic text/icon color | `--color-insight-primary-foreground` | `text-insight-primary-foreground` |
+| Semantic text/icon color | `--color-insight-primary-text` | `text-insight-primary-text` |
 | Filled action background | `--color-insight-primary-action` | Prefer the existing primary button. |
-| Text on the filled action | `--color-insight-primary-text` | Used together with its action background. |
+| Text on the filled action | `--color-insight-primary-on-fill` | Used together with its action background. |
 | Reusable spacing | `--spacing-insight-m` | `p-insight-m`, `gap-insight-m` |
 | Control radius | `--radius-insight-control` | `rounded-insight-control` |
 | Surface radius | `--radius-insight-surface` | `rounded-insight-surface` |

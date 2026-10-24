@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Keep contributor checks independent of private infrastructure and credentials."""
 
+import json
 import re
 import tomllib
 from pathlib import Path
@@ -129,6 +130,18 @@ def test_quality_gate_preserves_required_checks() -> None:
         assert all(step.get("continue-on-error", False) is False for step in job["steps"])
     policy = _workflows()["pr-branch-guard.yml"]["jobs"]["branch-policy"]
     assert policy["name"] == "branch-policy / Repository Policy"
+
+
+def test_stylesheet_check_rebuilds_like_contributors_do() -> None:
+    """CI rebuilds tailwind.css with the contributor command and fails on any difference."""
+    steps = _workflows()["feature-ci.yml"]["jobs"]["stylesheet"]["steps"]
+    build = next(step for step in steps if "tailwind build" in step.get("run", ""))
+    check = next(step for step in steps if "git diff --exit-code" in step.get("run", ""))
+    contributor_build = json.loads((ROOT / "package.json").read_text())["scripts"]["build:tailwind"]
+
+    assert f"DJANGO_SETTINGS_MODULE={build['env']['DJANGO_SETTINGS_MODULE']}" in contributor_build
+    assert build["run"].split("python ", 1)[1] in contributor_build
+    assert "insight_ui/static/insight_ui/css/tailwind.css" in check["run"]
 
 
 def test_artifacts_are_uploaded_only_after_installation_smoke() -> None:

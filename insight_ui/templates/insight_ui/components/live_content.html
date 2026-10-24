@@ -2,10 +2,13 @@
 
 <div
     {% if live_content_config.tag_id %}id="{{ live_content_config.tag_id }}"{% endif %}
-    hx-get="{{ htmx_config.request_url }}"
-    hx-trigger="{{ htmx_config.trigger }}"
-    hx-swap="{{ htmx_config.swap }}"
-    hx-indicator=".htmx-indicator"
+    hx-get="{{ live_request.request_url }}"
+    hx-trigger="{{ live_request.trigger }}"
+    hx-swap="{{ live_request.swap }}"
+    hx-indicator="find .htmx-indicator"
+    class="insight-live-content"
+    {# Background polling stays out of the global loading bar unless requested. #}
+    {% if not live_content_config.show_global_loading_indicator %}data-insight-global-indicator="false"{% endif %}
     aria-live="polite"
     aria-busy="false"
     tabindex="-1"

@@ -22,8 +22,9 @@ catalog. Start with [getting started](getting-started.md) for host setup or
 | Regression tests | [Python tests](../tests/insight_ui/) and [Vitest tests](../tests/js/) | Public behavior, escaping, edge cases and lifecycle. |
 
 Use the Config's real fields and tag signature. Not every tag accepts arbitrary
-keyword arguments or a dictionary. For example, `navbar` requires a `config`
-argument and does not use the shared Config builder. Type annotations alone do
+keyword arguments or a dictionary. `{% navbar %}` without a config renders the
+brand from `INSIGHT_UI["brand"]` and no links. A `NavbarConfig` is passed
+through `build_config()`, which rejects a dictionary. Type annotations alone do
 not validate every value; check the Config constructor and rendering tests.
 
 ## Configs And Supported Overrides
@@ -33,18 +34,18 @@ The button supports both inline arguments and Config objects:
 ```python
 from insight_ui.configs import ButtonConfig
 
-save_button = ButtonConfig(label="Save", type="primary", button_type="submit")
+save_button = ButtonConfig(label="Save", color="primary", button_type="submit")
 ```
 
 ```django
 {% load insight_tags %}
-{% button label="Save" type="primary" button_type="submit" %}
+{% button label="Save" color="primary" button_type="submit" %}
 {% button config=save_button %}
 {% button config=save_button label="Save changes" %}
 ```
 
-Pass `save_button` in the host view's template context. `type` selects the visual
-variant; `button_type` selects the HTML button type.
+Pass `save_button` in the host view's template context. `color` and `variant`
+(solid, outline, subtle, link, plain) select the look; `button_type` selects the HTML button type.
 
 With an existing Config, `build_config()` returns a copy with supplied overrides.
 Generated tags forward only supplied `**kwargs`; they do not declare `UNSET`
@@ -65,6 +66,31 @@ Underscores become hyphens and values become strings. Supplying `data_*`,
 it. This example supplies only a trigger; the host must supply the target element
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
+
+## Find A Component's Arguments
+
+This guide is not a catalog. The full per-component reference with live examples
+is at [django-insight-ui.com](https://django-insight-ui.com/docs/configs). In an
+installed package the same information comes from the source of truth above:
+
+- the tag signature in [insight_tags.py](../insight_ui/templatetags/insight_tags.py),
+- the Config's docstring `Attributes`, each field's `metadata["doc"]`, its default
+  and the `__example__` constructor.
+
+```python
+from dataclasses import MISSING, fields
+
+from insight_ui.configs import FormConfig
+
+for config_field in fields(FormConfig):
+    default = "required" if config_field.default is MISSING else repr(config_field.default)
+    print(config_field.name, default, config_field.metadata.get("doc", ""))
+print(FormConfig.__example__)
+```
+
+Common options can also be passed directly to the tag. For example,
+`{% form title="Contact" fields=fields submit_label="Send" method="get" %}`
+works without building a `FormConfig` in Python.
 
 ## Atomic Composition
 

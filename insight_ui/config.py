@@ -21,12 +21,15 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
     "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "content_max_width": "",  # CSS width of the content box, e.g. "64rem"; empty keeps the default of 80rem
+    "align_navbar_footer_to_content": False,  # True puts navbar and footer content into the content box
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "register_url": "",  # URL or URL name for registration page (empty = no register button)
+    "tooltip_show_delay": 400,  # Milliseconds before a tooltip appears on hover; keyboard focus shows it at once
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
@@ -40,6 +43,15 @@ CONFIG_DEFAULTS: dict[str, Any] = {
             ),
         ),
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
+    },
+    # HTMX and its WebSocket extension, loaded by insight_ui/base.html. Point these at
+    # self-hosted copies (and update or clear the SRI hashes) for offline or strict-CSP
+    # hosts; an empty src omits the script tag, e.g. when the host loads HTMX itself.
+    "htmx": {
+        "src": "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js",
+        "integrity": "sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz",
+        "ws_src": "https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4",
+        "ws_integrity": "sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G",
     },
     "assets": {
         "use_minified": False,

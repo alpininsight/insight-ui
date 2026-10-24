@@ -7,10 +7,10 @@
     <div class="flex flex-1 flex-col px-4 py-2">
         {% if app_card_config.request_url %}
             <a href="{{ app_card_config.request_url }}">
-                <h3 class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</h3>
+                <h{{ app_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</h{{ app_card_config.heading_level }}>
             </a>
         {% else %}
-            <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ app_card_config.title }}</h3>
+            <h{{ app_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl">{{ app_card_config.title }}</h{{ app_card_config.heading_level }}>
         {% endif %}
         <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
     </div>

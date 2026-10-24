@@ -24,6 +24,16 @@ from functools import lru_cache
 from typing import Literal
 
 # =============================================================================
+# Heading Level
+# =============================================================================
+
+# Heading levels a component title can use; h1 is reserved for the page title
+HEADING_LEVEL_VALUES: tuple[int, ...] = (2, 3, 4, 5, 6)
+
+# Type alias for the heading level of component titles
+type HeadingLevel = Literal[2, 3, 4, 5, 6]
+
+# =============================================================================
 # Size
 # =============================================================================
 
@@ -51,17 +61,17 @@ COLOR_TYPE_VALUES: tuple[str, ...] = (
 # Type alias for base color types
 type ColorType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger"]
 
-# Tuple of valid badge type values (colors + disabled)
-BADGE_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled")
+# Tuple of valid button colors: the color roles plus "light" for dark or colored surfaces (no grey button)
+BUTTON_COLOR_VALUES: tuple[str, ...] = ("primary", "secondary", "light", "info", "success", "warning", "danger")
 
-# Type alias for badge types
-type BadgeType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled"]
+# Type alias for button colors
+type ButtonColor = Literal["primary", "secondary", "light", "info", "success", "warning", "danger"]
 
-# Tuple of valid button type values (colors + link)
-BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "link")
+# Tuple of valid button variants (visual style); "link" and "plain" ignore the color
+BUTTON_VARIANT_VALUES: tuple[str, ...] = ("solid", "outline", "subtle", "link", "plain")
 
-# Type alias for button types
-type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "link"]
+# Type alias for button variants
+type ButtonVariant = Literal["solid", "outline", "subtle", "link", "plain"]
 
 # Icon color values: semantic colors + text colors
 ICON_COLOR_VALUES: tuple[str, ...] = (
@@ -99,16 +109,16 @@ type IconColor = Literal[
 # =============================================================================
 
 # Tuple of valid step status values (for stepper components)
-STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
+STEP_STATUS_VALUES: tuple[str, ...] = ("pending", "current", "completed", "failed")
 
 # Type alias for step status
-type StepStatus = Literal["active", "success", "failed", ""]
+type StepStatus = Literal["pending", "current", "completed", "failed"]
 
-# Tuple of valid alert/notification type values
-ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
+# Tuple of valid message severity values (alert, infobox, status screen)
+SEVERITY_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
 
-# Type alias for alert/notification types
-type AlertType = Literal["info", "success", "warning", "error"]
+# Type alias for message severity: what happened, as opposed to the color role (ColorType)
+type Severity = Literal["info", "success", "warning", "error"]
 
 # =============================================================================
 # HTML Element Types
@@ -158,32 +168,6 @@ type HtmlInputType = Literal[
     "hidden",
     "checkbox",
     "radio",
-]
-
-# Tuple of valid form field type values (high-level form abstraction)
-FORM_FIELD_TYPE_VALUES: tuple[str, ...] = (
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
-)
-
-# Type alias for form field types
-type FormFieldType = Literal[
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
 ]
 
 # =============================================================================
@@ -288,6 +272,42 @@ def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> 
         )
 
 
+def validate_not_empty(config: object, *field_names: str) -> None:
+    """Validate that fields which identify or locate a component are not empty.
+
+    An empty ID, name or URL renders without error but breaks the component, e.g. duplicate
+    element IDs, form values that are never submitted or HTMX requests to the current page.
+
+    Args:
+        config: The config instance to check.
+        *field_names: Names of the fields that must not be empty or None.
+
+    Raises:
+        ValueError: If one of the fields is empty or None.
+
+    """
+    for field_name in field_names:
+        if not getattr(config, field_name):
+            raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
+def validate_heading_level(value: int, field_name: str = "heading_level") -> None:
+    """Validate that a heading level is between 2 and 6.
+
+    Args:
+        value: The heading level to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid heading level.
+
+    """
+    if value not in HEADING_LEVEL_VALUES:
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} {value!r}. Allowed values are: {', '.join(map(str, HEADING_LEVEL_VALUES))}"
+        )
+
+
 def validate_size(value: str, field_name: str = "size") -> None:
     """Validate that a size value is one of the allowed sizes.
 
@@ -302,7 +322,7 @@ def validate_size(value: str, field_name: str = "size") -> None:
     _validate_literal(value, SIZE_VALUES, field_name)
 
 
-def validate_color_type(value: str, field_name: str = "type") -> None:
+def validate_color_type(value: str, field_name: str = "color") -> None:
     """Validate that a color type value is one of the allowed types.
 
     Args:
@@ -316,32 +336,37 @@ def validate_color_type(value: str, field_name: str = "type") -> None:
     _validate_literal(value, COLOR_TYPE_VALUES, field_name)
 
 
-def validate_badge_type(value: str, field_name: str = "type") -> None:
-    """Validate that a badge type value is one of the allowed types.
+def validate_button_color(value: str, field_name: str = "color") -> None:
+    """Validate that a button color is one of the allowed colors.
 
     Args:
-        value: The badge type value to validate.
+        value: The button color to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid badge type.
+        ValueError: If the value is not a valid button color.
 
     """
-    _validate_literal(value, BADGE_TYPE_VALUES, field_name)
+    if value == "neutral":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'neutral'. Use color='light' on dark or colored surfaces, "
+            "or variant='plain' for an icon button in the text color."
+        )
+    _validate_literal(value, BUTTON_COLOR_VALUES, field_name)
 
 
-def validate_button_type(value: str, field_name: str = "type") -> None:
-    """Validate that a button type value is one of the allowed types.
+def validate_button_variant(value: str, field_name: str = "variant") -> None:
+    """Validate that a button variant is one of the allowed variants.
 
     Args:
-        value: The button type value to validate.
+        value: The button variant to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid button type.
+        ValueError: If the value is not a valid button variant.
 
     """
-    _validate_literal(value, BUTTON_TYPE_VALUES, field_name)
+    _validate_literal(value, BUTTON_VARIANT_VALUES, field_name)
 
 
 def validate_step_status(value: str, field_name: str = "status") -> None:
@@ -358,18 +383,24 @@ def validate_step_status(value: str, field_name: str = "status") -> None:
     _validate_literal(value, STEP_STATUS_VALUES, field_name)
 
 
-def validate_alert_type(value: str, field_name: str = "type") -> None:
-    """Validate that an alert type value is one of the allowed values.
+def validate_severity(value: str, field_name: str = "severity") -> None:
+    """Validate that a severity value is one of the allowed values.
 
     Args:
-        value: The alert type value to validate.
+        value: The severity value to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid alert type.
+        ValueError: If the value is not a valid severity.
 
     """
-    _validate_literal(value, ALERT_TYPE_VALUES, field_name)
+    if value == "danger":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'danger'. Allowed values are: "
+            f"{', '.join(repr(s) for s in SEVERITY_VALUES)}. Use 'error': the severity says what happened, "
+            "'danger' is the color name."
+        )
+    _validate_literal(value, SEVERITY_VALUES, field_name)
 
 
 def validate_html_button_type(value: str, field_name: str = "button_type") -> None:
@@ -440,20 +471,6 @@ def validate_html_input_type(value: str, field_name: str = "input_type") -> None
 
     """
     _validate_literal(value, HTML_INPUT_TYPE_VALUES, field_name)
-
-
-def validate_form_field_type(value: str, field_name: str = "input_type") -> None:
-    """Validate that a form field type value is one of the allowed values.
-
-    Args:
-        value: The form field type value to validate.
-        field_name: Name of the field for error messages.
-
-    Raises:
-        ValueError: If the value is not a valid form field type.
-
-    """
-    _validate_literal(value, FORM_FIELD_TYPE_VALUES, field_name)
 
 
 def validate_htmx_swap_method(value: str, field_name: str = "swap_method") -> None:
@@ -618,17 +635,17 @@ def validate_icon_name(value: str) -> None:
 #   - description: Human-readable description for documentation
 
 TYPE_REGISTRY: dict[str, dict] = {
-    "AlertType": {
-        "values": ALERT_TYPE_VALUES,
-        "description": "Semantic types for alerts and notifications.",
+    "Severity": {
+        "values": SEVERITY_VALUES,
+        "description": "Message severity of alerts, infoboxes and status screens.",
     },
-    "BadgeType": {
-        "values": BADGE_TYPE_VALUES,
-        "description": "Extended color palette for badges, includes 'disabled' state.",
+    "ButtonColor": {
+        "values": BUTTON_COLOR_VALUES,
+        "description": "Button colors; 'light' is for dark or colored surfaces.",
     },
-    "ButtonType": {
-        "values": BUTTON_TYPE_VALUES,
-        "description": "Extended color palette for buttons, includes 'link' variant.",
+    "ButtonVariant": {
+        "values": BUTTON_VARIANT_VALUES,
+        "description": "Visual style of buttons; 'link' and 'plain' ignore the color.",
     },
     "ColorType": {
         "values": COLOR_TYPE_VALUES,
@@ -641,10 +658,6 @@ TYPE_REGISTRY: dict[str, dict] = {
     "FilterFieldType": {
         "values": FILTER_FIELD_TYPE_VALUES,
         "description": "Field types for query builder and filter components.",
-    },
-    "FormFieldType": {
-        "values": FORM_FIELD_TYPE_VALUES,
-        "description": "High-level form field types for the form component.",
     },
     "GeoMapMarkerType": {
         "values": GEO_MAP_MARKER_TYPE_VALUES,
@@ -673,6 +686,10 @@ TYPE_REGISTRY: dict[str, dict] = {
     "InlinePosition": {
         "values": INLINE_POSITION_VALUES,
         "description": "Inline positions respecting text direction (RTL-aware).",
+    },
+    "HeadingLevel": {
+        "values": HEADING_LEVEL_VALUES,
+        "description": "Heading level of component titles; h1 is reserved for the page title.",
     },
     "Size": {
         "values": SIZE_VALUES,

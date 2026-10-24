@@ -8,7 +8,7 @@ from dataclasses import dataclass, field as dc_field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
-from insight_ui.configs.types import FilterFieldType, validate_filter_field_type
+from insight_ui.configs.types import FilterFieldType, validate_filter_field_type, validate_not_empty
 
 
 @dataclass
@@ -80,7 +80,7 @@ class FilterConfig:
         name: Filter field name.
         label: Filter label.
         options: Available filter options (dict maps value→label).
-        explanation: Tooltip explanation text.
+        help_text: Hint shown below the field.
         icon: Optional filter icon.
         selected_option: Currently selected value.
 
@@ -99,12 +99,18 @@ class FilterConfig:
     options: dict[str, str] = dc_field(
         default_factory=dict, metadata={"doc": _("Available filter options (dict maps value→label).")}
     )
-    explanation: str = dc_field(default="", metadata={"doc": _("Tooltip explanation text.")})
+    help_text: str = dc_field(default="", metadata={"doc": _("Hint shown below the field.")})
     icon: IconConfig | None = dc_field(default=None, metadata={"doc": _("Optional filter icon.")})
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
 
+    @property
+    def message_id(self) -> str:
+        """Id prefix of the help text, taken from the name."""
+        return self.name
+
     def __post_init__(self) -> None:
-        """Validate that selected_option is included in options, if both are set."""
+        """Require a name and validate that selected_option is included in options, if both are set."""
+        validate_not_empty(self, "name")
         if self.selected_option and self.options and self.selected_option not in self.options:
             raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
@@ -203,7 +209,8 @@ class QueryBuilderFieldConfig:
     values: dict[str, str] = dc_field(default_factory=dict, metadata={"doc": _("Predefined values (optional).")})
 
     def __post_init__(self) -> None:
-        """Validate type after initialization."""
+        """Require a field name and validate type after initialization."""
+        validate_not_empty(self, "field")
         validate_filter_field_type(self.type, "type")
 
 

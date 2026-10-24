@@ -1,11 +1,12 @@
 {% load i18n insight_tags %}
 
-<footer role="contentinfo" class="z-10 px-4 mt-auto bg-insight-base border-t border-insight-surface md:px-6">
-    <div class="py-6 mx-auto">
+{# Section headings are h2 (directly below the page's landmarks). #}
+<footer role="contentinfo" class="z-10{% if not align_to_content %} insight-gutter{% endif %} mt-auto bg-insight-base border-t border-insight-surface">
+    <div class="py-6 {% if align_to_content %}insight-content-box{% else %}mx-auto{% endif %}">
         <div class="flex flex-col gap-6 justify-stretch md:flex-row">
             {% if footer_config.description %}
                 <div class="flex-1 space-y-2">
-                    <h4>{{ footer_config.description.title }}</h4>
+                    <h2 class="font-normal text-lg text-insight-headline md:text-xl">{{ footer_config.description.title }}</h2>
                     <p class="text-insight-body text-sm">{{ footer_config.description.text }}</p>
                     {% if footer_config.description.logo %}
                         {% logo config=footer_config.description.logo %}
@@ -14,17 +15,14 @@
             {% endif %}
             {% if footer_config.links %}
                 <div class="flex-1 space-y-2">
-                    <h4>{% trans 'Links' %}</h4>
+                    <h2 class="font-normal text-lg text-insight-headline md:text-xl">{% trans 'Links' %}</h2>
                     <ul>
                         {% for link in footer_config.links %}
                             <li>
                                 <a
                                     href="{{ link.request_url }}"
                                     {% if link.htmx %}
-                                        hx-get="{{ link.htmx.request_url|default:link.request_url }}"
-                                        hx-target="{{ link.htmx.target }}"
-                                        hx-swap="{{ link.htmx.swap|default:'innerHTML' }} show:window:top"
-                                        hx-push-url="true"
+                                        {% htmx_attributes link.htmx request_url=link.htmx.request_url|default:link.request_url push_url=True swap_modifiers="show:window:top" %}
                                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                                     {% endif %}
                                     class="inline-flex gap-1 text-insight-body text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover"
@@ -41,7 +39,7 @@
             {% endif %}
             {% if footer_config.contact %}
                 <div class="flex-1 space-y-2">
-                    <h4>{% trans 'Contact' %}</h4>
+                    <h2 class="font-normal text-lg text-insight-headline md:text-xl">{% trans 'Contact' %}</h2>
                     <div class="space-x-4">
                         {% if footer_config.contact.imprint %}
                             <a href="{{ footer_config.contact.imprint }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Imprint" %}</a>

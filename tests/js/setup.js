@@ -99,11 +99,11 @@ globalThis.TestUtils = {
     return this.createDOM(`
       <div data-insight-accordion="${id}" data-exclusive="${exclusive}">
         <div>
-          <button aria-expanded="false" aria-controls="${id}-panel-0">Panel 1</button>
+          <button aria-expanded="false" aria-controls="${id}-panel-0"><span>Panel 1</span><span data-accordion-chevron></span></button>
           <div id="${id}-panel-0" style="height: 0; opacity: 0;">Content 1</div>
         </div>
         <div>
-          <button aria-expanded="false" aria-controls="${id}-panel-1">Panel 2</button>
+          <button aria-expanded="false" aria-controls="${id}-panel-1"><span>Panel 2</span><span data-accordion-chevron></span></button>
           <div id="${id}-panel-1" style="height: 0; opacity: 0;">Content 2</div>
         </div>
       </div>

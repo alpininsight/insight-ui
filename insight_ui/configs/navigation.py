@@ -10,7 +10,15 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
+from insight_ui.configs.types import (
+    HeadingLevel,
+    Size,
+    StepStatus,
+    validate_heading_level,
+    validate_not_empty,
+    validate_size,
+    validate_step_status,
+)
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
@@ -124,6 +132,10 @@ class UserMenuLinkConfig:
     request_url: str = field(metadata={"doc": _("The URL to navigate to when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -616,14 +628,12 @@ class StepperItemConfig:
         title: Title of the step.
         description: Additional description of the step below the title.
         request_url: URL called when the user clicks on the title of the step.
-        success: Displays a checkmark instead of the step number.
-        failed: Displays an X instead of the step number.
-        current: Highlights the title in color and makes the text pulse.
+        status: Status of the step.
 
     """
 
     __example__ = """
-        StepperItemConfig(title="Address", description="Enter shipping address", success=True)
+        StepperItemConfig(title="Address", description="Enter shipping address", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the step.")})
@@ -631,9 +641,11 @@ class StepperItemConfig:
     request_url: str = field(
         default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")}
     )
-    success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
-    failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the step.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_step_status(self.status)
 
 
 @dataclass
@@ -650,8 +662,8 @@ class StepperConfig:
     __example__ = """
         StepperConfig(
             items=[
-                StepperItemConfig(title="Address", description="Enter shipping address", success=True),
-                StepperItemConfig(title="Payment", description="Select payment method", current=True),
+                StepperItemConfig(title="Address", description="Enter shipping address", status="completed"),
+                StepperItemConfig(title="Payment", description="Select payment method", status="current"),
                 StepperItemConfig(title="Review", description="Review and confirm"),
             ],
         )
@@ -667,10 +679,10 @@ class MinimalStepperConfig:
     Renders a compact progress indicator.
 
     Attributes:
-        items: List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive.
-        step_count: Number of process steps. (Only if 'items' is not set!)
-        current_step: Current step of the process. (Only if 'items' is not set!)
-        current_step_status: Status of the current step. (Only if 'items' is not set!)
+        steps: Status of each process step.
+        step_count: Number of process steps. (Only if 'steps' is not set!)
+        current_step: Current step of the process. (Only if 'steps' is not set!)
+        current_step_status: Status of the current step. (Only if 'steps' is not set!)
         icon_size: Size of the icons in the progress bar.
 
     """
@@ -679,20 +691,13 @@ class MinimalStepperConfig:
         MinimalStepperConfig(step_count=5, current_step=3)
         """
 
-    items: list[StepStatus] = field(
-        default_factory=list,
-        metadata={
-            "doc": _(
-                "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
-            )
-        },
-    )
-    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'items' is not set!)")})
+    steps: list[StepStatus] = field(default_factory=list, metadata={"doc": _("Status of each process step.")})
+    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'steps' is not set!)")})
     current_step: int = field(
-        default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
+        default=0, metadata={"doc": _("Current step of the process. (Only if 'steps' is not set!)")}
     )
     current_step_status: StepStatus = field(
-        default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
+        default="current", metadata={"doc": _("Status of the current step. (Only if 'steps' is not set!)")}
     )
     icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
 
@@ -700,8 +705,8 @@ class MinimalStepperConfig:
         """Validate icon_size and step status values after initialization."""
         validate_size(self.icon_size, "icon_size")
         validate_step_status(self.current_step_status, "current_step_status")
-        for i, status in enumerate(self.items):
-            validate_step_status(status, f"items[{i}]")
+        for i, status in enumerate(self.steps):
+            validate_step_status(status, f"steps[{i}]")
 
 
 @dataclass
@@ -711,23 +716,23 @@ class BulletPointItemConfig:
     Attributes:
         title: Title of the item.
         description: Additional description of the item below the title.
-        request_url: The URL to be called when clicking on the respective item.
-        completed: Displays a checkmark instead of a bullet point.
-        current: Highlights the title by color.
+        request_url: URL called when the user clicks on the item.
+        status: Status of the item.
 
     """
 
     __example__ = """
-        BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True)
+        BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the item.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the item below the title.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
-    )
-    completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
+    request_url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the item.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the item.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_step_status(self.status)
 
 
 @dataclass
@@ -745,8 +750,8 @@ class BulletPointListConfig:
     __example__ = """
         BulletPointListConfig(
             items=[
-                BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-                BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+                BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed"),
+                BulletPointItemConfig(title="Configure", description="Add settings", status="current"),
                 BulletPointItemConfig(title="Deploy", description="Push to production"),
             ],
         )
@@ -788,6 +793,7 @@ class AccordionConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         items: List of individual sections.
         exclusive: If **True** only one section can be open at a time.
+        heading_level: Heading level of the section titles.
 
     """
 
@@ -805,6 +811,12 @@ class AccordionConfig:
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the section titles.")})
+
+    def __post_init__(self) -> None:
+        """Reject an empty tag_id and validate heading_level."""
+        validate_not_empty(self, "tag_id")
+        validate_heading_level(self.heading_level)
 
 
 @dataclass
@@ -827,6 +839,10 @@ class TabConfig:
     title: str = field(metadata={"doc": _("Label of the tab button.")})
     request_url: str = field(metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id", "request_url")
 
 
 @dataclass
@@ -861,7 +877,14 @@ class TabsConfig:
     )
 
     def __post_init__(self) -> None:
-        """Set the first tab as active if no tab is currently active."""
+        """Require at least one tab and set the first tab as active if no tab is currently active.
+
+        Raises:
+            ValueError: If tabs is empty.
+
+        """
+        if not self.tabs:
+            raise ValueError(f"TabsConfig {self.tag_id} needs at least one tab.")  # noqa: TRY003
         if any(tab.active for tab in self.tabs):
             return
 

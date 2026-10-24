@@ -7,14 +7,7 @@
                 {% if not forloop.last %}
                     <a
                         href="{{ item.request_url|default:'#' }}"
-                        {% if htmx %}
-                            hx-get="{{ item.request_url }}"
-                            hx-target="{{ htmx.target }}"
-                            hx-swap="{{ htmx.swap_method|default:'innerHTML' }}{% if htmx.swap_settle %} settle:{{ htmx.swap_settle }}{% endif %}"
-                            {% if htmx.trigger %}hx-trigger="{{ htmx.trigger }}"{% endif %}
-                            {% if htmx.push_url %}hx-push-url="true"{% endif %}
-                            {% if htmx.loading_indicator_id %}hx-indicator="{{ htmx.loading_indicator_id }}"{% endif %}
-                        {% endif %}
+                        {% htmx_attributes htmx request_url=item.request_url %}
                         class="inline-flex gap-1 text-link"
                     >
                         {% if item.icon %}
@@ -22,9 +15,10 @@
                         {% endif %}
                         {{ item.text }}
                     </a>
-                    <div class="inline-block rtl:rotate-y-180 ms-1 text-insight-secondary">
+                    {# The chevron mirrors itself in right-to-left layouts. #}
+                    <span class="inline-flex ms-1 text-insight-secondary">
                         {% icon name="chevron-right" size="xs" %}
-                    </div>
+                    </span>
                 {% else %}
                     <span aria-current="page" class="inline-flex gap-1 text-insight-secondary">
                         {% if item.icon %}

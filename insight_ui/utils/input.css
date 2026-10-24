@@ -92,31 +92,42 @@
     /*
     * Primary color (brand color)
     * Main action color for primary buttons, links, focus indicators.
+    *
+    * Token structure:
+    * - primary:              Base accent for decorative/non-text elements
+    * - primary-text:         Primary color used AS text/icons (light mode)
+    * - primary-text-dark:    Primary color used AS text/icons (dark mode)
+    * - primary-action:       Background for filled controls (buttons)
+    * - primary-action-hover: Hover state for filled controls
+    * - primary-action-active: Active/pressed state for filled controls
+    * - primary-on-fill:      Text color ON filled primary backgrounds
+    * - primary-soft:         Subtle background for badges, highlights
     */
-    --color-insight-primary: #0856C0;              /* Semantic accent for non-text decoration */
-    --color-insight-primary-foreground: #0856C0;   /* Text and icons on light surfaces */
-    --color-insight-primary-foreground-dark: #90C5FF; /* Text and icons on dark surfaces */
-    --color-insight-primary-action: #0856C0;       /* Filled controls with white text */
-    --color-insight-primary-action-hover: #1555B0;
-    --color-insight-primary-action-active: #124A9E;
+    --color-insight-primary: #0856C0;              /* Base accent for decorative elements */
+    --color-insight-primary-text: #0856C0;         /* Primary as text color (light mode) */
+    --color-insight-primary-text-dark: #90C5FF;    /* Primary as text color (dark mode) */
+    --color-insight-primary-action: #0856C0;       /* Filled button background */
+    --color-insight-primary-action-hover: #1555B0; /* Filled button hover */
+    --color-insight-primary-action-active: #124A9E; /* Filled button active/pressed */
     --color-insight-primary-action-dark: #0856C0;
     --color-insight-primary-action-hover-dark: #1555B0;
     --color-insight-primary-action-active-dark: #124A9E;
-    --color-insight-primary-soft: #E3EFFF;         /* Background for subtle highlights (active nav items, badges) */
+    --color-insight-primary-soft: #E3EFFF;         /* Subtle background for highlights */
     --color-insight-primary-hover: #1555B0;        /* Hover state (darker in light mode) */
     --color-insight-primary-active: #124A9E;       /* Active/pressed state */
     --color-insight-primary-soft-dark: #203351;
     --color-insight-primary-hover-dark: #72AEFF;   /* Hover state (lighter in dark mode) */
     --color-insight-primary-active-dark: #90C5FF;
-    --color-insight-primary-text: #FFFFFF;         /* Text on filled primary buttons */
+    --color-insight-primary-on-fill: #FFFFFF;      /* Text on filled primary buttons */
 
     /*
     * Secondary color (accent color)
     * Alternative action color for secondary buttons, less prominent CTAs.
+    * Token structure: see primary color block for documentation.
     */
     --color-insight-secondary: #006B60;
-    --color-insight-secondary-foreground: #006B60;
-    --color-insight-secondary-foreground-dark: #75D1C5;
+    --color-insight-secondary-text: #006B60;
+    --color-insight-secondary-text-dark: #75D1C5;
     --color-insight-secondary-action: #006B60;
     --color-insight-secondary-action-hover: #005A52;
     --color-insight-secondary-action-active: #004C45;
@@ -129,91 +140,105 @@
     --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
-    --color-insight-secondary-text: #FFFFFF;       /* Text on filled secondary buttons */
+    --color-insight-secondary-on-fill: #FFFFFF;
 
     /*
     * Success color
     * Positive actions, confirmations, successful operations.
+    * Token structure: see primary color block for documentation.
     */
-    --color-insight-success: #007B2F;              /* Success icons, positive badges */
-    --color-insight-success-foreground: #007B2F;
-    --color-insight-success-foreground-dark: #8CE1A4;
+    --color-insight-success: #007B2F;
+    --color-insight-success-text: #007B2F;
+    --color-insight-success-text-dark: #8CE1A4;
     --color-insight-success-action: #007B2F;
     --color-insight-success-action-hover: #006824;
     --color-insight-success-action-active: #00521D;
     --color-insight-success-action-dark: #007B2F;
     --color-insight-success-action-hover-dark: #006824;
     --color-insight-success-action-active-dark: #00521D;
-    --color-insight-success-soft: #E0F5E5;         /* Success banner background */
+    --color-insight-success-soft: #E0F5E5;
     --color-insight-success-hover: #006824;
     --color-insight-success-active: #00521D;
     --color-insight-success-soft-dark: #1E3A26;
     --color-insight-success-hover-dark: #67CD87;
     --color-insight-success-active-dark: #8CE1A4;
-    --color-insight-success-text: #FFFFFF;         /* Text on filled success buttons */
+    --color-insight-success-on-fill: #FFFFFF;
 
     /*
     * Warning color
     * Warning notices, potentially problematic actions.
+    * Token structure: see primary color block for documentation.
     */
-    --color-insight-warning: #8A4B00;              /* Warning icons, attention badges */
-    --color-insight-warning-foreground: #8A4B00;
-    --color-insight-warning-foreground-dark: #FFCD86;
+    --color-insight-warning: #8A4B00;
+    --color-insight-warning-text: #8A4B00;
+    --color-insight-warning-text-dark: #FFCD86;
     --color-insight-warning-action: #8A4B00;
     --color-insight-warning-action-hover: #744000;
     --color-insight-warning-action-active: #5E3400;
     --color-insight-warning-action-dark: #8A4B00;
     --color-insight-warning-action-hover-dark: #744000;
     --color-insight-warning-action-active-dark: #5E3400;
-    --color-insight-warning-soft: #FFF0D4;         /* Warning banner background */
+    --color-insight-warning-soft: #FFF0D4;
     --color-insight-warning-hover: #744000;
     --color-insight-warning-active: #5E3400;
     --color-insight-warning-soft-dark: #433215;
     --color-insight-warning-hover-dark: #FFBC5E;
     --color-insight-warning-active-dark: #FFCD86;
-    --color-insight-warning-text: #FFFFFF;         /* Text on filled warning buttons */
+    --color-insight-warning-on-fill: #FFFFFF;
 
     /*
     * Danger color (error/destructive)
     * Error states, destructive actions (delete), validation errors.
+    * Token structure: see primary color block for documentation.
     */
-    --color-insight-danger: #B70002;               /* Error icons, delete buttons */
-    --color-insight-danger-foreground: #B70002;
-    --color-insight-danger-foreground-dark: #FF988B;
+    --color-insight-danger: #B70002;
+    --color-insight-danger-text: #B70002;
+    --color-insight-danger-text-dark: #FF988B;
     --color-insight-danger-action: #B70002;
     --color-insight-danger-action-hover: #990001;
     --color-insight-danger-action-active: #7A0001;
     --color-insight-danger-action-dark: #B70002;
     --color-insight-danger-action-hover-dark: #990001;
     --color-insight-danger-action-active-dark: #7A0001;
-    --color-insight-danger-soft: #FFE7E4;          /* Error banner background, input error state */
+    --color-insight-danger-soft: #FFE7E4;
     --color-insight-danger-hover: #990001;
     --color-insight-danger-active: #7A0001;
     --color-insight-danger-soft-dark: #4D2622;
     --color-insight-danger-hover-dark: #FF7A6E;
     --color-insight-danger-active-dark: #FF988B;
-    --color-insight-danger-text: #FFFFFF;          /* Text on filled danger buttons */
+    --color-insight-danger-on-fill: #FFFFFF;
 
     /*
     * Info color
     * Neutral hints, help text, informational badges.
+    * Token structure: see primary color block for documentation.
     */
-    --color-insight-info: #006580;                 /* Info icons, tooltip triggers */
-    --color-insight-info-foreground: #006580;
-    --color-insight-info-foreground-dark: #77E1FF;
+    --color-insight-info: #006580;
+    --color-insight-info-text: #006580;
+    --color-insight-info-text-dark: #77E1FF;
     --color-insight-info-action: #006580;
     --color-insight-info-action-hover: #00546C;
     --color-insight-info-action-active: #00455A;
     --color-insight-info-action-dark: #006580;
     --color-insight-info-action-hover-dark: #00546C;
     --color-insight-info-action-active-dark: #00455A;
-    --color-insight-info-soft: #DAF4FD;            /* Info banner background */
+    --color-insight-info-soft: #DAF4FD;
     --color-insight-info-hover: #00546C;
     --color-insight-info-active: #00455A;
     --color-insight-info-soft-dark: #0F3845;
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
-    --color-insight-info-text: #FFFFFF;            /* Text on filled info buttons */
+    --color-insight-info-on-fill: #FFFFFF;
+
+    /*
+    * Light
+    * White controls on dark or colored surfaces (e.g. a primary-colored band).
+    * Identical in both themes, because the surface does not change with the theme.
+    */
+    --color-insight-light: #FFFFFF;
+    --color-insight-light-hover: #E5E7EB;
+    --color-insight-light-active: #D1D5DB;
+    --color-insight-on-light: #1C1C1E;
 
     /*
     * Focus
@@ -416,6 +441,22 @@
     }
 
     /*
+    * Page spacing.
+    * --insight-gutter: distance between the window edge and the page's content, shared by the
+    *   navbar, sidebars, page header, content and footer so their edges line up. It grows with the
+    *   window from 1rem (phones) to 2rem (from about 64rem); override it with one value.
+    * --insight-content-max-width: width of the content box; base.html overrides it from
+    *   INSIGHT_UI["content_max_width"] or the content_max_width template variable.
+    * --insight-navbar-height: height of the navbar. Sticky sidebars, the drawer button and the scroll
+    *   padding for anchor targets start below it; change it here, not per element.
+    */
+    :root {
+        --insight-gutter: clamp(var(--spacing-insight-m), 4vw - 0.5rem, var(--spacing-insight-l));
+        --insight-content-max-width: 80rem;
+        --insight-navbar-height: 4rem;
+    }
+
+    /*
     * Dark mode token mapping.
     * When data-theme="dark" is set, all *-dark tokens are mapped to their
     * base equivalents. This allows using bg-insight-primary without
@@ -434,7 +475,7 @@
         --color-insight-border-raised: var(--color-insight-border-raised-dark);
         --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
         /* Primary */
-        --color-insight-primary-foreground: var(--color-insight-primary-foreground-dark);
+        --color-insight-primary-text: var(--color-insight-primary-text-dark);
         --color-insight-primary-action: var(--color-insight-primary-action-dark);
         --color-insight-primary-action-hover: var(--color-insight-primary-action-hover-dark);
         --color-insight-primary-action-active: var(--color-insight-primary-action-active-dark);
@@ -442,7 +483,7 @@
         --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
         --color-insight-primary-active: var(--color-insight-primary-active-dark);
         /* Secondary */
-        --color-insight-secondary-foreground: var(--color-insight-secondary-foreground-dark);
+        --color-insight-secondary-text: var(--color-insight-secondary-text-dark);
         --color-insight-secondary-action: var(--color-insight-secondary-action-dark);
         --color-insight-secondary-action-hover: var(--color-insight-secondary-action-hover-dark);
         --color-insight-secondary-action-active: var(--color-insight-secondary-action-active-dark);
@@ -450,7 +491,7 @@
         --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
         --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
         /* Success */
-        --color-insight-success-foreground: var(--color-insight-success-foreground-dark);
+        --color-insight-success-text: var(--color-insight-success-text-dark);
         --color-insight-success-action: var(--color-insight-success-action-dark);
         --color-insight-success-action-hover: var(--color-insight-success-action-hover-dark);
         --color-insight-success-action-active: var(--color-insight-success-action-active-dark);
@@ -458,7 +499,7 @@
         --color-insight-success-hover: var(--color-insight-success-hover-dark);
         --color-insight-success-active: var(--color-insight-success-active-dark);
         /* Warning */
-        --color-insight-warning-foreground: var(--color-insight-warning-foreground-dark);
+        --color-insight-warning-text: var(--color-insight-warning-text-dark);
         --color-insight-warning-action: var(--color-insight-warning-action-dark);
         --color-insight-warning-action-hover: var(--color-insight-warning-action-hover-dark);
         --color-insight-warning-action-active: var(--color-insight-warning-action-active-dark);
@@ -466,7 +507,7 @@
         --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
         --color-insight-warning-active: var(--color-insight-warning-active-dark);
         /* Danger */
-        --color-insight-danger-foreground: var(--color-insight-danger-foreground-dark);
+        --color-insight-danger-text: var(--color-insight-danger-text-dark);
         --color-insight-danger-action: var(--color-insight-danger-action-dark);
         --color-insight-danger-action-hover: var(--color-insight-danger-action-hover-dark);
         --color-insight-danger-action-active: var(--color-insight-danger-action-active-dark);
@@ -474,7 +515,7 @@
         --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
         --color-insight-danger-active: var(--color-insight-danger-active-dark);
         /* Info */
-        --color-insight-info-foreground: var(--color-insight-info-foreground-dark);
+        --color-insight-info-text: var(--color-insight-info-text-dark);
         --color-insight-info-action: var(--color-insight-info-action-dark);
         --color-insight-info-action-hover: var(--color-insight-info-action-hover-dark);
         --color-insight-info-action-active: var(--color-insight-info-action-active-dark);
@@ -695,6 +736,50 @@
     }
 
     /*
+    * Page spacing.
+    * insight-gutter: horizontal padding at the window edge (navbar, sidebars, footer).
+    * insight-content-box: centered box of the content width with the gutter on both sides.
+    * insight-content-grid: three columns (gutter | content | gutter). Children sit in the content
+    *   column; children with insight-full-bleed span all three, e.g. {% page %} bands, which put
+    *   their own content back into the box so text lines up with everything else.
+    * A box that already sits in the content column or in another box adds no second gutter.
+    */
+    .insight-gutter {
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-box {
+        width: 100%;
+        max-width: calc(var(--insight-content-max-width) + 2 * var(--insight-gutter));
+        margin-inline: auto;
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-grid {
+        display: grid;
+        grid-template-columns:
+            [full-start] minmax(var(--insight-gutter), 1fr)
+            [content-start] minmax(0, var(--insight-content-max-width))
+            [content-end] minmax(var(--insight-gutter), 1fr)
+            [full-end];
+        align-content: start;
+    }
+
+    .insight-content-grid > * {
+        grid-column: content;
+    }
+
+    .insight-content-grid > .insight-full-bleed {
+        grid-column: full;
+    }
+
+    .insight-content-box .insight-content-box,
+    .insight-content-grid > :not(.insight-full-bleed) .insight-content-box {
+        max-width: none;
+        padding-inline: 0;
+    }
+
+    /*
     * Layout tag support.
     * page-peek: Shows a "peek" of the next section to encourage scrolling.
     */
@@ -807,28 +892,44 @@
     *   Button Component
     * ========================================================
     *
-    *   Button classes follow the pattern: .btn .btn-{color} .btn-{size}
+    *   Pattern: .btn [.btn-{variant}] [.btn-{color}] .btn-{size}
     *
-    *   Variants (visual style):
-    *   - Fill (default): Solid background, white text
-    *   - Outline: Transparent bg, colored border and text, fill on hover
-    *   - Subtle: No border, light hover background
+    *   Without a variant class a button is solid, without a color class it is primary.
+    *   Color classes only set CSS variables; the variant builds the look from them:
+    *   - solid:   filled with the color (default; .btn-solid only for elements without .btn, e.g. labels)
+    *   - outline: colored border and text, fills on hover
+    *   - subtle:  colored text, tinted background on hover
+    *   - link:    link-styled text (ignores the color)
+    *   - plain:   text color of the theme, grey hover (ignores the color; e.g. close icons)
+    *
+    *   Colors: primary, secondary, success, warning, danger, info, light
+    *   (light = white controls for dark or colored surfaces)
+    *
+    *   States come from attributes, so they also apply when JavaScript changes them:
+    *   :disabled / [aria-disabled="true"] (links) / .btn-disabled (elements that cannot be disabled, e.g. labels)
     *
     *   Sizes: xs, s, m (default), l, xl
     *   Icon-only sizes: btn-icon-xs, btn-icon-s, btn-icon-m, btn-icon-l, btn-icon-xl (square)
     *   Modifiers: btn-round (pill shape)
     *
     *   Usage:
-    *     <button class="btn btn-primary">Submit</button>
-    *     <button class="btn btn-outline-danger btn-s">Delete</button>
-    *     <button class="btn btn-subtle-secondary btn-icon-m"><svg>...</svg></button>
+    *     <button class="btn btn-m">Submit</button>  (solid primary)
+    *     <button class="btn btn-secondary btn-m">Cancel</button>
+    *     <button class="btn btn-outline btn-danger btn-s">Delete</button>
+    *     <button class="btn btn-plain btn-icon-m" aria-label="Close"><svg>...</svg></button>
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control transition-colors;
+        /* Default color: primary (overridden by the color classes below) */
+        --btn-fill: var(--color-insight-primary-action);
+        --btn-fill-hover: var(--color-insight-primary-action-hover);
+        --btn-fill-active: var(--color-insight-primary-action-active);
+        --btn-on-fill: var(--color-insight-primary-on-fill);
+        --btn-ink: var(--color-insight-primary-text);
     }
 
-    /* Size modifiers - combine with color variant */
+    /* Size modifiers */
     .btn-xs { @apply text-xs px-2 py-0.5; }
     .btn-s { @apply text-sm px-4 py-1; }
     .btn-m { @apply text-sm px-5 py-1.5; }
@@ -842,86 +943,138 @@
     .btn-icon-l { @apply p-2.5; }
     .btn-icon-xl { @apply p-3; }
 
-    .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
+    /* Pill-shaped button */
+    .btn-round { @apply rounded-insight-full; }
 
-    /* Fill variant (solid background) - default button style */
+    /* Colors: only set the variables used by the variants */
     .btn-primary {
-        @apply bg-insight-primary-action border-insight-primary-action text-insight-primary-text hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
+        --btn-fill: var(--color-insight-primary-action);
+        --btn-fill-hover: var(--color-insight-primary-action-hover);
+        --btn-fill-active: var(--color-insight-primary-action-active);
+        --btn-on-fill: var(--color-insight-primary-on-fill);
+        --btn-ink: var(--color-insight-primary-text);
     }
     .btn-secondary {
-        @apply bg-insight-secondary-action border-insight-secondary-action text-insight-secondary-text hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
+        --btn-fill: var(--color-insight-secondary-action);
+        --btn-fill-hover: var(--color-insight-secondary-action-hover);
+        --btn-fill-active: var(--color-insight-secondary-action-active);
+        --btn-on-fill: var(--color-insight-secondary-on-fill);
+        --btn-ink: var(--color-insight-secondary-text);
     }
     .btn-success {
-        @apply bg-insight-success-action border-insight-success-action text-insight-success-text hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
+        --btn-fill: var(--color-insight-success-action);
+        --btn-fill-hover: var(--color-insight-success-action-hover);
+        --btn-fill-active: var(--color-insight-success-action-active);
+        --btn-on-fill: var(--color-insight-success-on-fill);
+        --btn-ink: var(--color-insight-success-text);
     }
     .btn-warning {
-        @apply bg-insight-warning-action border-insight-warning-action text-insight-warning-text hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
+        --btn-fill: var(--color-insight-warning-action);
+        --btn-fill-hover: var(--color-insight-warning-action-hover);
+        --btn-fill-active: var(--color-insight-warning-action-active);
+        --btn-on-fill: var(--color-insight-warning-on-fill);
+        --btn-ink: var(--color-insight-warning-text);
     }
     .btn-danger {
-        @apply bg-insight-danger-action border-insight-danger-action text-insight-danger-text hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
+        --btn-fill: var(--color-insight-danger-action);
+        --btn-fill-hover: var(--color-insight-danger-action-hover);
+        --btn-fill-active: var(--color-insight-danger-action-active);
+        --btn-on-fill: var(--color-insight-danger-on-fill);
+        --btn-ink: var(--color-insight-danger-text);
     }
     .btn-info {
-        @apply bg-insight-info-action border-insight-info-action text-insight-info-text hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
+        --btn-fill: var(--color-insight-info-action);
+        --btn-fill-hover: var(--color-insight-info-action-hover);
+        --btn-fill-active: var(--color-insight-info-action-active);
+        --btn-on-fill: var(--color-insight-info-on-fill);
+        --btn-ink: var(--color-insight-info-text);
     }
-    .btn-neutral {
-        @apply bg-white dark:border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline dark:text-insight-text-inverse;
+    .btn-light {
+        --btn-fill: var(--color-insight-light);
+        --btn-fill-hover: var(--color-insight-light-hover);
+        --btn-fill-active: var(--color-insight-light-active);
+        --btn-on-fill: var(--color-insight-on-light);
+        --btn-ink: var(--color-insight-light);
     }
+
+    /* Variants. Hover and active only apply to enabled buttons. Solid is the default of .btn. */
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain),
+    .btn-solid {
+        background-color: var(--btn-fill);
+        border-color: var(--btn-fill);
+        color: var(--btn-on-fill);
+    }
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover,
+    .btn-solid:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: var(--btn-fill-hover);
+        border-color: var(--btn-fill-hover);
+    }
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active,
+    .btn-solid:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: var(--btn-fill-active);
+        border-color: var(--btn-fill-active);
+    }
+
+    /* Outline: colored border and text on a transparent background, fills with the color on hover. */
+    .btn-outline {
+        border-color: var(--btn-fill);
+        color: var(--btn-ink);
+    }
+    .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: var(--btn-fill-hover);
+        border-color: var(--btn-fill-hover);
+        color: var(--btn-on-fill);
+    }
+    .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: var(--btn-fill-active);
+        border-color: var(--btn-fill-active);
+        color: var(--btn-on-fill);
+    }
+
+    /* Subtle: colored text without border, a light tint of the color appears on hover. */
+    .btn-subtle {
+        color: var(--btn-ink);
+    }
+    .btn-subtle:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: color-mix(in srgb, var(--btn-ink) 10%, transparent);
+    }
+    .btn-subtle:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: color-mix(in srgb, var(--btn-ink) 20%, transparent);
+    }
+
+    /* Link: looks like an underlined text link in the link color; ignores the button color. */
     .btn-link {
-        @apply border-0 text-insight-text-link hover:text-insight-text-link-hover underline px-6 py-2;
+        @apply border-0 px-6 py-2 text-insight-text-link underline;
     }
-    .btn-disabled {
+    .btn-link:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        @apply text-insight-text-link-hover;
+    }
+
+    /* Plain: text color of the theme without border, grey on hover; for icon buttons like close or copy. */
+    .btn-plain {
+        @apply text-insight-text-headline;
+    }
+    .btn-plain:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: color-mix(in srgb, currentColor 15%, transparent);
+    }
+    .btn-plain:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: color-mix(in srgb, currentColor 25%, transparent);
+    }
+
+    /* Disabled: one look per variant, whatever the color */
+    .btn:is(:disabled, [aria-disabled="true"], .btn-disabled) {
+        @apply cursor-not-allowed;
+    }
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-solid:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply bg-insight-text-disabled border-insight-text-disabled text-white dark:text-gray-400;
     }
-
-    /* Outline variant - transparent bg, colored border, fills on hover */
-    .btn-outline-primary {
-        @apply border-insight-primary-action text-insight-primary-foreground hover:text-white hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
-    }
-    .btn-outline-secondary {
-        @apply border-insight-secondary-action text-insight-secondary-foreground hover:text-white hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
-    }
-    .btn-outline-success {
-        @apply border-insight-success-action text-insight-success-foreground hover:text-white hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
-    }
-    .btn-outline-warning {
-        @apply border-insight-warning-action text-insight-warning-foreground hover:text-white hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
-    }
-    .btn-outline-danger {
-        @apply border-insight-danger-action text-insight-danger-foreground hover:text-white hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
-    }
-    .btn-outline-info {
-        @apply border-insight-info-action text-insight-info-foreground hover:text-white hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
-    }
-    .btn-outline-neutral {
-        @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
-    }
-    .btn-outline-disabled {
+    .btn-outline:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply border-insight-text-disabled text-insight-text-disabled;
     }
-
-    /* Subtle variant - no border, light background on hover, minimal visual weight */
-    .btn-subtle-primary {
-        @apply text-insight-primary-foreground hover:text-insight-primary-foreground active:text-insight-primary-foreground hover:bg-insight-primary-foreground/10 active:bg-insight-primary-foreground/20;
-    }
-    .btn-subtle-secondary {
-        @apply text-insight-secondary-foreground hover:text-insight-secondary-foreground active:text-insight-secondary-foreground hover:bg-insight-secondary-foreground/10 active:bg-insight-secondary-foreground/20;
-    }
-    .btn-subtle-success {
-        @apply text-insight-success-foreground hover:text-insight-success-foreground active:text-insight-success-foreground hover:bg-insight-success-foreground/10 active:bg-insight-success-foreground/20;
-    }
-    .btn-subtle-warning {
-        @apply text-insight-warning-foreground hover:text-insight-warning-foreground active:text-insight-warning-foreground hover:bg-insight-warning-foreground/10 active:bg-insight-warning-foreground/20;
-    }
-    .btn-subtle-danger {
-        @apply text-insight-danger-foreground hover:text-insight-danger-foreground active:text-insight-danger-foreground hover:bg-insight-danger-foreground/10 active:bg-insight-danger-foreground/20;
-    }
-    .btn-subtle-info {
-        @apply text-insight-info-foreground hover:text-insight-info-foreground active:text-insight-info-foreground hover:bg-insight-info-foreground/10 active:bg-insight-info-foreground/20;
-    }
-    .btn-subtle-neutral {
-        @apply hover:bg-black/20 dark:hover:bg-white/20 active:bg-black/30 dark:active:bg-white/30 text-insight-text-headline dark:text-insight-text-headline-dark;
-    }
-    .btn-subtle-disabled {
+    .btn-subtle:is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-link:is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-plain:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply text-insight-text-disabled;
     }
 
@@ -931,7 +1084,7 @@
     * ========================================================
     *
     *   Inline labels for status, counts, or categories.
-    *   Pattern: .badge .badge-{color} .badge-{size}
+    *   Pattern: .badge .badge-{color} .badge-{size} (+ .badge-disabled)
     *
     *   Usage:
     *     <span class="badge badge-success">Active</span>
@@ -949,25 +1102,30 @@
 
     /* Color variants - subtle background with matching text */
     .badge-primary {
-        @apply bg-insight-primary-soft text-insight-primary-foreground;
+        @apply bg-insight-primary-soft text-insight-primary-text;
     }
     .badge-secondary {
-        @apply bg-insight-secondary-soft text-insight-secondary-foreground;
+        @apply bg-insight-secondary-soft text-insight-secondary-text;
     }
     .badge-success {
-        @apply bg-insight-success-soft text-insight-success-foreground;
+        @apply bg-insight-success-soft text-insight-success-text;
     }
     .badge-warning {
-        @apply bg-insight-warning-soft text-insight-warning-foreground;
+        @apply bg-insight-warning-soft text-insight-warning-text;
     }
     .badge-danger {
-        @apply bg-insight-danger-soft text-insight-danger-foreground;
+        @apply bg-insight-danger-soft text-insight-danger-text;
     }
     .badge-info {
-        @apply bg-insight-info-soft text-insight-info-foreground;
+        @apply bg-insight-info-soft text-insight-info-text;
     }
     .badge-neutral {
         @apply bg-white border border-gray-300 text-insight-text-body dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-body;
+    }
+
+    /* Disabled state: dimmed, whatever the color */
+    .badge-disabled {
+        @apply opacity-60;
     }
 
     /*
@@ -982,7 +1140,7 @@
     * Usage: <code class="inline-tag">Ctrl+S</code>
     */
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary-foreground rounded-insight-control px-1 py-px text-nowrap;
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary-text rounded-insight-control px-1 py-px text-nowrap;
     }
 
     /*

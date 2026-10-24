@@ -1,40 +1,49 @@
 {% load insight_tags %}
 
-{% if toggle_config.switch %}
-    <label class="inline-flex flex-col w-fit h-fit cursor-pointer" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
-        <span class="flex gap-1 mb-2 font-bold text-sm text-insight-headline">{{ toggle_config.label }}</span>
-        <input
-            type="checkbox"
-            {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
-            {% if toggle_config.name %}name="{{ toggle_config.name }}"{% endif %}
-            {% if toggle_config.value %}value="{{ toggle_config.value }}"{% endif %}
-            {% if toggle_config.checked %}checked{% endif %}
-            {% if toggle_config.disabled %}disabled{% endif %}
-            {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
-            class="sr-only peer"
-        >
-        <div class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-surface after:border-insight-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary-action"></div>
-    </label>
-{% else %}
-    <div class="flex" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
-        <input
-            type="checkbox"
-            {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
-            {% if toggle_config.name %}name="{{ toggle_config.name }}"{% endif %}
-            {% if toggle_config.value %}value="{{ toggle_config.value }}"{% endif %}
-            {% if toggle_config.checked %}checked{% endif %}
-            {% if toggle_config.disabled %}disabled{% endif %}
-            {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
-            class="sr-only peer"
-        >
-        <label
-            for="{{ toggle_config.tag_id }}"
-            class="btn btn-s btn-primary outline-insight-primary-action-hover cursor-pointer select-none peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active"
-        >
-            {% if toggle_config.icon %}
-                {% icon toggle_config.icon %}
-            {% endif %}
-            {{ toggle_config.label|default:"" }}
+<div>
+    {% if toggle_config.switch %}
+        <label class="inline-flex flex-col w-fit h-fit cursor-pointer">
+            <span class="flex gap-1 mb-2 font-bold text-sm text-insight-headline">{{ toggle_config.label }}{% if toggle_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}</span>
+            <input
+                type="checkbox"
+                {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
+                {% if toggle_config.name %}name="{{ toggle_config.name }}"{% endif %}
+                {% if toggle_config.value %}value="{{ toggle_config.value }}"{% endif %}
+                {% if toggle_config.checked %}checked{% endif %}
+                {% if toggle_config.required %}required{% endif %}
+                {% if toggle_config.disabled %}disabled{% endif %}
+                {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
+                {% data_attributes toggle_config.data_attrs %}
+                {% include "insight_ui/components/_form_field_aria.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error_text=toggle_config.error_text disabled=toggle_config.disabled disabled_reason=toggle_config.disabled_reason %}
+                class="sr-only peer"
+            >
+            <span class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-surface after:border-insight-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary-action"></span>
         </label>
-    </div>
-{% endif %}
+    {% else %}
+        <div class="flex">
+            <input
+                type="checkbox"
+                {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
+                {% if toggle_config.name %}name="{{ toggle_config.name }}"{% endif %}
+                {% if toggle_config.value %}value="{{ toggle_config.value }}"{% endif %}
+                {% if toggle_config.checked %}checked{% endif %}
+                {% if toggle_config.required %}required{% endif %}
+                {% if toggle_config.disabled %}disabled{% endif %}
+                {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
+                {% data_attributes toggle_config.data_attrs %}
+                {% include "insight_ui/components/_form_field_aria.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error_text=toggle_config.error_text disabled=toggle_config.disabled disabled_reason=toggle_config.disabled_reason %}
+                class="sr-only peer"
+            >
+            <label
+                for="{{ toggle_config.tag_id }}"
+                class="btn btn-primary btn-s{% if toggle_config.disabled %} btn-disabled{% else %} cursor-pointer{% endif %} outline-insight-primary-action-hover select-none peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active"
+            >
+                {% if toggle_config.icon %}
+                    {% icon toggle_config.icon %}
+                {% endif %}
+                {{ toggle_config.label|default:"" }}
+            </label>
+        </div>
+    {% endif %}
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=toggle_config.message_id help_text=toggle_config.help_text error_text=toggle_config.error_text disabled=toggle_config.disabled disabled_reason=toggle_config.disabled_reason %}
+</div>

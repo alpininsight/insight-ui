@@ -1,0 +1,20 @@
+{% extends "insight_ui/components/layout/modal.html" %}
+{% load i18n insight_tags %}
+
+{% block modal_body %}
+    <div id="{{ modal_id }}-message" class="space-y-4">
+        {% for paragraph in paragraphs %}
+            <p class="text-insight-body">{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block modal_footer %}
+    <div class="flex gap-2 justify-end p-6 border-t border-insight-divider">
+        {% for action in actions %}
+            {% button config=action %}
+        {% empty %}
+            {% button label=_("Close") color="secondary" data_insight_dismiss="modal" %}
+        {% endfor %}
+    </div>
+{% endblock %}

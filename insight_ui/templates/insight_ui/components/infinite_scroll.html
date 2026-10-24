@@ -6,6 +6,7 @@
     hx-get="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}"
     hx-swap="afterend"
     hx-trigger="revealed threshold:{{ threshold|default:100 }}px"
+    hx-indicator="find .htmx-indicator"
   {% endif %}
   role="feed"
   aria-live="polite"
@@ -14,7 +15,7 @@
   {# Feed items must be direct article children of the feed landmark. #}
   {% for item in infinite_scroll_config.items %}
     <article class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
-      <h3>{{ item.title }}</h3>
+      <h{{ infinite_scroll_config.heading_level }} class="font-medium text-xl text-insight-headline md:text-2xl">{{ item.title }}</h{{ infinite_scroll_config.heading_level }}>
       <p class="text-insight-body">{{ item.content }}</p>
     </article>
   {% endfor %}
@@ -22,7 +23,7 @@
   {% if not infinite_scroll_config.auto_fetch %}
     {% with page_num=infinite_scroll_config.page|stringformat:"s" %}
       {% with url=infinite_scroll_config.request_url|add:"?page="|add:page_num|add:"&auto_fetch="|add:infinite_scroll_config.auto_fetch %}
-        {% button label=_('Load more') size='l' extra_classes='mx-auto' hx_get=url hx_swap='outerHTML' hx_trigger='click' hx_indicator='.htmx-indicator' %}
+        {% button label=_('Load more') size='l' extra_classes='mx-auto' hx_get=url hx_swap='outerHTML' hx_trigger='click' hx_indicator='next .htmx-indicator' %}
       {% endwith %}
     {% endwith %}
   {% endif %}

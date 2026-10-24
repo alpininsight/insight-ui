@@ -8,10 +8,10 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-base border-b border-insight-surface shadow-insight-surface md:px-6"
+  class="relative{% if not align_to_content %} insight-gutter{% endif %} w-full h-(--insight-navbar-height) bg-insight-base border-b border-insight-surface shadow-insight-surface"
 >
   {# Desktop Navigation #}
-  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap">
+  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap{% if align_to_content %} insight-content-box{% endif %}">
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
@@ -51,10 +51,7 @@
                     <a
                       href="{{ link.request_url }}"
                       {% if link.htmx %}
-                        hx-get="{{ link.htmx.request_url|default:link.request_url }}"
-                        hx-target="{{ link.htmx.target }}"
-                        hx-swap="{{ link.htmx.swap|default:'innerHTML' }} show:window:top"
-                        hx-push-url="true"
+                        {% htmx_attributes link.htmx request_url=link.htmx.request_url|default:link.request_url push_url=True swap_modifiers="show:window:top" %}
                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                       {% endif %}
                       class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
@@ -82,10 +79,7 @@
                           {% for item in link.dropdown.items %}
                             <a
                               {% if item.htmx %}
-                                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                                hx-target="{{ item.htmx.target }}"
-                                hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
-                                hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                                {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url swap_modifiers="show:window:top" %}
                                 hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
