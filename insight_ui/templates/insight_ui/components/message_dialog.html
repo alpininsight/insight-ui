@@ -14,7 +14,7 @@
         {% for action in actions %}
             {% button config=action %}
         {% empty %}
-            {% button label=_("Close") type="secondary" data_insight_dismiss="modal" %}
+            {% button label=_("Close") color="secondary" data_insight_dismiss="modal" %}
         {% endfor %}
     </div>
 {% endblock %}

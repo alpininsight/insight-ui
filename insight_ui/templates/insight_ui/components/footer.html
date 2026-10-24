@@ -1,8 +1,8 @@
 {% load i18n insight_tags %}
 
 {# Section headings are h2 (directly below the page's landmarks). #}
-<footer role="contentinfo" class="z-10 px-4 mt-auto bg-insight-base border-t border-insight-surface md:px-6">
-    <div class="py-6 mx-auto">
+<footer role="contentinfo" class="z-10{% if not align_to_content %} insight-gutter{% endif %} mt-auto bg-insight-base border-t border-insight-surface">
+    <div class="py-6 {% if align_to_content %}insight-content-box{% else %}mx-auto{% endif %}">
         <div class="flex flex-col gap-6 justify-stretch md:flex-row">
             {% if footer_config.description %}
                 <div class="flex-1 space-y-2">

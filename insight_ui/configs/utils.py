@@ -10,14 +10,12 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
-    BadgeType,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
     InlinePosition,
     Severity,
     Size,
-    validate_badge_type,
     validate_color_type,
     validate_corner_position,
     validate_geo_map_marker_type,
@@ -222,8 +220,8 @@ class StatusScreenConfig:
             severity="error",
             notice_title="What happened?",
             notice="Please try again or contact support if the issue persists.",
-            primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
-            secondary_action=ButtonConfig(label="Back to start", request_url="/", type="secondary"),
+            primary_action=ButtonConfig(label="Try again", request_url="/login/", color="primary"),
+            secondary_action=ButtonConfig(label="Back to start", request_url="/", color="secondary"),
         )
         """
 
@@ -695,8 +693,9 @@ class BadgeConfig:
         label: Badge label.
         icon: An optional icon displayed before the text.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
-        type: Defines the color of the badge.
+        color: Color of the badge.
         size: Defines the size of the badge.
+        disabled: **True** to show the badge as disabled; also disables its remove button.
         tooltip: Optional tooltip text displayed on hover.
         remove_htmx: Request sent by a remove button next to the label. The button is only shown if this is set.
         remove_label: Accessible name of the remove button, followed by the badge label. Defaults to "Remove".
@@ -715,8 +714,12 @@ class BadgeConfig:
             "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
         },
     )
-    type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
+    color: ColorType = field(default="primary", metadata={"doc": _("Color of the badge.")})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    disabled: bool = field(
+        default=False,
+        metadata={"doc": _("**True** to show the badge as disabled; also disables its remove button.")},
+    )
     tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
     remove_htmx: HtmxConfig | None = field(
         default=None,
@@ -730,8 +733,8 @@ class BadgeConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate type, size and the target of the remove request after initialization."""
-        validate_badge_type(self.type, "type")
+        """Validate color, size and the target of the remove request after initialization."""
+        validate_color_type(self.color)
         validate_size(self.size, "size")
         _require_htmx_target(self, "remove_htmx")
 
