@@ -1350,6 +1350,9 @@
   .border-insight-border-raised {
     border-color: var(--color-insight-border-raised);
   }
+  .border-insight-danger {
+    border-color: var(--color-insight-danger);
+  }
   .border-insight-divider {
     border-color: var(--color-insight-divider);
   }

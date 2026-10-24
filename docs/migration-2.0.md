@@ -34,6 +34,7 @@ pattern for a host project.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
+- [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
@@ -610,6 +611,37 @@ color and variant are modifiers:
 
 Search: `type=` on buttons and badges, `outline=`, `subtle=`, `ButtonType`,
 `BadgeType` and `btn-` classes in host templates, CSS and tests.
+
+### Bullet point list status
+
+`BulletPointItemConfig` uses the stepper's status values instead of the
+`completed` and `current` booleans. `failed` is new and shows an x-mark in the
+danger color.
+
+Before:
+
+```python
+BulletPointItemConfig(title="Payment", completed=True)
+BulletPointItemConfig(title="Review", current=True)
+```
+
+After:
+
+```python
+BulletPointItemConfig(title="Payment", status="completed")
+BulletPointItemConfig(title="Review", status="current")
+```
+
+`status` defaults to `pending`; unknown values raise `ValueError`.
+
+`request_url` is a URL, like on every other component. v1.15.1 resolved it as
+a URL name with `{% url %}` for `href` but sent it unchanged as `hx-get`, so a
+plain URL produced no link. Pass `reverse("name")` where you passed a name.
+Items without `request_url` and the current item render as a `<div>`, not as an
+`<a>` without `href`. `aria-current="step"` moves from the link to the `<li>`.
+
+Search: `completed=` and `current=` on `BulletPointItemConfig`, and
+`request_url=` values without a `/`.
 
 ### `flip_card` tag arguments
 
