@@ -63,7 +63,6 @@ class PaginationIppConfig:
     Attributes:
         name: Form field name.
         label: Selector label.
-        explanation: Tooltip explanation text.
         options: Available page size options.
         selected_option: Currently selected value.
 
@@ -73,7 +72,6 @@ class PaginationIppConfig:
         PaginationIppConfig(
             name="ipp",
             label="Items per Page",
-            explanation="Choose amount of items per page.",
             options=[10, 20, 30],
             selected_option=10,
         )
@@ -81,7 +79,6 @@ class PaginationIppConfig:
 
     name: str = field(default="ipp", metadata={"doc": _("Form field name.")})
     label: str = field(default="Items per page", metadata={"doc": _("Selector label.")})
-    explanation: str = field(default="", metadata={"doc": _("Tooltip explanation text.")})
     options: list[int] = field(
         default_factory=lambda: [10, 20, 30], metadata={"doc": _("Available page size options.")}
     )

@@ -603,6 +603,9 @@
   .ms-4 {
     margin-inline-start: calc(var(--spacing) * 4);
   }
+  .ms-5 {
+    margin-inline-start: calc(var(--spacing) * 5);
+  }
   .-me-2 {
     margin-inline-end: calc(var(--spacing) * -2);
   }
@@ -1358,6 +1361,9 @@
   }
   .border-insight-border-raised {
     border-color: var(--color-insight-border-raised);
+  }
+  .border-insight-danger {
+    border-color: var(--color-insight-danger);
   }
   .border-insight-divider {
     border-color: var(--color-insight-divider);

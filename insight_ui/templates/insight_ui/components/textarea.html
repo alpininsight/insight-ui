@@ -7,11 +7,6 @@
         {% endif %}
         <span class="self-end">{{ textarea_config.label }}</span>
         {% if textarea_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}
-        {% if textarea_config.explanation %}
-            <span class="text-insight-body" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
-                {% icon name="question-mark-circle" size="xs" %}
-            </span>
-        {% endif %}
     </label>
     <textarea
         type="textarea"
@@ -22,8 +17,9 @@
         {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
         {% if textarea_config.required %}required{% endif %}
         {% if textarea_config.disabled %}disabled{% endif %}
-        {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
         {% data_attributes textarea_config.data_attrs %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
         class="input w-full"
     >{{ textarea_config.value|default:"" }}</textarea>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
 </div>
