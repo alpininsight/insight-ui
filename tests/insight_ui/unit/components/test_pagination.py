@@ -29,18 +29,29 @@ def page_links(soup: BeautifulSoup) -> dict[str, str]:
 
 
 @pytest.mark.parametrize(
-    ("page_number", "disabled_label"),
+    ("page_number", "direction", "disabled_label"),
     [
-        pytest.param(1, "To previous page (Deactivated because there are no more previous pages)", id="first-page"),
-        pytest.param(3, "To next page (Deactivated because there are no more next pages)", id="last-page"),
+        pytest.param(
+            1,
+            "previous",
+            "To previous page (Deactivated because there are no more previous pages)",
+            id="first-page",
+        ),
+        pytest.param(
+            3,
+            "next",
+            "To next page (Deactivated because there are no more next pages)",
+            id="last-page",
+        ),
     ],
 )
-def test_disabled_page_button_renders_without_warning(page_number: int, disabled_label: str) -> None:
-    """On the first and last page the disabled button explains itself without emitting a warning."""
+def test_disabled_page_button_keeps_its_id(page_number: int, direction: str, disabled_label: str) -> None:
+    """Boundary buttons keep their focus-restoration ID and explain why they are disabled."""
     soup = render_pagination(page_number)
 
     button = soup.find(attrs={"aria-label": disabled_label})
     assert button is not None
+    assert button["id"] == f"pagination-{direction}"
     assert button.has_attr("disabled")
     assert button["data-insight-tooltip"] == disabled_label
 
@@ -112,6 +123,13 @@ def test_htmx_config_drives_the_page_links() -> None:
     assert link["hx-push-url"] == "true"
 
 
+@pytest.mark.parametrize("target", ["", "   "])
+def test_htmx_config_requires_a_target(target: str) -> None:
+    """An HTMX pagination must not replace only the clicked link with the list response."""
+    with pytest.raises(ValueError, match=r"PaginationConfig\.htmx needs a target"):
+        render_pagination(2, htmx=HtmxConfig(target=target))
+
+
 def test_include_sends_filters_and_the_page_size_with_htmx_requests() -> None:
     """hx-include on the nav is inherited by links and the page size form."""
     soup = render_pagination(
@@ -139,7 +157,9 @@ def test_page_size_form_keeps_filters_and_starts_at_page_one() -> None:
 
     assert form["action"] == "/search/"
     assert {(i["name"], i["value"]) for i in form.find_all("input", type="hidden")} == {("q", "chair")}
-    assert form.find("button", type="submit") is not None
+    button = form.find("button", type="submit")
+    assert button is not None
+    assert "btn-secondary" in button["class"]
 
 
 def test_page_size_form_reloads_on_change_with_htmx() -> None:

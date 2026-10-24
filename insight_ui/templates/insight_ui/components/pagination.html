@@ -15,7 +15,7 @@
             {% if previous_url %}
                 {% button tag_id=pagination_config.tag_id|add:'-previous' request_url=previous_url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' htmx_config=pagination_config.htmx %}
             {% else %}
-                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-previous' label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
 
             <div class="hidden gap-1 justify-center md:flex">
@@ -23,7 +23,7 @@
                     {% if page.ellipsis %}
                         <span class="px-4 py-1 text-insight-body" aria-hidden="true">…</span>
                     {% elif page.current %}
-                        <span id="{{ page.id }}" tabindex="-1" class="btn btn-s bg-insight-primary-action-active" aria-current="page">
+                        <span id="{{ page.id }}" tabindex="-1" class="btn btn-primary btn-s bg-insight-primary-action-active border-insight-primary-action-active" aria-current="page">
                             <span class="sr-only">{{ page.label }}</span><span aria-hidden="true">{{ page.number }}</span>
                         </span>
                     {% else %}
@@ -35,7 +35,7 @@
             {% if next_url %}
                 {% button tag_id=pagination_config.tag_id|add:'-next' request_url=next_url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' htmx_config=pagination_config.htmx %}
             {% else %}
-                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-next' label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
         </div>
 
@@ -53,7 +53,7 @@
                 {% endfor %}
                 <div class="w-32">{% select config=ipp_select %}</div>
                 {% if not pagination_config.htmx %}
-                    {% button label=_("Apply") button_type="submit" size="s" type="secondary" %}
+                    {% button label=_("Apply") button_type="submit" size="s" color="secondary" %}
                 {% endif %}
             </form>
         {% endif %}

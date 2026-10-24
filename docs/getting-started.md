@@ -70,7 +70,7 @@ Create `myapp/templates/myapp/home.html`:
 {% block title %}My application{% endblock %}
 {% block content %}
     {% translate "Get started" as action_label %}
-    {% button label=action_label type="primary" %}
+    {% button label=action_label color="primary" %}
 {% endblock %}
 ```
 
@@ -182,6 +182,8 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 | --- | --- | --- |
 | `navbar_fixed` | `True` | Stick the navbar to the top of the window. |
 | `register_url` | `""` | URL or URL name for a register button; empty hides it. |
+| `content_max_width` | `""` | CSS width of the content box, e.g. `"64rem"`; empty keeps `80rem`. A page can pass `content_max_width` in its context. |
+| `align_navbar_footer_to_content` | `False` | `True` puts the navbar and footer content into the content box instead of spanning the window. |
 | `webmanifest`, `favicon`, `favicon_svg`, `apple_touch_icon` | packaged icons | PWA/Android manifest and browser icons; see [your app's icons](static-assets.md#host-app-icons). |
 | `safari_mask_icon`, `safari_mask_icon_color`, `msapplication_TileColor`, `theme_color` | packaged values | Pinned-tab, tile and mobile browser-chrome colors. |
 | `meta.seo.{description,keywords,author}` | placeholder text | `<meta>` tags rendered by the base template. |

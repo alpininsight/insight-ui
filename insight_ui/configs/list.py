@@ -146,8 +146,12 @@ class PaginationConfig:
     )
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
+        """Reject empty values and HTMX requests without a swap target."""
         validate_not_empty(self, "request_url", "tag_id", "page_param")
+        if self.htmx is not None and not self.htmx.target.strip():
+            raise ValueError(  # noqa: TRY003
+                "PaginationConfig.htmx needs a target, e.g. the element that contains the paginated results."
+            )
 
 
 @dataclass
