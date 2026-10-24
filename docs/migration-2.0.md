@@ -43,7 +43,7 @@ pattern for a host project.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
-- [ ] Leave pagination helpers as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
+- [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 
 ## Color tokens are a silent break
 
@@ -1036,6 +1036,61 @@ A link button whose `HtmxConfig` has no `request_url` now requests the link
 `HtmxConfig.request_url` no longer warns. The HTMX URL is the config URL
 when it is set.
 
+## Pagination
+
+[#738](https://github.com/alpininsight/insight-ui/pull/738).
+
+### HTMX is opt-in
+
+v1.15.1 always sent HTMX requests into `#list-container`, included `#ipp` and
+showed the global loading bar. Pagination now renders plain links. Pass an
+`HtmxConfig` to swap the result instead; `include` sends further fields, for
+example a filter form, with every request:
+
+Before:
+
+```python
+PaginationConfig(request_url="/products/", current_page=page, surrounding_pages=pages)
+```
+
+After:
+
+```python
+PaginationConfig(
+    request_url="/products/?q=chair",
+    current_page=Paginator(products, 10).get_page(request.GET.get("page")),
+    htmx=HtmxConfig(target="#list-container", push_url=True),
+    include="#product-filter",
+)
+```
+
+The tag builds the page URLs from `request_url` and keeps its query string, so
+filters survive paging. `page_param` changes the parameter name (default
+`page`). Without `htmx`, the page size selector gets an "Apply" button.
+
+### `get_page` and `surrounding_pages` are gone
+
+`insight_ui.utils.pagination` is removed. Use Django's
+`Paginator(...).get_page(...)`. The visible page numbers now come from
+`get_elided_page_range`; `on_each_side` (default 2) and `on_ends` (default 1)
+replace `surrounding_pages`.
+
+For an API that pages itself and only reports the total, page a range:
+
+```python
+page = Paginator(range(total), items_per_page).get_page(request.GET.get("page"))
+```
+
+### IDs and the page size selector
+
+`ipp_config` is now `items_per_page`. The IDs are derived from `tag_id`
+(default `pagination`): the page size form is `#<tag_id>-ipp` instead of
+`#ipp`, and two paginations on one page no longer share IDs. The query
+parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
+
+Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
+`#list-container`.
+
 ## Checked, and not a 2.0 break
 
 These showed up in earlier notes. The current tree does not do them.
@@ -1047,12 +1102,8 @@ These showed up in earlier notes. The current tree does not do them.
 - `login.html` is unchanged since v1.15.1, including its `flex flex-1`
   content child. `content_fill` is still only read by `base.html`. The login
   template does not take that variable.
-- Pagination still renders `hx-target="#list-container"` and
-  `hx-indicator="#insight-global-loading-indicator"`.
-  `PaginationConfig.surrounding_pages` still exists and defaults to `[]`.
-  `insight_ui.utils.pagination.get_page` still exists.
-  Disabled previous/next buttons pass `disabled_reason=""`, so they do not
-  warn.
+- Disabled previous/next pagination buttons pass `disabled_reason=""`; their
+  label already states the reason, so they do not warn.
 - `{% navbar %}` without a config renders the brand from `INSIGHT_UI["brand"]`
   and no links. That is additive. An explicit `NavbarConfig` is rendered as
   given.
@@ -1088,9 +1139,8 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, stacked on #733 | A `download` attribute on link buttons. |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #733 and #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
-| [#738](https://github.com/alpininsight/insight-ui/pull/738) | Open | Pagination would render plain links unless you pass an `HtmxConfig`. `surrounding_pages` and `insight_ui.utils.pagination.get_page` would be removed in favor of Django's `Paginator.get_page` and `get_elided_page_range`. |
+| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
+| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15
