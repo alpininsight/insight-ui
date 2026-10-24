@@ -1,10 +1,10 @@
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
 <ol>
     {% for item in items %}
         <li class="relative {% if not forloop.first %}pt-10{% endif %}"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if not forloop.first %}
-                <div aria-hidden="true" class="-top-1 start-4 absolute {% if item.status == 'pending' %}bg-insight-text-disabled{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
+                <div aria-hidden="true" class="-top-1 start-4 absolute {% if item.status == 'pending' %}bg-insight-text-disabled{% elif item.status == 'failed' %}bg-insight-danger{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
             {% endif %}
             {% if item.request_url and item.status != "current" %}
                 <a href="{{ item.request_url }}" {% htmx_attributes htmx request_url=item.request_url %} class="flex relative items-start">
@@ -29,7 +29,7 @@
             </span>
                 <!-- Information -->
             <div class="flex flex-col ms-4 min-w-0">
-                <span class="font-medium text-sm {% if item.status == 'pending' %}text-insight-muted{% elif item.status == 'failed' %}text-insight-danger-text{% elif item.status == 'current' %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title }}</span>
+                <span class="font-medium text-sm {% if item.status == 'pending' %}text-insight-muted{% elif item.status == 'failed' %}text-insight-danger-text{% elif item.status == 'current' %}text-insight-primary{% else %}text-insight-headline{% endif %}">{% if item.status == "completed" %}<span class="sr-only">{% trans "Completed" %}: </span>{% elif item.status == "failed" %}<span class="sr-only">{% trans "Failed" %}: </span>{% endif %}{{ item.title }}</span>
                 <span class="text-sm {% if item.status == 'pending' %}text-insight-muted{% elif item.status == 'failed' %}text-insight-danger-text{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
             </div>
             {% if item.request_url and item.status != "current" %}

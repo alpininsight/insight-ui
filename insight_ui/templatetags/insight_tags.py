@@ -29,21 +29,20 @@ from markdown import markdown
 from insight_ui.brand import get_navbar_brand_defaults
 from insight_ui.config import get_config
 from insight_ui.configs import (
-    BUTTON_TYPE_VALUES,
     AccordionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
     BadgeListConfig,
-    BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
+    ButtonColor,
     ButtonConfig,
-    ButtonType,
+    ButtonVariant,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -240,12 +239,18 @@ def json_attribute(value: object) -> str:
 
 
 @register.simple_tag
-def data_attributes(attrs: Iterable[DataAttrConfig]) -> SafeString:
-    """Render DataAttrConfig entries as data-* HTML attributes.
+def data_attributes(attrs: Iterable[DataAttrConfig], prefix: str = "data") -> SafeString:
+    """Render DataAttrConfig entries as data-* (or aria-*/hx-*) HTML attributes.
 
-    Usage: ``<input {% data_attributes config.data_attrs %}>``
+    Usage: ``<input {% data_attributes config.data_attrs %}>``, ``{% data_attributes attrs prefix="aria" %}``
+
+    Raises:
+        ValueError: If the prefix is not data, aria or hx.
+
     """
-    return format_html_join(" ", 'data-{}="{}"', ((attr.name, attr.value) for attr in attrs))
+    if prefix not in {"data", "aria", "hx"}:
+        raise ValueError(f"Invalid attribute prefix {prefix!r}: use 'data', 'aria' or 'hx'.")  # noqa: TRY003
+    return format_html_join(" ", '{}-{}="{}"', ((prefix, attr.name, attr.value) for attr in attrs))
 
 
 def _collect_data_attrs(
@@ -514,7 +519,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs
     return {
         "user": context.get("user"),
         "navbar_config": config,
-        "fixed": get_config("navbar_fixed"),
+        "align_to_content": get_config("align_navbar_footer_to_content"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),
         "redirect_to": context.get("redirect_to", ""),
@@ -536,7 +541,7 @@ def theme_toggle() -> dict[str, Any]:
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a legal notice line."""
     config = build_config(FooterConfig, config)
-    return {"footer_config": config}
+    return {"footer_config": config, "align_to_content": get_config("align_navbar_footer_to_content")}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
@@ -625,10 +630,9 @@ def button(
     icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
-    type: ButtonType | _Unset = UNSET,  # noqa: A002
+    color: ButtonColor | _Unset = UNSET,
+    variant: ButtonVariant | _Unset = UNSET,
     size: Size | _Unset = UNSET,
-    outline: bool | _Unset = UNSET,
-    subtle: bool | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
@@ -711,10 +715,9 @@ def button(
         icon=icon,
         icon_end=icon_end,
         icon_only=icon_only,
-        type=type,
+        color=color,
+        variant=variant,
         size=size,
-        outline=outline,
-        subtle=subtle,
         round=round,
         tooltip=tooltip,
         htmx_config=htmx_config,
@@ -727,7 +730,9 @@ def button(
         aria_attrs=aria_attrs,
         hx_attrs=hx_attrs,
     )
-    return {"button_config": config}
+    # Solid is the default look of .btn, so it needs no class of its own.
+    variant_class = "" if config.variant == "solid" else f" btn-{config.variant}"
+    return {"button_config": config, "variant_class": variant_class}
 
 
 @register.inclusion_tag("insight_ui/components/input.html")
@@ -1300,8 +1305,9 @@ def badge(
     icon_size: str | _Unset = UNSET,
     icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
-    type: BadgeType | _Unset = UNSET,  # noqa: A002
+    color: ColorType | _Unset = UNSET,
     size: Size | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
     remove_htmx: HtmxConfig | _Unset | None = UNSET,
     remove_label: str | _Unset = UNSET,
@@ -1325,8 +1331,9 @@ def badge(
         label=label,
         icon=icon,
         icon_end=icon_end,
-        type=type,
+        color=color,
         size=size,
+        disabled=disabled,
         tooltip=tooltip,
         remove_htmx=remove_htmx,
         remove_label=remove_label,
@@ -1337,9 +1344,11 @@ def badge(
             label=f"{config.remove_label or _('Remove')}: {config.label}",
             icon=IconConfig("x-mark", "xs"),
             icon_only=True,
-            # Same color as the badge; badge-only types like "disabled" fall back to secondary.
-            type=cast("ButtonType", config.type) if config.type in BUTTON_TYPE_VALUES else "secondary",
-            subtle=True,
+            # Same color as the badge; a neutral badge has no button color, so its button uses the text color.
+            color="secondary" if config.color == "neutral" else cast("ButtonColor", config.color),
+            variant="plain" if config.color == "neutral" else "subtle",
+            disabled=config.disabled,
+            disabled_reason="",
             round=True,
             size="xs",
             button_type="button",
@@ -1367,8 +1376,8 @@ def badge_list(
     if config.clear_all_htmx and config.items:
         clear_all_button = ButtonConfig(
             label=config.clear_all_label or _("Remove all"),
-            type="secondary",
-            subtle=True,
+            color="secondary",
+            variant="subtle",
             size="s",
             button_type="button",
             htmx_config=config.clear_all_htmx,

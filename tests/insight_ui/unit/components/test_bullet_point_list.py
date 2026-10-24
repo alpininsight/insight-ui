@@ -4,7 +4,7 @@
 
 import pytest
 from bs4 import BeautifulSoup
-from insight_ui.configs import BulletPointItemConfig, BulletPointListConfig, HtmxConfig
+from insight_ui.configs import BulletPointItemConfig, BulletPointListConfig, HtmxConfig, StepStatus
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -67,6 +67,39 @@ class TestBulletPointList(TemplateTagsTestCase):
         assert svg(self.render_items(BulletPointItemConfig(title="Setup", status="completed"))) == check
         assert svg(self.render_items(BulletPointItemConfig(title="Setup", status="failed"))) == x_mark
         assert self.render_items(BulletPointItemConfig(title="Setup")).find("svg") is None
+
+    def test_terminal_status_has_accessible_text(self) -> None:
+        """Completed and failed states expose translated text in addition to their hidden icon."""
+        cases: tuple[tuple[StepStatus, str], ...] = (("completed", "Completed"), ("failed", "Failed"))
+
+        for status, label in cases:
+            with self.subTest(status=status):
+                soup = self.render_items(BulletPointItemConfig(title="Setup", status=status))
+
+                accessible_status = soup.select_one("li .sr-only")
+                assert accessible_status is not None
+                assert accessible_status.get_text(strip=True) == f"{label}:"
+
+    def test_connector_matches_item_status(self) -> None:
+        """The connector does not imply success for pending or failed items."""
+        cases: tuple[tuple[StepStatus, str], ...] = (
+            ("pending", "bg-insight-text-disabled"),
+            ("completed", "bg-insight-success"),
+            ("failed", "bg-insight-danger"),
+        )
+
+        for status, connector_class in cases:
+            with self.subTest(status=status):
+                soup = self.render_items(
+                    BulletPointItemConfig(title="First", status="completed"),
+                    BulletPointItemConfig(title="Second", status=status),
+                )
+
+                connector = soup.select("ol > li")[1].find(attrs={"aria-hidden": "true"}, recursive=False)
+                assert connector is not None
+                assert connector_class in connector.get("class", [])
+                if status == "failed":
+                    assert "bg-insight-success" not in connector.get("class", [])
 
     def test_request_url_renders_link(self) -> None:
         """request_url is used as the href of the item."""
