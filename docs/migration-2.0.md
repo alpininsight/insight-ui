@@ -1074,8 +1074,12 @@ These showed up in earlier notes. The current tree does not do them.
 
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
-`required` on checkbox and toggle, removable badges, and
-`LegalNoticeConfig.holder_url` / `holder_logo`.
+`required` on checkbox and toggle, removable badges,
+`LegalNoticeConfig.holder_url` / `holder_logo`, and
+`{% sidebar width="fit" %}` with `min_width` / `max_width` (`narrow`,
+`normal`, `wide`; the upper limit defaults to `wide`). The sidebar content
+column now fills the sidebar height, so `mt-auto` moves an element to the
+bottom.
 
 ## Pending before 2.0.0
 

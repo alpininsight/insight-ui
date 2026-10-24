@@ -822,6 +822,9 @@
   .min-h-56 {
     min-height: calc(var(--spacing) * 56);
   }
+  .min-h-full {
+    min-height: 100%;
+  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -897,6 +900,9 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .max-w-56 {
+    max-width: calc(var(--spacing) * 56);
+  }
   .max-w-72 {
     max-width: calc(var(--spacing) * 72);
   }
@@ -929,6 +935,12 @@
   }
   .min-w-56 {
     min-width: calc(var(--spacing) * 56);
+  }
+  .min-w-72 {
+    min-width: calc(var(--spacing) * 72);
+  }
+  .min-w-96 {
+    min-width: calc(var(--spacing) * 96);
   }
   .min-w-fit {
     min-width: fit-content;
