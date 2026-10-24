@@ -33,9 +33,9 @@ def test_icon_wrapper_is_phrasing_content() -> None:
         pytest.param("{% button label='Save' icon_name='check' %}", id="button"),
         pytest.param("{% button label='Close' icon_name='x-mark' icon_only=True %}", id="icon-only-button"),
         pytest.param("<p>Done {% icon name='check' %} today</p>", id="paragraph"),
-        pytest.param("{% input_field name='email' label='E-Mail' explanation='Info' %}", id="input-label"),
-        pytest.param("{% textarea name='message' label='Message' explanation='Info' %}", id="textarea-label"),
-        pytest.param("{% select name='topic' label='Topic' options='' explanation='Info' %}", id="select-label"),
+        pytest.param("{% input_field name='email' label='E-Mail' help_text='Info' %}", id="input-label"),
+        pytest.param("{% textarea name='message' label='Message' help_text='Info' %}", id="textarea-label"),
+        pytest.param("{% select name='topic' label='Topic' options='' help_text='Info' %}", id="select-label"),
         pytest.param("{% toggle name='news' label='News' switch=True %}", id="toggle-switch-label"),
     ],
 )

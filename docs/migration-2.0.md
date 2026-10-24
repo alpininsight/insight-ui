@@ -34,15 +34,16 @@ pattern for a host project.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
+- [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
-- [ ] Leave `explanation` as it is until the open pull request in [Pending before 2.0.0](#pending-before-200) merges.
 
 ## Color tokens are a silent break
 
@@ -611,6 +612,37 @@ color and variant are modifiers:
 Search: `type=` on buttons and badges, `outline=`, `subtle=`, `ButtonType`,
 `BadgeType` and `btn-` classes in host templates, CSS and tests.
 
+### Bullet point list status
+
+`BulletPointItemConfig` uses the stepper's status values instead of the
+`completed` and `current` booleans. `failed` is new and shows an x-mark in the
+danger color.
+
+Before:
+
+```python
+BulletPointItemConfig(title="Payment", completed=True)
+BulletPointItemConfig(title="Review", current=True)
+```
+
+After:
+
+```python
+BulletPointItemConfig(title="Payment", status="completed")
+BulletPointItemConfig(title="Review", status="current")
+```
+
+`status` defaults to `pending`; unknown values raise `ValueError`.
+
+`request_url` is a URL, like on every other component. v1.15.1 resolved it as
+a URL name with `{% url %}` for `href` but sent it unchanged as `hx-get`, so a
+plain URL produced no link. Pass `reverse("name")` where you passed a name.
+Items without `request_url` and the current item render as a `<div>`, not as an
+`<a>` without `href`. `aria-current="step"` moves from the link to the `<li>`.
+
+Search: `completed=` and `current=` on `BulletPointItemConfig`, and
+`request_url=` values without a `/`.
+
 ### `flip_card` tag arguments
 
 [#707](https://github.com/alpininsight/insight-ui/pull/707).
@@ -648,11 +680,8 @@ either. `FormFieldConfig` did. A prompt is an option whose key is
 `placeholder`. That option submits an empty value. `InputFieldConfig` and
 `TextareaConfig` still have `placeholder`.
 
-`explanation` was added to `InputFieldConfig`, `TextareaConfig` and the
-`input_field` and `textarea` tags. `SelectConfig.explanation` was already
-there. [#746](https://github.com/alpininsight/insight-ui/pull/746) would
-rename `explanation` to `help_text` and is not merged. Keep the current field
-if you already pass it, and wait before renaming a host to `help_text`.
+`explanation` is gone from every field; see
+[Help, error and disabled texts](#help-error-and-disabled-texts).
 
 Before:
 
@@ -764,6 +793,51 @@ Search: `DataAttrConfig(`.
 `required` attribute on `select`, `checkbox` and `toggle` when `required=True`.
 The required asterisk is `aria-hidden="true"`. v1.15.1 used
 `aria-label="Required"` on the input, select and textarea asterisk.
+
+### Help, error and disabled texts
+
+[#746](https://github.com/alpininsight/insight-ui/pull/746).
+
+`explanation` showed a tooltip icon next to the label. Tooltips are not
+reachable by keyboard or touch, so it is replaced by `help_text`, a visible hint
+below the field. Every form field has `help_text` and `error_text`: input,
+textarea, select, checkbox, toggle, slider and multiselect, plus checkbox group,
+radio group and radio block. `FilterConfig` has `help_text`.
+`PaginationIppConfig.explanation` is removed without a replacement; the label
+names the selector.
+
+Before:
+
+```python
+SelectConfig(name="country", label="Country", options=countries, explanation="Where you live.")
+```
+
+After:
+
+```python
+SelectConfig(name="country", label="Country", options=countries, help_text="Where you live.")
+InputFieldConfig(name="email", label="E-Mail", error_text="Enter a valid address.")
+```
+
+The texts are plain paragraphs below the field, linked with
+`aria-describedby` in the order help, disabled reason, error. An `error_text`
+also sets `aria-invalid="true"` and `aria-errormessage`. The IDs are
+`<tag_id>-help`, `<tag_id>-disabled` and `<tag_id>-error`, or derived from
+`name` without a `tag_id`. A checkbox group only links the texts, because a
+plain fieldset does not support `aria-invalid`.
+
+`disabled_reason` on form fields and on checkbox and radio options used to be a
+hover tooltip. A disabled control can neither be focused nor show a tooltip, so
+the reason is now visible text below the field or option. Buttons keep the
+tooltip for now.
+
+Radio groups and radio blocks render `role="radiogroup"` on their fieldset,
+named by the legend through `aria-labelledby`. Checkbox and toggle templates
+wrap the control and its texts in a `<div>`. The form's error container now has
+`role="alert"` and `aria-atomic="true"`, so text swapped into it is announced.
+
+Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
+expect a checkbox or toggle `<input>` as the outermost element.
 
 ## Markup selectors
 
@@ -1051,8 +1125,12 @@ These showed up in earlier notes. The current tree does not do them.
 
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
-`required` on checkbox and toggle, removable badges, and
-`LegalNoticeConfig.holder_url` / `holder_logo`.
+`required` on checkbox and toggle, removable badges,
+`LegalNoticeConfig.holder_url` / `holder_logo`, and
+`{% sidebar width="fit" %}` with `min_width` / `max_width` (`narrow`,
+`normal`, `wide`; the upper limit defaults to `wide`). The sidebar content
+column now fills the sidebar height, so `mt-auto` moves an element to the
+bottom.
 
 ## Pending before 2.0.0
 
@@ -1063,7 +1141,6 @@ the tree this guide describes. Do not migrate a host to them yet.
 | --- | --- | --- |
 | [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
 | [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
-| [#746](https://github.com/alpininsight/insight-ui/pull/746) | Open | `explanation` would be removed from input, textarea, select, `FilterConfig` and `PaginationIppConfig`. The replacement name in that pull request is `help_text`. `disabled_reason` on form fields would become visible text linked with `aria-describedby`. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15

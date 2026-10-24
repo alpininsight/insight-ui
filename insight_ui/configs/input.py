@@ -174,7 +174,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
@@ -184,8 +184,9 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -215,9 +216,6 @@ class InputFieldConfig(BaseFormFieldConfig):
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
     )
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
-    )
 
     def __post_init__(self) -> None:
         """Validate input_type, minimum/maximum, and min_length/max_length after initialization."""
@@ -242,14 +240,15 @@ class TextareaConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -269,9 +268,6 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
-    )
 
 
 @dataclass
@@ -285,11 +281,13 @@ class CheckboxConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -317,7 +315,7 @@ class CheckboxItemConfig:
         label: Label text.
         value: Value submitted when checked.
         disabled: **True** if the checkbox should be disabled.
-        disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
@@ -335,7 +333,7 @@ class CheckboxItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -370,6 +368,8 @@ class CheckboxGroupConfig:
         minimum_checked: Number of checkbox elements that must be selected at minimum.
         maximum_checked: Number of checkbox elements that may be selected at the same time.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -401,6 +401,10 @@ class CheckboxGroupConfig:
     )
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
     def __post_init__(self) -> None:
@@ -496,7 +500,7 @@ class RadioItemConfig:
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
-        disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
@@ -516,7 +520,7 @@ class RadioItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -548,6 +552,8 @@ class RadioGroupConfig:
         as_row: **True** if the radio elements should be displayed side by side.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -573,6 +579,10 @@ class RadioGroupConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
     def __post_init__(self) -> None:
@@ -602,6 +612,8 @@ class RadioBlockConfig:
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -647,6 +659,10 @@ class RadioBlockConfig:
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and validate hx_swap_method and current_value."""
@@ -669,7 +685,7 @@ class SliderConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
@@ -681,6 +697,8 @@ class SliderConfig(BaseFormFieldConfig):
         value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -763,7 +781,7 @@ class ToggleConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
@@ -771,6 +789,8 @@ class ToggleConfig(BaseFormFieldConfig):
         switch: **True** if the toggle button should look like a typical switch select.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -806,12 +826,13 @@ class SelectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
-        explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -827,9 +848,6 @@ class SelectConfig(BaseFormFieldConfig):
         )
         """
 
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the filter that appears in a tooltip.")}
-    )
     options: list[str] | dict[str, str] = field(
         default_factory=list, metadata={"doc": _("List of values that can be selected.")}
     )
@@ -860,13 +878,15 @@ class MultiselectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
         options: List of values that can be selected.
         selected_options: List of currently selected options.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.

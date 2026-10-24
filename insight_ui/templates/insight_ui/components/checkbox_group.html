@@ -2,6 +2,8 @@
 
 <fieldset
     data-insight-checkbox-group
+    {# A fieldset (role group) does not support aria-invalid; the linked error text carries the state. #}
+    {% include "insight_ui/components/_form_field_aria.html" with field_id=checkbox_group_config.name help_text=checkbox_group_config.help_text error_text=checkbox_group_config.error_text disabled=checkbox_group_config.disabled disabled_reason=checkbox_group_config.disabled_reason invalid=False %}
     data-minimum-checked="{{ checkbox_group_config.minimum_checked|default:-1 }}"
     data-maximum-checked="{{ checkbox_group_config.maximum_checked|default:1000000 }}"
     data-msg-min-reached="{% trans 'Minimum selection reached. At least one option must remain selected.' %}"
@@ -18,4 +20,5 @@
     </div>
     {# Live region for constraint violation announcements #}
     <span class="sr-only" aria-live="assertive" aria-atomic="true" data-checkbox-announcement></span>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=checkbox_group_config.name help_text=checkbox_group_config.help_text error_text=checkbox_group_config.error_text disabled=checkbox_group_config.disabled disabled_reason=checkbox_group_config.disabled_reason %}
 </fieldset>

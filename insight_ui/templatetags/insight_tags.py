@@ -593,7 +593,10 @@ def minimal_stepper(
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(
-    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset = UNSET
+    config: BulletPointListConfig | None = None,
+    *,
+    items: list[BulletPointItemConfig] | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
     config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -751,7 +754,8 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -777,7 +781,8 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -801,6 +806,8 @@ def checkbox(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -835,6 +842,8 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -860,6 +869,8 @@ def radio_block(
     hx_swap_method: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -889,6 +900,8 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -913,6 +926,8 @@ def toggle(
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -932,9 +947,10 @@ def select(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -956,6 +972,8 @@ def multiselect(
     disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -1465,7 +1483,6 @@ def pagination(
             name=ipp.name,
             tag_id=f"{config.tag_id}-ipp-select",
             label=str(ipp.label),
-            explanation=ipp.explanation,
             options={str(option): str(option) for option in ipp.options},
             selected_option=str(ipp.selected_option),
         )
