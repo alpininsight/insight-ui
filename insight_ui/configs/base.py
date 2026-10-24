@@ -226,7 +226,7 @@ class BaseFormFieldConfig:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
@@ -244,7 +244,7 @@ class BaseFormFieldConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip."
             )
         },
     )

@@ -174,7 +174,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
@@ -240,7 +240,7 @@ class TextareaConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
@@ -281,7 +281,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
@@ -315,7 +315,7 @@ class CheckboxItemConfig:
         label: Label text.
         value: Value submitted when checked.
         disabled: **True** if the checkbox should be disabled.
-        disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
@@ -333,7 +333,7 @@ class CheckboxItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -500,7 +500,7 @@ class RadioItemConfig:
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
-        disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
@@ -520,7 +520,7 @@ class RadioItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -685,7 +685,7 @@ class SliderConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
@@ -781,7 +781,7 @@ class ToggleConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
@@ -826,7 +826,7 @@ class SelectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
@@ -878,7 +878,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
