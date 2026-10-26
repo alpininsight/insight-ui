@@ -1194,42 +1194,105 @@
         background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-    }
-
-    [data-theme="dark"] .range-custom::-moz-range-track,
-    [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-    }
-
-    html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+    /*
+    * Right-to-left sliders fill from the right; :dir() also covers a right-to-left container in a
+    * left-to-right page. The dark theme needs no rules: --color-insight-bg-raised switches with it.
+    */
+    .range-custom:dir(rtl)::-webkit-slider-runnable-track {
         background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    html[dir='rtl'] .range-custom::-moz-range-track {
+    .range-custom:dir(rtl)::-moz-range-track {
         background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-    }
-
-    html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
-    html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
-    html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-    }
-
-    .range-custom::-webkit-slider-thumb {
+    /*
+    * Slider thumb, shared by the single slider and both inputs of the dual slider.
+    * Chromium and Safari style the thumb only without its native appearance; Firefox does not need it.
+    */
+    .range-thumb::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
         @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-2;
     }
 
-    .range-custom::-moz-range-thumb {
+    .range-thumb::-moz-range-thumb {
         @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
+    }
+
+    /*
+    * Dual slider: two inputs lie on top of each other. Only their thumbs take pointer events, and the
+    * focus ring sits on the focused thumb because each input spans the whole track.
+    */
+    /* Chromium places the thumb relative to the input's own track: an invisible track as high as the
+       single slider's lets the shared -mt-2 center the thumb on the visible track behind it. */
+    .slider-dual-container .range-thumb::-webkit-slider-runnable-track {
+        @apply h-2 bg-transparent;
+    }
+
+    .slider-dual-container .range-thumb::-moz-range-track {
+        @apply h-2 bg-transparent;
+    }
+
+    .slider-dual-container .range-thumb::-webkit-slider-thumb {
+        @apply pointer-events-auto;
+    }
+
+    .slider-dual-container .range-thumb::-moz-range-thumb {
+        @apply pointer-events-auto;
+    }
+
+    .slider-dual-container .range-thumb:focus-visible::-webkit-slider-thumb {
+        @apply ring-2 ring-insight-focus ring-offset-2;
+    }
+
+    .slider-dual-container .range-thumb:focus-visible::-moz-range-thumb {
+        @apply ring-2 ring-insight-focus ring-offset-2;
+    }
+
+    /*
+    * Slider legend.
+    * Each item is centered under the thumb position of its value: the thumb center moves from half a thumb
+    * width to the track length minus half a thumb width. The first and last item stay inside the slider:
+    * a long label is shifted inwards instead of overflowing. --insight-legend-position (0 to 1) is set per item.
+    * --insight-slider-thumb must match the thumb size above (size-6).
+    */
+    .slider-legend {
+        --insight-slider-thumb: 1.5rem;
+        @apply relative h-5;
+    }
+
+    /* Physical left/right: in the rotate legend mode an item's own writing mode turns inset-inline into top. */
+    .slider-legend-item {
+        --insight-legend-offset: calc(
+            var(--insight-slider-thumb) / 2 + var(--insight-legend-position) * (100% - var(--insight-slider-thumb))
+        );
+        @apply absolute top-0 whitespace-nowrap;
+        left: var(--insight-legend-offset);
+        translate: -50% 0;
+    }
+
+    .slider-legend-item:first-child {
+        translate: calc(-1 * min(50%, var(--insight-slider-thumb) / 2)) 0;
+    }
+
+    .slider-legend-item:last-child {
+        translate: calc(-1 * max(50%, 100% - var(--insight-slider-thumb) / 2)) 0;
+    }
+
+    /* Right-to-left layouts measure from the right and shift the other way. */
+    .slider-legend-item:dir(rtl) {
+        left: auto;
+        right: var(--insight-legend-offset);
+        translate: 50% 0;
+    }
+
+    .slider-legend-item:first-child:dir(rtl) {
+        translate: min(50%, var(--insight-slider-thumb) / 2) 0;
+    }
+
+    .slider-legend-item:last-child:dir(rtl) {
+        translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
     }
 
 }
