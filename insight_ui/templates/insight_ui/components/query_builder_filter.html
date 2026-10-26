@@ -60,7 +60,7 @@
                 {% else %}
                     <input id="{{ tag_id }}-{{ index }}-value" name="{{ param_name }}-{{ index }}-value" type="{{ row.input_type|default:'text' }}" value="{{ row.value }}"{% if row.input_type == "number" %} step="any"{% endif %} class="input w-full" required data-insight-query-builder-part="value"{% if not row.operations %} placeholder="{% translate 'Choose a field first' %}" disabled{% endif %}>
                 {% endif %}
-                {% button label=_("Remove filter") icon_name="trash" icon_size="s" icon_only=True type="danger" outline=True size="s" extra_classes="shrink-0" data_insight_query_builder_remove="" %}
+                {% button label=_("Remove filter") icon_name="trash" icon_size="s" icon_only=True color="danger" variant="outline" size="s" extra_classes="shrink-0" data_insight_query_builder_remove="" %}
             </div>
         </div>
     </fieldset>

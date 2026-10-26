@@ -33,10 +33,10 @@
         </template>
 
         <div class="flex flex-wrap gap-insight-s items-center">
-            {% button label=_("Add filter") icon_name="plus" type="primary" outline=True data_insight_query_builder_add="" %}
-            {% button label=_("Apply") type="primary" button_type="submit" %}
+            {% button label=_("Add filter") icon_name="plus" variant="outline" data_insight_query_builder_add="" %}
+            {% button label=_("Apply") button_type="submit" %}
             {% if config.filters %}
-                {% button label=_("Reset") type="neutral" subtle=True request_url=reset_url htmx_config=reset_htmx %}
+                {% button label=_("Reset") variant="plain" request_url=reset_url htmx_config=reset_htmx %}
             {% endif %}
             <p class="text-sm text-insight-body" hidden data-insight-query-builder-limit>
                 {% blocktranslate count max=config.max_filters %}You can combine up to {{ max }} filter.{% plural %}You can combine up to {{ max }} filters.{% endblocktranslate %}
