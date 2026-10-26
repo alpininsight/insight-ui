@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn btn-round btn-outline-secondary size-10 overflow-hidden" aria-label="{{ usermenu.avatar_alt|default:user.get_username }}">
+        <button type="button" data-insight-dropdown="user-menu" class="btn btn-round btn-outline btn-secondary size-10 overflow-hidden" aria-label="{{ usermenu.avatar_alt|default:user.get_username }}">
             {% if usermenu.avatar_url %}
                 <img src="{{ usermenu.avatar_url }}" alt="{{ usermenu.avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
             {% else %}
@@ -43,10 +43,10 @@
     {# Login and Register buttons #}
     <div class="flex gap-2">
         {% if register_url %}
-            {% button request_url=register_url label=_("Register") type="secondary" size="s" extra_classes="lg:hidden xl:inline-flex" %}
+            {% button request_url=register_url label=_("Register") color="secondary" size="s" extra_classes="lg:hidden xl:inline-flex" %}
         {% endif %}
         {% if login_url %}
-            {% button request_url=login_url label=_("Login") type="primary" size="s" extra_classes="lg:*:hidden xl:*:inline-block" %}
+            {% button request_url=login_url label=_("Login") color="primary" size="s" extra_classes="lg:*:hidden xl:*:inline-block" %}
         {% endif %}
     </div>
 {% endif %}

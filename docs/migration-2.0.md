@@ -21,6 +21,8 @@ pattern for a host project.
 - [ ] Rename the six color-family tokens in two passes. Do this before any other class edit.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
+- [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
+- [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
 - [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
@@ -32,13 +34,16 @@ pattern for a host project.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
+- [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
-- [ ] Leave button `type`, pagination helpers and `explanation` as they are until the open pull requests in [Pending before 2.0.0](#pending-before-200) merge.
+- [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
+- [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 
 ## Color tokens are a silent break
 
@@ -155,6 +160,80 @@ content polling does not show the bar.
 
 Search: `hx-indicator` on elements that have no indicator of their own, and
 `show_global_loading_indicator`.
+
+### Spacing and content width
+
+All parts of the page now share one distance to the window edge,
+`--insight-gutter` (1rem on phones, growing to 2rem from about 64rem). In
+v1.15.1 each part had its own: navbar `px-4`, footer and sidebars `px-4` /
+`md:px-6`, page header `px-4` / `md:px-16` with a `max-w-4xl` column, and the
+content none at all.
+
+The content is limited to a centered box of `--insight-content-max-width`
+(default `80rem`). `#content` is a three-column grid: its direct children sit
+in the content column, and `{% page %}` bands span the whole content area
+(up to the sidebars) while their text stays in the column. Add the class
+`insight-full-bleed` to your own direct children for the same effect.
+
+| Setting or context | Effect |
+| --- | --- |
+| `INSIGHT_UI["content_max_width"]` | Content width for all pages, e.g. `"64rem"` |
+| `content_max_width` (template context) | Content width for one page |
+| `content_full_width=True` (template context) | No box and no grid; the page manages its own width |
+| `INSIGHT_UI["align_navbar_footer_to_content"]` | Navbar and footer put their content into the content box instead of spanning the window |
+| `content_fill=True` (template context) | Unchanged flex column for filling pages such as a login, now boxed |
+
+`{% page padding=... %}` pads only vertically; the box provides the horizontal
+gutter. The page header's text now uses the content width instead of
+`max-w-4xl`.
+
+Before:
+
+```text
+{% block content %}
+    <div class="px-4 mx-auto max-w-7xl">{% page padding="m" %}...{% endpage %}</div>
+{% endblock %}
+```
+
+After, drop the wrapper; the base template boxes the content:
+
+```text
+{% block content %}
+    {% page padding="m" %}...{% endpage %}
+{% endblock %}
+```
+
+Because direct children of `#content` are grid items, `float` has no effect on
+them and their vertical margins add up instead of collapsing (`mb-4` followed
+by `mt-8` is now 48px, not 32px). Elements one level deeper behave as before.
+A `{% page %}` nested in another container stays in the content column.
+
+Search: host base templates and pages for `px-`, `max-w-` and `mx-auto`
+wrappers around the content, `{% page padding=`, and floated or margin-spaced
+top-level elements.
+
+### Fixed navbar is sticky
+
+With `INSIGHT_UI["navbar_fixed"]`, v1.15.1 positioned the navbar with
+`position: fixed` and reserved its height with `pt-16` on `#main`. The header
+is now `position: sticky` and stays in the page flow, so `#main` no longer has
+`pt-16`. On screen it behaves the same: the navbar stays at the top while the
+page scrolls.
+
+The navbar height is one variable, `--insight-navbar-height` (default `4rem`).
+Sticky sidebars, the drawer button and the scroll padding for anchor targets
+start below it. A host with a taller navbar sets the variable
+once instead of overriding `top-16`, `pt-16` and `calc(100dvh - 4rem)`.
+
+```css
+:root {
+    --insight-navbar-height: 5rem;
+}
+```
+
+Search: host CSS or templates that compensate the fixed navbar with `pt-16`,
+`mt-16` or `top-16`, and scripts that expect the navbar to be
+`position: fixed`.
 
 ### Theme before first paint
 
@@ -377,8 +456,8 @@ The values are still `info`, `success`, `warning` and `error`. `"danger"`
 raises `ValueError` and the message tells you to use `"error"`. Map Django
 message tags onto `error`, not `danger`.
 
-Button `type` and badge `type` are still the color token. This rename does
-not touch them.
+Button and badge `type` are not part of this rename; they became `color`, see
+[Button and badge color and variant](#button-and-badge-color-and-variant).
 
 Before:
 
@@ -469,6 +548,101 @@ Search: `success=True` and `failed=True` on `StepperItemConfig`, `items=` on
 `{% minimal_stepper` and `MinimalStepperConfig`, and the strings `"active"`
 and `"success"` in step lists. `{% stepper items=` stays valid.
 
+### Button and badge color and variant
+
+[#733](https://github.com/alpininsight/insight-ui/pull/733).
+
+`ButtonConfig.type` mixed the color with the look (`"link"`), and `outline` /
+`subtle` were two booleans that could both be set. A button now has a `color`
+and a `variant`:
+
+| Field | Values | Default |
+| --- | --- | --- |
+| `color` | `primary`, `secondary`, `light`, `info`, `success`, `warning`, `danger` | `primary` |
+| `variant` | `solid`, `outline`, `subtle`, `link`, `plain` | `solid` |
+
+`light` is for buttons on dark or colored surfaces. `plain` is an icon-style
+button in the text color. `link` and `plain` ignore the color.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `type="primary"` (any color) | `color="primary"` |
+| `outline=True` / `subtle=True` | `variant="outline"` / `variant="subtle"` |
+| `type="link"` | `variant="link"` |
+| `type="neutral"` | `color="light"` on dark or colored surfaces, otherwise `variant="plain"` |
+| `ButtonType`, `BUTTON_TYPE_VALUES`, `validate_button_type` | `ButtonColor` / `ButtonVariant`, `BUTTON_COLOR_VALUES` / `BUTTON_VARIANT_VALUES`, `validate_button_color` / `validate_button_variant` |
+
+A badge has `color` (`primary`, `secondary`, `neutral`, `info`, `success`,
+`warning`, `danger`) and `disabled`. `type="disabled"` becomes
+`disabled=True`. `BadgeType`, `BADGE_TYPE_VALUES` and `validate_badge_type`
+are replaced by `ColorType`, `COLOR_TYPE_VALUES` and `validate_color_type`.
+
+Before:
+
+```python
+ButtonConfig(label="Cancel", type="secondary", outline=True)
+BadgeConfig(label="Archived", type="disabled")
+```
+
+After:
+
+```python
+ButtonConfig(label="Cancel", color="secondary", variant="outline")
+BadgeConfig(label="Archived", color="neutral", disabled=True)
+```
+
+`disabled=True` no longer replaces the color. The look comes from the
+`disabled` attribute (or `aria-disabled="true"` on links), so a button that
+JavaScript enables again shows its color. Combinations that used to be ignored
+now raise `ValueError`: `external=True` without `request_url`, and `on_click` or
+`button_type` together with `request_url`.
+
+The CSS classes follow the same split. `.btn` alone is a solid primary button;
+color and variant are modifiers:
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `btn-primary` | `btn btn-primary` |
+| `btn-outline-primary` | `btn btn-outline btn-primary` |
+| `btn-subtle-primary` | `btn btn-subtle btn-primary` |
+| `btn-neutral`, `btn-outline-neutral` | `btn btn-light`, `btn btn-outline btn-light` |
+| `btn-subtle-neutral` | `btn btn-plain` |
+| `btn-disabled`, `btn-outline-disabled`, `btn-subtle-disabled` | the `disabled` attribute or `aria-disabled="true"`; `.btn-disabled` remains for labels styled as buttons |
+
+Search: `type=` on buttons and badges, `outline=`, `subtle=`, `ButtonType`,
+`BadgeType` and `btn-` classes in host templates, CSS and tests.
+
+### Bullet point list status
+
+`BulletPointItemConfig` uses the stepper's status values instead of the
+`completed` and `current` booleans. `failed` is new and shows an x-mark in the
+danger color.
+
+Before:
+
+```python
+BulletPointItemConfig(title="Payment", completed=True)
+BulletPointItemConfig(title="Review", current=True)
+```
+
+After:
+
+```python
+BulletPointItemConfig(title="Payment", status="completed")
+BulletPointItemConfig(title="Review", status="current")
+```
+
+`status` defaults to `pending`; unknown values raise `ValueError`.
+
+`request_url` is a URL, like on every other component. v1.15.1 resolved it as
+a URL name with `{% url %}` for `href` but sent it unchanged as `hx-get`, so a
+plain URL produced no link. Pass `reverse("name")` where you passed a name.
+Items without `request_url` and the current item render as a `<div>`, not as an
+`<a>` without `href`. `aria-current="step"` moves from the link to the `<li>`.
+
+Search: `completed=` and `current=` on `BulletPointItemConfig`, and
+`request_url=` values without a `/`.
+
 ### `flip_card` tag arguments
 
 [#707](https://github.com/alpininsight/insight-ui/pull/707).
@@ -506,11 +680,8 @@ either. `FormFieldConfig` did. A prompt is an option whose key is
 `placeholder`. That option submits an empty value. `InputFieldConfig` and
 `TextareaConfig` still have `placeholder`.
 
-`explanation` was added to `InputFieldConfig`, `TextareaConfig` and the
-`input_field` and `textarea` tags. `SelectConfig.explanation` was already
-there. [#746](https://github.com/alpininsight/insight-ui/pull/746) would
-rename `explanation` to `help_text` and is not merged. Keep the current field
-if you already pass it, and wait before renaming a host to `help_text`.
+`explanation` is gone from every field; see
+[Help, error and disabled texts](#help-error-and-disabled-texts).
 
 Before:
 
@@ -623,6 +794,51 @@ Search: `DataAttrConfig(`.
 The required asterisk is `aria-hidden="true"`. v1.15.1 used
 `aria-label="Required"` on the input, select and textarea asterisk.
 
+### Help, error and disabled texts
+
+[#746](https://github.com/alpininsight/insight-ui/pull/746).
+
+`explanation` showed a tooltip icon next to the label. Tooltips are not
+reachable by keyboard or touch, so it is replaced by `help_text`, a visible hint
+below the field. Every form field has `help_text` and `error_text`: input,
+textarea, select, checkbox, toggle, slider and multiselect, plus checkbox group,
+radio group and radio block. `FilterConfig` has `help_text`.
+`PaginationIppConfig.explanation` is removed without a replacement; the label
+names the selector.
+
+Before:
+
+```python
+SelectConfig(name="country", label="Country", options=countries, explanation="Where you live.")
+```
+
+After:
+
+```python
+SelectConfig(name="country", label="Country", options=countries, help_text="Where you live.")
+InputFieldConfig(name="email", label="E-Mail", error_text="Enter a valid address.")
+```
+
+The texts are plain paragraphs below the field, linked with
+`aria-describedby` in the order help, disabled reason, error. An `error_text`
+also sets `aria-invalid="true"` and `aria-errormessage`. The IDs are
+`<tag_id>-help`, `<tag_id>-disabled` and `<tag_id>-error`, or derived from
+`name` without a `tag_id`. A checkbox group only links the texts, because a
+plain fieldset does not support `aria-invalid`.
+
+`disabled_reason` on form fields and on checkbox and radio options used to be a
+hover tooltip. A disabled control can neither be focused nor show a tooltip, so
+the reason is now visible text below the field or option. Buttons keep the
+tooltip for now.
+
+Radio groups and radio blocks render `role="radiogroup"` on their fieldset,
+named by the legend through `aria-labelledby`. Checkbox and toggle templates
+wrap the control and its texts in a `<div>`. The form's error container now has
+`role="alert"` and `aria-atomic="true"`, so text swapped into it is announced.
+
+Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
+expect a checkbox or toggle `<input>` as the outermost element.
+
 ## Markup selectors
 
 [#734](https://github.com/alpininsight/insight-ui/pull/734),
@@ -681,7 +897,8 @@ Search: `footer h4`, `button > div`, `aria-label="Required"`,
 
 [#718](https://github.com/alpininsight/insight-ui/pull/718).
 
-`ButtonConfig(disabled=True)` still sets `type` to `"disabled"`.
+`ButtonConfig(disabled=True)` keeps its color; see
+[Button and badge color and variant](#button-and-badge-color-and-variant).
 A link (`request_url` set) renders `aria-disabled="true"` and omits `href`,
 `htmx_attributes` and `hx_*`. v1.15.1 already omitted `href`, and it still
 wrote `disabled` plus the HTMX attributes. A `<button>` still uses the
@@ -819,6 +1036,61 @@ A link button whose `HtmxConfig` has no `request_url` now requests the link
 `HtmxConfig.request_url` no longer warns. The HTMX URL is the config URL
 when it is set.
 
+## Pagination
+
+[#738](https://github.com/alpininsight/insight-ui/pull/738).
+
+### HTMX is opt-in
+
+v1.15.1 always sent HTMX requests into `#list-container`, included `#ipp` and
+showed the global loading bar. Pagination now renders plain links. Pass an
+`HtmxConfig` to swap the result instead; `include` sends further fields, for
+example a filter form, with every request:
+
+Before:
+
+```python
+PaginationConfig(request_url="/products/", current_page=page, surrounding_pages=pages)
+```
+
+After:
+
+```python
+PaginationConfig(
+    request_url="/products/?q=chair",
+    current_page=Paginator(products, 10).get_page(request.GET.get("page")),
+    htmx=HtmxConfig(target="#list-container", push_url=True),
+    include="#product-filter",
+)
+```
+
+The tag builds the page URLs from `request_url` and keeps its query string, so
+filters survive paging. `page_param` changes the parameter name (default
+`page`). Without `htmx`, the page size selector gets an "Apply" button.
+
+### `get_page` and `surrounding_pages` are gone
+
+`insight_ui.utils.pagination` is removed. Use Django's
+`Paginator(...).get_page(...)`. The visible page numbers now come from
+`get_elided_page_range`; `on_each_side` (default 2) and `on_ends` (default 1)
+replace `surrounding_pages`.
+
+For an API that pages itself and only reports the total, page a range:
+
+```python
+page = Paginator(range(total), items_per_page).get_page(request.GET.get("page"))
+```
+
+### IDs and the page size selector
+
+`ipp_config` is now `items_per_page`. The IDs are derived from `tag_id`
+(default `pagination`): the page size form is `#<tag_id>-ipp` instead of
+`#ipp`, and two paginations on one page no longer share IDs. The query
+parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
+
+Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
+`#list-container`.
+
 ## Checked, and not a 2.0 break
 
 These showed up in earlier notes. The current tree does not do them.
@@ -830,12 +1102,8 @@ These showed up in earlier notes. The current tree does not do them.
 - `login.html` is unchanged since v1.15.1, including its `flex flex-1`
   content child. `content_fill` is still only read by `base.html`. The login
   template does not take that variable.
-- Pagination still renders `hx-target="#list-container"` and
-  `hx-indicator="#insight-global-loading-indicator"`.
-  `PaginationConfig.surrounding_pages` still exists and defaults to `[]`.
-  `insight_ui.utils.pagination.get_page` still exists.
-  Disabled previous/next buttons pass `disabled_reason=""`, so they do not
-  warn.
+- Disabled previous/next pagination buttons pass `disabled_reason=""`; their
+  label already states the reason, so they do not warn.
 - `{% navbar %}` without a config renders the brand from `INSIGHT_UI["brand"]`
   and no links. That is additive. An explicit `NavbarConfig` is rendered as
   given.
@@ -857,8 +1125,12 @@ These showed up in earlier notes. The current tree does not do them.
 
 Other additions you can adopt without a rename: `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
-`required` on checkbox and toggle, removable badges, and
-`LegalNoticeConfig.holder_url` / `holder_logo`.
+`required` on checkbox and toggle, removable badges,
+`LegalNoticeConfig.holder_url` / `holder_logo`, and
+`{% sidebar width="fit" %}` with `min_width` / `max_width` (`narrow`,
+`normal`, `wide`; the upper limit defaults to `wide`). The sidebar content
+column now fills the sidebar height, so `mt-auto` moves an element to the
+bottom.
 
 ## Pending before 2.0.0
 
@@ -867,11 +1139,8 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#733](https://github.com/alpininsight/insight-ui/pull/733) | Open | Button and badge `type` / `outline` / `subtle` would become `color` and `variant` (`solid`, `outline`, `subtle`, `link`, `plain`). |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, stacked on #733 | A `download` attribute on link buttons. It cannot merge without #733. |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #733 and #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
-| [#738](https://github.com/alpininsight/insight-ui/pull/738) | Open | Pagination would render plain links unless you pass an `HtmxConfig`. `surrounding_pages` and `insight_ui.utils.pagination.get_page` would be removed in favor of Django's `Paginator.get_page` and `get_elided_page_range`. |
-| [#746](https://github.com/alpininsight/insight-ui/pull/746) | Open | `explanation` would be removed from input, textarea, select, `FilterConfig` and `PaginationIppConfig`. The replacement name in that pull request is `help_text`. `disabled_reason` on form fields would become visible text linked with `aria-describedby`. |
+| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
+| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15

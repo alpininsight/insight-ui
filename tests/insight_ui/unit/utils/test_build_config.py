@@ -85,7 +85,6 @@ CONFIG_ONLY_TAGS = {"accordion", "checkbox_group", "dropdown", "footer", "navbar
 FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "badge": {"icon"},
     "brand_mark": {"primary_text_color", "secondary_text_color"},
-    "bullet_point_list": {"htmx"},
     "button": {"icon", "aria_attrs", "data_attrs", "hx_attrs"},
     "logo": {"icon"},
     "multiselect": {"required", "tag_id"},

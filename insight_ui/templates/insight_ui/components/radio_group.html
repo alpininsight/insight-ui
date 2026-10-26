@@ -1,23 +1,30 @@
 {% load insight_tags %}
 
-<fieldset {% data_attributes radio_group_config.data_attrs %}>
+{# role radiogroup lets the fieldset carry aria-invalid; the legend still names it via aria-labelledby. #}
+<fieldset role="radiogroup"{% if radio_group_config.label %} aria-labelledby="{{ radio_group_config.name }}-legend"{% endif %} {% data_attributes radio_group_config.data_attrs %}{% include "insight_ui/components/_form_field_aria.html" with field_id=radio_group_config.name help_text=radio_group_config.help_text error_text=radio_group_config.error_text disabled=radio_group_config.disabled disabled_reason=radio_group_config.disabled_reason %}>
     {% if radio_group_config.label %}
-        <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
+        <legend id="{{ radio_group_config.name }}-legend" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
     {% endif %}
     <div class="flex {% if not radio_group_config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in radio_group_config.items %}
-            <label class="flex gap-1 items-center"{% if item.disabled and item.disabled_reason %} data-insight-tooltip="{{ item.disabled_reason }}"{% endif %}>
-                <input
-                    type="radio"
-                    {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
-                    name="{{ radio_group_config.name }}"
-                    value="{{ item.value }}"
-                    {% if item.disabled %}disabled{% endif %}
-                    {% if radio_group_config.current_value == item.value %}checked{% endif %}
-                    {% data_attributes item.data_attrs %}
-                >
-                <span class="{% if item.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ item.label }}</span>
-            </label>
+            <div>
+                <label class="flex gap-1 items-center">
+                    <input
+                        type="radio"
+                        {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
+                        name="{{ radio_group_config.name }}"
+                        value="{{ item.value }}"
+                        {% if item.disabled %}disabled{% endif %}
+                        {% if radio_group_config.current_value == item.value %}checked{% endif %}
+                        {% data_attributes item.data_attrs %}
+                        {% if item.disabled and item.disabled_reason %}aria-describedby="{{ radio_group_config.name }}-{{ forloop.counter }}-disabled"{% endif %}
+                    >
+                    <span class="{% if item.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ item.label }}</span>
+                </label>
+            {# The reason stays outside the label, so it describes the option instead of renaming it. #}
+                {% if item.disabled and item.disabled_reason %}<p id="{{ radio_group_config.name }}-{{ forloop.counter }}-disabled" class="ms-5 text-sm text-insight-muted">{{ item.disabled_reason }}</p>{% endif %}
+            </div>
         {% endfor %}
     </div>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=radio_group_config.name help_text=radio_group_config.help_text error_text=radio_group_config.error_text disabled=radio_group_config.disabled disabled_reason=radio_group_config.disabled_reason %}
 </fieldset>

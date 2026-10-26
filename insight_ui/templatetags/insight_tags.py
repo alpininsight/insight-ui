@@ -9,6 +9,7 @@ import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from django import template
 from django.conf import settings
@@ -29,21 +30,20 @@ from markdown import markdown
 from insight_ui.brand import get_navbar_brand_defaults
 from insight_ui.config import get_config
 from insight_ui.configs import (
-    BUTTON_TYPE_VALUES,
     AccordionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
     BadgeListConfig,
-    BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
+    ButtonColor,
     ButtonConfig,
-    ButtonType,
+    ButtonVariant,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -240,12 +240,18 @@ def json_attribute(value: object) -> str:
 
 
 @register.simple_tag
-def data_attributes(attrs: Iterable[DataAttrConfig]) -> SafeString:
-    """Render DataAttrConfig entries as data-* HTML attributes.
+def data_attributes(attrs: Iterable[DataAttrConfig], prefix: str = "data") -> SafeString:
+    """Render DataAttrConfig entries as data-* (or aria-*/hx-*) HTML attributes.
 
-    Usage: ``<input {% data_attributes config.data_attrs %}>``
+    Usage: ``<input {% data_attributes config.data_attrs %}>``, ``{% data_attributes attrs prefix="aria" %}``
+
+    Raises:
+        ValueError: If the prefix is not data, aria or hx.
+
     """
-    return format_html_join(" ", 'data-{}="{}"', ((attr.name, attr.value) for attr in attrs))
+    if prefix not in {"data", "aria", "hx"}:
+        raise ValueError(f"Invalid attribute prefix {prefix!r}: use 'data', 'aria' or 'hx'.")  # noqa: TRY003
+    return format_html_join(" ", '{}-{}="{}"', ((prefix, attr.name, attr.value) for attr in attrs))
 
 
 def _collect_data_attrs(
@@ -514,7 +520,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs
     return {
         "user": context.get("user"),
         "navbar_config": config,
-        "fixed": get_config("navbar_fixed"),
+        "align_to_content": get_config("align_navbar_footer_to_content"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),
         "redirect_to": context.get("redirect_to", ""),
@@ -536,7 +542,7 @@ def theme_toggle() -> dict[str, Any]:
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a legal notice line."""
     config = build_config(FooterConfig, config)
-    return {"footer_config": config}
+    return {"footer_config": config, "align_to_content": get_config("align_navbar_footer_to_content")}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
@@ -587,7 +593,10 @@ def minimal_stepper(
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(
-    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset = UNSET
+    config: BulletPointListConfig | None = None,
+    *,
+    items: list[BulletPointItemConfig] | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
     config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -622,10 +631,9 @@ def button(
     icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
-    type: ButtonType | _Unset = UNSET,  # noqa: A002
+    color: ButtonColor | _Unset = UNSET,
+    variant: ButtonVariant | _Unset = UNSET,
     size: Size | _Unset = UNSET,
-    outline: bool | _Unset = UNSET,
-    subtle: bool | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
@@ -708,10 +716,9 @@ def button(
         icon=icon,
         icon_end=icon_end,
         icon_only=icon_only,
-        type=type,
+        color=color,
+        variant=variant,
         size=size,
-        outline=outline,
-        subtle=subtle,
         round=round,
         tooltip=tooltip,
         htmx_config=htmx_config,
@@ -724,7 +731,9 @@ def button(
         aria_attrs=aria_attrs,
         hx_attrs=hx_attrs,
     )
-    return {"button_config": config}
+    # Solid is the default look of .btn, so it needs no class of its own.
+    variant_class = "" if config.variant == "solid" else f" btn-{config.variant}"
+    return {"button_config": config, "variant_class": variant_class}
 
 
 @register.inclusion_tag("insight_ui/components/input.html")
@@ -745,7 +754,8 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -771,7 +781,8 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -795,6 +806,8 @@ def checkbox(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -829,6 +842,8 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -854,6 +869,8 @@ def radio_block(
     hx_swap_method: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -883,6 +900,8 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -907,6 +926,8 @@ def toggle(
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -926,9 +947,10 @@ def select(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -950,6 +972,8 @@ def multiselect(
     disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -1299,8 +1323,9 @@ def badge(
     icon_size: str | _Unset = UNSET,
     icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
-    type: BadgeType | _Unset = UNSET,  # noqa: A002
+    color: ColorType | _Unset = UNSET,
     size: Size | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
     remove_htmx: HtmxConfig | _Unset | None = UNSET,
     remove_label: str | _Unset = UNSET,
@@ -1324,8 +1349,9 @@ def badge(
         label=label,
         icon=icon,
         icon_end=icon_end,
-        type=type,
+        color=color,
         size=size,
+        disabled=disabled,
         tooltip=tooltip,
         remove_htmx=remove_htmx,
         remove_label=remove_label,
@@ -1336,9 +1362,11 @@ def badge(
             label=f"{config.remove_label or _('Remove')}: {config.label}",
             icon=IconConfig("x-mark", "xs"),
             icon_only=True,
-            # Same color as the badge; badge-only types like "disabled" fall back to secondary.
-            type=cast("ButtonType", config.type) if config.type in BUTTON_TYPE_VALUES else "secondary",
-            subtle=True,
+            # Same color as the badge; a neutral badge has no button color, so its button uses the text color.
+            color="secondary" if config.color == "neutral" else cast("ButtonColor", config.color),
+            variant="plain" if config.color == "neutral" else "subtle",
+            disabled=config.disabled,
+            disabled_reason="",
             round=True,
             size="xs",
             button_type="button",
@@ -1366,8 +1394,8 @@ def badge_list(
     if config.clear_all_htmx and config.items:
         clear_all_button = ButtonConfig(
             label=config.clear_all_label or _("Remove all"),
-            type="secondary",
-            subtle=True,
+            color="secondary",
+            variant="subtle",
             size="s",
             button_type="button",
             htmx_config=config.clear_all_htmx,
@@ -1401,18 +1429,82 @@ def infinite_scroll(
     return {"infinite_scroll_config": config}
 
 
+def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
+    """Return the URL with its query string replaced by the given parameters."""
+    return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
+
+
 @register.inclusion_tag("insight_ui/components/pagination.html")
 def pagination(
     config: PaginationConfig | None = None,
     *,
     request_url: str | _Unset = UNSET,
     current_page: Page | _Unset = UNSET,
-    surrounding_pages: list[int] | _Unset = UNSET,
-    ipp_config: PaginationIppConfig | _Unset | None = UNSET,
+    tag_id: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+    include: str | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    on_each_side: int | _Unset = UNSET,
+    on_ends: int | _Unset = UNSET,
+    items_per_page: PaginationIppConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
     config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"pagination_config": config}
+    page = config.current_page
+    paginator = page.paginator
+
+    # Keep the other query parameters of request_url (filters, search) and only set the page number.
+    query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
+    base_params = [(key, value) for key, value in query if key != config.page_param]
+
+    def page_url(number: int) -> str:
+        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+
+    pages = [
+        {"ellipsis": True}
+        if number == paginator.ELLIPSIS
+        else {
+            "number": number,
+            "url": page_url(int(number)),
+            "current": number == page.number,
+            "label": _("Page %(number)s") % {"number": number},
+            # Stable ids let HTMX put the focus back after the swap: the link of page 3 and,
+            # after navigating, the current-page marker of page 3 share the same id.
+            "id": f"{config.tag_id}-page-{number}",
+        }
+        for number in paginator.get_elided_page_range(
+            page.number, on_each_side=config.on_each_side, on_ends=config.on_ends
+        )
+    ]
+
+    ipp_select = None
+    ipp_hidden_params: list[tuple[str, str]] = []
+    if config.items_per_page:
+        ipp = config.items_per_page
+        ipp_select = SelectConfig(
+            name=ipp.name,
+            tag_id=f"{config.tag_id}-ipp-select",
+            label=str(ipp.label),
+            options={str(option): str(option) for option in ipp.options},
+            selected_option=str(ipp.selected_option),
+        )
+        # A GET form drops the query string of its action, so the other parameters travel as hidden fields.
+        # The page number is left out: a new page size starts at page 1.
+        ipp_hidden_params = [(key, value) for key, value in base_params if key != ipp.name]
+
+    include = ", ".join(
+        selector for selector in (f"#{config.tag_id}-ipp" if config.items_per_page else "", config.include) if selector
+    )
+    return {
+        "pagination_config": config,
+        "pages": pages,
+        "previous_url": page_url(page.previous_page_number()) if page.has_previous() else "",
+        "next_url": page_url(page.next_page_number()) if page.has_next() else "",
+        "include": include,
+        "ipp_select": ipp_select,
+        "ipp_action": _url_with_query(config.request_url, []),
+        "ipp_hidden_params": ipp_hidden_params,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/table.html")

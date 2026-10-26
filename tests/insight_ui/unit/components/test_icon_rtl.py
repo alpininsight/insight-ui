@@ -4,10 +4,10 @@
 
 import pytest
 from bs4 import BeautifulSoup
+from django.core.paginator import Paginator
 from django.template import Context, Template
 from insight_ui.configs import BreadcrumbItemConfig, IconConfig, PaginationConfig, StepperConfig, StepperItemConfig
 from insight_ui.configs.base import DIRECTIONAL_ICON_NAMES
-from insight_ui.utils.pagination import get_page
 
 MIRROR = "rtl:-scale-x-100"
 
@@ -64,8 +64,8 @@ def test_icon_shorthand_accepts_mirror_rtl(tag: str) -> None:
 
 def test_pagination_arrows_mirror() -> None:
     """Previous and next point the right way in right-to-left layouts."""
-    page, surrounding_pages = get_page(list(range(30)), items_per_page=10, page=2)
-    config = PaginationConfig(request_url="/items/", current_page=page, surrounding_pages=surrounding_pages)
+    page = Paginator(range(30), 10).get_page(2)
+    config = PaginationConfig(request_url="/items/", current_page=page)
     wrappers = icon_wrappers(render("{% pagination config %}", {"config": config}))
 
     assert wrappers

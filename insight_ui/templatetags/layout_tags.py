@@ -244,7 +244,8 @@ VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "
 VALID_SURFACE_VARIANT: frozenset[str] = frozenset({"surface", "raised", "outline"})
 VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
 VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
-VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
+VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide", "fit"})
+VALID_WIDTH_LIMIT: frozenset[str] = frozenset({"narrow", "normal", "wide"})
 VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
 VALID_WEIGHT: frozenset[str] = frozenset({"thin", "medium", "thick"})
 VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
@@ -266,6 +267,15 @@ PADDING_CLASSES: dict[str, str] = {
     "m": "p-insight-m",
     "l": "p-insight-m md:p-insight-l",
     "xl": "p-insight-l md:p-insight-xl",
+}
+# Pages pad vertically; the content box provides the horizontal gutter.
+PAGE_PADDING_CLASSES: dict[str, str] = {
+    "none": "py-0",
+    "xs": "py-insight-xs",
+    "s": "py-insight-s",
+    "m": "py-insight-m",
+    "l": "py-insight-m md:py-insight-l",
+    "xl": "py-insight-l md:py-insight-xl",
 }
 SPACER_CLASSES: dict[str, str] = {"xs": "h-1 w-1", "s": "h-2 w-2", "m": "h-4 w-4", "l": "h-6 w-6", "xl": "h-8 w-8"}
 ALIGN_CLASSES: dict[str, str] = {
@@ -345,7 +355,11 @@ SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
     "narrow": "w-56",  # 14rem (224px)
     "normal": "w-72",  # 18rem (288px) - default
     "wide": "w-96",  # 24rem (384px)
+    "fit": "w-fit",  # content width, limited by min_width and max_width
 }
+SIDEBAR_WIDTH_ORDER: tuple[str, ...] = ("narrow", "normal", "wide")
+SIDEBAR_MIN_WIDTH_CLASSES: dict[str, str] = {"narrow": "min-w-56", "normal": "min-w-72", "wide": "min-w-96"}
+SIDEBAR_MAX_WIDTH_CLASSES: dict[str, str] = {"narrow": "max-w-56", "normal": "max-w-72", "wide": "max-w-96"}
 
 
 # =============================================================================
@@ -527,6 +541,10 @@ class LayoutNode(Node):
         """Build CSS classes from resolved kwargs. Override in subclasses."""
         return []
 
+    def wrap_content(self, content: str, classes: list[str]) -> str:  # noqa: ARG002
+        """Wrap the rendered children. Override in subclasses that need an inner element."""
+        return content
+
     def render(self, context: Context) -> str:
         """Render the layout node to HTML."""
         resolved = self.resolve_kwargs(context)
@@ -541,7 +559,7 @@ class LayoutNode(Node):
         if extra_classes:
             classes.append(str(extra_classes))
 
-        content = self.nodelist.render(context)
+        content = self.wrap_content(self.nodelist.render(context), classes)
         class_str = " ".join(classes)
 
         # Optional id attribute
@@ -725,17 +743,22 @@ class SectionNode(LayoutNode):
 
 
 class PageNode(LayoutNode):
-    """Page container with full width, consistent padding, and optional height control."""
+    """Full-width page band with vertical padding and optional height control.
+
+    The band carries background and height and spans the full width of the content area when it is a
+    direct child of #content. Its own content sits in the shared content box, so it lines up with the page
+    header and the rest of the content. Nested deeper, the band stays in the content column.
+    """
 
     valid_params: frozenset[str] = frozenset({"id", "padding", "height", "class"})
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build page container CSS classes."""
-        classes = ["w-full"]
+        classes = ["w-full", "insight-full-bleed"]
 
         padding = str(kwargs.get("padding", "m"))
         _validate(padding, VALID_SPACING_WITH_NONE, "padding", self.tag_name)
-        classes.append(PADDING_CLASSES[padding])
+        classes.append(PAGE_PADDING_CLASSES[padding])
 
         height = str(kwargs.get("height", "auto"))
         _validate(height, VALID_HEIGHT, "height", self.tag_name)
@@ -745,6 +768,11 @@ class PageNode(LayoutNode):
             classes.extend(["flex", "flex-col"])
 
         return classes
+
+    def wrap_content(self, content: str, classes: list[str]) -> str:
+        """Put the content in the shared content box; a page with a height keeps the box stretching."""
+        inner = "insight-content-box flex flex-col grow" if "flex-col" in classes else "insight-content-box"
+        return f'<div class="{inner}">{content}</div>'
 
 
 class HBoxNode(FlexNode):
@@ -1026,7 +1054,9 @@ class SidebarNode(LayoutNode):
             when used inside ``{% block sidebar_left %}`` or ``{% block sidebar_right %}``.
             Falls back to "right" if not specified and not in a sidebar block.
         static: If True, sidebar is sticky; if False, it's a drawer. Default: True
-        width: Sidebar width ("narrow", "normal", "wide"). Default: "normal"
+        width: Sidebar width ("narrow", "normal", "wide", "fit"). "fit" follows the content. Default: "normal"
+        min_width: Lower limit for width="fit" ("narrow", "normal", "wide"). Default: none
+        max_width: Upper limit for width="fit" ("narrow", "normal", "wide"). Default: "wide"
         mobile_behavior: How to behave on mobile ("hidden", "drawer"). Default: "hidden"
         class: Additional CSS classes to append.
 
@@ -1045,6 +1075,11 @@ class SidebarNode(LayoutNode):
             {% endsidebar %}
         {% endblock %}
 
+        {# Content width between narrow and wide #}
+        {% sidebar width="fit" min_width="narrow" %}
+            <nav>...</nav>
+        {% endsidebar %}
+
         {# Outside blocks, specify side explicitly #}
         {% sidebar width="wide" %}
             <h2>Custom Title</h2>
@@ -1053,10 +1088,17 @@ class SidebarNode(LayoutNode):
 
     """
 
-    valid_params: frozenset[str] = frozenset({"side", "static", "width", "mobile_behavior", "class"})
+    valid_params: frozenset[str] = frozenset(
+        {"side", "static", "width", "min_width", "max_width", "mobile_behavior", "class"}
+    )
 
     def render(self, context: Context) -> str:
-        """Render the sidebar container."""
+        """Render the sidebar container.
+
+        Raises:
+            ValueError: If min_width or max_width is set without width="fit", or min_width exceeds max_width.
+
+        """
         resolved = self.resolve_kwargs(context)
 
         # Validate no unknown parameters
@@ -1074,6 +1116,21 @@ class SidebarNode(LayoutNode):
 
         width = str(resolved.get("width", "normal"))
         _validate(width, VALID_WIDTH, "width", self.tag_name)
+        width_class = SIDEBAR_WIDTH_CLASSES[width]
+        if width == "fit":
+            min_width = str(resolved.get("min_width") or "")
+            max_width = str(resolved.get("max_width") or "wide")
+            _validate(max_width, VALID_WIDTH_LIMIT, "max_width", self.tag_name)
+            if min_width:
+                _validate(min_width, VALID_WIDTH_LIMIT, "min_width", self.tag_name)
+                if SIDEBAR_WIDTH_ORDER.index(min_width) > SIDEBAR_WIDTH_ORDER.index(max_width):
+                    msg = f"min_width '{min_width}' is wider than max_width '{max_width}' in {{% {self.tag_name} %}}"
+                    raise ValueError(msg)
+                width_class += f" {SIDEBAR_MIN_WIDTH_CLASSES[min_width]}"
+            width_class += f" {SIDEBAR_MAX_WIDTH_CLASSES[max_width]}"
+        elif "min_width" in resolved or "max_width" in resolved:
+            msg = f'min_width and max_width only apply to width="fit" in {{% {self.tag_name} %}}'
+            raise ValueError(msg)
 
         mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
         _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
@@ -1087,7 +1144,7 @@ class SidebarNode(LayoutNode):
             "side": side,
             "static": static,
             "width": width,
-            "width_class": SIDEBAR_WIDTH_CLASSES[width],
+            "width_class": width_class,
             "mobile_behavior": mobile_behavior,
             "navbar_fixed": navbar_fixed,
             "wrapper_class": str(resolved.get("class", "")),
@@ -1120,8 +1177,8 @@ class ModalNode(LayoutNode):
         {% modal id="confirm-delete" title="Confirm Deletion" %}
             <p>Are you sure you want to delete this item?</p>
             {% hbox gap="s" h_align="end" %}
-                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
-                {% button label="Delete" type="danger" on_click="deleteItem()" %}
+                {% button label="Cancel" color="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" color="danger" on_click="deleteItem()" %}
             {% endhbox %}
         {% endmodal %}
 

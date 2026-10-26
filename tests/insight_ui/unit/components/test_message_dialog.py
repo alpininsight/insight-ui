@@ -53,7 +53,7 @@ def test_actions_replace_the_default_close_button() -> None:
             id="confirm",
             message="Sure?",
             show_close=False,
-            actions=[ButtonConfig(label="Cancel", type="secondary"), ButtonConfig(label="Delete", type="danger")],
+            actions=[ButtonConfig(label="Cancel", color="secondary"), ButtonConfig(label="Delete", color="danger")],
         )
     )
     without_actions = render_dialog(MessageDialogConfig(id="about", message="Info", show_close=False))
