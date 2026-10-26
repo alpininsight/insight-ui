@@ -13,14 +13,12 @@ from insight_ui.configs.types import (
     ButtonVariant,
     HtmlButtonType,
     HtmlInputType,
-    HtmxSwapMethod,
     Size,
     SliderLegendMode,
     validate_button_color,
     validate_button_variant,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_swap_method,
     validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
@@ -607,8 +605,7 @@ class RadioBlockConfig:
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
         request_url: The URL to which the request should be sent when clicking one of the radio buttons.
-        hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
-        hx_swap_method: The way in which the target is to be replaced.
+        htmx: HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
@@ -625,7 +622,8 @@ class RadioBlockConfig:
                 RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
-            hx_target_id="content-area",
+            request_url="/products/",
+            htmx=HtmxConfig(target="#content-area", swap_method="outerHTML"),
         )
         """
 
@@ -645,11 +643,11 @@ class RadioBlockConfig:
         default="",
         metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
-    hx_target_id: str = field(
-        default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
-    )
-    hx_swap_method: HtmxSwapMethod = field(
-        default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
+    htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.")
+        },
     )
     method: str = field(
         default="",
@@ -665,9 +663,20 @@ class RadioBlockConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require a non-empty name and validate hx_swap_method and current_value."""
+        """Require a non-empty name, reject HTMX options that would be ignored and validate current_value."""
         validate_not_empty(self, "name")
-        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
+        if self.htmx is not None:
+            if self.integrated:
+                msg = (
+                    f"RadioBlockConfig {self.name!r}: integrated radio blocks are sent with their form, not with htmx."
+                )
+                raise ValueError(msg)
+            if not (self.request_url or self.htmx.request_url):
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs a request_url."
+                raise ValueError(msg)
+            if not self.htmx.target:
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs htmx.target, otherwise the radio button is swapped."
+                raise ValueError(msg)
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):

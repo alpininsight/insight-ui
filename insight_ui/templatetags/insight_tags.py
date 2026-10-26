@@ -878,8 +878,7 @@ def radio_block(
     integrated: bool | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    hx_target_id: str | _Unset = UNSET,
-    hx_swap_method: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
@@ -1701,7 +1700,12 @@ def toggle_view(
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
     config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"toggle_view_config": config}
+    switch = config.view_switch
+    # Switching the view reloads the whole component, so the radio block targets it and replaces it.
+    if switch is not None and switch.request_url:
+        htmx = replace(switch.htmx or HtmxConfig(), target=f"#{config.tag_id}", swap_method="outerHTML")
+        switch = replace(switch, htmx=htmx)
+    return {"toggle_view_config": config, "view_switch": switch}
 
 
 # =============================================================

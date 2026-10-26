@@ -44,6 +44,7 @@ pattern for a host project.
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
+- [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
@@ -1149,6 +1150,46 @@ on page view without pushing its fragment URL.
 
 Search: `show_global_loading_indicator=` on `live_content`, `#response` and
 `#msg` in host CSS, JavaScript or tests.
+
+### `radio_block` takes an `HtmxConfig`
+
+`RadioBlockConfig.hx_target_id` and `hx_swap_method` are gone. The options
+send a request only when the block has an `htmx`, like the other components.
+`request_url` stays the URL of that request.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `hx_target_id="content"` | `htmx=HtmxConfig(target="#content")`, with the `#` |
+| `hx_swap_method`, default `outerHTML` | `htmx.swap_method`, default `innerHTML` |
+| `request_url` alone sent no request | Unchanged: no `htmx`, no request |
+
+The default swap changes with the field. Set `swap_method="outerHTML"` to keep
+replacing the target itself. A block with `htmx` needs a URL and `htmx.target`;
+an `integrated=True` block is sent with its form, so `htmx` there raises
+`ValueError` instead of being ignored.
+
+Before:
+
+```python
+RadioBlockConfig(name="view", items=items, request_url="/products/", hx_target_id="products")
+```
+
+After:
+
+```python
+RadioBlockConfig(
+    name="view",
+    items=items,
+    request_url="/products/",
+    htmx=HtmxConfig(target="#products", swap_method="outerHTML"),
+)
+```
+
+`toggle_view` sets target and swap of its view switch itself, as before: the
+switch replaces the whole toggle view. Other options of the switch's
+`HtmxConfig`, such as `push_url`, are kept.
+
+Search: `hx_target_id` and `hx_swap_method`.
 
 ## Pagination
 
