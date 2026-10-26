@@ -15,7 +15,7 @@
                     {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url swap_modifiers="show:window:top" %}
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
-                class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
+                class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-t-insight-control{% elif forloop.last %}rounded-b-insight-control{% endif %}"
             >
                 {% if item.icon %}
                     <div>
