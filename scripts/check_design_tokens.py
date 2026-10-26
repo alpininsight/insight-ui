@@ -83,6 +83,11 @@ STATE_PREFIXES: list[str] = [
 
 STATE_PATTERN = "(?:" + "|".join(re.escape(p) for p in STATE_PREFIXES) + ")?"
 
+# A match must be a whole class: \b would also match inside a longer class, because a hyphen is a
+# word boundary (bg-insight-bg-base inside bg-insight-bg-base-dark).
+CLASS_START = r"(?<![\w-])"
+CLASS_END = r"(?![\w-])"
+
 
 # =============================================================================
 # Color Token Configuration
@@ -169,7 +174,8 @@ def build_color_config() -> TokenConfig:
     shade_pattern = "(?:" + "|".join(TAILWIND_SHADES) + ")"
 
     # Match: [state:]prefix-color-shade[/opacity]
-    pattern = re.compile(rf"\b({STATE_PATTERN}{prefix_pattern}-{color_pattern}-{shade_pattern}(?:/\d+)?)\b")
+    utility = rf"{prefix_pattern}-{color_pattern}-{shade_pattern}(?:/\d+)?"
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{utility}){CLASS_END}")
 
     # Build whitelist pattern for white/black/transparent
     whitelist_colors = "(?:" + "|".join(WHITELISTED_COLORS) + ")"
@@ -261,7 +267,7 @@ def build_radius_config() -> TokenConfig:
     hardcoded_variants.sort(key=len, reverse=True)
     variants_pattern = "(?:" + "|".join(re.escape(v) for v in hardcoded_variants) + ")"
 
-    pattern = re.compile(rf"\b({STATE_PATTERN}{variants_pattern})\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{variants_pattern}){CLASS_END}")
 
     return TokenConfig(
         name="radius",
@@ -316,7 +322,7 @@ def build_shadow_config() -> TokenConfig:
     hardcoded_variants.sort(key=len, reverse=True)
     variants_pattern = "(?:" + "|".join(re.escape(v) for v in hardcoded_variants) + ")"
 
-    pattern = re.compile(rf"\b({STATE_PATTERN}{variants_pattern})\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{variants_pattern}){CLASS_END}")
 
     return TokenConfig(
         name="shadow",
@@ -379,7 +385,7 @@ def build_verbose_config() -> TokenConfig:
     tokens_pattern = "(?:" + "|".join(re.escape(t) for t in verbose_tokens) + ")"
 
     # Negative lookahead (?!/\d) ensures we don't match tokens with opacity modifiers
-    pattern = re.compile(rf"\b({STATE_PATTERN}{tokens_pattern})(?!/\d)\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{tokens_pattern})(?!/\d){CLASS_END}")
 
     return TokenConfig(
         name="verbose",
