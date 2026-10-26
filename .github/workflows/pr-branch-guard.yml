@@ -26,7 +26,31 @@ jobs:
             }
             if (pr.base.ref === 'main' &&
                 (pr.head.ref !== 'develop' || pr.head.repo?.full_name !== pr.base.repo.full_name)) {
-              core.setFailed('Production releases must come from this repository\'s develop branch.');
+              // Same-repo patch from released v1.15.1, limited to the layout attribute fix.
+              const maintenanceBase = '24787fc561d5d60d970c129d6a8eae4f5fd5c1ed';
+              const maintenanceHead = 'cursor/v1152-layout-attribute-fix-fc6f';
+              const allowedFiles = new Set([
+                '.github/workflows/pr-branch-guard.yml',
+                'insight_ui/templatetags/layout_tags.py',
+                'tests/insight_ui/unit/components/test_layout_attribute_escaping.py',
+              ]);
+              const requiredFiles = [
+                'insight_ui/templatetags/layout_tags.py',
+                'tests/insight_ui/unit/components/test_layout_attribute_escaping.py',
+              ];
+              if (pr.head.repo?.full_name !== pr.base.repo.full_name ||
+                  pr.head.ref !== maintenanceHead || pr.base.sha !== maintenanceBase) {
+                core.setFailed('Production releases must come from this repository\'s develop branch.');
+              } else {
+                const files = await github.paginate(github.rest.pulls.listFiles, {
+                  ...context.repo, pull_number: pr.number, per_page: 100
+                });
+                if (!files.length || files.some(file => !allowedFiles.has(file.filename) ||
+                    !['added', 'modified'].includes(file.status)) ||
+                    requiredFiles.some(path => !files.some(file => file.filename === path))) {
+                  core.setFailed('This main patch is limited to the layout attribute fix and its regression test.');
+                }
+              }
             }
             const conventional = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^()\r\n]+\))?!?: \S[^\r\n]*$/;
             if (!conventional.test(pr.title)) {
