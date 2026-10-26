@@ -44,6 +44,12 @@ KNOWN_GAPS = {
     },
 }
 
+# Parameters a shared partial documents as optional; callers that need them pass them, the others leave them out.
+OPTIONAL_INCLUDE_PARAMETERS = {
+    # invalid=False only for roles without aria-invalid support, e.g. a plain fieldset.
+    "insight_ui/components/_form_field_aria.html": {"invalid"},
+}
+
 
 def inclusion_tags() -> dict[str, tuple[str, set[str]]]:
     """Map each component template to its tag and the context keys the tag returns."""
@@ -54,12 +60,23 @@ def inclusion_tags() -> dict[str, tuple[str, set[str]]]:
         for decorator in function.decorator_list:
             if isinstance(decorator, ast.Call) and getattr(decorator.func, "attr", "") == "inclusion_tag":
                 keys: set[str] = set()
-                for node in ast.walk(function):
-                    if isinstance(node, ast.Return) and node.value is not None:
-                        assert isinstance(node.value, ast.Dict), f"{function.name} must return a dict literal"
-                        keys |= {key.value for key in node.value.keys if isinstance(key, ast.Constant)}
+                for node in own_returns(function):
+                    assert isinstance(node.value, ast.Dict), f"{function.name} must return a dict literal"
+                    keys |= {key.value for key in node.value.keys if isinstance(key, ast.Constant)}
                 result[decorator.args[0].value] = (function.name, keys)
     return result
+
+
+def own_returns(function: ast.FunctionDef) -> Iterator[ast.Return]:
+    """Yield the return statements of a function, without those of nested functions, e.g. a URL helper."""
+    pending: list[ast.AST] = list(function.body)
+    while pending:
+        node = pending.pop()
+        if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef | ast.Lambda | ast.ClassDef):
+            continue
+        if isinstance(node, ast.Return) and node.value is not None:
+            yield node
+        pending.extend(ast.iter_child_nodes(node))
 
 
 def expression_names(expression: object) -> Iterator[str]:
@@ -142,8 +159,10 @@ def blocktranslate_names(node: BlockTranslateNode, defined: set[str], _blocks: B
 
 def include_names(node: IncludeNode, defined: set[str], _blocks: Blocks) -> Iterator[str]:
     """An included template sees the context plus its with-names, so it is checked as part of this one."""
+    name = node.template.var
+    optional = OPTIONAL_INCLUDE_PARAMETERS.get(name, set())
     yield from read(node.extra_context.values(), defined)
-    yield from undefined_names(template_nodes(node.template.var), defined | set(node.extra_context), {})
+    yield from undefined_names(template_nodes(name), defined | set(node.extra_context) | optional, {})
 
 
 def if_names(node: IfNode, defined: set[str], blocks: Blocks) -> Iterator[str]:
