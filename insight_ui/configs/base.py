@@ -61,6 +61,27 @@ class DataAttrConfig:
             )
 
 
+# Built-in icons that point along the reading direction; they are mirrored in right-to-left layouts by default.
+DIRECTIONAL_ICON_NAMES: frozenset[str] = frozenset(
+    {
+        "arrow-left",
+        "arrow-right",
+        "arrow-left-circle",
+        "arrow-right-circle",
+        "arrow-long-left",
+        "arrow-long-right",
+        "arrow-small-left",
+        "arrow-small-right",
+        "arrow-uturn-left",
+        "arrow-uturn-right",
+        "chevron-left",
+        "chevron-right",
+        "chevron-double-left",
+        "chevron-double-right",
+    }
+)
+
+
 @dataclass
 class IconConfig:
     """Configuration for an icon.
@@ -69,11 +90,13 @@ class IconConfig:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
         color: Color token for the icon (e.g., 'primary', 'danger', 'text-body').
+        mirror_rtl: **True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows.
 
     """
 
     __example__ = """
         IconConfig(name="home", size="s", color="primary")
+        IconConfig(name="my-custom-arrow", mirror_rtl=True)
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
@@ -81,6 +104,19 @@ class IconConfig:
     color: IconColor = field(
         default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-body').")}
     )
+    mirror_rtl: bool | None = field(
+        default=None,
+        metadata={
+            "doc": _(
+                "**True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows."
+            )
+        },
+    )
+
+    @property
+    def mirrors_in_rtl(self) -> bool:
+        """Whether the icon is mirrored in right-to-left layouts."""
+        return self.name in DIRECTIONAL_ICON_NAMES if self.mirror_rtl is None else self.mirror_rtl
 
     def __post_init__(self) -> None:
         """Validate name, size and color after initialization."""
@@ -190,9 +226,11 @@ class BaseFormFieldConfig:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -206,7 +244,7 @@ class BaseFormFieldConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip."
             )
         },
     )
@@ -214,6 +252,15 @@ class BaseFormFieldConfig:
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
+    )
+
+    @property
+    def message_id(self) -> str:
+        """Id prefix of the help and error texts: the tag_id, otherwise the name."""
+        return self.tag_id or self.name
 
     def __post_init__(self) -> None:
         """Require a non-empty name and warn if disabled without a reason.

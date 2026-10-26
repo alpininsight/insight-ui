@@ -21,6 +21,8 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
     "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "content_max_width": "",  # CSS width of the content box, e.g. "64rem"; empty keeps the default of 80rem
+    "align_navbar_footer_to_content": False,  # True puts navbar and footer content into the content box
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components

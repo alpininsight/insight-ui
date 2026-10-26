@@ -441,6 +441,22 @@
     }
 
     /*
+    * Page spacing.
+    * --insight-gutter: distance between the window edge and the page's content, shared by the
+    *   navbar, sidebars, page header, content and footer so their edges line up. It grows with the
+    *   window from 1rem (phones) to 2rem (from about 64rem); override it with one value.
+    * --insight-content-max-width: width of the content box; base.html overrides it from
+    *   INSIGHT_UI["content_max_width"] or the content_max_width template variable.
+    * --insight-navbar-height: height of the navbar. Sticky sidebars, the drawer button and the scroll
+    *   padding for anchor targets start below it; change it here, not per element.
+    */
+    :root {
+        --insight-gutter: clamp(var(--spacing-insight-m), 4vw - 0.5rem, var(--spacing-insight-l));
+        --insight-content-max-width: 80rem;
+        --insight-navbar-height: 4rem;
+    }
+
+    /*
     * Dark mode token mapping.
     * When data-theme="dark" is set, all *-dark tokens are mapped to their
     * base equivalents. This allows using bg-insight-primary without
@@ -717,6 +733,50 @@
         border: 1px solid var(--color-insight-border-overlay);
         box-shadow: var(--shadow-insight-overlay);
         border-radius: var(--radius-insight-overlay);
+    }
+
+    /*
+    * Page spacing.
+    * insight-gutter: horizontal padding at the window edge (navbar, sidebars, footer).
+    * insight-content-box: centered box of the content width with the gutter on both sides.
+    * insight-content-grid: three columns (gutter | content | gutter). Children sit in the content
+    *   column; children with insight-full-bleed span all three, e.g. {% page %} bands, which put
+    *   their own content back into the box so text lines up with everything else.
+    * A box that already sits in the content column or in another box adds no second gutter.
+    */
+    .insight-gutter {
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-box {
+        width: 100%;
+        max-width: calc(var(--insight-content-max-width) + 2 * var(--insight-gutter));
+        margin-inline: auto;
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-grid {
+        display: grid;
+        grid-template-columns:
+            [full-start] minmax(var(--insight-gutter), 1fr)
+            [content-start] minmax(0, var(--insight-content-max-width))
+            [content-end] minmax(var(--insight-gutter), 1fr)
+            [full-end];
+        align-content: start;
+    }
+
+    .insight-content-grid > * {
+        grid-column: content;
+    }
+
+    .insight-content-grid > .insight-full-bleed {
+        grid-column: full;
+    }
+
+    .insight-content-box .insight-content-box,
+    .insight-content-grid > :not(.insight-full-bleed) .insight-content-box {
+        max-width: none;
+        padding-inline: 0;
     }
 
     /*

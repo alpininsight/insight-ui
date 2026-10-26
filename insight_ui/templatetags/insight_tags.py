@@ -9,6 +9,7 @@ import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from django import template
 from django.conf import settings
@@ -64,6 +65,7 @@ from insight_ui.configs import (
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
+    HeadingLevel,
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
@@ -341,6 +343,7 @@ def icon(
     name: str | _Unset = UNSET,
     size: Size | _Unset = UNSET,
     color: IconColor | _Unset = UNSET,
+    mirror_rtl: bool | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size and color."""
     config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -517,7 +520,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs
     return {
         "user": context.get("user"),
         "navbar_config": config,
-        "fixed": get_config("navbar_fixed"),
+        "align_to_content": get_config("align_navbar_footer_to_content"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),
         "redirect_to": context.get("redirect_to", ""),
@@ -539,7 +542,7 @@ def theme_toggle() -> dict[str, Any]:
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a legal notice line."""
     config = build_config(FooterConfig, config)
-    return {"footer_config": config}
+    return {"footer_config": config, "align_to_content": get_config("align_navbar_footer_to_content")}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
@@ -590,7 +593,10 @@ def minimal_stepper(
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(
-    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset = UNSET
+    config: BulletPointListConfig | None = None,
+    *,
+    items: list[BulletPointItemConfig] | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
     config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -623,6 +629,7 @@ def button(
     on_click: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
     color: ButtonColor | _Unset = UNSET,
@@ -657,7 +664,15 @@ def button(
     """
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     # Collect data_* kwargs and convert to DataAttrConfig list
     data_attrs: list[DataAttrConfig] | _Unset = UNSET
@@ -741,7 +756,8 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -767,7 +783,8 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -791,6 +808,8 @@ def checkbox(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -825,6 +844,8 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -850,6 +871,8 @@ def radio_block(
     hx_swap_method: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -879,6 +902,8 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -903,6 +928,8 @@ def toggle(
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -922,9 +949,10 @@ def select(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -946,6 +974,8 @@ def multiselect(
     disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -1291,6 +1321,7 @@ def badge(
     label: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
+    icon_mirror_rtl: bool | _Unset | None = UNSET,
     icon_end: bool | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
     size: Size | _Unset = UNSET,
@@ -1302,7 +1333,15 @@ def badge(
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = (
+            IconConfig(
+                icon_name,
+                icon_size if icon_size is not UNSET else "m",
+                mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
+            )
+            if icon_name
+            else None
+        )
 
     config = build_config(
         BadgeConfig,
@@ -1383,10 +1422,16 @@ def infinite_scroll(
     has_next: bool | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
     threshold: int | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for infinite scroll."""
     config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"infinite_scroll_config": config}
+
+
+def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
+    """Return the URL with its query string replaced by the given parameters."""
+    return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
 
 
 @register.inclusion_tag("insight_ui/components/pagination.html")
@@ -1395,12 +1440,71 @@ def pagination(
     *,
     request_url: str | _Unset = UNSET,
     current_page: Page | _Unset = UNSET,
-    surrounding_pages: list[int] | _Unset = UNSET,
-    ipp_config: PaginationIppConfig | _Unset | None = UNSET,
+    tag_id: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+    include: str | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    on_each_side: int | _Unset = UNSET,
+    on_ends: int | _Unset = UNSET,
+    items_per_page: PaginationIppConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
     config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"pagination_config": config}
+    page = config.current_page
+    paginator = page.paginator
+
+    # Keep the other query parameters of request_url (filters, search) and only set the page number.
+    query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
+    base_params = [(key, value) for key, value in query if key != config.page_param]
+
+    def page_url(number: int) -> str:
+        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+
+    pages = [
+        {"ellipsis": True}
+        if number == paginator.ELLIPSIS
+        else {
+            "number": number,
+            "url": page_url(int(number)),
+            "current": number == page.number,
+            "label": _("Page %(number)s") % {"number": number},
+            # Stable ids let HTMX put the focus back after the swap: the link of page 3 and,
+            # after navigating, the current-page marker of page 3 share the same id.
+            "id": f"{config.tag_id}-page-{number}",
+        }
+        for number in paginator.get_elided_page_range(
+            page.number, on_each_side=config.on_each_side, on_ends=config.on_ends
+        )
+    ]
+
+    ipp_select = None
+    ipp_hidden_params: list[tuple[str, str]] = []
+    if config.items_per_page:
+        ipp = config.items_per_page
+        ipp_select = SelectConfig(
+            name=ipp.name,
+            tag_id=f"{config.tag_id}-ipp-select",
+            label=str(ipp.label),
+            options={str(option): str(option) for option in ipp.options},
+            selected_option=str(ipp.selected_option),
+        )
+        # A GET form drops the query string of its action, so the other parameters travel as hidden fields.
+        # The page number is left out: a new page size starts at page 1.
+        ipp_hidden_params = [(key, value) for key, value in base_params if key != ipp.name]
+
+    include = ", ".join(
+        selector for selector in (f"#{config.tag_id}-ipp" if config.items_per_page else "", config.include) if selector
+    )
+    return {
+        "pagination_config": config,
+        "pages": pages,
+        "previous_url": page_url(page.previous_page_number()) if page.has_previous() else "",
+        "next_url": page_url(page.next_page_number()) if page.has_next() else "",
+        "include": include,
+        "ipp_select": ipp_select,
+        "ipp_action": _url_with_query(config.request_url, []),
+        "ipp_hidden_params": ipp_hidden_params,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
@@ -1472,6 +1576,7 @@ def card(
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
     actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1488,6 +1593,7 @@ def app_card(
     request_url: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
     actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1507,6 +1613,7 @@ def flip_card(
     back_title: str | _Unset = UNSET,
     back_content: str | _Unset = UNSET,
     back_actions: list[ButtonConfig] | _Unset = UNSET,
+    heading_level: HeadingLevel | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
     config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})

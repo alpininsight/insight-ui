@@ -80,7 +80,7 @@ class FilterConfig:
         name: Filter field name.
         label: Filter label.
         options: Available filter options (dict maps value→label).
-        explanation: Tooltip explanation text.
+        help_text: Hint shown below the field.
         icon: Optional filter icon.
         selected_option: Currently selected value.
 
@@ -99,9 +99,14 @@ class FilterConfig:
     options: dict[str, str] = dc_field(
         default_factory=dict, metadata={"doc": _("Available filter options (dict maps value→label).")}
     )
-    explanation: str = dc_field(default="", metadata={"doc": _("Tooltip explanation text.")})
+    help_text: str = dc_field(default="", metadata={"doc": _("Hint shown below the field.")})
     icon: IconConfig | None = dc_field(default=None, metadata={"doc": _("Optional filter icon.")})
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
+
+    @property
+    def message_id(self) -> str:
+        """Id prefix of the help text, taken from the name."""
+        return self.name
 
     def __post_init__(self) -> None:
         """Require a name and validate that selected_option is included in options, if both are set."""
