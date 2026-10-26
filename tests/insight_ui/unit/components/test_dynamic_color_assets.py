@@ -33,9 +33,11 @@ def test_icon_colors_have_built_css(color: str, built_css: str) -> None:
     if not color:
         assert not any(name.startswith("text-insight-") for name in classes)
         return
-    class_name = f"text-insight-{color}"
+    # Text roles keep their token; color families use their -text token, which is readable in both themes.
+    token = f"insight-{color}" if color.startswith("text-") else f"insight-{color}-text"
+    class_name = f"text-{token}"
     assert class_name in classes
-    assert_color_rule(built_css, class_name, "color", f"insight-{color}")
+    assert_color_rule(built_css, class_name, "color", token)
 
 
 @pytest.mark.parametrize("color", COLOR_TYPE_VALUES)
