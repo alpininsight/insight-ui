@@ -339,7 +339,7 @@ def build_shadow_config() -> TokenConfig:
 # =============================================================================
 
 # Mapping of verbose token patterns to their shorthand equivalents
-# These are custom utilities defined in @layer utilities of input.css
+# These are custom utilities defined with @utility in input.css
 VERBOSE_TOKEN_MAPPINGS: dict[str, str] = {
     # Text utilities - use semantic shorthand
     "text-insight-text-headline": "text-insight-headline",
@@ -362,7 +362,7 @@ def build_verbose_config() -> TokenConfig:
     """Build configuration for verbose token checking.
 
     Detects verbose token names that have shorter equivalents defined
-    in @layer utilities of input.css.
+    with @utility in input.css, so the shorthands also work with state prefixes.
 
     Note: Verbose tokens with opacity modifiers (e.g., bg-insight-bg-raised/50)
     are intentionally allowed because shorthand utilities don't support
