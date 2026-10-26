@@ -800,6 +800,9 @@
   .min-h-full {
     min-height: 100%;
   }
+  .min-h-px {
+    min-height: 1px;
+  }
   .min-h-screen {
     min-height: 100vh;
   }

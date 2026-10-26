@@ -1437,21 +1437,71 @@ def infinite_scroll(
     *,
     tag_id: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    items: Sequence[Any] | _Unset = UNSET,
-    page: int | _Unset = UNSET,
-    has_next: bool | _Unset = UNSET,
+    current_page: Page | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
-    threshold: int | _Unset = UNSET,
     heading_level: HeadingLevel | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
-    """Render a container for infinite scroll."""
+    """Render a feed of the current page that loads the next pages."""
     config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"infinite_scroll_config": config}
+    return _infinite_scroll_context(config, next_page=False)
+
+
+@register.inclusion_tag("insight_ui/components/infinite_scroll_items.html")
+def infinite_scroll_items(config: InfiniteScrollConfig) -> dict[str, Any]:
+    """Render the response to a request for the next page of an infinite_scroll feed."""
+    config = build_config(InfiniteScrollConfig, config)
+    return _infinite_scroll_context(config, next_page=True)
+
+
+def _infinite_scroll_context(config: InfiniteScrollConfig, *, next_page: bool) -> dict[str, Any]:
+    """Build the context shared by the feed and the responses for further pages.
+
+    Args:
+        config: The feed configuration with the page to render.
+        next_page: True for a response that appends to an existing feed.
+
+    Returns:
+        The template context.
+
+    """
+    page = config.current_page
+    load_more = None
+    if page.has_next():
+        # The control after the feed appends the next page to the feed and is replaced out of band.
+        load_more = replace(
+            config.htmx or HtmxConfig(),
+            request_url=_page_url(config.request_url, config.page_param, page.next_page_number()),
+            target=f"#{config.tag_id}",
+            swap_method="beforeend",
+            push_url=False,
+            # Without an own indicator the control container shows its loading text.
+            loading_indicator_id=(config.htmx and config.htmx.loading_indicator_id) or f"#{config.tag_id}-more",
+        )
+    return {
+        "infinite_scroll_config": config,
+        "items": [
+            {"item": item, "position": page.start_index() + offset} for offset, item in enumerate(page.object_list)
+        ],
+        "set_size": page.paginator.count,
+        "load_more": load_more,
+        "next_page": next_page,
+        # After "Load more" the focus moves to the first new item; on scroll it stays where it is.
+        "focus_first": next_page and not config.auto_fetch,
+    }
 
 
 def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
     """Return the URL with its query string replaced by the given parameters."""
     return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
+
+
+def _page_url(url: str, page_param: str, number: int) -> str:
+    """Return the URL of a page: other query parameters (filters, search) stay, only the page number is set."""
+    query = [(key, value) for key, value in parse_qsl(urlsplit(url).query, keep_blank_values=True) if key != page_param]
+    return _url_with_query(url, [*query, (page_param, str(number))])
 
 
 @register.inclusion_tag("insight_ui/components/pagination.html")
@@ -1473,12 +1523,12 @@ def pagination(
     page = config.current_page
     paginator = page.paginator
 
-    # Keep the other query parameters of request_url (filters, search) and only set the page number.
+    # The other query parameters of request_url (filters, search) are kept; the page size form needs them too.
     query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
     base_params = [(key, value) for key, value in query if key != config.page_param]
 
     def page_url(number: int) -> str:
-        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+        return _page_url(config.request_url, config.page_param, number)
 
     pages = [
         {"ellipsis": True}

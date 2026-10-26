@@ -3,7 +3,6 @@
 """Configuration classes for data display components."""
 
 from dataclasses import dataclass, field
-from typing import Any
 
 from django.core.paginator import Page
 from django.utils.translation import gettext_lazy as _
@@ -16,44 +15,49 @@ from insight_ui.configs.types import HeadingLevel, validate_heading_level, valid
 class InfiniteScrollConfig:
     """Configuration for the infinite_scroll component.
 
-    Renders a container that loads more content on scroll.
+    Renders a feed of the current page that loads the next page when the end comes into view,
+    or with a "Load more" button. Answer the requests for further pages with
+    {% infinite_scroll_items %} and the same config.
 
     Attributes:
-        request_url: URL for loading more items.
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        items: Initial items to display.
-        page: Current page number.
-        has_next: Whether more items are available.
-        auto_fetch: If True, auto-load on scroll. If False, show button.
-        threshold: Pixel threshold before loading more.
+        tag_id: Unique ID of the feed; prefixes the IDs inside the component.
+        request_url: URL of the feed; the page number is added as query parameter.
+        current_page: Django Page object of the page to render.
+        page_param: Name of the query parameter for the page number.
+        item_template: Template that renders the content of one item; gets item and heading_level.
+        auto_fetch: If True, load the next page on scroll. If False, show a button.
         heading_level: Heading level of the item titles.
+        htmx: Shared HTMX options for the requests, e.g. indicator or vals.
 
     """
 
     __example__ = """
         InfiniteScrollConfig(
-            request_url=reverse("news_list"),
             tag_id="news-feed",
-            items=initial_items,
-            page=1,
-            has_next=True,
-            auto_fetch=True,
-            threshold=200,
+            request_url=reverse("news_list"),
+            current_page=Paginator(News.objects.all(), 10).get_page(request.GET.get("page")),
         )
         """
 
-    request_url: str = field(metadata={"doc": _("URL for loading more items.")})
-    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    items: list[Any] = field(default_factory=list, metadata={"doc": _("Initial items to display.")})
-    page: int = field(default=1, metadata={"doc": _("Current page number.")})
-    has_next: bool = field(default=True, metadata={"doc": _("Whether more items are available.")})
-    auto_fetch: bool = field(default=True, metadata={"doc": _("If True, auto-load on scroll. If False, show button.")})
-    threshold: int = field(default=100, metadata={"doc": _("Pixel threshold before loading more.")})
+    tag_id: str = field(metadata={"doc": _("Unique ID of the feed; prefixes the IDs inside the component.")})
+    request_url: str = field(metadata={"doc": _("URL of the feed; the page number is added as query parameter.")})
+    current_page: Page = field(metadata={"doc": _("Django Page object of the page to render.")})
+    page_param: str = field(default="page", metadata={"doc": _("Name of the query parameter for the page number.")})
+    item_template: str = field(
+        default="insight_ui/components/infinite_scroll_item.html",
+        metadata={"doc": _("Template that renders the content of one item; gets item and heading_level.")},
+    )
+    auto_fetch: bool = field(
+        default=True, metadata={"doc": _("If True, load the next page on scroll. If False, show a button.")}
+    )
     heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the item titles.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared HTMX options for the requests, e.g. indicator or vals.")}
+    )
 
     def __post_init__(self) -> None:
-        """Reject an empty request_url and validate heading_level."""
-        validate_not_empty(self, "request_url")
+        """Require ID, URL and page parameter and validate heading_level."""
+        validate_not_empty(self, "tag_id", "request_url", "page_param", "item_template")
         validate_heading_level(self.heading_level)
 
 

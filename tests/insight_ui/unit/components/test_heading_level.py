@@ -4,6 +4,7 @@
 
 import pytest
 from bs4 import BeautifulSoup
+from django.core.paginator import Paginator
 from django.template import Context, Template
 from insight_ui.configs import (
     HEADING_LEVEL_VALUES,
@@ -14,6 +15,8 @@ from insight_ui.configs import (
     FlipCardConfig,
     InfiniteScrollConfig,
 )
+
+FEED_PAGE = Paginator([{"title": "Title", "content": "Text"}], 10).page(1)
 
 # Tag name and a config factory taking keyword overrides.
 COMPONENTS = [
@@ -31,7 +34,7 @@ COMPONENTS = [
     ),
     pytest.param(
         "infinite_scroll",
-        lambda **kw: InfiniteScrollConfig(request_url="/feed/", items=[{"title": "Title", "content": "Text"}], **kw),
+        lambda **kw: InfiniteScrollConfig(tag_id="feed", request_url="/feed/", current_page=FEED_PAGE, **kw),
         id="infinite_scroll",
     ),
 ]
@@ -78,22 +81,19 @@ def test_heading_level_is_a_tag_argument(tag: str) -> None:
         "card": 'title="Title" content="Text"',
         "app_card": 'title="Title" content="Text"',
         "flip_card": 'title="Title" content="Text" back_title="Back"',
-        "infinite_scroll": 'request_url="/feed/" items=items',
+        "infinite_scroll": 'tag_id="feed" request_url="/feed/" current_page=page',
     }[tag]
     html = Template(f"{{% load insight_tags %}}{{% {tag} {arguments} heading_level=2 %}}").render(
-        Context({"items": [{"title": "Title", "content": "Text"}]})
+        Context({"page": FEED_PAGE})
     )
 
     assert {h.name for h in BeautifulSoup(html, "html.parser").find_all(["h2", "h3"])} == {"h2"}
 
 
-def test_infinite_scroll_items_follow_the_heading_level_in_the_context() -> None:
-    """Items loaded later use the same level when the view passes heading_level."""
-    template = Template('{% include "insight_ui/components/infinite_scroll_items.html" %}')
-    items = [{"title": "Title", "content": "Text"}]
+def test_infinite_scroll_items_follow_the_heading_level_of_the_config() -> None:
+    """Items loaded later use the level of the feed's config."""
+    page = Paginator([{"title": "Title", "content": "Text"}] * 3, 1).page(2)
+    config = InfiniteScrollConfig(tag_id="feed", request_url="/feed/", current_page=page, heading_level=2)
+    html = Template("{% load insight_tags %}{% infinite_scroll_items config %}").render(Context({"config": config}))
 
-    default = BeautifulSoup(template.render(Context({"items": items})), "html.parser")
-    configured = BeautifulSoup(template.render(Context({"items": items, "heading_level": 2})), "html.parser")
-
-    assert default.find("h3") is not None
-    assert configured.find("h2") is not None
+    assert {h.name for h in BeautifulSoup(html, "html.parser").find_all(["h2", "h3"])} == {"h2"}

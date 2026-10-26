@@ -71,7 +71,9 @@ REQUIRED_FIELDS: list = [
     pytest.param(lambda: ChatConfig(request_url="/chat/"), "request_url", id="ChatConfig.request_url"),
     pytest.param(lambda: ChatConfig(request_url="/chat/"), "tag_id", id="ChatConfig.tag_id"),
     pytest.param(
-        lambda: InfiniteScrollConfig(request_url="/items/"), "request_url", id="InfiniteScrollConfig.request_url"
+        lambda: InfiniteScrollConfig(tag_id="feed", request_url="/items/", current_page=Paginator([1, 2], 1).page(1)),
+        "request_url",
+        id="InfiniteScrollConfig.request_url",
     ),
     pytest.param(lambda: LiveContentConfig(request_url="/status/"), "request_url", id="LiveContentConfig.request_url"),
     pytest.param(
