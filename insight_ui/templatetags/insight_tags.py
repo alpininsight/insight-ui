@@ -1042,6 +1042,8 @@ def message_dialog(
         "show_close": config.show_close,
         "role": "alertdialog" if config.alert else "dialog",
         "describedby": f"{config.id}-message",
+        # Extra classes of the {% modal %} layout tag; a message dialog has none.
+        "wrapper_class": "",
         "paragraphs": [config.message] if isinstance(config.message, str) else config.message,
         "actions": config.actions,
     }
