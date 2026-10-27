@@ -908,7 +908,10 @@ def slider(
     """Render a range slider."""
     data_attrs = _collect_data_attrs("slider", config, data_attrs, kwargs)
     config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
-    return {"slider_config": config}
+    # Each legend item sits at the share of the track where the thumb stands for its value (0 = start, 1 = end).
+    last = max(len(config.items) - 1, 1)
+    legend = [{"text": item, "position": f"{index / last:.4f}"} for index, item in enumerate(config.items)]
+    return {"slider_config": config, "legend": legend}
 
 
 @register.inclusion_tag("insight_ui/components/toggle_button.html")

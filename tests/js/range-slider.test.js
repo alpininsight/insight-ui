@@ -481,3 +481,91 @@ describe('RangeSlider Component', () => {
     });
   });
 });
+
+describe('RangeSlider legend layout', () => {
+  /** Lays the legend items out at the given left edges, each `width` pixels wide. */
+  function placeItems(element, lefts, width) {
+    element.querySelectorAll('.slider-legend-item').forEach((item, index) => {
+      item.getBoundingClientRect = () => ({ left: lefts[index], right: lefts[index] + width, width });
+    });
+  }
+
+  function visibleTexts(element) {
+    return [...element.querySelectorAll('.slider-legend-item')]
+      .filter(item => !item.classList.contains('invisible'))
+      .map(item => item.textContent);
+  }
+
+  beforeEach(() => {
+    loadComponent('insight-ui-range-slider.js');
+  });
+
+  afterEach(() => {
+    delete window.ResizeObserver;
+  });
+
+  it('should report neighbors closer than the gap as overlapping', () => {
+    // Static mode hides nothing on construction, so all items are compared.
+    const container = createSingleRangeSlider({ legendMode: 'static' });
+    const element = container.querySelector('[data-insight-range-slider]');
+    const instance = new InsightUI.RangeSlider(element);
+
+    placeItems(element, [0, 100, 200, 300, 400], 95);
+    expect(instance.isOverlapping()).toBe(true);
+
+    placeItems(element, [0, 100, 200, 300, 400], 80);
+    expect(instance.isOverlapping()).toBe(false);
+  });
+
+  it('should hide middle items in skip mode until nothing overlaps, keeping first and last', () => {
+    const container = createSingleRangeSlider({ legendMode: 'skip' });
+    const element = container.querySelector('[data-insight-range-slider]');
+    const instance = new InsightUI.RangeSlider(element);
+    // Overlapping while three or more neighbors are visible, fine with only the outer two plus the middle one.
+    const lefts = [0, 25, 50, 75, 100];
+    element.querySelectorAll('.slider-legend-item').forEach((item, index) => {
+      item.getBoundingClientRect = () => {
+        const visible = [...element.querySelectorAll('.slider-legend-item')].filter(i => !i.classList.contains('invisible')).length;
+        const width = visible > 3 ? 30 : 10;
+        return { left: lefts[index], right: lefts[index] + width, width };
+      };
+    });
+
+    instance.adjustLegend();
+
+    expect(visibleTexts(element)).toEqual(['0', '50', '100']);
+  });
+
+  it('should adjust the legend when its width changes, not on height changes', () => {
+    let callback;
+    window.ResizeObserver = class {
+      constructor(cb) { callback = cb; }
+      observe() {}
+      disconnect() {}
+    };
+    const container = createSingleRangeSlider({ legendMode: 'rotate' });
+    const element = container.querySelector('[data-insight-range-slider]');
+    const instance = new InsightUI.RangeSlider(element);
+    const adjust = vi.spyOn(instance, 'adjustLegend');
+
+    callback([{ contentRect: { width: 300, height: 20 } }]);
+    callback([{ contentRect: { width: 300, height: 80 } }]);
+    callback([{ contentRect: { width: 200, height: 80 } }]);
+
+    expect(adjust).toHaveBeenCalledTimes(2);
+  });
+
+  it('should disconnect the legend observer on destroy', () => {
+    const disconnect = vi.fn();
+    window.ResizeObserver = class {
+      observe() {}
+      disconnect() { disconnect(); }
+    };
+    const container = createSingleRangeSlider({ legendMode: 'skip' });
+    const instance = new InsightUI.RangeSlider(container.querySelector('[data-insight-range-slider]'));
+
+    instance.destroy();
+
+    expect(disconnect).toHaveBeenCalled();
+  });
+});
