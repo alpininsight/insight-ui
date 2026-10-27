@@ -2,8 +2,8 @@
 
 <form
     role="search"
-    {% if generic_filter_config.htmx_config %}
-        {% htmx_attributes generic_filter_config.htmx_config request_url=generic_filter_config.request_url trigger="submit, change" push_url=True %}
+    {% if generic_filter_config.htmx %}
+        {% htmx_attributes generic_filter_config.htmx request_url=generic_filter_config.request_url trigger="submit, change" push_url=True %}
     {% else %}
         action="{{ generic_filter_config.request_url }}"
         method="get"

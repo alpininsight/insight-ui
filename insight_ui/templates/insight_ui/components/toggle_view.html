@@ -2,19 +2,19 @@
 
 <div id="{{ toggle_view_config.tag_id }}">
   <div class="flex justify-end mb-2 w-full">
-    {% radio_block config=toggle_view_config.view_radio_config hx_target_id=toggle_view_config.tag_id %}
+    {% radio_block config=view_switch %}
   </div>
   <div aria-live="polite" aria-atomic="true" tabindex="-1" data-toggle-view-content>
-    {% if toggle_view_config.view_radio_config.current_value == 'carousel' %}
+    {% if toggle_view_config.view_switch.current_value == 'carousel' %}
       {% carousel carousel_items=toggle_view_config.cards show_index=True items_per_slide=2 %}
-    {% elif toggle_view_config.view_radio_config.current_value == 'card' %}
+    {% elif toggle_view_config.view_switch.current_value == 'card' %}
       <div class="flex flex-wrap gap-6">
         {% for card in toggle_view_config.cards %}
           {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
         {% endfor %}
       </div>
     {% else %}
-      {% table config=toggle_view_config.table_config %}
+      {% table config=toggle_view_config.table %}
     {% endif %}
   </div>
 </div>

@@ -33,7 +33,6 @@ from insight_ui.configs import (
     InputFieldConfig,
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
-    RadioBlockConfig,
     SliderConfig,
     StatusScreenConfig,
     StepperItemConfig,
@@ -1028,28 +1027,6 @@ def test_htmx_config_default_swap_method() -> None:
     """Test HtmxConfig has correct default swap_method."""
     config = HtmxConfig()
     assert config.swap_method == "innerHTML"
-
-
-# --- RadioBlockConfig hx_swap_method validation ------------------------------
-
-
-def test_radio_block_config_accepts_valid_hx_swap_method() -> None:
-    """Test RadioBlockConfig accepts valid hx_swap_method values."""
-    for swap_method in HTMX_SWAP_METHOD_VALUES:
-        config = RadioBlockConfig(name="test", hx_swap_method=swap_method)
-        assert config.hx_swap_method == swap_method
-
-
-def test_radio_block_config_rejects_invalid_hx_swap_method() -> None:
-    """Test RadioBlockConfig raises ValueError for invalid hx_swap_method."""
-    with pytest.raises(ValueError, match="Invalid hx_swap_method"):
-        RadioBlockConfig(name="test", hx_swap_method="invalid")
-
-
-def test_radio_block_config_default_hx_swap_method() -> None:
-    """Test RadioBlockConfig has correct default hx_swap_method."""
-    config = RadioBlockConfig(name="test")
-    assert config.hx_swap_method == "outerHTML"
 
 
 # =============================================================================

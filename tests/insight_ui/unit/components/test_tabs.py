@@ -5,7 +5,7 @@
 import pytest
 from bs4 import BeautifulSoup
 from django.template import Context, Template, TemplateSyntaxError
-from insight_ui.configs import TabConfig, TabsConfig
+from insight_ui.configs import HtmxConfig, TabConfig, TabsConfig
 
 
 def render(body: str, context: dict | None = None) -> BeautifulSoup:
@@ -157,6 +157,51 @@ def test_htmx_tabs_load_the_active_tab_and_label_the_panel() -> None:
     assert general["hx-trigger"] == "load, click"
     assert not security.has_attr("hx-trigger")
     assert panel["aria-labelledby"] == "general"
+
+
+HTMX_TABS = """
+{% tabs id="settings" label="Settings" htmx=htmx %}
+    {% tab id="general" label="General" request_url="/settings/general/" %}{% endtab %}
+    {% tab id="security" label="Security" request_url="/settings/security/" %}{% endtab %}
+{% endtabs %}
+"""
+
+
+def test_htmx_tabs_add_shared_request_options_but_keep_their_panel() -> None:
+    """The HtmxConfig adds shared options; target, swap and URL stay with the tabs."""
+    htmx = HtmxConfig(request_url="/ignored/", target="#elsewhere", swap_method="outerHTML", vals={"a": 1})
+    general, security = tab_buttons(render(HTMX_TABS, {"htmx": htmx}))
+
+    assert [general["hx-get"], security["hx-get"]] == ["/settings/general/", "/settings/security/"]
+    assert all(tab["hx-target"] == "#settings-tab-content" for tab in (general, security))
+    assert all(tab["hx-swap"] == "innerHTML" for tab in (general, security))
+    assert all(tab["hx-vals"] == '{"a":1}' for tab in (general, security))
+
+
+def test_htmx_tabs_push_their_url_on_click_only() -> None:
+    """With push_url, a clicked tab updates the browser URL; the initial load of the active tab does not."""
+    general, security = tab_buttons(render(HTMX_TABS, {"htmx": HtmxConfig(push_url=True)}))
+
+    assert not general.has_attr("hx-push-url")
+    assert security["hx-push-url"] == "true"
+
+
+def test_htmx_must_be_an_htmx_config() -> None:
+    """A wrong htmx value fails clearly instead of breaking the attributes."""
+    with pytest.raises(TypeError, match="HtmxConfig"):
+        render(HTMX_TABS, {"htmx": {"push_url": True}})
+
+
+def test_config_mode_takes_the_htmx_of_the_config() -> None:
+    """TabsConfig.htmx reaches every tab."""
+    config = TabsConfig(
+        tag_id="settings",
+        tabs=[TabConfig(tag_id="general", title="General", request_url="/general/")],
+        htmx=HtmxConfig(loading_indicator_id="#spinner"),
+    )
+    (general,) = tab_buttons(render("{% tabs config=config %}{% endtabs %}", {"config": config}))
+
+    assert general["hx-indicator"] == "#spinner"
 
 
 def test_config_mode_renders_the_tabs_of_the_config() -> None:

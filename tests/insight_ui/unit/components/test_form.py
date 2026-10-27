@@ -57,7 +57,7 @@ class TestForm(TemplateTagsTestCase):
     def test_htmx_indicator_is_not_itself_the_live_region(self) -> None:
         """The live region must stay in the accessibility tree while the indicator is hidden."""
         rendered = self.render_template(
-            "{% load insight_tags %}{% form title='Contact' htmx_config=htmx %}",
+            "{% load insight_tags %}{% form title='Contact' htmx=htmx %}",
             {"htmx": HtmxConfig(request_url="/submit/", target="#result")},
         )
         soup = BeautifulSoup(rendered, "html.parser")
@@ -74,9 +74,9 @@ class TestForm(TemplateTagsTestCase):
         assert live_region.select_one(".htmx-indicator") is indicator
 
     def test_form_config_warns_on_conflicting_request_url_and_htmx(self) -> None:
-        """FormConfig warns when both request_url and htmx_config.request_url are set."""
-        with pytest.warns(UserWarning, match="both 'request_url' and 'htmx_config.request_url'"):
-            FormConfig(request_url="/submit/", htmx_config=HtmxConfig(request_url="/submit-htmx/"))
+        """FormConfig warns when both request_url and htmx.request_url are set."""
+        with pytest.warns(UserWarning, match="both 'request_url' and 'htmx.request_url'"):
+            FormConfig(request_url="/submit/", htmx=HtmxConfig(request_url="/submit-htmx/"))
 
     def test_form_config_no_warning_with_only_request_url(self) -> None:
         """FormConfig does not warn when only request_url is set."""
@@ -191,7 +191,7 @@ def render_htmx_forms(*configs: FormConfig) -> BeautifulSoup:
 
 def htmx_form(tag_id: str = "", **kwargs: object) -> FormConfig:
     """Create a form that submits via HTMX."""
-    return FormConfig(tag_id=tag_id, htmx_config=HtmxConfig(request_url="/submit/", target="#result"), **kwargs)
+    return FormConfig(tag_id=tag_id, htmx=HtmxConfig(request_url="/submit/", target="#result"), **kwargs)
 
 
 def test_form_loading_indicator_is_scoped_to_its_form() -> None:
@@ -230,7 +230,7 @@ def test_form_error_container_without_tag_id_keeps_default_id() -> None:
 def test_form_uses_configured_swap_method() -> None:
     """The swap method of the HtmxConfig is applied instead of always swapping innerHTML."""
     config = FormConfig(
-        tag_id="contact", htmx_config=HtmxConfig(request_url="/submit/", target="#result", swap_method="outerHTML")
+        tag_id="contact", htmx=HtmxConfig(request_url="/submit/", target="#result", swap_method="outerHTML")
     )
 
     assert render_htmx_forms(config).find("form")["hx-swap"] == "outerHTML"
