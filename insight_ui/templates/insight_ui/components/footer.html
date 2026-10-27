@@ -48,10 +48,10 @@
                             <a href="{{ footer_config.contact.privacy_url }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Privacy" %}</a>
                         {% endif %}
                     </div>
-                    {% if footer_config.contact.mail_url %}
+                    {% if footer_config.contact.email %}
                         <p class="mt-2 text-insight-body text-sm">
                             {% trans 'Do you have any questions or feedback?' %}<br>
-                            <a href="mailto:{{ footer_config.contact.mail_url }}" class="text-insight-primary-text hover:underline">{{ footer_config.contact.mail_url }}</a>
+                            <a href="mailto:{{ footer_config.contact.email }}" class="text-insight-primary-text hover:underline">{{ footer_config.contact.email }}</a>
                         </p>
                     {% endif %}
                 </div>

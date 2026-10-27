@@ -80,13 +80,13 @@ def test_url_field_accepts_relative_and_web_urls(config_class: type, name: str) 
 def test_url_kinds_allow_their_schemes() -> None:
     """Links allow mailto and tel, images data URLs and WebSocket endpoints ws and wss."""
     footer = build(FooterContactConfig)
-    dataclasses.replace(footer, mail_url="mailto:team@example.com", imprint_url="tel:+49301234")
+    dataclasses.replace(footer, privacy_url="mailto:team@example.com", imprint_url="tel:+49301234")
     image = build(configs.ImageConfig)
     dataclasses.replace(image, url="data:image/svg+xml;base64,PHN2Zy8+")
     socket = build(WebSocketConfig)
     dataclasses.replace(socket, request_url="wss://example.com/ws/")
 
     with pytest.raises(ValueError, match="is not allowed"):
-        dataclasses.replace(footer, mail_url="data:text/html;base64,PGI+")
+        dataclasses.replace(footer, imprint_url="data:text/html;base64,PGI+")
     with pytest.raises(ValueError, match="is not allowed"):
         dataclasses.replace(socket, request_url="mailto:team@example.com")

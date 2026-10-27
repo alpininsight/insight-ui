@@ -5,6 +5,8 @@
 import warnings
 from dataclasses import dataclass, field
 
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
@@ -512,7 +514,7 @@ class FooterContactConfig:
     Contact information, link to the imprint, privacy policy and a contact email address.
 
     Attributes:
-        mail_url: URL of a contact email address.
+        email: Contact email address; the link adds mailto:.
         imprint_url: Link to an imprint.
         privacy_url: Link to a privacy policy.
 
@@ -520,19 +522,29 @@ class FooterContactConfig:
 
     __example__ = """
         FooterContactConfig(
-            mail_url="support@example.com",
+            email="support@example.com",
             imprint_url="/imprint/",
             privacy_url="/privacy/",
         )
         """
 
-    mail_url: str = field(default="", metadata={"doc": _("URL of a contact email address.")})
+    email: str = field(default="", metadata={"doc": _("Contact email address; the link adds mailto:.")})
     imprint_url: str = field(default="", metadata={"doc": _("Link to an imprint.")})
     privacy_url: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
 
     def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
+        """Reject URL schemes the fields do not allow and an email that is not an address."""
         validate_urls(self)
+        if not self.email:
+            return
+        if self.email.lower().startswith("mailto:"):
+            msg = "FooterContactConfig.email: pass the address without mailto:, the link adds it."
+            raise ValueError(msg)
+        try:
+            validate_email(self.email)
+        except ValidationError as error:
+            msg = f"FooterContactConfig.email: {self.email!r} is not an email address."
+            raise ValueError(msg) from error
 
 
 @dataclass
@@ -561,7 +573,7 @@ class FooterConfig:
                 NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
             ],
             contact=FooterContactConfig(
-                mail_url="support@example.com",
+                email="support@example.com",
                 imprint_url="/imprint/",
                 privacy_url="/privacy/",
             ),

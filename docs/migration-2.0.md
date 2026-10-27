@@ -39,7 +39,7 @@ pattern for a host project.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
-- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `imprint=` / `privacy=` on `FooterContactConfig` to `imprint_url=` / `privacy_url=`.
+- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
@@ -908,10 +908,24 @@ checked.
 `{% surface href=... %}` follows the link rule and now also accepts `tel`.
 
 `FooterContactConfig.imprint` and `.privacy` are now `imprint_url` and
-`privacy_url`, like every other URL field.
+`privacy_url`, like every other URL field. `mail_url` is now `email`: it takes
+the address, which is also the link text, and the link adds `mailto:`. An
+email with `mailto:` or text that is no address raises `ValueError`.
+
+Before:
+
+```python
+FooterContactConfig(mail_url="team@example.com", imprint="/imprint/", privacy="/privacy/")
+```
+
+After:
+
+```python
+FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/")
+```
 
 Search: URL fields filled from data, e.g. user profiles, app links with an
-own scheme such as `myapp://`, and `imprint=` / `privacy=` on `FooterContactConfig`.
+own scheme such as `myapp://`, and `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig`.
 
 ### Help, error and disabled texts
 
