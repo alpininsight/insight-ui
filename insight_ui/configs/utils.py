@@ -611,14 +611,15 @@ class ChartConfig:
 class LiveContentConfig:
     """Configuration for the live_content component.
 
-    Renders a container that auto-refreshes via HTMX polling.
+    Renders a container that auto-refreshes via HTMX polling. The updates stay out of the
+    global loading bar unless htmx sets show_global_loading_indicator=True.
 
     Attributes:
         request_url: URL for content updates.
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
-        show_global_loading_indicator: Whether the updates also show the global loading bar.
+        htmx: Shared request options such as target, swap method or vals.
 
     """
 
@@ -635,8 +636,8 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
-    show_global_loading_indicator: bool = field(
-        default=False, metadata={"doc": _("Whether the updates also show the global loading bar.")}
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as target, swap method or vals.")}
     )
 
     def __post_init__(self) -> None:

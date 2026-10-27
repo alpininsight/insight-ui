@@ -126,7 +126,7 @@ def test_form_error_container_announces_itself() -> None:
     config = FormConfig(
         request_url="/save/",
         tag_id="signup",
-        htmx_config=HtmxConfig(target="#signup"),
+        htmx=HtmxConfig(target="#signup"),
         fields=[InputFieldConfig(name="email")],
     )
     container = render("{% form config %}", {"config": config}).find(id="signup-error")

@@ -3,6 +3,7 @@
 """Tests for the hero component."""
 
 from bs4 import BeautifulSoup
+from insight_ui.configs import BadgeConfig
 from insight_ui.configs.layout import HeroConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -36,3 +37,11 @@ class TestHero(TemplateTagsTestCase):
         classes = subtitle.get("class", [])
         assert "text-insight-headline" in classes
         assert "text-insight-primary" not in classes
+
+    def test_badge_is_rendered(self) -> None:
+        """The badge argument renders a badge above the title."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% hero title="Launch" badge=badge %}', {"badge": BadgeConfig(label="New")}
+        )
+
+        assert "New" in BeautifulSoup(rendered, "html.parser").get_text()

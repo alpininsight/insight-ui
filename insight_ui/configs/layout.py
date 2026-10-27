@@ -416,7 +416,7 @@ class HeroConfig:
         cta_primary: Primary 'Call-to-Action' button.
         cta_secondary: Secondary 'Call-to-Action' button.
         background_image_url: URL of the background image.
-        badge_config: A badge with icon and text.
+        badge: A badge with icon and text.
 
     """
 
@@ -427,7 +427,7 @@ class HeroConfig:
             description="Build amazing applications with modern tools.",
             cta_primary=ButtonConfig(label="Get Started", request_url="/signup/", color="primary"),
             cta_secondary=ButtonConfig(label="Learn More", request_url="/docs/", color="secondary"),
-            badge_config=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
+            badge=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
         )
         """
 
@@ -439,7 +439,7 @@ class HeroConfig:
     cta_primary: ButtonConfig | None = field(default=None, metadata={"doc": _("Primary 'Call-to-Action' button.")})
     cta_secondary: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
-    badge_config: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+    badge: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
 
 
 @dataclass
