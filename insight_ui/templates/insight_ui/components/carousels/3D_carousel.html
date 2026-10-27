@@ -1,61 +1,39 @@
 {% load i18n insight_tags %}
 
+{% comment %}
+    The ring only provides the turning: each item is rendered with carousel_config.item_template, which gets
+    item and the page context. The script places the items, sizes them from their content and makes every item
+    except the front one inert; the back of an item is a solid face.
+{% endcomment %}
 <div
-    data-insight-3D-carousel="{{ carousel_config.tag_id }}"
-    data-velocity="{{ carousel_config.velocity|default:1000 }}"
+    id="{{ carousel_config.tag_id }}"
+    data-insight-3D-carousel
+    data-tilt="{{ carousel_config.tilt }}"
     data-face-camera="{{ carousel_config.face_camera|yesno:'true,false' }}"
     role="region"
-    aria-roledescription="{% trans 'carousel' %}"
+    aria-roledescription="{% translate 'carousel' %}"
     aria-label="{{ carousel_config.label|default:_('3D carousel') }}"
-    class="carousel_wrapper relative size-full overflow-hidden"
+    style="--insight-3d-carousel-duration: {{ carousel_config.duration }}ms"
+    class="three-d-carousel"
 >
-    <div style="--quantity: {{ carousel_config.carousel_items|length }}; --carousel-tilt: {{ carousel_config.tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 w-full h-[35vh]">
-        {% for item in carousel_config.carousel_items %}
-            <div style="--position: {{ forloop.counter }}; --item-tilt: {% if carousel_config.face_camera %}0deg{% else %}{{ carousel_config.tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
-                <div class="{% if carousel_config.face_camera %}item{% endif %} flex justify-center size-full">
-                    {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
+    <div class="three-d-carousel-stage">
+        <div class="three-d-carousel-ring">
+            {% for item in carousel_config.items %}
+                <div class="three-d-carousel-item" role="group" aria-roledescription="{% translate 'slide' %}" aria-label="{% blocktranslate with number=forloop.counter total=item_count %}{{ number }} of {{ total }}{% endblocktranslate %}">
+                    <div class="three-d-carousel-faces">
+                        <div class="three-d-carousel-front">{% include carousel_config.item_template %}</div>
+                        <div class="three-d-carousel-back" aria-hidden="true"></div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-    <!-- Controls -->
-    <div class="-translate-x-1/2 flex absolute bottom-10 left-1/2 gap-4 justify-between px-8 sm:bottom-10 lg:px-0">
-        {% button label=_("Back") color="primary" icon_name="chevron-left" %}
-        {% button label=_("Next") color="primary" icon_name="chevron-right" icon_end=True %}
-    </div>
+
+    {% if item_count > 1 %}
+        <div class="flex gap-insight-m justify-center items-center mt-insight-m">
+            {% button label=_("Previous item") icon_name="chevron-left" icon_only=True round=True extra_classes="three-d-carousel-prev" %}
+            <span class="three-d-carousel-status text-sm text-insight-body whitespace-nowrap" aria-live="polite"></span>
+            {% button label=_("Next item") icon_name="chevron-right" icon_only=True round=True extra_classes="three-d-carousel-next" %}
+        </div>
+    {% endif %}
 </div>
-
-<style>
-    .threeD_carousel
-    {
-        transform-style: preserve-3d;
-        transform: translateX(-50%) perspective(1000px) translateZ(-750px) rotateX(var(--carousel-tilt));
-    }
-
-    .threeD_carousel .item_wrapper
-    {
-        transform-style: preserve-3d;
-        transform:
-        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(500px) /* distance to center */
-        rotateX(calc(var(--item-tilt) * -1));
-    }
-
-    .threeD_carousel .item_wrapper .item
-    {
-        transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1));
-    }
-
-    /* CURRENTLY NOT IN USE! */
-    @keyframes spin
-    {
-        from
-        {
-            transform: translateX(-50%) perspective(1000px) translateZ(-1000px) rotateX(-20deg) rotateY(0deg);
-        }
-        to
-        {
-            transform: translateX(-50%) perspective(1000px) translateZ(-1000px) rotateX(-20deg) rotateY(360deg);
-        }
-    }
-</style>

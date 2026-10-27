@@ -52,6 +52,7 @@ pattern for a host project.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
+- [ ] Pass `items=` (and `item_template=` for own content) to `three_d_carousel` instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
 
 ## Color tokens are a silent break
 
@@ -1262,6 +1263,73 @@ switch replaces the whole toggle view. Other options of the switch's
 `HtmxConfig`, such as `push_url`, are kept.
 
 Search: `hx_target_id` and `hx_swap_method`.
+
+## 3D carousel
+
+[#PR](https://github.com/alpininsight/insight-ui/pull/PR).
+
+### Any content on the ring
+
+Like `{% carousel %}`, the 3D carousel renders each item with `item_template`,
+which gets `item` and the page context. The default template shows a
+`CardConfig` as card. `CarouselItemConfig` is gone.
+
+| Before | After |
+|--------|-------|
+| `carousel_items=[CarouselItemConfig(...)]` | `items=[CardConfig(...)]` or any objects with `item_template` |
+| `velocity` | `duration` (milliseconds of a turn, default 600) |
+| - | `label` names the carousel |
+
+Before:
+
+```python
+ThreeDCarouselConfig(
+    tag_id="showcase",
+    carousel_items=[CarouselItemConfig(title="Lamp", content="Brass, 40 cm")],
+    velocity=800,
+)
+```
+
+After:
+
+```python
+ThreeDCarouselConfig(
+    tag_id="showcase",
+    items=[CardConfig(title="Lamp", content="Brass, 40 cm")],
+    duration=800,
+)
+```
+
+### Size and layout
+
+- The carousel sizes itself: no parent with a fixed height is needed any more.
+  The ring takes the width of the carousel; the items get the height of the
+  tallest content, at most 70% of the window, above which the front item
+  scrolls.
+- The ring has as many places as fit the width, at most 12. With more items
+  only those around the front one are shown; the others wait hidden at the
+  back.
+- Images and videos in an item shrink to its width; wider content is clipped,
+  so neighbouring items never overlap.
+- With `tilt` and without `face_camera` the radius grows with the item height,
+  so the top corners of the tilted items keep apart.
+- With `face_camera` and very few items (about 3), the items behind cover part
+  of the front one; the ring without `face_camera` suits few items better.
+
+### Markup and behaviour
+
+- The `<style>` block in the template is gone; the classes
+  `.three-d-carousel*` in the stylesheet replace `.threeD_carousel`,
+  `.item_wrapper` and `.item`.
+- Only the front item can be focused and is read; the others are `inert`. The
+  position is announced ("2 of 6"). Arrow keys, Home and End turn the ring
+  from the controls; inside an item they are left to its content. A swipe
+  turns the ring on touch screens.
+- With a single item the controls are left out.
+- Nothing is animated on page load or with reduced motion.
+
+Search: `carousel_items`, `CarouselItemConfig`, `velocity=`, `.threeD_carousel`
+and `.item_wrapper`.
 
 ## Pagination
 

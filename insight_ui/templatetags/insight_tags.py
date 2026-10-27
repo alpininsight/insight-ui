@@ -45,7 +45,6 @@ from insight_ui.configs import (
     ButtonVariant,
     CardConfig,
     CarouselConfig,
-    CarouselItemConfig,
     ChartConfig,
     ChartDatasetConfig,
     ChatConfig,
@@ -1698,19 +1697,28 @@ def carousel(
     return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
-@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
+@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html", takes_context=True)
 def three_d_carousel(
+    context: template.Context,
     config: ThreeDCarouselConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    velocity: int | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    duration: int | _Unset = UNSET,
     tilt: int | _Unset = UNSET,
     face_camera: bool | _Unset = UNSET,
-    carousel_items: Sequence[CarouselItemConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a 3D version of the carousel component."""
-    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"carousel_config": config}
+    """Render any items on a turning ring; each item is rendered with the item template.
+
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
 @register.inclusion_tag("insight_ui/components/toggle_view.html")

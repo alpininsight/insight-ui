@@ -1,28 +1,43 @@
 // SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 // SPDX-License-Identifier: AGPL-3.0-only
 /**
- * 3D Carousel component for Insight UI.
+ * 3D carousel component for Insight UI.
  *
- * Creates a rotating 3D carousel effect with perspective transforms.
- * Supports configurable rotation velocity and optional "face camera" mode
- * where items rotate to face the viewer.
+ * Places any items on a turning ring. The ring has as many places as fit the width of the
+ * carousel, at most 12; with more items only those around the front one are shown and the
+ * others wait hidden at the back. Items get the width the ring sets and the height of the
+ * tallest content; every item except the front one is inert.
  *
  * @example
- * // HTML structure
- * <div data-insight-3D-carousel data-velocity="800" data-face-camera="true">
- *   <div class="carousel-track">
- *     <div><div>Item 1</div></div>
- *     <div><div>Item 2</div></div>
+ * // HTML structure (rendered by {% three_d_carousel %})
+ * <div data-insight-3D-carousel data-tilt="15" data-face-camera="false" class="three-d-carousel">
+ *   <div class="three-d-carousel-stage">
+ *     <div class="three-d-carousel-ring">
+ *       <div class="three-d-carousel-item">
+ *         <div class="three-d-carousel-faces">
+ *           <div class="three-d-carousel-front">...</div>
+ *           <div class="three-d-carousel-back"></div>
+ *         </div>
+ *       </div>
+ *     </div>
  *   </div>
- *   <div>
- *     <button>Previous</button>
- *     <button>Next</button>
- *   </div>
+ *   <button class="three-d-carousel-prev">Previous</button>
+ *   <span class="three-d-carousel-status"></span>
+ *   <button class="three-d-carousel-next">Next</button>
  * </div>
  */
 export class ThreeDCarousel {
     /** @type {WeakMap<HTMLElement, ThreeDCarousel>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
+
+    /** @type {number} Most places on the ring */
+    static MAX_PLACES = 12;
+
+    /** @type {number} Largest radius of the ring as part of the carousel width */
+    static MAX_RADIUS = 0.65;
+
+    /** @type {number} Largest item height as part of the window height; above it the front item scrolls */
+    static MAX_HEIGHT = 0.7;
 
     /**
      * Creates a new ThreeDCarousel instance.
@@ -36,36 +51,31 @@ export class ThreeDCarousel {
         }
 
         this.element = element;
-        this.carousel = element.firstElementChild;
-        this.previousBtn = element.lastElementChild.firstElementChild;
-        this.nextBtn = element.lastElementChild.lastElementChild;
+        this.stage = element.querySelector(".three-d-carousel-stage");
+        this.ring = element.querySelector(".three-d-carousel-ring");
+        this.items = [...element.querySelectorAll(".three-d-carousel-item")];
+        this.prevBtn = element.querySelector(".three-d-carousel-prev");
+        this.nextBtn = element.querySelector(".three-d-carousel-next");
+        this.status = element.querySelector(".three-d-carousel-status");
 
-        this.faceCamera = element.getAttribute("data-face-camera") === 'true';
-        this.distances = [-1100, -750, -750, -550];
-        this.screens = [
-            window.matchMedia('(min-width: 640px)'),
-            window.matchMedia('(min-width: 1024px)'),
-            window.matchMedia('(min-width: 1536px)'),
-            window.matchMedia('(min-width: 1920px)')
-        ];
+        this.tilt = parseFloat(element.dataset.tilt) || 0;
+        this.faceCamera = element.dataset.faceCamera === "true";
 
-        this.itemsCount = this.carousel.children.length;
-        this.angle = 360 / this.itemsCount;
-        this.currentIndex = 0;
+        this.index = 0;
+        this.direction = 1;
+        this.placed = new Map();
+        this.width = null;
+        this.frame = null;
 
-        // Respect prefers-reduced-motion for users sensitive to animations
-        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        this.spinSettings = {
-            duration: this.prefersReducedMotion ? 0 : (parseInt(element.getAttribute("data-velocity")) || 1000),
-            fill: "forwards",
-        };
-
-        // Store bound handlers for cleanup
-        this.boundGotoPrevious = this.gotoPrevious.bind(this);
-        this.boundGotoNext = this.gotoNext.bind(this);
+        // Bind handlers for proper cleanup
+        this.boundPrev = () => this.goTo(this.index - 1);
+        this.boundNext = () => this.goTo(this.index + 1);
         this.boundKeyDown = this.handleKeyDown.bind(this);
+        this.boundTouchStart = (e) => { this.startX = e.touches[0].clientX; };
+        this.boundTouchEnd = this.handleTouchEnd.bind(this);
+        this.boundRelayout = () => this.scheduleRelayout();
 
-        this.bindEvents();
+        this.init();
 
         this.element.__insightInstance = this;
         ThreeDCarousel.instances.set(element, this);
@@ -74,110 +84,242 @@ export class ThreeDCarousel {
     }
 
     /**
-     * Binds click and keyboard event listeners for navigation.
+     * Registers the listeners and lays out the ring. The layout follows the width of the carousel and
+     * the size of the item content, e.g. images that load later or a larger font.
      */
-    bindEvents() {
-        this.previousBtn.addEventListener("click", this.boundGotoPrevious);
-        this.nextBtn.addEventListener("click", this.boundGotoNext);
+    init() {
+        this.prevBtn?.addEventListener("click", this.boundPrev);
+        this.nextBtn?.addEventListener("click", this.boundNext);
         this.element.addEventListener("keydown", this.boundKeyDown);
+        this.stage.addEventListener("touchstart", this.boundTouchStart, { passive: true });
+        this.stage.addEventListener("touchend", this.boundTouchEnd);
+        this.element.addEventListener("load", this.boundRelayout, true);
+
+        if ("ResizeObserver" in window) {
+            this.stageObserver = new ResizeObserver(() => {
+                if (this.stage.clientWidth === this.width) return;
+                this.width = this.stage.clientWidth;
+                this.relayout();
+            });
+            this.stageObserver.observe(this.stage);
+            this.contentObserver = new ResizeObserver(this.boundRelayout);
+            this.items.forEach((item) => {
+                const content = item.querySelector(".three-d-carousel-front > *");
+                if (content) this.contentObserver.observe(content);
+            });
+        } else {
+            window.addEventListener("resize", this.boundRelayout);
+            this.relayout();
+        }
     }
 
     /**
-     * Handles keyboard events for carousel navigation.
+     * Returns whether the carousel is laid out right to left; read on every turn, since the direction
+     * can change at runtime (e.g. a language switch).
+     *
+     * @returns {boolean}
+     */
+    isRTL() {
+        return getComputedStyle(this.element).direction === "rtl";
+    }
+
+    /**
+     * Lays out the ring without animation and fits the stage to it.
+     */
+    relayout() {
+        this.element.removeAttribute("data-ready");
+        this.layout();
+        this.fit();
+        requestAnimationFrame(() => requestAnimationFrame(() => this.element?.setAttribute("data-ready", "")));
+    }
+
+    /**
+     * Lays out the ring once per frame, however many sizes changed.
+     */
+    scheduleRelayout() {
+        cancelAnimationFrame(this.frame);
+        this.frame = requestAnimationFrame(() => this.relayout());
+    }
+
+    /**
+     * Returns how many places fit the ring: at most 12, and only as many as keep its radius within
+     * part of the carousel width, so the neighbours of the front item stay in view.
+     *
+     * @param {number} itemWidth - The width of an item
+     * @param {number} width - The width of the carousel
+     * @returns {number}
+     */
+    places(itemWidth, width) {
+        let places = 3;
+        for (let count = 4; count <= ThreeDCarousel.MAX_PLACES; count++) {
+            if ((itemWidth / 2) / Math.tan(Math.PI / count) <= width * ThreeDCarousel.MAX_RADIUS) places = count;
+        }
+        return Math.min(this.items.length, places);
+    }
+
+    /**
+     * Sizes the items and places them on the ring around the front item.
+     */
+    layout() {
+        const count = this.items.length;
+        if (!count) return;
+        const width = this.stage.clientWidth;
+        // Items take 70% of the carousel on phones, at most 20rem; smaller when tilted, so the ring fits.
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const itemWidth = Math.min(width * (this.tilt ? 0.5 : 0.7), (this.tilt ? 15 : 20) * rem);
+        this.items.forEach((item) => {
+            item.style.width = `${itemWidth}px`;
+            item.style.marginLeft = `${-itemWidth / 2}px`;
+            item.style.height = "";
+        });
+        const natural = Math.max(...this.items.map((item) => item.offsetHeight));
+        const height = Math.min(natural, Math.round(window.innerHeight * ThreeDCarousel.MAX_HEIGHT));
+        this.items.forEach((item) => { item.style.height = `${height}px`; });
+
+        const places = this.places(itemWidth, width);
+        const step = (360 / places) * (this.isRTL() ? -1 : 1);
+        // Radius at which neighbouring items just touch, plus a gap; wider when the items face the camera.
+        // Tilted items lean in by half their height, so their top edges need that much more room.
+        const lean = this.tilt && !this.faceCamera ? (height / 2) * Math.sin(this.tilt * Math.PI / 180) : 0;
+        const touching = places > 2 ? (itemWidth / 2) / Math.tan(Math.PI / places) : 0;
+        const radius = touching + (this.tilt ? 60 : 16) + lean;
+        const half = places / 2;
+        // With more items than places the place at the back belongs to the side the ring turns towards,
+        // so a new item appears there and the item that leaves fades out there.
+        const lowest = this.direction >= 0 ? -(half - 1) : -half;
+
+        this.items.forEach((item, position) => {
+            let offset = ((position - this.index) % count + count + count / 2) % count - count / 2;
+            const before = this.placed.get(position);
+            // A full ring keeps turning in one direction instead of jumping back by a full turn.
+            if (count <= places && before) offset += count * Math.round((before.offset - offset) / count);
+            const visible = count <= places || (offset >= lowest && offset <= lowest + places - 1);
+            // Hidden items wait at the back place, so none of them sits inside a visible item.
+            if (!visible) offset = Math.sign(offset) * half;
+            const appears = visible && before && !before.visible;
+            this.placed.set(position, { offset, visible });
+
+            // Facing the camera undoes the angle; tilted items only undo the tilt, so the front item
+            // stands parallel to the camera and the others show the tilt.
+            const facing = this.faceCamera
+                ? ` rotateY(${-offset * step}deg) rotateX(${this.tilt}deg)`
+                : this.tilt ? ` rotateX(${this.tilt}deg)` : "";
+            if (appears) {
+                item.setAttribute("data-snap", "");
+                item.style.setProperty("--insight-3d-carousel-fade", "0");
+            }
+            item.style.transform = `rotateY(${offset * step}deg) translateZ(${radius}px)${facing}`;
+            if (appears) {
+                void item.offsetWidth;
+                item.removeAttribute("data-snap");
+            }
+            item.style.visibility = visible ? "visible" : "hidden";
+            item.style.setProperty("--insight-3d-carousel-fade", visible ? "1" : "0");
+        });
+        this.ring.style.transform = `translateZ(${-radius}px) rotateX(${-this.tilt}deg)`;
+        this.updateFront();
+    }
+
+    /**
+     * Makes every item except the front one inert, lets the front item scroll by keyboard when its
+     * content is higher than the item and announces the position.
+     */
+    updateFront() {
+        const count = this.items.length;
+        const front = ((this.index % count) + count) % count;
+        this.items.forEach((item, position) => {
+            const current = position === front;
+            item.inert = !current;
+            item.toggleAttribute("data-current", current);
+            const face = item.querySelector(".three-d-carousel-front");
+            if (current && face.scrollHeight > face.clientHeight) {
+                face.tabIndex = 0;
+            } else {
+                face.removeAttribute("tabindex");
+            }
+        });
+        if (this.status) {
+            this.status.textContent = interpolate(gettext("%(current)s of %(total)s"), {
+                current: front + 1,
+                total: count,
+            }, true);
+        }
+    }
+
+    /**
+     * Fits the stage to the ring: measures the items at rest and moves the ring and the perspective
+     * origin together, which shifts the picture without changing it.
+     */
+    fit() {
+        if (!this.items.length) return;
+        const height = this.items[0].offsetHeight;
+        this.items.forEach((item) => { item.style.top = "0px"; });
+        this.stage.style.perspectiveOrigin = `50% ${height / 2}px`;
+        const top = this.stage.getBoundingClientRect().top;
+        let min = Infinity;
+        let max = -Infinity;
+        this.items.forEach((item) => {
+            if (item.style.visibility === "hidden") return;
+            const box = item.querySelector(".three-d-carousel-front").getBoundingClientRect();
+            min = Math.min(min, box.top - top);
+            max = Math.max(max, box.bottom - top);
+        });
+        if (min === Infinity) return;
+        const shift = 8 - min;
+        this.items.forEach((item) => { item.style.top = `${shift}px`; });
+        this.stage.style.perspectiveOrigin = `50% ${shift + height / 2}px`;
+        this.stage.style.height = `${max - min + 16}px`;
+    }
+
+    /**
+     * Turns the ring to an item; the shorter way round for jumps such as Home and End.
+     *
+     * @param {number} index - The item to bring to the front, may lie outside the item range
+     */
+    goTo(index) {
+        const count = this.items.length;
+        if (count < 2) return;
+        let step = (index - this.index) % count;
+        if (step > count / 2) step -= count;
+        if (step < -count / 2) step += count;
+        if (!step) return;
+        this.direction = Math.sign(step);
+        this.index += step;
+        this.layout();
+    }
+
+    /**
+     * Handles keyboard navigation on the controls. Keys inside the items belong to their content,
+     * e.g. a text field.
      *
      * @param {KeyboardEvent} e - The keyboard event
      */
     handleKeyDown(e) {
-        // In right-to-left layouts "previous" sits on the right, so the arrow keys swap.
-        // Read on every key press: the direction can change at runtime (e.g. a language switch).
-        const rtl = this.element.closest('[dir]')?.getAttribute('dir') === 'rtl';
-        const previousKey = rtl ? 'ArrowRight' : 'ArrowLeft';
-        const nextKey = rtl ? 'ArrowLeft' : 'ArrowRight';
-
-        if (e.key === previousKey) {
-            e.preventDefault();
-            this.gotoPrevious();
-        } else if (e.key === nextKey) {
-            e.preventDefault();
-            this.gotoNext();
-        }
+        if (e.target.closest(".three-d-carousel-item")) return;
+        const forward = this.isRTL() ? -1 : 1;
+        const count = this.items.length;
+        const front = ((this.index % count) + count) % count;
+        const targets = {
+            ArrowLeft: this.index - forward,
+            ArrowRight: this.index + forward,
+            Home: this.index - front,
+            End: this.index - front + count - 1,
+        };
+        if (!(e.key in targets)) return;
+        e.preventDefault();
+        this.goTo(targets[e.key]);
     }
 
     /**
-     * Creates animation keyframes for spinning to a specific index.
+     * Handles touch end events for swipe navigation.
      *
-     * @param {number} index - The target index to spin to
-     * @param {boolean} toRight - True if spinning clockwise, false for counter-clockwise
-     * @returns {Keyframe[]} Animation keyframes array
+     * @param {TouchEvent} e - The touch end event
      */
-    spin(index, toRight) {
-        /* get the correct distance for the current window width (media-query) */
-        let distance = -850;
-        for (let i = this.screens.length - 1; i >= 0; i--) {
-            if (this.screens[i].matches) {
-                distance = this.distances[i];
-                break;
-            }
-        }
-
-        /* adjust start index, in relation to the spin direction */
-        let fromIndex = index;
-
-        if (toRight) fromIndex += 1;
-        else fromIndex -= 1;
-
-        /* apply animation */
-        return [
-            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${fromIndex * this.angle}deg)` },
-            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${index * this.angle}deg)` },
-        ];
-    }
-
-    /**
-     * Rotates items to face the camera when faceCamera mode is enabled.
-     */
-    rotateFaceCamera() {
-        if (!this.faceCamera) return;
-
-        for (const item of this.carousel.children) {
-            item.firstElementChild.animate([
-                {
-                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
-                }
-            ], this.spinSettings);
-        }
-    }
-
-    /**
-     * Navigates to the previous item in the carousel (counter-clockwise rotation).
-     */
-    gotoPrevious() {
-        this.currentIndex++;
-        this.carousel.animate(this.spin(this.currentIndex, false), this.spinSettings);
-
-        if (this.faceCamera) {
-            for (const item of this.carousel.children) {
-                item.firstElementChild.animate([{
-                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
-                }], this.spinSettings);
-            }
-        }
-    }
-
-    /**
-     * Navigates to the next item in the carousel (clockwise rotation).
-     */
-    gotoNext() {
-        this.currentIndex--;
-        this.carousel.animate(this.spin(this.currentIndex, true), this.spinSettings);
-
-        if (this.faceCamera) {
-            for (const item of this.carousel.children) {
-                item.firstElementChild.animate([{
-                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
-                }], this.spinSettings);
-            }
-        }
+    handleTouchEnd(e) {
+        const diff = e.changedTouches[0].clientX - this.startX;
+        if (Math.abs(diff) <= 40) return;
+        const forward = (diff < 0) !== this.isRTL();
+        this.goTo(this.index + (forward ? 1 : -1));
     }
 
     /**
@@ -187,15 +329,21 @@ export class ThreeDCarousel {
     destroy() {
         debugLog("Destroy 3D carousel: ", this.element);
 
-        this.previousBtn.removeEventListener("click", this.boundGotoPrevious);
-        this.nextBtn.removeEventListener("click", this.boundGotoNext);
+        cancelAnimationFrame(this.frame);
+        this.prevBtn?.removeEventListener("click", this.boundPrev);
+        this.nextBtn?.removeEventListener("click", this.boundNext);
         this.element.removeEventListener("keydown", this.boundKeyDown);
+        this.stage.removeEventListener("touchstart", this.boundTouchStart);
+        this.stage.removeEventListener("touchend", this.boundTouchEnd);
+        this.element.removeEventListener("load", this.boundRelayout, true);
+        window.removeEventListener("resize", this.boundRelayout);
+        this.stageObserver?.disconnect();
+        this.contentObserver?.disconnect();
 
         ThreeDCarousel.instances.delete(this.element);
         delete this.element.__insightInstance;
 
         this.element = null;
-        this.carousel = null;
     }
 
     /**

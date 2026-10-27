@@ -1292,4 +1292,116 @@
         translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
     }
 
+    /*
+    * ========================================================
+    *   3D Carousel
+    * ========================================================
+    *
+    *   insight-ui-3D-carousel.js sets the size and place of every item and the height of the stage.
+    *   These rules keep the 3D context, the solid backs and the clipping: the ring sets the item
+    *   width, media shrink to it and wider content is clipped, so neighbouring items never overlap.
+    */
+    /* The items beside the ring reach past the carousel; they must not widen the page. */
+    .three-d-carousel {
+        overflow-x: clip;
+    }
+
+    .three-d-carousel-stage {
+        position: relative;
+        perspective: 1000px;
+    }
+
+    .three-d-carousel-ring {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+    }
+
+    .three-d-carousel-item {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-style: preserve-3d;
+        /* visibility stays visible while it transitions, so a leaving item is hidden once it has faded out. */
+        transition: transform var(--insight-3d-carousel-duration) ease, visibility var(--insight-3d-carousel-duration);
+    }
+
+    .three-d-carousel-faces {
+        display: grid;
+        height: 100%;
+        transform-style: preserve-3d;
+    }
+
+    /* Fading the faces, not the item: opacity on a 3D item flattens it and shows its mirrored front. */
+    .three-d-carousel-faces > * {
+        grid-area: 1 / 1;
+        height: 100%;
+        backface-visibility: hidden;
+        opacity: var(--insight-3d-carousel-fade, 1);
+        transition: opacity var(--insight-3d-carousel-duration) ease;
+    }
+
+    .three-d-carousel-front {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Items behind the front one fade towards the page background: lighter in light mode, darker in
+       dark mode, so the front item stands out in both. */
+    .three-d-carousel-faces > ::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius-insight-surface);
+        background-color: var(--color-insight-bg-base);
+        opacity: 0.45;
+        pointer-events: none;
+        transition: opacity var(--insight-3d-carousel-duration) ease;
+    }
+
+    .three-d-carousel-item[data-current] .three-d-carousel-faces > ::after {
+        opacity: 0;
+    }
+
+    /* A height, not a minimum: content such as a card brings its own min-height utility, which wins. */
+    .three-d-carousel-front > * {
+        height: 100%;
+    }
+
+    .three-d-carousel-front img,
+    .three-d-carousel-front video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Content above the height limit scrolls in the front item. */
+    .three-d-carousel-item[data-current] .three-d-carousel-front {
+        overflow-y: auto;
+    }
+
+    .three-d-carousel-back {
+        transform: rotateY(180deg);
+        background-color: var(--color-insight-bg-raised);
+        border: 1px solid var(--color-insight-border-raised);
+        border-radius: var(--radius-insight-surface);
+    }
+
+    /* Nothing moves before the first layout, while an item jumps to its place, or with reduced motion. */
+    .three-d-carousel:not([data-ready]) .three-d-carousel-item,
+    .three-d-carousel:not([data-ready]) .three-d-carousel-faces > *,
+    .three-d-carousel:not([data-ready]) .three-d-carousel-faces > ::after,
+    .three-d-carousel-item[data-snap],
+    .three-d-carousel-item[data-snap] .three-d-carousel-faces > *,
+    .three-d-carousel-item[data-snap] .three-d-carousel-faces > ::after {
+        transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .three-d-carousel-item,
+        .three-d-carousel-faces > *,
+        .three-d-carousel-faces > ::after {
+            transition: none;
+        }
+    }
+
 }
