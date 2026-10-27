@@ -13,14 +13,12 @@ from insight_ui.configs.types import (
     ButtonVariant,
     HtmlButtonType,
     HtmlInputType,
-    HtmxSwapMethod,
     Size,
     SliderLegendMode,
     validate_button_color,
     validate_button_variant,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_swap_method,
     validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
@@ -31,7 +29,7 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    Renders a <button>, or an <a> if request_url is set. An htmx without its own request_url
     requests the link URL, so the link also works without JavaScript.
 
     Attributes:
@@ -48,7 +46,7 @@ class ButtonConfig:
         size: Defines the size of the button.
         round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
-        htmx_config: Configuration for asynchronous requests.
+        htmx: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
         disabled: **True** to disable the button.
         disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
@@ -74,7 +72,7 @@ class ButtonConfig:
             size="xl",
             round=False,
             tooltip="Click to calculate something",
-            htmx_config=HtmxConfig(...),
+            htmx=HtmxConfig(...),
             hidden=False,
             button_type="submit",
             extra_classes="w-full",
@@ -107,7 +105,7 @@ class ButtonConfig:
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
@@ -607,8 +605,7 @@ class RadioBlockConfig:
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
         request_url: The URL to which the request should be sent when clicking one of the radio buttons.
-        hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
-        hx_swap_method: The way in which the target is to be replaced.
+        htmx: HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
@@ -625,7 +622,8 @@ class RadioBlockConfig:
                 RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
-            hx_target_id="content-area",
+            request_url="/products/",
+            htmx=HtmxConfig(target="#content-area", swap_method="outerHTML"),
         )
         """
 
@@ -645,11 +643,11 @@ class RadioBlockConfig:
         default="",
         metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
-    hx_target_id: str = field(
-        default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
-    )
-    hx_swap_method: HtmxSwapMethod = field(
-        default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
+    htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.")
+        },
     )
     method: str = field(
         default="",
@@ -665,9 +663,20 @@ class RadioBlockConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require a non-empty name and validate hx_swap_method and current_value."""
+        """Require a non-empty name, reject HTMX options that would be ignored and validate current_value."""
         validate_not_empty(self, "name")
-        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
+        if self.htmx is not None:
+            if self.integrated:
+                msg = (
+                    f"RadioBlockConfig {self.name!r}: integrated radio blocks are sent with their form, not with htmx."
+                )
+                raise ValueError(msg)
+            if not (self.request_url or self.htmx.request_url):
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs a request_url."
+                raise ValueError(msg)
+            if not self.htmx.target:
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs htmx.target, otherwise the radio button is swapped."
+                raise ValueError(msg)
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):
@@ -935,8 +944,12 @@ class ChatConfig:
 
     Renders a chat interface with an input line and a response container.
 
+    The message is posted as ``msg``; the response is appended to the response container.
+
     Attributes:
         request_url: URL for sending chat messages via HTMX POST.
+        tag_id: Prefix of the element IDs, unique on the page.
+        htmx: Shared request options such as vals or a loading indicator.
 
     """
 
@@ -945,7 +958,11 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+    tag_id: str = field(default="chat", metadata={"doc": _("Prefix of the element IDs, unique on the page.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as vals or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "request_url")
+        validate_not_empty(self, "request_url", "tag_id")
