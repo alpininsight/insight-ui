@@ -19,9 +19,6 @@ pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
 URL_FIELD = re.compile(r"^url(_dark)?$|_url$|^href$")
 
-# Link fields whose name does not follow the *_url convention.
-LINK_FIELDS_BY_NAME = {FooterContactConfig: ("imprint", "privacy")}
-
 # Required fields that are not text.
 EXTRA_REQUIRED: dict[type, dict[str, Any]] = {
     PaginationConfig: {"current_page": Paginator(range(5), 2).get_page(1)},
@@ -30,8 +27,7 @@ EXTRA_REQUIRED: dict[type, dict[str, Any]] = {
 
 def url_fields(config_class: type) -> list[str]:
     """Return the URL fields of a config class."""
-    names = [field.name for field in dataclasses.fields(config_class) if URL_FIELD.search(field.name)]
-    return names + list(LINK_FIELDS_BY_NAME.get(config_class, ()))
+    return [field.name for field in dataclasses.fields(config_class) if URL_FIELD.search(field.name)]
 
 
 def config_classes() -> list[type]:
@@ -84,7 +80,7 @@ def test_url_field_accepts_relative_and_web_urls(config_class: type, name: str) 
 def test_url_kinds_allow_their_schemes() -> None:
     """Links allow mailto and tel, images data URLs and WebSocket endpoints ws and wss."""
     footer = build(FooterContactConfig)
-    dataclasses.replace(footer, mail_url="mailto:team@example.com", imprint="tel:+49301234")
+    dataclasses.replace(footer, mail_url="mailto:team@example.com", imprint_url="tel:+49301234")
     image = build(configs.ImageConfig)
     dataclasses.replace(image, url="data:image/svg+xml;base64,PHN2Zy8+")
     socket = build(WebSocketConfig)

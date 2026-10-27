@@ -513,26 +513,26 @@ class FooterContactConfig:
 
     Attributes:
         mail_url: URL of a contact email address.
-        imprint: Link to an imprint.
-        privacy: Link to a privacy policy.
+        imprint_url: Link to an imprint.
+        privacy_url: Link to a privacy policy.
 
     """
 
     __example__ = """
         FooterContactConfig(
             mail_url="support@example.com",
-            imprint="/imprint/",
-            privacy="/privacy/",
+            imprint_url="/imprint/",
+            privacy_url="/privacy/",
         )
         """
 
     mail_url: str = field(default="", metadata={"doc": _("URL of a contact email address.")})
-    imprint: str = field(default="", metadata={"doc": _("Link to an imprint.")})
-    privacy: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
+    imprint_url: str = field(default="", metadata={"doc": _("Link to an imprint.")})
+    privacy_url: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
 
     def __post_init__(self) -> None:
         """Reject URL schemes the fields do not allow."""
-        validate_urls(self, "imprint", "privacy")
+        validate_urls(self)
 
 
 @dataclass
@@ -562,8 +562,8 @@ class FooterConfig:
             ],
             contact=FooterContactConfig(
                 mail_url="support@example.com",
-                imprint="/imprint/",
-                privacy="/privacy/",
+                imprint_url="/imprint/",
+                privacy_url="/privacy/",
             ),
             legal=LegalNoticeConfig(
                 year=2026,

@@ -326,7 +326,7 @@ def url_scheme(url: str) -> str:
     return urlsplit(re.sub(r"[\x00-\x20]", "", url)).scheme.lower()
 
 
-def validate_urls(config: object, *links: str, **schemes: tuple[str, ...]) -> None:
+def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
     """Validate the schemes of all URL fields of a config.
 
     URL fields are found by name: url, url_dark and *image_url / *avatar_url are images, every other
@@ -334,7 +334,6 @@ def validate_urls(config: object, *links: str, **schemes: tuple[str, ...]) -> No
 
     Args:
         config: The config instance to check.
-        *links: Further link fields whose name does not follow the convention.
         **schemes: Allowed schemes for single fields that differ from their kind, e.g. a WebSocket endpoint.
 
     Raises:
@@ -344,8 +343,7 @@ def validate_urls(config: object, *links: str, **schemes: tuple[str, ...]) -> No
     for config_field in fields(config):  # type: ignore[arg-type]
         name = config_field.name
         value = getattr(config, name)
-        is_url = bool(_URL_FIELDS.search(name)) or name in links
-        if not is_url or not isinstance(value, str) or not value:
+        if not _URL_FIELDS.search(name) or not isinstance(value, str) or not value:
             continue
         allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
         scheme = url_scheme(value)

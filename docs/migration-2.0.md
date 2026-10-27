@@ -39,7 +39,7 @@ pattern for a host project.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
-- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`).
+- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `imprint=` / `privacy=` on `FooterContactConfig` to `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
@@ -901,14 +901,17 @@ checked.
 
 | Field | Schemes besides relative URLs |
 | --- | --- |
-| Links and request endpoints: `request_url`, `href`, every other `*_url`, `FooterContactConfig.imprint` and `.privacy` | `http`, `https`, `mailto`, `tel` |
+| Links and request endpoints: `request_url`, `href`, every other `*_url` | `http`, `https`, `mailto`, `tel` |
 | Images: `url`, `url_dark`, `avatar_url`, `background_image_url` | `http`, `https`, `data` |
 | `WebSocketConfig.request_url` | `ws`, `wss`, `http`, `https` |
 
 `{% surface href=... %}` follows the link rule and now also accepts `tel`.
 
-Search: URL fields filled from data, e.g. user profiles, and app links with
-an own scheme such as `myapp://`.
+`FooterContactConfig.imprint` and `.privacy` are now `imprint_url` and
+`privacy_url`, like every other URL field.
+
+Search: URL fields filled from data, e.g. user profiles, app links with an
+own scheme such as `myapp://`, and `imprint=` / `privacy=` on `FooterContactConfig`.
 
 ### Help, error and disabled texts
 
