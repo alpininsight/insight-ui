@@ -77,3 +77,23 @@ class TestRangeSlider(TemplateTagsTestCase):
         assert "h-6" in container["class"]
         assert inputs
         assert all("h-full" in input_["class"] for input_ in inputs)
+
+    def test_legend_items_carry_the_share_of_their_value(self) -> None:
+        """Each item is placed at the thumb position of its value: 0 at the start, 1 at the end."""
+        config = SliderConfig(name="size", minimum=0, maximum=4, items=["XS", "S", "M", "L", "XL"])
+
+        rendered = self.render_template("{% load insight_tags %}{% slider config %}", {"config": config})
+        items = BeautifulSoup(rendered, "html.parser").select(".slider-legend-item")
+
+        assert [item.get_text(strip=True) for item in items] == ["XS", "S", "M", "L", "XL"]
+        assert [item["style"] for item in items] == [
+            f"--insight-legend-position: {share}" for share in ("0.0000", "0.2500", "0.5000", "0.7500", "1.0000")
+        ]
+
+    def test_legend_is_hidden_from_screen_readers(self) -> None:
+        """The legend repeats the values visually; the slider announces its value itself."""
+        config = SliderConfig(name="size", items=["Low", "High"])
+
+        rendered = self.render_template("{% load insight_tags %}{% slider config %}", {"config": config})
+
+        assert BeautifulSoup(rendered, "html.parser").select_one(".slider-legend")["aria-hidden"] == "true"

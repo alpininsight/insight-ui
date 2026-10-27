@@ -786,9 +786,6 @@
   .h-\[calc\(100dvh-var\(--insight-navbar-height\)\)\] {
     height: calc(100dvh - var(--insight-navbar-height));
   }
-  .h-auto {
-    height: auto;
-  }
   .h-dvh {
     height: 100dvh;
   }
@@ -816,9 +813,6 @@
   .min-h-0 {
     min-height: 0px;
   }
-  .min-h-16 {
-    min-height: calc(var(--spacing) * 16);
-  }
   .min-h-56 {
     min-height: calc(var(--spacing) * 56);
   }
@@ -827,9 +821,6 @@
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .w-0 {
-    width: 0px;
   }
   .w-0\.5 {
     width: calc(var(--spacing) * 0.5);
@@ -2533,78 +2524,6 @@
       color: var(--color-insight-text-link-hover);
     }
   }
-  .\[\&\:\:-moz-range-thumb\]\:pointer-events-auto::-moz-range-thumb {
-    pointer-events: auto;
-  }
-  .\[\&\:\:-moz-range-thumb\]\:h-6::-moz-range-thumb {
-    height: calc(var(--spacing) * 6);
-  }
-  .\[\&\:\:-moz-range-thumb\]\:w-6::-moz-range-thumb {
-    width: calc(var(--spacing) * 6);
-  }
-  .\[\&\:\:-moz-range-thumb\]\:cursor-pointer::-moz-range-thumb {
-    cursor: pointer;
-  }
-  .\[\&\:\:-moz-range-thumb\]\:rounded-insight-full::-moz-range-thumb {
-    border-radius: var(--radius-insight-full);
-  }
-  .\[\&\:\:-moz-range-thumb\]\:border-2::-moz-range-thumb {
-    border-style: var(--tw-border-style);
-    border-width: 2px;
-  }
-  .\[\&\:\:-moz-range-thumb\]\:border-insight-primary::-moz-range-thumb {
-    border-color: var(--color-insight-primary);
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:pointer-events-auto::-webkit-slider-thumb {
-    pointer-events: auto;
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:-mt-2::-webkit-slider-thumb {
-    margin-top: calc(var(--spacing) * -2);
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:h-6::-webkit-slider-thumb {
-    height: calc(var(--spacing) * 6);
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:w-6::-webkit-slider-thumb {
-    width: calc(var(--spacing) * 6);
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:cursor-pointer::-webkit-slider-thumb {
-    cursor: pointer;
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:appearance-none::-webkit-slider-thumb {
-    appearance: none;
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:rounded-insight-full::-webkit-slider-thumb {
-    border-radius: var(--radius-insight-full);
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:border-2::-webkit-slider-thumb {
-    border-style: var(--tw-border-style);
-    border-width: 2px;
-  }
-  .\[\&\:\:-webkit-slider-thumb\]\:border-insight-primary::-webkit-slider-thumb {
-    border-color: var(--color-insight-primary);
-  }
-  .\[\&\:focus-visible\:\:-moz-range-thumb\]\:ring-2:focus-visible::-moz-range-thumb {
-    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .\[\&\:focus-visible\:\:-moz-range-thumb\]\:ring-insight-focus:focus-visible::-moz-range-thumb {
-    --tw-ring-color: var(--color-insight-focus);
-  }
-  .\[\&\:focus-visible\:\:-moz-range-thumb\]\:ring-offset-2:focus-visible::-moz-range-thumb {
-    --tw-ring-offset-width: 2px;
-    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  }
-  .\[\&\:focus-visible\:\:-webkit-slider-thumb\]\:ring-2:focus-visible::-webkit-slider-thumb {
-    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .\[\&\:focus-visible\:\:-webkit-slider-thumb\]\:ring-insight-focus:focus-visible::-webkit-slider-thumb {
-    --tw-ring-color: var(--color-insight-focus);
-  }
-  .\[\&\:focus-visible\:\:-webkit-slider-thumb\]\:ring-offset-2:focus-visible::-webkit-slider-thumb {
-    --tw-ring-offset-width: 2px;
-    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  }
 }
 @font-face {
   font-family: "insight-ui";
@@ -3293,25 +3212,15 @@
     border-radius: var(--radius-insight-control);
     background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
-  [data-theme="dark"] .range-custom::-webkit-slider-runnable-track, [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-  }
-  [data-theme="dark"] .range-custom::-moz-range-track, [data-theme="dark"].range-custom::-moz-range-track {
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-  }
-  html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+  .range-custom:dir(rtl)::-webkit-slider-runnable-track {
     background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
-  html[dir='rtl'] .range-custom::-moz-range-track {
+  .range-custom:dir(rtl)::-moz-range-track {
     background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
-  html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track, html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track, html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-  }
-  html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track, html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track, html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
-  }
-  .range-custom::-webkit-slider-thumb {
+  .range-thumb::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
     margin-top: calc(var(--spacing) * -2);
     width: calc(var(--spacing) * 6);
     height: calc(var(--spacing) * 6);
@@ -3322,7 +3231,7 @@
     border-color: var(--color-insight-primary);
     background-color: var(--color-insight-bg-base);
   }
-  .range-custom::-moz-range-thumb {
+  .range-thumb::-moz-range-thumb {
     width: calc(var(--spacing) * 6);
     height: calc(var(--spacing) * 6);
     cursor: pointer;
@@ -3331,6 +3240,66 @@
     border-width: 2px;
     border-color: var(--color-insight-primary);
     background-color: var(--color-insight-bg-base);
+  }
+  .slider-dual-container .range-thumb::-webkit-slider-runnable-track {
+    height: calc(var(--spacing) * 2);
+    background-color: transparent;
+  }
+  .slider-dual-container .range-thumb::-moz-range-track {
+    height: calc(var(--spacing) * 2);
+    background-color: transparent;
+  }
+  .slider-dual-container .range-thumb::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+  .slider-dual-container .range-thumb::-moz-range-thumb {
+    pointer-events: auto;
+  }
+  .slider-dual-container .range-thumb:focus-visible::-webkit-slider-thumb {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    --tw-ring-color: var(--color-insight-focus);
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  }
+  .slider-dual-container .range-thumb:focus-visible::-moz-range-thumb {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    --tw-ring-color: var(--color-insight-focus);
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  }
+  .slider-legend {
+    --insight-slider-thumb: 1.5rem;
+    position: relative;
+    height: calc(var(--spacing) * 5);
+  }
+  .slider-legend-item {
+    --insight-legend-offset: calc(
+            var(--insight-slider-thumb) / 2 + var(--insight-legend-position) * (100% - var(--insight-slider-thumb))
+        );
+    position: absolute;
+    top: 0px;
+    white-space: nowrap;
+    left: var(--insight-legend-offset);
+    translate: -50% 0;
+  }
+  .slider-legend-item:first-child {
+    translate: calc(-1 * min(50%, var(--insight-slider-thumb) / 2)) 0;
+  }
+  .slider-legend-item:last-child {
+    translate: calc(-1 * max(50%, 100% - var(--insight-slider-thumb) / 2)) 0;
+  }
+  .slider-legend-item:dir(rtl) {
+    left: auto;
+    right: var(--insight-legend-offset);
+    translate: 50% 0;
+  }
+  .slider-legend-item:first-child:dir(rtl) {
+    translate: min(50%, var(--insight-slider-thumb) / 2) 0;
+  }
+  .slider-legend-item:last-child:dir(rtl) {
+    translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
   }
 }
 @property --tw-translate-x {

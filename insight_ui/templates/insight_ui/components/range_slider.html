@@ -25,7 +25,7 @@
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_min|default:slider_config.minimum }}"
                     {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
-                    class="slider-input-min appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-insight-base [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-insight-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-2 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:bg-insight-base [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-insight-full [&::-moz-range-thumb]:cursor-pointer [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-focus [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-focus [&:focus-visible::-moz-range-thumb]:ring-offset-2 absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-none"
+                    class="slider-input-min range-thumb appearance-none absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-none"
                 >
                 {# Max thumb input #}
                 <input
@@ -42,7 +42,7 @@
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_max|default:slider_config.maximum }}"
                     {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
-                    class="slider-input-max appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-insight-base [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-insight-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-2 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:bg-insight-base [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-insight-full [&::-moz-range-thumb]:cursor-pointer [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-focus [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-focus [&:focus-visible::-moz-range-thumb]:ring-offset-2 absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-none"
+                    class="slider-input-max range-thumb appearance-none absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-none"
                 >
             </div>
         </div>
@@ -63,13 +63,14 @@
             aria-valuenow="{{ slider_config.value }}"
             {% data_attributes slider_config.data_attrs %}
             {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
-            class="range-custom accent-insight-primary appearance-none w-full h-6 bg-transparent cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
+            class="range-thumb range-custom accent-insight-primary appearance-none w-full h-6 bg-transparent cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
         >
     {% endif %}
-    {% if slider_config.items %}
-        <div class="slider-legend flex justify-between mt-1 w-full text-sm text-insight-body" aria-hidden="true">
-            {% for item in slider_config.items %}
-                <span class="slider-legend-item text-center" data-index="{{ forloop.counter0 }}">{{ item }}</span>
+    {% if legend %}
+        {# Items are placed under the thumb position of their value, see .slider-legend-item in input.css. #}
+        <div class="slider-legend mt-1 w-full text-sm text-insight-body" aria-hidden="true">
+            {% for item in legend %}
+                <span class="slider-legend-item" data-index="{{ forloop.counter0 }}" style="--insight-legend-position: {{ item.position }}">{{ item.text }}</span>
             {% endfor %}
         </div>
     {% endif %}
