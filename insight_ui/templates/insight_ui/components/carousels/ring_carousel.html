@@ -1,0 +1,39 @@
+{% load i18n insight_tags %}
+
+{% comment %}
+    The ring only provides the turning: each item is rendered with carousel_config.item_template, which gets
+    item and the page context. The script places the items, sizes them from their content and makes every item
+    except the front one inert; the back of an item is a solid face.
+{% endcomment %}
+<div
+    id="{{ carousel_config.tag_id }}"
+    data-insight-ring-carousel
+    data-tilt="{{ carousel_config.tilt }}"
+    data-face-camera="{{ carousel_config.face_camera|yesno:'true,false' }}"
+    role="region"
+    aria-roledescription="{% translate 'carousel' %}"
+    aria-label="{{ carousel_config.label|default:_('Ring carousel') }}"
+    style="--insight-ring-carousel-duration: {{ carousel_config.duration }}ms"
+    class="ring-carousel"
+>
+    <div class="ring-carousel-stage">
+        <div class="ring-carousel-ring">
+            {% for item in carousel_config.items %}
+                <div class="ring-carousel-item" role="group" aria-roledescription="{% translate 'slide' %}" aria-label="{% blocktranslate with number=forloop.counter total=item_count %}{{ number }} of {{ total }}{% endblocktranslate %}">
+                    <div class="ring-carousel-faces">
+                        <div class="ring-carousel-front">{% include carousel_config.item_template %}</div>
+                        <div class="ring-carousel-back" aria-hidden="true"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if item_count > 1 %}
+        <div class="flex gap-insight-m justify-center items-center mt-insight-m">
+            {% button label=_("Previous item") icon_name="chevron-left" icon_only=True round=True extra_classes="ring-carousel-prev" %}
+            <span class="text-sm text-insight-body whitespace-nowrap ring-carousel-status" aria-live="polite"></span>
+            {% button label=_("Next item") icon_name="chevron-right" icon_only=True round=True extra_classes="ring-carousel-next" %}
+        </div>
+    {% endif %}
+</div>

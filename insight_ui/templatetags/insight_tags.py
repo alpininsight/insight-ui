@@ -90,6 +90,7 @@ from insight_ui.configs import (
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
+    RingCarouselConfig,
     SearchBarConfig,
     SelectConfig,
     Severity,
@@ -101,7 +102,6 @@ from insight_ui.configs import (
     StepStatus,
     TableConfig,
     TextareaConfig,
-    ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
     WebSocketConfig,
@@ -1697,10 +1697,10 @@ def carousel(
     return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
-@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html", takes_context=True)
-def three_d_carousel(
+@register.inclusion_tag("insight_ui/components/carousels/ring_carousel.html", takes_context=True)
+def ring_carousel(
     context: template.Context,
-    config: ThreeDCarouselConfig | None = None,
+    config: RingCarouselConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
     items: Sequence[Any] | _Unset = UNSET,
@@ -1715,7 +1715,7 @@ def three_d_carousel(
     The item template sees the page context (request, user, csrf_token) besides item.
     """
     config = build_config(
-        ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+        RingCarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
     )
     page_context = cast("dict[str, Any]", context.flatten())
     return {**page_context, "carousel_config": config, "item_count": len(config.items)}

@@ -52,7 +52,7 @@ pattern for a host project.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
-- [ ] Pass `items=` (and `item_template=` for own content) to `three_d_carousel` instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
+- [ ] Rename `three_d_carousel` / `ThreeDCarouselConfig` to `ring_carousel` / `RingCarouselConfig`, pass `items=` (and `item_template=` for own content) instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
 
 ## Color tokens are a silent break
 
@@ -848,7 +848,7 @@ accessible name.
 - `DropdownConfig.tag_id`, `DropdownItemConfig.request_url`
 - `UserMenuLinkConfig.request_url`
 - `TabConfig.tag_id` and `TabConfig.request_url`
-- `AccordionConfig.tag_id`, `ThreeDCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
+- `AccordionConfig.tag_id`, `RingCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
 - `request_url` on `LiveContentConfig`, `WebSocketConfig`, `ChatConfig`, `InfiniteScrollConfig`, `PaginationConfig`
 - `FilterConfig.name`, `QueryBuilderFieldConfig.field`
 - `BadgeListConfig.tag_id` and `BadgeListConfig.label`
@@ -1264,13 +1264,26 @@ switch replaces the whole toggle view. Other options of the switch's
 
 Search: `hx_target_id` and `hx_swap_method`.
 
-## 3D carousel
+## Ring carousel
 
-[#PR](https://github.com/alpininsight/insight-ui/pull/PR).
+[#771](https://github.com/alpininsight/insight-ui/pull/771).
+
+### `three_d_carousel` is `ring_carousel`
+
+The name says what the carousel shows: items on a turning ring. The tag, the
+config, the template and the script hook are renamed:
+
+| Before | After |
+|--------|-------|
+| `{% three_d_carousel %}` | `{% ring_carousel %}` |
+| `ThreeDCarouselConfig` | `RingCarouselConfig` |
+| `carousels/3D_carousel.html` | `carousels/ring_carousel.html` |
+| `insight-ui-3D-carousel.js`, `ThreeDCarousel` | `insight-ui-ring-carousel.js`, `RingCarousel` |
+| `data-insight-3D-carousel` | `data-insight-ring-carousel` |
 
 ### Any content on the ring
 
-Like `{% carousel %}`, the 3D carousel renders each item with `item_template`,
+Like `{% carousel %}`, the ring carousel renders each item with `item_template`,
 which gets `item` and the page context. The default template shows a
 `CardConfig` as card. `CarouselItemConfig` is gone.
 
@@ -1293,7 +1306,7 @@ ThreeDCarouselConfig(
 After:
 
 ```python
-ThreeDCarouselConfig(
+RingCarouselConfig(
     tag_id="showcase",
     items=[CardConfig(title="Lamp", content="Brass, 40 cm")],
     duration=800,
@@ -1319,7 +1332,7 @@ ThreeDCarouselConfig(
 ### Markup and behaviour
 
 - The `<style>` block in the template is gone; the classes
-  `.three-d-carousel*` in the stylesheet replace `.threeD_carousel`,
+  `.ring-carousel*` in the stylesheet replace `.threeD_carousel`,
   `.item_wrapper` and `.item`.
 - Only the front item can be focused and is read; the others are `inert`. The
   position is announced ("2 of 6"). Arrow keys, Home and End turn the ring
@@ -1328,8 +1341,9 @@ ThreeDCarouselConfig(
 - With a single item the controls are left out.
 - Nothing is animated on page load or with reduced motion.
 
-Search: `carousel_items`, `CarouselItemConfig`, `velocity=`, `.threeD_carousel`
-and `.item_wrapper`.
+Search: `three_d_carousel`, `ThreeDCarouselConfig`, `3D_carousel`,
+`data-insight-3D-carousel`, `carousel_items`, `CarouselItemConfig`,
+`velocity=`, `.threeD_carousel` and `.item_wrapper`.
 
 ## Pagination
 

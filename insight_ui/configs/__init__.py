@@ -38,7 +38,7 @@ from insight_ui.configs.card import (
     CarouselConfig,
     CarouselImageConfig,
     FlipCardConfig,
-    ThreeDCarouselConfig,
+    RingCarouselConfig,
     ToggleViewConfig,
 )
 from insight_ui.configs.filter import (
@@ -295,6 +295,7 @@ __all__ = [
     "RadioBlockConfig",
     "RadioGroupConfig",
     "RadioItemConfig",
+    "RingCarouselConfig",
     "SearchBarConfig",
     "SectionConfig",
     "SelectConfig",
@@ -316,7 +317,6 @@ __all__ = [
     "TableConfig",
     "TabsConfig",
     "TextareaConfig",
-    "ThreeDCarouselConfig",
     "ToggleConfig",
     "ToggleViewConfig",
     "ToggleViewType",

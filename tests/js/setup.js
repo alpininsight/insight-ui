@@ -175,31 +175,31 @@ globalThis.TestUtils = {
   },
 
   /**
-   * Creates a 3D carousel component DOM structure
+   * Creates a ring carousel component DOM structure
    * @param {string} id - Unique ID for the carousel
    * @param {number} itemCount - Number of carousel items
    * @param {object} options - tilt and faceCamera
-   * @returns {HTMLElement} Container with 3D carousel elements
+   * @returns {HTMLElement} Container with ring carousel elements
    */
-  create3DCarousel(id = 'test-3d-carousel', itemCount = 4, { tilt = 0, faceCamera = false } = {}) {
+  createRingCarousel(id = 'test-ring-carousel', itemCount = 4, { tilt = 0, faceCamera = false } = {}) {
     const items = Array.from({ length: itemCount }, (_, i) => `
-      <div class="three-d-carousel-item">
-        <div class="three-d-carousel-faces">
-          <div class="three-d-carousel-front"><div><a href="#${i + 1}">Item ${i + 1}</a></div></div>
-          <div class="three-d-carousel-back" aria-hidden="true"></div>
+      <div class="ring-carousel-item">
+        <div class="ring-carousel-faces">
+          <div class="ring-carousel-front"><div><a href="#${i + 1}">Item ${i + 1}</a></div></div>
+          <div class="ring-carousel-back" aria-hidden="true"></div>
         </div>
       </div>
     `).join('');
 
     return this.createDOM(`
-      <div id="${id}" data-insight-3D-carousel data-tilt="${tilt}" data-face-camera="${faceCamera}" class="three-d-carousel">
-        <div class="three-d-carousel-stage">
-          <div class="three-d-carousel-ring">${items}</div>
+      <div id="${id}" data-insight-ring-carousel data-tilt="${tilt}" data-face-camera="${faceCamera}" class="ring-carousel">
+        <div class="ring-carousel-stage">
+          <div class="ring-carousel-ring">${items}</div>
         </div>
         <div>
-          <button class="three-d-carousel-prev">Previous</button>
-          <span class="three-d-carousel-status"></span>
-          <button class="three-d-carousel-next">Next</button>
+          <button class="ring-carousel-prev">Previous</button>
+          <span class="ring-carousel-status"></span>
+          <button class="ring-carousel-next">Next</button>
         </div>
       </div>
     `);

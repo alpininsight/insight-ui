@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 // SPDX-License-Identifier: AGPL-3.0-only
 /**
- * Tests for ThreeDCarousel component functionality
+ * Tests for RingCarousel component functionality
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -26,14 +26,14 @@ function angle(item) {
 
 /** Returns the items that are not inert. */
 function frontItems(element) {
-  return [...element.querySelectorAll('.three-d-carousel-item')].filter(item => !item.inert);
+  return [...element.querySelectorAll('.ring-carousel-item')].filter(item => !item.inert);
 }
 
 function setup(itemCount = 4, options = {}) {
-  const container = TestUtils.create3DCarousel('carousel', itemCount, options);
-  const element = container.querySelector('[data-insight-3D-carousel]');
-  const carousel = new InsightUI.ThreeDCarousel(element);
-  return { element, carousel, items: [...element.querySelectorAll('.three-d-carousel-item')] };
+  const container = TestUtils.createRingCarousel('carousel', itemCount, options);
+  const element = container.querySelector('[data-insight-ring-carousel]');
+  const carousel = new InsightUI.RingCarousel(element);
+  return { element, carousel, items: [...element.querySelectorAll('.ring-carousel-item')] };
 }
 
 function press(target, key) {
@@ -43,7 +43,7 @@ function press(target, key) {
 }
 
 function swipe(element, fromX, toX) {
-  const stage = element.querySelector('.three-d-carousel-stage');
+  const stage = element.querySelector('.ring-carousel-stage');
   const start = new Event('touchstart');
   start.touches = [{ clientX: fromX }];
   stage.dispatchEvent(start);
@@ -52,29 +52,29 @@ function swipe(element, fromX, toX) {
   stage.dispatchEvent(end);
 }
 
-describe('ThreeDCarousel Component', () => {
+describe('RingCarousel Component', () => {
   beforeEach(() => {
     globalThis.InsightUI = {};
     globalThis.window.InsightUI = globalThis.InsightUI;
     globalThis.interpolate = (s, vars) => s.replace(/%\((\w+)\)s/g, (_, key) => vars[key]);
-    loadComponent('insight-ui-3D-carousel.js');
+    loadComponent('insight-ui-ring-carousel.js');
   });
 
   describe('Initialization', () => {
     it('returns the existing instance for an element', () => {
       const { element, carousel } = setup();
 
-      expect(new InsightUI.ThreeDCarousel(element)).toBe(carousel);
+      expect(new InsightUI.RingCarousel(element)).toBe(carousel);
       expect(element.__insightInstance).toBe(carousel);
     });
 
     it('initializes every carousel on the page', () => {
-      const container = TestUtils.create3DCarousel('carousel', 3);
+      const container = TestUtils.createRingCarousel('carousel', 3);
 
-      InsightUI.ThreeDCarousel.initAll();
+      InsightUI.RingCarousel.initAll();
 
-      const element = container.querySelector('[data-insight-3D-carousel]');
-      expect(InsightUI.ThreeDCarousel.instances.has(element)).toBe(true);
+      const element = container.querySelector('[data-insight-ring-carousel]');
+      expect(InsightUI.RingCarousel.instances.has(element)).toBe(true);
     });
 
     it('shows the first item in front and only that one is reachable', () => {
@@ -88,7 +88,7 @@ describe('ThreeDCarousel Component', () => {
     it('announces the position', () => {
       const { element } = setup();
 
-      expect(element.querySelector('.three-d-carousel-status').textContent).toBe('1 of 4');
+      expect(element.querySelector('.ring-carousel-status').textContent).toBe('1 of 4');
     });
   });
 
@@ -96,23 +96,23 @@ describe('ThreeDCarousel Component', () => {
     it('brings the next item to the front', () => {
       const { element, items } = setup();
 
-      element.querySelector('.three-d-carousel-next').click();
+      element.querySelector('.ring-carousel-next').click();
 
       expect(frontItems(element)).toEqual([items[1]]);
-      expect(element.querySelector('.three-d-carousel-status').textContent).toBe('2 of 4');
+      expect(element.querySelector('.ring-carousel-status').textContent).toBe('2 of 4');
     });
 
     it('brings the last item to the front before the first', () => {
       const { element, items } = setup();
 
-      element.querySelector('.three-d-carousel-prev').click();
+      element.querySelector('.ring-carousel-prev').click();
 
       expect(frontItems(element)).toEqual([items[3]]);
     });
 
     it('keeps turning in one direction around a full ring', () => {
       const { element, items } = setup(4);
-      const next = element.querySelector('.three-d-carousel-next');
+      const next = element.querySelector('.ring-carousel-next');
 
       for (let turn = 0; turn < 4; turn++) next.click();
 
@@ -140,12 +140,12 @@ describe('ThreeDCarousel Component', () => {
       expect(visible).toHaveLength(12);
       expect(new Set(visible.map(item => ((angle(item) % 360) + 360) % 360)).size).toBe(12);
       expect(hidden.every(item => Math.abs(angle(item)) === 180)).toBe(true);
-      expect(element.querySelector('.three-d-carousel-status').textContent).toBe('1 of 30');
+      expect(element.querySelector('.ring-carousel-status').textContent).toBe('1 of 30');
     });
 
     it('shows a hidden item when it comes into view', () => {
       const { element, items } = setup(30);
-      const next = element.querySelector('.three-d-carousel-next');
+      const next = element.querySelector('.ring-carousel-next');
 
       for (let turn = 0; turn < 10; turn++) next.click();
 
@@ -174,7 +174,7 @@ describe('ThreeDCarousel Component', () => {
     it('turns with the arrow keys on the controls', () => {
       const { element, items } = setup();
 
-      press(element.querySelector('.three-d-carousel-next'), 'ArrowRight');
+      press(element.querySelector('.ring-carousel-next'), 'ArrowRight');
 
       expect(frontItems(element)).toEqual([items[1]]);
     });
@@ -183,14 +183,14 @@ describe('ThreeDCarousel Component', () => {
       const { element, items } = setup();
       element.style.direction = 'rtl';
 
-      press(element.querySelector('.three-d-carousel-next'), 'ArrowLeft');
+      press(element.querySelector('.ring-carousel-next'), 'ArrowLeft');
 
       expect(frontItems(element)).toEqual([items[1]]);
     });
 
     it('jumps to the first and last item with Home and End', () => {
       const { element, items } = setup(6);
-      const button = element.querySelector('.three-d-carousel-next');
+      const button = element.querySelector('.ring-carousel-next');
 
       press(button, 'End');
       expect(frontItems(element)).toEqual([items[5]]);
@@ -230,9 +230,9 @@ describe('ThreeDCarousel Component', () => {
       const { element, carousel, items } = setup();
 
       carousel.destroy();
-      element.querySelector('.three-d-carousel-next').click();
+      element.querySelector('.ring-carousel-next').click();
 
-      expect(InsightUI.ThreeDCarousel.instances.has(element)).toBe(false);
+      expect(InsightUI.RingCarousel.instances.has(element)).toBe(false);
       expect(element.__insightInstance).toBeUndefined();
       expect(frontItems(element)).toEqual([items[0]]);
     });

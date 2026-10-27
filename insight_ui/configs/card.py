@@ -236,8 +236,8 @@ class CarouselImageConfig:
 
 
 @dataclass
-class ThreeDCarouselConfig:
-    """Configuration for the three_d_carousel component.
+class RingCarouselConfig:
+    """Configuration for the ring_carousel component.
 
     Arranges any items on a turning ring. Each item is rendered with item_template; the default shows
     CardConfig items as cards.
@@ -254,7 +254,7 @@ class ThreeDCarouselConfig:
     """
 
     __example__ = """
-        ThreeDCarouselConfig(
+        RingCarouselConfig(
             tag_id="product-showcase",
             items=Product.objects.filter(featured=True),
             item_template="shop/product_slide.html",
@@ -282,7 +282,7 @@ class ThreeDCarouselConfig:
         """Require an ID and a template, and reject a negative duration."""
         validate_not_empty(self, "tag_id", "item_template")
         if self.duration < 0:
-            msg = f"ThreeDCarouselConfig needs a duration of at least 0, got {self.duration}."
+            msg = f"RingCarouselConfig needs a duration of at least 0, got {self.duration}."
             raise ValueError(msg)
 
 

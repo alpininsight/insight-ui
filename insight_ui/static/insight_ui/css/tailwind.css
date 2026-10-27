@@ -3329,42 +3329,42 @@
   .slider-legend-item:last-child:dir(rtl) {
     translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
   }
-  .three-d-carousel {
+  .ring-carousel {
     overflow-x: clip;
   }
-  .three-d-carousel-stage {
+  .ring-carousel-stage {
     position: relative;
     perspective: 1000px;
   }
-  .three-d-carousel-ring {
+  .ring-carousel-ring {
     position: absolute;
     inset: 0;
     transform-style: preserve-3d;
   }
-  .three-d-carousel-item {
+  .ring-carousel-item {
     position: absolute;
     top: 0;
     left: 50%;
     transform-style: preserve-3d;
-    transition: transform var(--insight-3d-carousel-duration) ease, visibility var(--insight-3d-carousel-duration);
+    transition: transform var(--insight-ring-carousel-duration) ease, visibility var(--insight-ring-carousel-duration);
   }
-  .three-d-carousel-faces {
+  .ring-carousel-faces {
     display: grid;
     height: 100%;
     transform-style: preserve-3d;
   }
-  .three-d-carousel-faces > * {
+  .ring-carousel-faces > * {
     grid-area: 1 / 1;
     height: 100%;
     backface-visibility: hidden;
-    opacity: var(--insight-3d-carousel-fade, 1);
-    transition: opacity var(--insight-3d-carousel-duration) ease;
+    opacity: var(--insight-ring-carousel-fade, 1);
+    transition: opacity var(--insight-ring-carousel-duration) ease;
   }
-  .three-d-carousel-front {
+  .ring-carousel-front {
     position: relative;
     overflow: hidden;
   }
-  .three-d-carousel-faces > ::after {
+  .ring-carousel-faces > ::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -3372,32 +3372,32 @@
     background-color: var(--color-insight-bg-base);
     opacity: 0.45;
     pointer-events: none;
-    transition: opacity var(--insight-3d-carousel-duration) ease;
+    transition: opacity var(--insight-ring-carousel-duration) ease;
   }
-  .three-d-carousel-item[data-current] .three-d-carousel-faces > ::after {
+  .ring-carousel-item[data-current] .ring-carousel-faces > ::after {
     opacity: 0;
   }
-  .three-d-carousel-front > * {
+  .ring-carousel-front > * {
     height: 100%;
   }
-  .three-d-carousel-front img, .three-d-carousel-front video {
+  .ring-carousel-front img, .ring-carousel-front video {
     max-width: 100%;
     height: auto;
   }
-  .three-d-carousel-item[data-current] .three-d-carousel-front {
+  .ring-carousel-item[data-current] .ring-carousel-front {
     overflow-y: auto;
   }
-  .three-d-carousel-back {
+  .ring-carousel-back {
     transform: rotateY(180deg);
     background-color: var(--color-insight-bg-raised);
     border: 1px solid var(--color-insight-border-raised);
     border-radius: var(--radius-insight-surface);
   }
-  .three-d-carousel:not([data-ready]) .three-d-carousel-item, .three-d-carousel:not([data-ready]) .three-d-carousel-faces > *, .three-d-carousel:not([data-ready]) .three-d-carousel-faces > ::after, .three-d-carousel-item[data-snap], .three-d-carousel-item[data-snap] .three-d-carousel-faces > *, .three-d-carousel-item[data-snap] .three-d-carousel-faces > ::after {
+  .ring-carousel:not([data-ready]) .ring-carousel-item, .ring-carousel:not([data-ready]) .ring-carousel-faces > *, .ring-carousel:not([data-ready]) .ring-carousel-faces > ::after, .ring-carousel-item[data-snap], .ring-carousel-item[data-snap] .ring-carousel-faces > *, .ring-carousel-item[data-snap] .ring-carousel-faces > ::after {
     transition: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .three-d-carousel-item, .three-d-carousel-faces > *, .three-d-carousel-faces > ::after {
+    .ring-carousel-item, .ring-carousel-faces > *, .ring-carousel-faces > ::after {
       transition: none;
     }
   }

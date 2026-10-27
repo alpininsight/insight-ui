@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 // SPDX-License-Identifier: AGPL-3.0-only
 /**
- * 3D carousel component for Insight UI.
+ * Ring carousel component for Insight UI.
  *
  * Places any items on a turning ring. The ring has as many places as fit the width of the
  * carousel, at most 12; with more items only those around the front one are shown and the
@@ -9,25 +9,25 @@
  * tallest content; every item except the front one is inert.
  *
  * @example
- * // HTML structure (rendered by {% three_d_carousel %})
- * <div data-insight-3D-carousel data-tilt="15" data-face-camera="false" class="three-d-carousel">
- *   <div class="three-d-carousel-stage">
- *     <div class="three-d-carousel-ring">
- *       <div class="three-d-carousel-item">
- *         <div class="three-d-carousel-faces">
- *           <div class="three-d-carousel-front">...</div>
- *           <div class="three-d-carousel-back"></div>
+ * // HTML structure (rendered by {% ring_carousel %})
+ * <div data-insight-ring-carousel data-tilt="15" data-face-camera="false" class="ring-carousel">
+ *   <div class="ring-carousel-stage">
+ *     <div class="ring-carousel-ring">
+ *       <div class="ring-carousel-item">
+ *         <div class="ring-carousel-faces">
+ *           <div class="ring-carousel-front">...</div>
+ *           <div class="ring-carousel-back"></div>
  *         </div>
  *       </div>
  *     </div>
  *   </div>
- *   <button class="three-d-carousel-prev">Previous</button>
- *   <span class="three-d-carousel-status"></span>
- *   <button class="three-d-carousel-next">Next</button>
+ *   <button class="ring-carousel-prev">Previous</button>
+ *   <span class="ring-carousel-status"></span>
+ *   <button class="ring-carousel-next">Next</button>
  * </div>
  */
-export class ThreeDCarousel {
-    /** @type {WeakMap<HTMLElement, ThreeDCarousel>} Weak references to prevent multiple initialization */
+export class RingCarousel {
+    /** @type {WeakMap<HTMLElement, RingCarousel>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
     /** @type {number} Most places on the ring */
@@ -40,23 +40,23 @@ export class ThreeDCarousel {
     static MAX_HEIGHT = 0.7;
 
     /**
-     * Creates a new ThreeDCarousel instance.
+     * Creates a new RingCarousel instance.
      *
-     * @param {HTMLElement} element - The carousel container element with data-insight-3D-carousel attribute
+     * @param {HTMLElement} element - The carousel container element with data-insight-ring-carousel attribute
      */
     constructor(element) {
         // If an instance for this element already exists, return it
-        if (ThreeDCarousel.instances.has(element)) {
-            return ThreeDCarousel.instances.get(element);
+        if (RingCarousel.instances.has(element)) {
+            return RingCarousel.instances.get(element);
         }
 
         this.element = element;
-        this.stage = element.querySelector(".three-d-carousel-stage");
-        this.ring = element.querySelector(".three-d-carousel-ring");
-        this.items = [...element.querySelectorAll(".three-d-carousel-item")];
-        this.prevBtn = element.querySelector(".three-d-carousel-prev");
-        this.nextBtn = element.querySelector(".three-d-carousel-next");
-        this.status = element.querySelector(".three-d-carousel-status");
+        this.stage = element.querySelector(".ring-carousel-stage");
+        this.ring = element.querySelector(".ring-carousel-ring");
+        this.items = [...element.querySelectorAll(".ring-carousel-item")];
+        this.prevBtn = element.querySelector(".ring-carousel-prev");
+        this.nextBtn = element.querySelector(".ring-carousel-next");
+        this.status = element.querySelector(".ring-carousel-status");
 
         this.tilt = parseFloat(element.dataset.tilt) || 0;
         this.faceCamera = element.dataset.faceCamera === "true";
@@ -78,9 +78,9 @@ export class ThreeDCarousel {
         this.init();
 
         this.element.__insightInstance = this;
-        ThreeDCarousel.instances.set(element, this);
+        RingCarousel.instances.set(element, this);
 
-        debugLog("New 3D carousel created: ", this.element);
+        debugLog("New ring carousel created: ", this.element);
     }
 
     /**
@@ -104,7 +104,7 @@ export class ThreeDCarousel {
             this.stageObserver.observe(this.stage);
             this.contentObserver = new ResizeObserver(this.boundRelayout);
             this.items.forEach((item) => {
-                const content = item.querySelector(".three-d-carousel-front > *");
+                const content = item.querySelector(".ring-carousel-front > *");
                 if (content) this.contentObserver.observe(content);
             });
         } else {
@@ -151,8 +151,8 @@ export class ThreeDCarousel {
      */
     places(itemWidth, width) {
         let places = 3;
-        for (let count = 4; count <= ThreeDCarousel.MAX_PLACES; count++) {
-            if ((itemWidth / 2) / Math.tan(Math.PI / count) <= width * ThreeDCarousel.MAX_RADIUS) places = count;
+        for (let count = 4; count <= RingCarousel.MAX_PLACES; count++) {
+            if ((itemWidth / 2) / Math.tan(Math.PI / count) <= width * RingCarousel.MAX_RADIUS) places = count;
         }
         return Math.min(this.items.length, places);
     }
@@ -173,7 +173,7 @@ export class ThreeDCarousel {
             item.style.height = "";
         });
         const natural = Math.max(...this.items.map((item) => item.offsetHeight));
-        const height = Math.min(natural, Math.round(window.innerHeight * ThreeDCarousel.MAX_HEIGHT));
+        const height = Math.min(natural, Math.round(window.innerHeight * RingCarousel.MAX_HEIGHT));
         this.items.forEach((item) => { item.style.height = `${height}px`; });
 
         const places = this.places(itemWidth, width);
@@ -206,7 +206,7 @@ export class ThreeDCarousel {
                 : this.tilt ? ` rotateX(${this.tilt}deg)` : "";
             if (appears) {
                 item.setAttribute("data-snap", "");
-                item.style.setProperty("--insight-3d-carousel-fade", "0");
+                item.style.setProperty("--insight-ring-carousel-fade", "0");
             }
             item.style.transform = `rotateY(${offset * step}deg) translateZ(${radius}px)${facing}`;
             if (appears) {
@@ -214,7 +214,7 @@ export class ThreeDCarousel {
                 item.removeAttribute("data-snap");
             }
             item.style.visibility = visible ? "visible" : "hidden";
-            item.style.setProperty("--insight-3d-carousel-fade", visible ? "1" : "0");
+            item.style.setProperty("--insight-ring-carousel-fade", visible ? "1" : "0");
         });
         this.ring.style.transform = `translateZ(${-radius}px) rotateX(${-this.tilt}deg)`;
         this.updateFront();
@@ -231,7 +231,7 @@ export class ThreeDCarousel {
             const current = position === front;
             item.inert = !current;
             item.toggleAttribute("data-current", current);
-            const face = item.querySelector(".three-d-carousel-front");
+            const face = item.querySelector(".ring-carousel-front");
             if (current && face.scrollHeight > face.clientHeight) {
                 face.tabIndex = 0;
             } else {
@@ -260,7 +260,7 @@ export class ThreeDCarousel {
         let max = -Infinity;
         this.items.forEach((item) => {
             if (item.style.visibility === "hidden") return;
-            const box = item.querySelector(".three-d-carousel-front").getBoundingClientRect();
+            const box = item.querySelector(".ring-carousel-front").getBoundingClientRect();
             min = Math.min(min, box.top - top);
             max = Math.max(max, box.bottom - top);
         });
@@ -295,7 +295,7 @@ export class ThreeDCarousel {
      * @param {KeyboardEvent} e - The keyboard event
      */
     handleKeyDown(e) {
-        if (e.target.closest(".three-d-carousel-item")) return;
+        if (e.target.closest(".ring-carousel-item")) return;
         const forward = this.isRTL() ? -1 : 1;
         const count = this.items.length;
         const front = ((this.index % count) + count) % count;
@@ -323,11 +323,11 @@ export class ThreeDCarousel {
     }
 
     /**
-     * Destroys the 3D carousel instance and removes all event listeners.
+     * Destroys the ring carousel instance and removes all event listeners.
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy 3D carousel: ", this.element);
+        debugLog("Destroy ring carousel: ", this.element);
 
         cancelAnimationFrame(this.frame);
         this.prevBtn?.removeEventListener("click", this.boundPrev);
@@ -340,18 +340,18 @@ export class ThreeDCarousel {
         this.stageObserver?.disconnect();
         this.contentObserver?.disconnect();
 
-        ThreeDCarousel.instances.delete(this.element);
+        RingCarousel.instances.delete(this.element);
         delete this.element.__insightInstance;
 
         this.element = null;
     }
 
     /**
-     * Initializes all 3D carousel instances on the page.
+     * Initializes all ring carousel instances on the page.
      *
      * @static
      */
     static initAll() {
-        document.querySelectorAll("[data-insight-3D-carousel]").forEach(el => new ThreeDCarousel(el));
+        document.querySelectorAll("[data-insight-ring-carousel]").forEach(el => new RingCarousel(el));
     }
 }
