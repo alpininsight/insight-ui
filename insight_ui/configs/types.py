@@ -19,9 +19,12 @@ Example usage:
 
 """
 
+import re
+from dataclasses import fields
 from difflib import get_close_matches
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlsplit
 
 # =============================================================================
 # Heading Level
@@ -295,6 +298,63 @@ def validate_not_empty(config: object, *field_names: str) -> None:
     for field_name in field_names:
         if not getattr(config, field_name):
             raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
+# Schemes a URL field accepts besides relative URLs. Links and request endpoints, images (a data URL
+# embeds the image) and WebSocket endpoints differ.
+LINK_URL_SCHEMES: tuple[str, ...] = ("http", "https", "mailto", "tel")
+IMAGE_URL_SCHEMES: tuple[str, ...] = ("http", "https", "data")
+WEBSOCKET_URL_SCHEMES: tuple[str, ...] = ("ws", "wss", "http", "https")
+
+# Field names of images; every other "url", "*_url" or "href" field is a link or an endpoint.
+_IMAGE_URL_FIELDS = re.compile(r"^url(_dark)?$|(image|avatar)_url$")
+_URL_FIELDS = re.compile(r"^url(_dark)?$|_url$|^href$")
+
+
+def url_scheme(url: str) -> str:
+    """Return the scheme of a URL as a browser reads it, lowercased; empty for a relative URL.
+
+    Browsers ignore ASCII whitespace and control characters inside the scheme, so they are ignored here too.
+
+    Args:
+        url: The URL to read.
+
+    Returns:
+        The scheme without the colon, e.g. "https", or "" for a relative URL.
+
+    """
+    return urlsplit(re.sub(r"[\x00-\x20]", "", url)).scheme.lower()
+
+
+def validate_urls(config: object, *links: str, **schemes: tuple[str, ...]) -> None:
+    """Validate the schemes of all URL fields of a config.
+
+    URL fields are found by name: url, url_dark and *image_url / *avatar_url are images, every other
+    *_url and href is a link or an endpoint. Empty values are skipped; required URLs use validate_not_empty.
+
+    Args:
+        config: The config instance to check.
+        *links: Further link fields whose name does not follow the convention.
+        **schemes: Allowed schemes for single fields that differ from their kind, e.g. a WebSocket endpoint.
+
+    Raises:
+        ValueError: If a URL uses a scheme its field does not allow.
+
+    """
+    for config_field in fields(config):  # type: ignore[arg-type]
+        name = config_field.name
+        value = getattr(config, name)
+        is_url = bool(_URL_FIELDS.search(name)) or name in links
+        if not is_url or not isinstance(value, str) or not value:
+            continue
+        allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
+        scheme = url_scheme(value)
+        if scheme and scheme not in allowed:
+            msg = (
+                f"{config.__class__.__name__}.{name}: the scheme '{scheme}:' is not allowed. "
+                f"Use a relative URL or {', '.join(allowed)}."
+            )
+            raise ValueError(msg)
 
 
 def validate_heading_level(value: int, field_name: str = "heading_level") -> None:

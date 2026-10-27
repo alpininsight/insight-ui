@@ -18,6 +18,7 @@ from insight_ui.configs.types import (
     validate_not_empty,
     validate_size,
     validate_step_status,
+    validate_urls,
 )
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
@@ -48,6 +49,10 @@ class NavbarBrandConfig:
     request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
     mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -95,6 +100,7 @@ class NavbarLinkConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
         if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "
@@ -135,6 +141,7 @@ class UserMenuLinkConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "request_url")
 
 
@@ -168,6 +175,10 @@ class UserMenuConfig:
     )
     avatar_url: str = field(default="", metadata={"doc": _("URL to the user's avatar image.")})
     avatar_alt: str = field(default="", metadata={"doc": _("Alt text for the avatar image.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -226,6 +237,10 @@ class LoginScreenConfig:
         default="",
         metadata={"doc": _("URL for registration. Empty hides the link.")},
     )
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -327,6 +342,7 @@ class SidebarItemConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
         if not self.request_url:
             warnings.warn(
                 f"SidebarItemConfig '{self.text}' has no request_url set. The link will not be rendered.",
@@ -514,6 +530,10 @@ class FooterContactConfig:
     imprint: str = field(default="", metadata={"doc": _("Link to an imprint.")})
     privacy: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self, "imprint", "privacy")
+
 
 @dataclass
 class FooterConfig:
@@ -589,6 +609,10 @@ class BreadcrumbItemConfig:
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
+
 
 @dataclass
 class BreadcrumbsConfig:
@@ -645,6 +669,7 @@ class StepperItemConfig:
 
     def __post_init__(self) -> None:
         """Validate status after initialization."""
+        validate_urls(self)
         validate_step_status(self.status)
 
 
@@ -732,6 +757,7 @@ class BulletPointItemConfig:
 
     def __post_init__(self) -> None:
         """Validate status after initialization."""
+        validate_urls(self)
         validate_step_status(self.status)
 
 
@@ -842,6 +868,7 @@ class TabConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "request_url")
 
 
