@@ -37,7 +37,7 @@
     {# Progress bar #}
     <div
         data-progress-track
-        class="relative rounded-insight-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-insight-focus focus-visible:ring-offset-2"
+        class="relative rounded-insight-full cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-insight-focus focus-visible:ring-offset-2"
         role="progressbar"
         aria-valuenow="{{ progress_bar_config.value }}"
         aria-valuemin="{{ progress_bar_config.min_value }}"
@@ -74,7 +74,7 @@
         {# Status message #}
         <div
             data-progress-error
-            class="flex hidden gap-2 items-center text-sm text-insight-warning"
+            class="flex hidden gap-2 items-center text-sm text-insight-warning-text"
             role="alert"
             aria-live="polite"
         >

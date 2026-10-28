@@ -4,6 +4,7 @@
 
 import warnings
 from dataclasses import dataclass, field
+from unicodedata import category
 
 from django.utils.translation import gettext_lazy as _
 
@@ -55,6 +56,7 @@ class ButtonConfig:
         data_attrs: List of custom data attributes to add to the button element.
         aria_attrs: List of ARIA attributes to add to the button element.
         hx_attrs: List of HTMX attributes to add to the button element.
+        download: Lets the browser download the link target; a string suggests the file name.
 
     """
 
@@ -132,6 +134,11 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
+    # Append to preserve positional construction of all existing fields.
+    download: bool | str = field(
+        default=False,
+        metadata={"doc": "Lets the browser download the link target; a string suggests the file name."},
+    )
 
     def __post_init__(self) -> None:
         """Require a label, validate the values and reject options that would be silently ignored.
@@ -142,6 +149,16 @@ class ButtonConfig:
         """
         # The label is the accessible name, also for icon-only buttons (aria-label).
         validate_not_empty(self, "label")
+        if not isinstance(self.download, (bool, str)):
+            raise TypeError("ButtonConfig.download must be a bool or a filename string.")  # noqa: TRY003
+        if self.download == "":
+            self.download = True
+        if self.download:
+            validate_not_empty(self, "request_url")
+            if self.htmx is not None or self.hx_attrs:
+                raise ValueError("Native downloads cannot be combined with HTMX request attributes.")  # noqa: TRY003
+            if isinstance(self.download, str) and any(category(char) == "Cc" for char in self.download):
+                raise ValueError("Download filenames must not contain control characters.")  # noqa: TRY003
         validate_button_color(self.color)
         validate_button_variant(self.variant)
         validate_size(self.size, "size")

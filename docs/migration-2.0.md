@@ -19,6 +19,7 @@ pattern for a host project.
 ## Checklist
 
 - [ ] Rename the six color-family tokens in two passes. Do this before any other class edit.
+- [ ] Replace the family `-hover` / `-active` tokens with `-action-hover` / `-action-active`, and use `-text` for colored text.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
 - [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
@@ -43,6 +44,7 @@ pattern for a host project.
 - [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view), `usermenu=` (navbar) and `empty_msg=` (table).
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Rebuild query builder views on `parse_filters` and `build_query`, and rename `model_fields` to `fields`.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
@@ -57,7 +59,7 @@ The old names still match a real token, and the meaning has changed.
 
 | v1.15.1 | Meaning then | 2.0 name |
 | --- | --- | --- |
-| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-fill` |
+| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-action` |
 | `--color-insight-<family>-foreground` | Colored text and icons | `--color-insight-<family>-text` |
 | `--color-insight-<family>-foreground-dark` | Same color in the dark theme | `--color-insight-<family>-text-dark` |
 
@@ -70,21 +72,22 @@ that class was white text on a filled button. It is now the colored text tone
 (`#0856C0` in the light theme).
 
 Do the replacement in this order. Pass 2 writes the new `-text` names. Running
-it first makes a later `-text` → `-on-fill` pass rewrite those names as well.
+it first makes a later `-text` → `-on-action` pass rewrite those names as well.
 
 ```bash
-# 1. Old on-fill token. The (?!-) skip keeps a later -text-dark result intact.
-perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-fill/g' FILES
+# 1. Old on-action token. The (?!-) skip keeps a later -text-dark result intact.
+perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-action/g' FILES
 
 # 2. Old colored-text token, including the -dark variant.
 perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-foreground/insight-$1-text/g' FILES
 ```
 
-Limit both passes to those six families. A global `-text` → `-on-fill` replace
+Limit both passes to those six families. A global `-text` → `-on-action` replace
 also rewrites `--color-insight-text-body`, `--color-insight-text-headline`,
 `--color-insight-text-muted` and `--color-insight-text-link`. Those names did
-not change. There is no `-on-fill-dark` token. The old on-fill value was
-`#FFFFFF` in both themes.
+not change. The old value was `#FFFFFF` in both themes; 2.0 keeps it for
+`-on-action` and the new `-on-action-dark`, which a theme can set for a dark
+theme fill that needs other text.
 
 Before:
 
@@ -96,7 +99,7 @@ Before:
 After:
 
 ```html
-<button class="bg-insight-danger-action text-insight-danger-on-fill">Delete</button>
+<button class="bg-insight-danger-action text-insight-danger-on-action">Delete</button>
 <p class="text-insight-danger-text">Something failed.</p>
 ```
 
@@ -108,6 +111,60 @@ insight-(primary|secondary|success|warning|danger|info)-(text|foreground)
 
 Review matches of `-text` before editing. A match that is already the colored
 text tone on a migrated tree must stay `-text`.
+
+### Readable text colors and fewer state tokens
+
+The six color families keep these tokens: the accent (`primary`), `-text`,
+`-action` with `-action-hover` and `-action-active`, `-on-action` and `-soft`.
+The table in [the design system guide](design-system.md#color-families) says
+which one to use for what.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `--color-insight-<family>-hover`, `-active` and their `-dark` variants | Removed. Fills use `-action-hover` / `-action-active`; text uses `-text`. |
+| `--color-insight-text-link` without a dark value | `--color-insight-text-link-dark` (`#72AEFF`) |
+| `--color-insight-text-link-hover` `#72AEFF` in both themes | `#1555B0` in the light theme, `--color-insight-text-link-hover-dark` `#90C5FF` |
+| `{% icon color="primary" %}` renders `text-insight-primary` | Renders `text-insight-primary-text`, readable in the dark theme |
+
+The family accent (`text-insight-danger`) does not change with the theme, and
+as text it lacks contrast in one of them. The package templates now use the
+`-text` token for text and icons, so colored text and icons get lighter in the
+dark theme: the info box title, form and login errors, the logout entry, the
+footer mail link, hover colors of collapsible and table headers, sidebar
+category headings and the current table of contents entry. Tabs keep the
+`-text` color after switching; before, the tab that was active on page load
+kept its primary classes.
+
+Before:
+
+```css
+@theme {
+    --color-insight-primary-hover: #4F46E5;
+    --color-insight-primary-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger">Something failed.</p>
+```
+
+After, set the states of filled controls and use the text token:
+
+```css
+@theme {
+    --color-insight-primary-action-hover: #4F46E5;
+    --color-insight-primary-action-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger-text">Something failed.</p>
+```
+
+Search: `-hover:` and `-active:` after a family name in theme files,
+`text-insight-<family>-hover`, and `text-insight-<family>` followed by a space
+or quote in templates. The [token check](../scripts/check_design_tokens.py)
+reports the last one.
 
 ## Page shell
 
@@ -1259,6 +1316,60 @@ parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
 Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
 `#list-container`.
 
+## Query builder
+
+The `query_builder` component was rebuilt. Its markup, its submitted parameters and
+its Python helpers changed, so treat it as a new component.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `QueryBuilderConfig(model_fields=[...])` | `QueryBuilderConfig(fields=[...])`, plus `tag_id`, `filters`, `request_url`, `param_name`, `max_filters`, `htmx` and `show_summary` |
+| `QueryBuilderFieldConfig` without `operations` | `operations` is required; a `choice` field also needs `values` |
+| A host view named `get_allowed_operators`, reversed by the template | Not needed. The field definitions are rendered into the page. |
+| A JSON `custom_filters` parameter, the page is reloaded by a script | A plain GET form with `filters-<n>-field`, `-operator`, `-value` and `-logic`, or HTMX with `htmx=HtmxConfig(...)` |
+| `insight_ui.utils.query_builder_utils` | `insight_ui.utils.query_builder` |
+| `get_filter_settings_for_field()` | Removed |
+| `build_dynamic_query(filters)` returning `(Q, {}, {})` | `build_query(parse_filters(request.GET, config))` returning a `Q` |
+
+`parse_filters` takes the config, so it reads the same `param_name` and stops at
+the same `max_filters` (default 20) as the form. It keeps only filters whose
+field, operator and value the field configs allow, and converts values to the
+field type. `build_query` keeps the
+submitted order and binds AND tighter than OR: "A AND B OR C" is
+"(A AND B) OR C". v1.15.1 grouped the filters by field first.
+
+Field, condition and value are required in the browser, so an incomplete
+filter is not sent. With active filters a Reset link loads `request_url`
+without them. `describe_filters(filters, fields)` returns the active
+filters as a sentence with the labels, e.g. for a page title or an HTMX
+response; `show_summary=True` renders it below the form.
+
+Before:
+
+```python
+from insight_ui.utils.query_builder_utils import build_dynamic_query
+
+filters = json.loads(request.GET.get("custom_filters", "[]"))
+query, _, _ = build_dynamic_query(filters)
+context["query_builder"] = QueryBuilderConfig(model_fields=FIELDS)
+```
+
+After:
+
+```python
+from insight_ui.utils.query_builder import build_query, parse_filters
+
+config = QueryBuilderConfig(tag_id="book-filter", fields=FIELDS)
+config.filters = parse_filters(request.GET, config)
+books = Book.objects.filter(build_query(config.filters))
+context["query_builder"] = config
+```
+
+Remove the `get_allowed_operators` view and its URL pattern.
+
+Search: `model_fields=`, `query_builder_utils`, `get_filter_settings_for_field`,
+`build_dynamic_query`, `get_allowed_operators` and `custom_filters`.
+
 ## Checked, and not a 2.0 break
 
 These showed up in earlier notes. The current tree does not do them.
@@ -1291,7 +1402,8 @@ These showed up in earlier notes. The current tree does not do them.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
 
-Other additions you can adopt without a rename: `heading_level`,
+Other additions you can adopt without a rename: `download` on link buttons
+(`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
 `LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
@@ -1309,8 +1421,7 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
+| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-action token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15

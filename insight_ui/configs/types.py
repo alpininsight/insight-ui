@@ -230,6 +230,12 @@ FILTER_FIELD_TYPE_VALUES: tuple[str, ...] = ("text", "number", "date", "datetime
 # Type alias for filter field types
 type FilterFieldType = Literal["text", "number", "date", "datetime", "time", "boolean", "choice"]
 
+# Tuple of valid values for combining query builder filters
+QUERY_LOGIC_VALUES: tuple[str, ...] = ("AND", "OR")
+
+# Type alias for combining query builder filters
+type QueryLogic = Literal["AND", "OR"]
+
 # Tuple of valid geo map marker type values
 GEO_MAP_MARKER_TYPE_VALUES: tuple[str, ...] = ("marker", "circle")
 
@@ -457,6 +463,20 @@ def validate_filter_field_type(value: str, field_name: str = "type") -> None:
 
     """
     _validate_literal(value, FILTER_FIELD_TYPE_VALUES, field_name)
+
+
+def validate_query_logic(value: str, field_name: str = "logic") -> None:
+    """Validate that a query builder logic value is one of the allowed values.
+
+    Args:
+        value: The logic value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid logic value.
+
+    """
+    _validate_literal(value, QUERY_LOGIC_VALUES, field_name)
 
 
 def validate_html_input_type(value: str, field_name: str = "input_type") -> None:
@@ -690,6 +710,10 @@ TYPE_REGISTRY: dict[str, dict] = {
     "HeadingLevel": {
         "values": HEADING_LEVEL_VALUES,
         "description": "Heading level of component titles; h1 is reserved for the page title.",
+    },
+    "QueryLogic": {
+        "values": QUERY_LOGIC_VALUES,
+        "description": "Combination of a query builder filter with the previous one.",
     },
     "Size": {
         "values": SIZE_VALUES,

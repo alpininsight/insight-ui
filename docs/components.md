@@ -67,6 +67,12 @@ it. This example supplies only a trigger; the host must supply the target elemen
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
 
+### Native link downloads
+
+Set `download=True` on a link button to download its target, or pass a string
+such as `download="report.svg"` to suggest a filename. Downloads require
+`request_url` and cannot be combined with HTMX request settings.
+
 ## HTMX Requests
 
 Components that send requests take an optional `htmx: HtmxConfig` for the options

@@ -9,6 +9,7 @@ design tokens from input.css:
 - Radii: rounded-lg -> rounded-insight-surface
 - Shadows: shadow-md -> shadow-insight-surface
 - Verbose tokens: text-insight-text-body -> text-body
+- Text color: text-insight-primary -> text-insight-primary-text (accent vs. readable text)
 
 Exceptions can be marked with a Django template comment on the same line:
     <div class="rounded-lg {# tw-token-ok: special case #}">
@@ -82,6 +83,11 @@ STATE_PREFIXES: list[str] = [
 ]
 
 STATE_PATTERN = "(?:" + "|".join(re.escape(p) for p in STATE_PREFIXES) + ")?"
+
+# A match must be a whole class: \b would also match inside a longer class, because a hyphen is a
+# word boundary (bg-insight-bg-base inside bg-insight-bg-base-dark).
+CLASS_START = r"(?<![\w-])"
+CLASS_END = r"(?![\w-])"
 
 
 # =============================================================================
@@ -169,7 +175,8 @@ def build_color_config() -> TokenConfig:
     shade_pattern = "(?:" + "|".join(TAILWIND_SHADES) + ")"
 
     # Match: [state:]prefix-color-shade[/opacity]
-    pattern = re.compile(rf"\b({STATE_PATTERN}{prefix_pattern}-{color_pattern}-{shade_pattern}(?:/\d+)?)\b")
+    utility = rf"{prefix_pattern}-{color_pattern}-{shade_pattern}(?:/\d+)?"
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{utility}){CLASS_END}")
 
     # Build whitelist pattern for white/black/transparent
     whitelist_colors = "(?:" + "|".join(WHITELISTED_COLORS) + ")"
@@ -261,7 +268,7 @@ def build_radius_config() -> TokenConfig:
     hardcoded_variants.sort(key=len, reverse=True)
     variants_pattern = "(?:" + "|".join(re.escape(v) for v in hardcoded_variants) + ")"
 
-    pattern = re.compile(rf"\b({STATE_PATTERN}{variants_pattern})\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{variants_pattern}){CLASS_END}")
 
     return TokenConfig(
         name="radius",
@@ -316,7 +323,7 @@ def build_shadow_config() -> TokenConfig:
     hardcoded_variants.sort(key=len, reverse=True)
     variants_pattern = "(?:" + "|".join(re.escape(v) for v in hardcoded_variants) + ")"
 
-    pattern = re.compile(rf"\b({STATE_PATTERN}{variants_pattern})\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{variants_pattern}){CLASS_END}")
 
     return TokenConfig(
         name="shadow",
@@ -339,7 +346,7 @@ def build_shadow_config() -> TokenConfig:
 # =============================================================================
 
 # Mapping of verbose token patterns to their shorthand equivalents
-# These are custom utilities defined in @layer utilities of input.css
+# These are custom utilities defined with @utility in input.css
 VERBOSE_TOKEN_MAPPINGS: dict[str, str] = {
     # Text utilities - use semantic shorthand
     "text-insight-text-headline": "text-insight-headline",
@@ -362,7 +369,7 @@ def build_verbose_config() -> TokenConfig:
     """Build configuration for verbose token checking.
 
     Detects verbose token names that have shorter equivalents defined
-    in @layer utilities of input.css.
+    with @utility in input.css, so the shorthands also work with state prefixes.
 
     Note: Verbose tokens with opacity modifiers (e.g., bg-insight-bg-raised/50)
     are intentionally allowed because shorthand utilities don't support
@@ -379,12 +386,37 @@ def build_verbose_config() -> TokenConfig:
     tokens_pattern = "(?:" + "|".join(re.escape(t) for t in verbose_tokens) + ")"
 
     # Negative lookahead (?!/\d) ensures we don't match tokens with opacity modifiers
-    pattern = re.compile(rf"\b({STATE_PATTERN}{tokens_pattern})(?!/\d)\b")
+    pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{tokens_pattern})(?!/\d){CLASS_END}")
 
     return TokenConfig(
         name="verbose",
         pattern=pattern,
         suggestions=VERBOSE_TOKEN_MAPPINGS,
+        whitelist=set(),
+    )
+
+
+COLOR_FAMILIES: list[str] = ["primary", "secondary", "success", "warning", "danger", "info"]
+
+
+def build_family_text_config() -> TokenConfig:
+    """Build configuration for color family accents used as text color.
+
+    The family color itself (text-insight-primary) is a decorative accent that is the same in both
+    themes, so as text or icon color it lacks contrast in one of them. Text and icons use the
+    -text token, which switches with the theme.
+
+    Returns:
+        TokenConfig for detecting family accents used as text color.
+
+    """
+    families = "(?:" + "|".join(COLOR_FAMILIES) + ")"
+    pattern = re.compile(rf"(?<![\w-])({STATE_PATTERN}text-insight-{families})(?![\w/-])")
+
+    return TokenConfig(
+        name="text-color",
+        pattern=pattern,
+        suggestions={f"text-insight-{family}": f"text-insight-{family}-text" for family in COLOR_FAMILIES},
         whitelist=set(),
     )
 
@@ -639,7 +671,8 @@ def print_usage() -> None:
         "  - Colors: bg-gray-300 -> bg-insight-*\n"
         "  - Radii: rounded-lg -> rounded-insight-*\n"
         "  - Shadows: shadow-md -> shadow-insight-*\n"
-        "  - Verbose: text-insight-text-body -> text-body\n\n"
+        "  - Verbose: text-insight-text-body -> text-body\n"
+        "  - Text color: text-insight-primary -> text-insight-primary-text\n\n"
         "Options:\n"
         "  --all     Scan all template files in insight_ui/templates/\n"
         "  --staged  Scan only staged template files (for pre-commit)\n\n"
@@ -736,6 +769,7 @@ def main() -> int:
         build_radius_config(),
         build_shadow_config(),
         build_verbose_config(),
+        build_family_text_config(),
     ]
 
     files_to_check = collect_files_to_check(args, scan_all, scan_staged)

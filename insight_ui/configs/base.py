@@ -118,6 +118,15 @@ class IconConfig:
         """Whether the icon is mirrored in right-to-left layouts."""
         return self.name in DIRECTIONAL_ICON_NAMES if self.mirror_rtl is None else self.mirror_rtl
 
+    @property
+    def color_class(self) -> str:
+        """The text color class of the icon; color families use their -text token, readable in both themes."""
+        if not self.color:
+            return ""
+        if self.color.startswith("text-"):
+            return f"text-insight-{self.color}"
+        return f"text-insight-{self.color}-text"
+
     def __post_init__(self) -> None:
         """Validate name, size and color after initialization."""
         validate_icon_name(self.name)

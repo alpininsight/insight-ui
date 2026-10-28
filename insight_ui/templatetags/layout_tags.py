@@ -923,7 +923,7 @@ class SurfaceNode(LayoutNode):
 
         {# Clickable surface (renders as <a>) #}
         {% surface href="/components" padding="m" %}
-            <span class="group-hover:text-insight-primary">Browse Components</span>
+            <span class="group-hover:text-insight-primary-text">Browse Components</span>
         {% endsurface %}
 
     Note:
