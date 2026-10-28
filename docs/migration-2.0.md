@@ -1470,7 +1470,8 @@ These showed up in earlier notes. The current tree does not do them.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
 
-Other additions you can adopt without a rename: `heading_level`,
+Other additions you can adopt without a rename: `download` on link buttons
+(`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
 `LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
@@ -1488,7 +1489,6 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
 | [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-action token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and

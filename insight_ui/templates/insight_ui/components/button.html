@@ -10,6 +10,10 @@
                 aria-disabled="true"
             {% else %}
                 href="{{ button_config.request_url }}"
+                {% if button_config.download %}
+                    {% if button_config.download is True %}download{% else %}download="{{ button_config.download|force_escape }}"{% endif %}
+                    hx-disable
+                {% endif %}
                 {% htmx_attributes button_config.htmx request_url=button_config.htmx.request_url|default:button_config.request_url %}
             {% endif %}
             {% if button_config.external %}target="_blank" rel="noopener"{% endif %}
