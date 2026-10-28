@@ -33,7 +33,7 @@
             {% endif %}
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-insight-control-bottom hover:bg-insight-base">
+                <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-b-insight-control hover:bg-insight-base">
                     {% icon name="arrow-left-on-rectangle" size="s" %}{% trans "Logout" %}
                 </button>
             </form>
