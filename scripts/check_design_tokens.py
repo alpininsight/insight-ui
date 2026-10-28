@@ -9,6 +9,7 @@ design tokens from input.css:
 - Radii: rounded-lg -> rounded-insight-surface
 - Shadows: shadow-md -> shadow-insight-surface
 - Verbose tokens: text-insight-text-body -> text-body
+- Text color: text-insight-primary -> text-insight-primary-text (accent vs. readable text)
 
 Exceptions can be marked with a Django template comment on the same line:
     <div class="rounded-lg {# tw-token-ok: special case #}">
@@ -395,6 +396,31 @@ def build_verbose_config() -> TokenConfig:
     )
 
 
+COLOR_FAMILIES: list[str] = ["primary", "secondary", "success", "warning", "danger", "info"]
+
+
+def build_family_text_config() -> TokenConfig:
+    """Build configuration for color family accents used as text color.
+
+    The family color itself (text-insight-primary) is a decorative accent that is the same in both
+    themes, so as text or icon color it lacks contrast in one of them. Text and icons use the
+    -text token, which switches with the theme.
+
+    Returns:
+        TokenConfig for detecting family accents used as text color.
+
+    """
+    families = "(?:" + "|".join(COLOR_FAMILIES) + ")"
+    pattern = re.compile(rf"(?<![\w-])({STATE_PATTERN}text-insight-{families})(?![\w/-])")
+
+    return TokenConfig(
+        name="text-color",
+        pattern=pattern,
+        suggestions={f"text-insight-{family}": f"text-insight-{family}-text" for family in COLOR_FAMILIES},
+        whitelist=set(),
+    )
+
+
 # =============================================================================
 # Violation Detection
 # =============================================================================
@@ -645,7 +671,8 @@ def print_usage() -> None:
         "  - Colors: bg-gray-300 -> bg-insight-*\n"
         "  - Radii: rounded-lg -> rounded-insight-*\n"
         "  - Shadows: shadow-md -> shadow-insight-*\n"
-        "  - Verbose: text-insight-text-body -> text-body\n\n"
+        "  - Verbose: text-insight-text-body -> text-body\n"
+        "  - Text color: text-insight-primary -> text-insight-primary-text\n\n"
         "Options:\n"
         "  --all     Scan all template files in insight_ui/templates/\n"
         "  --staged  Scan only staged template files (for pre-commit)\n\n"
@@ -742,6 +769,7 @@ def main() -> int:
         build_radius_config(),
         build_shadow_config(),
         build_verbose_config(),
+        build_family_text_config(),
     ]
 
     files_to_check = collect_files_to_check(args, scan_all, scan_staged)

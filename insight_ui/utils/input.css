@@ -30,6 +30,8 @@
 /* Public icon and ribbon colors must not depend on host or docs templates. */
 @source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
 @source inline("text-insight-text-{headline,body,muted,link}");
+/* Icon colors use the readable -text token of a color family (IconConfig.color_class). */
+@source inline("text-insight-{primary,secondary,success,warning,danger,info}-text");
 /* The shorthand utilities below were plain classes and always in the stylesheet; hosts may use them. */
 @source inline("bg-insight-{base,surface,raised,overlay}");
 @source inline("border-insight-{surface,raised,overlay}");
@@ -94,40 +96,40 @@
     --color-insight-border-overlay-dark: #2F3B54;
 
     /*
-    * Primary color (brand color)
-    * Main action color for primary buttons, links, focus indicators.
+    * Primary (brand color): main actions, links, focus.
     *
-    * Token structure:
-    * - primary:              Base accent for decorative/non-text elements
-    * - primary-text:         Primary color used AS text/icons (light mode)
-    * - primary-text-dark:    Primary color used AS text/icons (dark mode)
-    * - primary-action:       Background for filled controls (buttons)
-    * - primary-action-hover: Hover state for filled controls
-    * - primary-action-active: Active/pressed state for filled controls
-    * - primary-on-fill:      Text color ON filled primary backgrounds
-    * - primary-soft:         Subtle background for badges, highlights
+    * Every color family has the same tokens. Use the token for what you color, not for the theme:
+    * the names without -dark switch to their -dark value in the dark theme (see [data-theme="dark"]).
+    *
+    * - primary:            Decorative accent: borders, bars, indicators. The same in both themes,
+    *                       so it is not meant for text; it may lack contrast in one theme.
+    * - primary-text:       The color as text, icons, outline borders and links. Contrast-safe in both themes.
+    * - primary-action:     Fill of interactive elements (solid buttons, checked controls), with
+    *                       -action-hover and -action-active for their states. Separate from the accent,
+    *                       so a brand color that does not work as a fill in one theme can get an
+    *                       own -action-dark value.
+    * - primary-on-action:  Text and icons on an -action fill, e.g. dark text on a light yellow button.
+    *                       Switches to -on-action-dark, for a dark theme fill that needs other text.
+    * - primary-soft:       Subtle background: subtle buttons, badges, alert backgrounds.
+    * - *-dark:             Dark theme values of the switching tokens; templates use the names without -dark.
     */
-    --color-insight-primary: #0856C0;              /* Base accent for decorative elements */
-    --color-insight-primary-text: #0856C0;         /* Primary as text color (light mode) */
-    --color-insight-primary-text-dark: #90C5FF;    /* Primary as text color (dark mode) */
-    --color-insight-primary-action: #0856C0;       /* Filled button background */
-    --color-insight-primary-action-hover: #1555B0; /* Filled button hover */
-    --color-insight-primary-action-active: #124A9E; /* Filled button active/pressed */
+    --color-insight-primary: #0856C0;
+    --color-insight-primary-text: #0856C0;
+    --color-insight-primary-text-dark: #90C5FF;
+    --color-insight-primary-action: #0856C0;
+    --color-insight-primary-action-hover: #1555B0;
+    --color-insight-primary-action-active: #124A9E;
     --color-insight-primary-action-dark: #0856C0;
     --color-insight-primary-action-hover-dark: #1555B0;
     --color-insight-primary-action-active-dark: #124A9E;
-    --color-insight-primary-soft: #E3EFFF;         /* Subtle background for highlights */
-    --color-insight-primary-hover: #1555B0;        /* Hover state (darker in light mode) */
-    --color-insight-primary-active: #124A9E;       /* Active/pressed state */
+    --color-insight-primary-on-action: #FFFFFF;
+    --color-insight-primary-on-action-dark: #FFFFFF;
+    --color-insight-primary-soft: #E3EFFF;
     --color-insight-primary-soft-dark: #203351;
-    --color-insight-primary-hover-dark: #72AEFF;   /* Hover state (lighter in dark mode) */
-    --color-insight-primary-active-dark: #90C5FF;
-    --color-insight-primary-on-fill: #FFFFFF;      /* Text on filled primary buttons */
 
     /*
-    * Secondary color (accent color)
-    * Alternative action color for secondary buttons, less prominent CTAs.
-    * Token structure: see primary color block for documentation.
+    * Secondary (second brand color): less prominent actions.
+    * Tokens as described for primary.
     */
     --color-insight-secondary: #006B60;
     --color-insight-secondary-text: #006B60;
@@ -138,18 +140,14 @@
     --color-insight-secondary-action-dark: #006B60;
     --color-insight-secondary-action-hover-dark: #005A52;
     --color-insight-secondary-action-active-dark: #004C45;
+    --color-insight-secondary-on-action: #FFFFFF;
+    --color-insight-secondary-on-action-dark: #FFFFFF;
     --color-insight-secondary-soft: #DDF4F1;
-    --color-insight-secondary-hover: #005A52;
-    --color-insight-secondary-active: #004C45;
     --color-insight-secondary-soft-dark: #133A36;
-    --color-insight-secondary-hover-dark: #51BCB0;
-    --color-insight-secondary-active-dark: #75D1C5;
-    --color-insight-secondary-on-fill: #FFFFFF;
 
     /*
-    * Success color
-    * Positive actions, confirmations, successful operations.
-    * Token structure: see primary color block for documentation.
+    * Success: confirmations, positive states.
+    * Tokens as described for primary.
     */
     --color-insight-success: #007B2F;
     --color-insight-success-text: #007B2F;
@@ -160,18 +158,14 @@
     --color-insight-success-action-dark: #007B2F;
     --color-insight-success-action-hover-dark: #006824;
     --color-insight-success-action-active-dark: #00521D;
+    --color-insight-success-on-action: #FFFFFF;
+    --color-insight-success-on-action-dark: #FFFFFF;
     --color-insight-success-soft: #E0F5E5;
-    --color-insight-success-hover: #006824;
-    --color-insight-success-active: #00521D;
     --color-insight-success-soft-dark: #1E3A26;
-    --color-insight-success-hover-dark: #67CD87;
-    --color-insight-success-active-dark: #8CE1A4;
-    --color-insight-success-on-fill: #FFFFFF;
 
     /*
-    * Warning color
-    * Warning notices, potentially problematic actions.
-    * Token structure: see primary color block for documentation.
+    * Warning: notices, potentially problematic actions.
+    * Tokens as described for primary.
     */
     --color-insight-warning: #8A4B00;
     --color-insight-warning-text: #8A4B00;
@@ -182,18 +176,14 @@
     --color-insight-warning-action-dark: #8A4B00;
     --color-insight-warning-action-hover-dark: #744000;
     --color-insight-warning-action-active-dark: #5E3400;
+    --color-insight-warning-on-action: #FFFFFF;
+    --color-insight-warning-on-action-dark: #FFFFFF;
     --color-insight-warning-soft: #FFF0D4;
-    --color-insight-warning-hover: #744000;
-    --color-insight-warning-active: #5E3400;
     --color-insight-warning-soft-dark: #433215;
-    --color-insight-warning-hover-dark: #FFBC5E;
-    --color-insight-warning-active-dark: #FFCD86;
-    --color-insight-warning-on-fill: #FFFFFF;
 
     /*
-    * Danger color (error/destructive)
-    * Error states, destructive actions (delete), validation errors.
-    * Token structure: see primary color block for documentation.
+    * Danger: errors, destructive actions, validation errors.
+    * Tokens as described for primary.
     */
     --color-insight-danger: #B70002;
     --color-insight-danger-text: #B70002;
@@ -204,18 +194,14 @@
     --color-insight-danger-action-dark: #B70002;
     --color-insight-danger-action-hover-dark: #990001;
     --color-insight-danger-action-active-dark: #7A0001;
+    --color-insight-danger-on-action: #FFFFFF;
+    --color-insight-danger-on-action-dark: #FFFFFF;
     --color-insight-danger-soft: #FFE7E4;
-    --color-insight-danger-hover: #990001;
-    --color-insight-danger-active: #7A0001;
     --color-insight-danger-soft-dark: #4D2622;
-    --color-insight-danger-hover-dark: #FF7A6E;
-    --color-insight-danger-active-dark: #FF988B;
-    --color-insight-danger-on-fill: #FFFFFF;
 
     /*
-    * Info color
-    * Neutral hints, help text, informational badges.
-    * Token structure: see primary color block for documentation.
+    * Info: neutral hints, informational badges.
+    * Tokens as described for primary.
     */
     --color-insight-info: #006580;
     --color-insight-info-text: #006580;
@@ -226,13 +212,10 @@
     --color-insight-info-action-dark: #006580;
     --color-insight-info-action-hover-dark: #00546C;
     --color-insight-info-action-active-dark: #00455A;
+    --color-insight-info-on-action: #FFFFFF;
+    --color-insight-info-on-action-dark: #FFFFFF;
     --color-insight-info-soft: #DAF4FD;
-    --color-insight-info-hover: #00546C;
-    --color-insight-info-active: #00455A;
     --color-insight-info-soft-dark: #0F3845;
-    --color-insight-info-hover-dark: #50CBF2;
-    --color-insight-info-active-dark: #77E1FF;
-    --color-insight-info-on-fill: #FFFFFF;
 
     /*
     * Light
@@ -280,7 +263,9 @@
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
     --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
-    --color-insight-text-link-hover: #72AEFF;
+    --color-insight-text-link-dark: #72AEFF;
+    --color-insight-text-link-hover: #1555B0;       /* Darker on hover in the light theme */
+    --color-insight-text-link-hover-dark: #90C5FF;  /* Lighter on hover in the dark theme */
 
     /*
     * ========================================================
@@ -483,49 +468,43 @@
         --color-insight-primary-action: var(--color-insight-primary-action-dark);
         --color-insight-primary-action-hover: var(--color-insight-primary-action-hover-dark);
         --color-insight-primary-action-active: var(--color-insight-primary-action-active-dark);
+        --color-insight-primary-on-action: var(--color-insight-primary-on-action-dark);
         --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
-        --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
-        --color-insight-primary-active: var(--color-insight-primary-active-dark);
         /* Secondary */
         --color-insight-secondary-text: var(--color-insight-secondary-text-dark);
         --color-insight-secondary-action: var(--color-insight-secondary-action-dark);
         --color-insight-secondary-action-hover: var(--color-insight-secondary-action-hover-dark);
         --color-insight-secondary-action-active: var(--color-insight-secondary-action-active-dark);
+        --color-insight-secondary-on-action: var(--color-insight-secondary-on-action-dark);
         --color-insight-secondary-soft: var(--color-insight-secondary-soft-dark);
-        --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
-        --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
         /* Success */
         --color-insight-success-text: var(--color-insight-success-text-dark);
         --color-insight-success-action: var(--color-insight-success-action-dark);
         --color-insight-success-action-hover: var(--color-insight-success-action-hover-dark);
         --color-insight-success-action-active: var(--color-insight-success-action-active-dark);
+        --color-insight-success-on-action: var(--color-insight-success-on-action-dark);
         --color-insight-success-soft: var(--color-insight-success-soft-dark);
-        --color-insight-success-hover: var(--color-insight-success-hover-dark);
-        --color-insight-success-active: var(--color-insight-success-active-dark);
         /* Warning */
         --color-insight-warning-text: var(--color-insight-warning-text-dark);
         --color-insight-warning-action: var(--color-insight-warning-action-dark);
         --color-insight-warning-action-hover: var(--color-insight-warning-action-hover-dark);
         --color-insight-warning-action-active: var(--color-insight-warning-action-active-dark);
+        --color-insight-warning-on-action: var(--color-insight-warning-on-action-dark);
         --color-insight-warning-soft: var(--color-insight-warning-soft-dark);
-        --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
-        --color-insight-warning-active: var(--color-insight-warning-active-dark);
         /* Danger */
         --color-insight-danger-text: var(--color-insight-danger-text-dark);
         --color-insight-danger-action: var(--color-insight-danger-action-dark);
         --color-insight-danger-action-hover: var(--color-insight-danger-action-hover-dark);
         --color-insight-danger-action-active: var(--color-insight-danger-action-active-dark);
+        --color-insight-danger-on-action: var(--color-insight-danger-on-action-dark);
         --color-insight-danger-soft: var(--color-insight-danger-soft-dark);
-        --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
-        --color-insight-danger-active: var(--color-insight-danger-active-dark);
         /* Info */
         --color-insight-info-text: var(--color-insight-info-text-dark);
         --color-insight-info-action: var(--color-insight-info-action-dark);
         --color-insight-info-action-hover: var(--color-insight-info-action-hover-dark);
         --color-insight-info-action-active: var(--color-insight-info-action-active-dark);
+        --color-insight-info-on-action: var(--color-insight-info-on-action-dark);
         --color-insight-info-soft: var(--color-insight-info-soft-dark);
-        --color-insight-info-hover: var(--color-insight-info-hover-dark);
-        --color-insight-info-active: var(--color-insight-info-active-dark);
         /* Focus */
         --color-insight-focus: var(--color-insight-focus-dark);
         /* Text */
@@ -534,6 +513,8 @@
         --color-insight-text-muted: var(--color-insight-text-muted-dark);
         --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
         --color-insight-text-inverse: var(--color-insight-text-inverse-dark);
+        --color-insight-text-link: var(--color-insight-text-link-dark);
+        --color-insight-text-link-hover: var(--color-insight-text-link-hover-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
         /* Divider */
@@ -941,7 +922,7 @@
         --btn-fill: var(--color-insight-primary-action);
         --btn-fill-hover: var(--color-insight-primary-action-hover);
         --btn-fill-active: var(--color-insight-primary-action-active);
-        --btn-on-fill: var(--color-insight-primary-on-fill);
+        --btn-on-action: var(--color-insight-primary-on-action);
         --btn-ink: var(--color-insight-primary-text);
     }
 
@@ -967,49 +948,49 @@
         --btn-fill: var(--color-insight-primary-action);
         --btn-fill-hover: var(--color-insight-primary-action-hover);
         --btn-fill-active: var(--color-insight-primary-action-active);
-        --btn-on-fill: var(--color-insight-primary-on-fill);
+        --btn-on-action: var(--color-insight-primary-on-action);
         --btn-ink: var(--color-insight-primary-text);
     }
     .btn-secondary {
         --btn-fill: var(--color-insight-secondary-action);
         --btn-fill-hover: var(--color-insight-secondary-action-hover);
         --btn-fill-active: var(--color-insight-secondary-action-active);
-        --btn-on-fill: var(--color-insight-secondary-on-fill);
+        --btn-on-action: var(--color-insight-secondary-on-action);
         --btn-ink: var(--color-insight-secondary-text);
     }
     .btn-success {
         --btn-fill: var(--color-insight-success-action);
         --btn-fill-hover: var(--color-insight-success-action-hover);
         --btn-fill-active: var(--color-insight-success-action-active);
-        --btn-on-fill: var(--color-insight-success-on-fill);
+        --btn-on-action: var(--color-insight-success-on-action);
         --btn-ink: var(--color-insight-success-text);
     }
     .btn-warning {
         --btn-fill: var(--color-insight-warning-action);
         --btn-fill-hover: var(--color-insight-warning-action-hover);
         --btn-fill-active: var(--color-insight-warning-action-active);
-        --btn-on-fill: var(--color-insight-warning-on-fill);
+        --btn-on-action: var(--color-insight-warning-on-action);
         --btn-ink: var(--color-insight-warning-text);
     }
     .btn-danger {
         --btn-fill: var(--color-insight-danger-action);
         --btn-fill-hover: var(--color-insight-danger-action-hover);
         --btn-fill-active: var(--color-insight-danger-action-active);
-        --btn-on-fill: var(--color-insight-danger-on-fill);
+        --btn-on-action: var(--color-insight-danger-on-action);
         --btn-ink: var(--color-insight-danger-text);
     }
     .btn-info {
         --btn-fill: var(--color-insight-info-action);
         --btn-fill-hover: var(--color-insight-info-action-hover);
         --btn-fill-active: var(--color-insight-info-action-active);
-        --btn-on-fill: var(--color-insight-info-on-fill);
+        --btn-on-action: var(--color-insight-info-on-action);
         --btn-ink: var(--color-insight-info-text);
     }
     .btn-light {
         --btn-fill: var(--color-insight-light);
         --btn-fill-hover: var(--color-insight-light-hover);
         --btn-fill-active: var(--color-insight-light-active);
-        --btn-on-fill: var(--color-insight-on-light);
+        --btn-on-action: var(--color-insight-on-light);
         --btn-ink: var(--color-insight-light);
     }
 
@@ -1018,7 +999,7 @@
     .btn-solid {
         background-color: var(--btn-fill);
         border-color: var(--btn-fill);
-        color: var(--btn-on-fill);
+        color: var(--btn-on-action);
     }
     .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover,
     .btn-solid:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
@@ -1039,12 +1020,12 @@
     .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
         background-color: var(--btn-fill-hover);
         border-color: var(--btn-fill-hover);
-        color: var(--btn-on-fill);
+        color: var(--btn-on-action);
     }
     .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
         background-color: var(--btn-fill-active);
         border-color: var(--btn-fill-active);
-        color: var(--btn-on-fill);
+        color: var(--btn-on-action);
     }
 
     /* Subtle: colored text without border, a light tint of the color appears on hover. */

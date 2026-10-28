@@ -130,11 +130,12 @@ export class Tabs {
             tab.setAttribute('tabindex', isSelected ? '0' : '-1');
 
             // Update styling
+            // The same classes as the template renders for active and inactive tabs (layout/tabs.html).
             if (isSelected) {
                 tab.classList.remove('border-transparent', 'text-insight-body');
-                tab.classList.add('border-insight-primary', 'text-insight-primary');
+                tab.classList.add('border-insight-primary-text', 'text-insight-primary-text');
             } else {
-                tab.classList.remove('border-insight-primary', 'text-insight-primary');
+                tab.classList.remove('border-insight-primary-text', 'text-insight-primary-text');
                 tab.classList.add('border-transparent', 'text-insight-body');
             }
 

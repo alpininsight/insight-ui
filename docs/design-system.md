@@ -29,7 +29,8 @@ in [Migrating to 2.0](migration-2.0.md) before editing a host stylesheet:
 | Secondary content | `--color-insight-text-muted` | `text-insight-muted` |
 | Semantic text/icon color | `--color-insight-primary-text` | `text-insight-primary-text` |
 | Filled action background | `--color-insight-primary-action` | Prefer the existing primary button. |
-| Text on the filled action | `--color-insight-primary-on-fill` | Used together with its action background. |
+| Text on the filled action | `--color-insight-primary-on-action` | Used together with its action background. |
+| Link text | `--color-insight-text-link` | `text-insight-link` (with hover color and underline) |
 | Reusable spacing | `--spacing-insight-m` | `p-insight-m`, `gap-insight-m` |
 | Control radius | `--radius-insight-control` | `rounded-insight-control` |
 | Surface radius | `--radius-insight-surface` | `rounded-insight-surface` |
@@ -51,6 +52,47 @@ The [token checker](../scripts/check_design_tokens.py) flags selected raw color,
 radius, shadow and verbose utility patterns. Some replacement suggestions are
 older names; verify them against `input.css`, not as a separate token contract.
 This table is a starting point, not an inventory of every value.
+
+## Color Families
+
+`primary`, `secondary`, `success`, `warning`, `danger` and `info` share the same
+tokens. Pick the token by what you color, not by the theme:
+
+| You color | Token | Light / dark theme |
+| --- | --- | --- |
+| A border, bar or indicator | `--color-insight-primary` | The same in both themes |
+| Text, an icon, a link or an outline border | `--color-insight-primary-text` | Switches to `-text-dark` |
+| The fill of a button or checked control | `--color-insight-primary-action`, `-action-hover`, `-action-active` | Switches to `-action-dark` and its states |
+| Text and icons on that fill | `--color-insight-primary-on-action` | Switches to `-on-action-dark` |
+| A subtle background (subtle button, badge, alert) | `--color-insight-primary-soft` | Switches to `-soft-dark` |
+
+The family color itself (`text-insight-primary`) is an accent. It does not
+change with the theme, so as text it lacks contrast in one of them; use
+`text-insight-primary-text` for text and icons. Tokens ending in `-dark` hold the
+dark theme values; templates use the names without `-dark`, which switch on
+`[data-theme="dark"]`.
+
+`-action` is separate from the accent for brand colors that work in only one
+theme. A dark brand blue is a fine accent, and a fine button in the light theme,
+but barely visible as a button on the dark background. Keep the accent and give
+the dark theme a lighter button and text color in your theme:
+
+```css
+@theme {
+    --color-insight-primary: #003153;             /* brand color, borders and bars */
+    --color-insight-primary-action-dark: #2F6FAB; /* lighter buttons in the dark theme */
+    --color-insight-primary-action-hover-dark: #3A78B4;
+    --color-insight-primary-action-active-dark: #2A6399;
+    --color-insight-primary-text-dark: #9CC8EB;   /* readable text and icons in the dark theme */
+}
+```
+
+The dark button colors stay dark enough for the white `-on-action` text (4.5:1)
+and light enough to stand out from the dark page (3:1). For a light button in
+the dark theme, set `--color-insight-primary-on-action-dark` to a dark text
+color instead. The same applies to a light brand color, e.g. yellow, which needs
+dark `-on-action` text on its buttons. [The token tests](../tests/insight_ui/unit/test_design_tokens.py)
+check that text, links and text on fills reach WCAG AA in both themes.
 
 ## Host Assets And Contributor Builds
 
