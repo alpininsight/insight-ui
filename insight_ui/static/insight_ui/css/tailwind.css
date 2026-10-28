@@ -2241,6 +2241,11 @@
   .aria-\[current\=location\]\:text-insight-primary-hover[aria-current="location"] {
     color: var(--color-insight-primary-hover);
   }
+  @media (width < 48rem) {
+    .max-md\:hidden {
+      display: none;
+    }
+  }
   @media (width >= 40rem) {
     .sm\:bottom-10 {
       bottom: calc(var(--spacing) * 10);
@@ -2260,17 +2265,43 @@
     }
   }
   @media (width >= 48rem) {
+    .md\:sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    .md\:col-span-full {
+      grid-column: 1 / -1;
+    }
     .md\:block {
       display: block;
     }
     .md\:flex {
       display: flex;
     }
+    .md\:grid {
+      display: grid;
+    }
     .md\:hidden {
       display: none;
     }
+    .md\:grid-cols-\[auto_12rem_12rem_minmax\(0\,28rem\)\] {
+      grid-template-columns: auto 12rem 12rem minmax(0,28rem);
+    }
     .md\:flex-row {
       flex-direction: row;
+    }
+    .md\:items-end {
+      align-items: flex-end;
+    }
+    .md\:justify-start {
+      justify-content: flex-start;
     }
     .md\:gap-insight-l {
       gap: var(--spacing-insight-l);
@@ -2340,9 +2371,6 @@
     .lg\:w-3xl {
       width: var(--container-3xl);
     }
-    .lg\:w-48 {
-      width: calc(var(--spacing) * 48);
-    }
     .lg\:w-fit {
       width: fit-content;
     }
@@ -2401,9 +2429,6 @@
     }
     .xl\:inline-flex {
       display: inline-flex;
-    }
-    .xl\:w-64 {
-      width: calc(var(--spacing) * 64);
     }
     :where(.xl\:space-y-8 > :not(:last-child)) {
       --tw-space-y-reverse: 0;

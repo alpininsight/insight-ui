@@ -30,18 +30,6 @@ BUILTINS = {"True", "False", "None", "forloop", "block", "csrf_token"}
 KNOWN_GAPS = {
     # The threshold is passed nowhere and htmx's revealed trigger has no threshold; dropped in the rebuild.
     "insight_ui/components/infinite_scroll.html": {"threshold"},
-    # Restoring filters, the operator list and the filter partial's values are unfinished; the component is
-    # up for review.
-    "insight_ui/components/search_query_builder/sq_builder.html": {
-        "custom_filters",
-        "ov_list",
-        "index",
-        "selected_field",
-        "selected_logic",
-        "selected_value",
-        "filter_operator",
-        "filter_value",
-    },
 }
 
 # Parameters a shared partial documents as optional; callers that need them pass them, the others leave them out.
