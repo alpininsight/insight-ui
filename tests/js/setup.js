@@ -198,7 +198,7 @@ globalThis.TestUtils = {
         </div>
         <div>
           <button class="ring-carousel-prev">Previous</button>
-          <span class="ring-carousel-status"></span>
+          <span data-ring-carousel-status></span>
           <button class="ring-carousel-next">Next</button>
         </div>
       </div>

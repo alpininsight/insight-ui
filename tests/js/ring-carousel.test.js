@@ -88,7 +88,7 @@ describe('RingCarousel Component', () => {
     it('announces the position', () => {
       const { element } = setup();
 
-      expect(element.querySelector('.ring-carousel-status').textContent).toBe('1 of 4');
+      expect(element.querySelector('[data-ring-carousel-status]').textContent).toBe('1 of 4');
     });
   });
 
@@ -99,7 +99,7 @@ describe('RingCarousel Component', () => {
       element.querySelector('.ring-carousel-next').click();
 
       expect(frontItems(element)).toEqual([items[1]]);
-      expect(element.querySelector('.ring-carousel-status').textContent).toBe('2 of 4');
+      expect(element.querySelector('[data-ring-carousel-status]').textContent).toBe('2 of 4');
     });
 
     it('brings the last item to the front before the first', () => {
@@ -140,7 +140,7 @@ describe('RingCarousel Component', () => {
       expect(visible).toHaveLength(12);
       expect(new Set(visible.map(item => ((angle(item) % 360) + 360) % 360)).size).toBe(12);
       expect(hidden.every(item => Math.abs(angle(item)) === 180)).toBe(true);
-      expect(element.querySelector('.ring-carousel-status').textContent).toBe('1 of 30');
+      expect(element.querySelector('[data-ring-carousel-status]').textContent).toBe('1 of 30');
     });
 
     it('shows a hidden item when it comes into view', () => {

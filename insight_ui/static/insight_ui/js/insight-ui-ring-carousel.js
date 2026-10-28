@@ -22,7 +22,7 @@
  *     </div>
  *   </div>
  *   <button class="ring-carousel-prev">Previous</button>
- *   <span class="ring-carousel-status"></span>
+ *   <span data-ring-carousel-status></span>
  *   <button class="ring-carousel-next">Next</button>
  * </div>
  */
@@ -56,7 +56,7 @@ export class RingCarousel {
         this.items = [...element.querySelectorAll(".ring-carousel-item")];
         this.prevBtn = element.querySelector(".ring-carousel-prev");
         this.nextBtn = element.querySelector(".ring-carousel-next");
-        this.status = element.querySelector(".ring-carousel-status");
+        this.status = element.querySelector("[data-ring-carousel-status]");
 
         this.tilt = parseFloat(element.dataset.tilt) || 0;
         this.faceCamera = element.dataset.faceCamera === "true";

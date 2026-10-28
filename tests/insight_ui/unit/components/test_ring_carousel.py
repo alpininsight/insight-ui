@@ -96,7 +96,7 @@ class TestRingCarousel(TemplateTagsTestCase):
 
         assert single.select_one(".ring-carousel-next") is None
         assert several.select_one(".ring-carousel-next") is not None
-        assert several.select_one(".ring-carousel-status")["aria-live"] == "polite"
+        assert several.select_one("[data-ring-carousel-status]")["aria-live"] == "polite"
 
     def test_items_can_be_passed_as_tag_argument(self) -> None:
         """Items can be passed directly to the tag without a config."""

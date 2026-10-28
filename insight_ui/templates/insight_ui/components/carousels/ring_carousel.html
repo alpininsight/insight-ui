@@ -32,7 +32,7 @@
     {% if item_count > 1 %}
         <div class="flex gap-insight-m justify-center items-center mt-insight-m">
             {% button label=_("Previous item") icon_name="chevron-left" icon_only=True round=True extra_classes="ring-carousel-prev" %}
-            <span class="text-sm text-insight-body whitespace-nowrap ring-carousel-status" aria-live="polite"></span>
+            <span class="text-sm text-insight-body whitespace-nowrap" data-ring-carousel-status aria-live="polite"></span>
             {% button label=_("Next item") icon_name="chevron-right" icon_only=True round=True extra_classes="ring-carousel-next" %}
         </div>
     {% endif %}
