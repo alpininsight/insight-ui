@@ -15,15 +15,16 @@
         aria-controls="{% if is_htmx %}{{ tag_id }}-tab-content{% else %}{{ tab.panel_id }}{% endif %}"
         tabindex="{% if tab.active %}0{% else %}-1{% endif %}"
         {% if tab.url %}
-          hx-get="{{ tab.url }}"
-          hx-target="#{{ tag_id }}-tab-content"
-          hx-swap="innerHTML"
-          {# The active tab loads its content right away; the others on click. #}
-          {% if tab.active %}hx-trigger="load, click"{% endif %}
+          {# The active tab loads its content right away; the others on click. The load on page view does not push the fragment URL. #}
+          {% if tab.active %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" trigger="load, click" push_url=False %}
+          {% else %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" %}
+          {% endif %}
         {% elif not is_htmx %}
           data-tab-panel="{{ tab.panel_id }}"
         {% endif %}
-        class="flex gap-2 items-center px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary-text focus:outline-none focus:text-insight-primary-text {% if tab.active %}text-insight-primary-text border-insight-primary-text{% else %}text-insight-body border-transparent{% endif %}"
+        class="flex gap-2 items-center px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary-text focus:outline-hidden focus:text-insight-primary-text {% if tab.active %}text-insight-primary-text border-insight-primary-text{% else %}text-insight-body border-transparent{% endif %}"
       >
         {% if tab.icon %}{% icon name=tab.icon size="s" %}{% endif %}
         {{ tab.label }}

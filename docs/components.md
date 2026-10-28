@@ -31,32 +31,9 @@ not validate every value; check the Config constructor and rendering tests.
 
 ### Native link downloads
 
-```django
-{% load insight_tags %}
-{% button label="Download" request_url="/files/report.svg" download=True %}
-{% button label="Download report" request_url="/files/report.svg" download="report.svg" %}
-```
-
-The Config has the same `download: bool | str = False` field. `False` omits
-the attribute; `True` or an empty string asks the browser to use the default
-filename; a non-empty string suggests a filename. Existing links and action
-buttons are unchanged when the option is omitted. Downloads require a link URL.
-Disabled links expose neither `href` nor `download`. Filename values are escaped,
-and control characters are rejected.
-
-This is a native browser action, not an HTMX partial request. The Config rejects
-explicit HTMX request settings, and the link uses `hx-disable` to avoid inherited
-HTMX processing ([HTMX contract](https://htmx.org/attributes/hx-disable/)).
-No JavaScript is needed. The filename is advisory: browsers may normalize it;
-cross-origin downloads can require server `Content-Disposition` and remain
-subject to browser/security policies ([HTML download contract](https://html.spec.whatwg.org/multipage/links.html#downloading-resources)).
-This option does not grant access to protected files or bypass authentication.
-
-This additive API is prepared against the current `develop` button contract.
-Open refactor [#733](https://github.com/alpininsight/insight-ui/pull/733) touches
-the same Config/tag/template; if it integrates first, rebase and repeat all
-rendering/download checks. Consumers adopt only a verified stable package
-containing the option, not the current unmodified v1.15.1.
+Set `download=True` on a link button to download its target, or pass a string
+such as `download="report.svg"` to suggest a filename. Downloads require
+`request_url` and cannot be combined with HTMX request settings.
 
 The button supports both inline arguments and Config objects:
 
@@ -95,6 +72,21 @@ Underscores become hyphens and values become strings. Supplying `data_*`,
 it. This example supplies only a trigger; the host must supply the target element
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
+
+## HTMX Requests
+
+Components that send requests take an optional `htmx: HtmxConfig` for the options
+shared by all components: target, swap method, method, push URL, indicator,
+confirm, vals and the global loading bar. Templates render it only through
+`{% htmx_attributes %}`; a test rejects direct field access.
+
+What a component's mechanism needs is fixed by the component and passed to
+`htmx_attributes` as an override: its own URL (`request_url`), `trigger`,
+`target`, `swap`, `method`, `indicator`, `push_url` and `global_indicator` for
+background requests. For example, the chat always posts and appends to its own
+response container; `live_content` polls with its interval and stays out of the
+global loading bar unless the Config asks for it.
+`HtmxConfig.show_global_loading_indicator=None` keeps that component default.
 
 ## Find A Component's Arguments
 

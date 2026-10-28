@@ -33,7 +33,6 @@ from insight_ui.configs import (
     InputFieldConfig,
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
-    RadioBlockConfig,
     SliderConfig,
     StatusScreenConfig,
     StepperItemConfig,
@@ -864,20 +863,28 @@ def test_validate_filter_field_type_custom_field_name() -> None:
 def test_query_builder_field_config_accepts_valid_type() -> None:
     """Test QueryBuilderFieldConfig accepts valid type values."""
     for field_type in FILTER_FIELD_TYPE_VALUES:
-        config = QueryBuilderFieldConfig(field="test", label="Test", type=field_type)
+        config = QueryBuilderFieldConfig(
+            field="test", label="Test", type=field_type, operations={"exact": "is"}, values={"a": "A"}
+        )
         assert config.type == field_type
 
 
 def test_query_builder_field_config_rejects_invalid_type() -> None:
     """Test QueryBuilderFieldConfig raises ValueError for invalid type."""
     with pytest.raises(ValueError, match="Invalid type"):
-        QueryBuilderFieldConfig(field="test", label="Test", type="invalid")
+        QueryBuilderFieldConfig(field="test", label="Test", type="invalid", operations={"exact": "is"})
 
 
 def test_query_builder_field_config_default_type() -> None:
     """Test QueryBuilderFieldConfig has correct default type."""
-    config = QueryBuilderFieldConfig(field="test", label="Test")
+    config = QueryBuilderFieldConfig(field="test", label="Test", operations={"exact": "is"})
     assert config.type == "text"
+
+
+def test_query_builder_choice_field_requires_values() -> None:
+    """A choice field without values could never be filtered."""
+    with pytest.raises(ValueError, match="needs values"):
+        QueryBuilderFieldConfig(field="status", label="Status", type="choice", operations={"exact": "is"})
 
 
 # =============================================================================
@@ -1028,28 +1035,6 @@ def test_htmx_config_default_swap_method() -> None:
     """Test HtmxConfig has correct default swap_method."""
     config = HtmxConfig()
     assert config.swap_method == "innerHTML"
-
-
-# --- RadioBlockConfig hx_swap_method validation ------------------------------
-
-
-def test_radio_block_config_accepts_valid_hx_swap_method() -> None:
-    """Test RadioBlockConfig accepts valid hx_swap_method values."""
-    for swap_method in HTMX_SWAP_METHOD_VALUES:
-        config = RadioBlockConfig(name="test", hx_swap_method=swap_method)
-        assert config.hx_swap_method == swap_method
-
-
-def test_radio_block_config_rejects_invalid_hx_swap_method() -> None:
-    """Test RadioBlockConfig raises ValueError for invalid hx_swap_method."""
-    with pytest.raises(ValueError, match="Invalid hx_swap_method"):
-        RadioBlockConfig(name="test", hx_swap_method="invalid")
-
-
-def test_radio_block_config_default_hx_swap_method() -> None:
-    """Test RadioBlockConfig has correct default hx_swap_method."""
-    config = RadioBlockConfig(name="test")
-    assert config.hx_swap_method == "outerHTML"
 
 
 # =============================================================================

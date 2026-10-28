@@ -12,7 +12,7 @@
 *   1. Tailwind Import & Configuration
 *   2. @theme - Design Tokens (colors, spacing, radii, shadows, animations)
 *   3. @layer base - Browser resets, dark mode switching, default typography
-*   4. @layer utilities - Shorthand utility classes
+*   4. @utility - Shorthand utility classes
 *   5. @layer components - Reusable component classes (buttons, badges, inputs)
 *
 */
@@ -30,6 +30,10 @@
 /* Public icon and ribbon colors must not depend on host or docs templates. */
 @source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
 @source inline("text-insight-text-{headline,body,muted,link}");
+/* The shorthand utilities below were plain classes and always in the stylesheet; hosts may use them. */
+@source inline("bg-insight-{base,surface,raised,overlay}");
+@source inline("border-insight-{surface,raised,overlay}");
+@source inline("text-insight-{headline,body,muted,disabled,inverse}");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
@@ -625,12 +629,11 @@
 
 /*
 * ============================================================================
-*   @layer utilities - Shorthand Utility Classes
+*   @utility - Shorthand Utility Classes
 * ============================================================================
 *
-*   Custom utility classes that simplify common patterns.
-*   These have higher specificity than Tailwind's generated utilities
-*   but lower than component classes.
+*   Custom utilities that simplify common patterns. Tailwind sorts them with its
+*   own utilities and generates their variants; component classes still win.
 *
 *   Naming convention:
 *   - bg-insight-{elevation} instead of bg-insight-bg-{elevation}
@@ -638,51 +641,64 @@
 *
 */
 
-@layer utilities {
-    /*
-    * Elevation-based background utilities.
-    * Shorthand for the verbose token names.
-    *
-    * Usage:
-    *   <div class="bg-insight-surface">Card content</div>
-    *   <div class="bg-insight-raised">Highlighted row</div>
-    */
-    .bg-insight-base {
-        background-color: var(--color-insight-bg-base);
-    }
-    .bg-insight-surface {
-        background-color: var(--color-insight-bg-surface);
-    }
-    .bg-insight-raised {
-        background-color: var(--color-insight-bg-raised);
-    }
-    .bg-insight-overlay {
-        background-color: var(--color-insight-bg-overlay);
-    }
+/*
+* Defined with @utility instead of plain classes in @layer utilities: only then does Tailwind
+* generate their variants (hover:, even:, md:, after:, dark:, ...). Plain classes ignore variants silently.
+*/
 
-    /*
-    * Elevation-based border utilities.
-    * Match borders to the appropriate elevation level.
-    */
-    .border-insight-surface {
-        border-color: var(--color-insight-border-surface);
-    }
-    .border-insight-raised {
-        border-color: var(--color-insight-border-raised);
-    }
-    .border-insight-overlay {
-        border-color: var(--color-insight-border-overlay);
-    }
+/*
+* Elevation-based background utilities.
+* Shorthand for the verbose token names.
+*
+* Usage:
+*   <div class="bg-insight-surface">Card content</div>
+*   <div class="hover:bg-insight-raised">Highlighted row</div>
+*/
+@utility bg-insight-base {
+    background-color: var(--color-insight-bg-base);
+}
+@utility bg-insight-surface {
+    background-color: var(--color-insight-bg-surface);
+}
+@utility bg-insight-raised {
+    background-color: var(--color-insight-bg-raised);
+}
+@utility bg-insight-overlay {
+    background-color: var(--color-insight-bg-overlay);
+}
 
-    /*
-    * Semantic text utilities.
-    * Shorthand for common text hierarchy patterns.
-    */
-    .text-insight-headline { @apply text-insight-text-headline; }
-    .text-insight-body { @apply text-insight-text-body; }
-    .text-insight-muted { @apply text-insight-text-muted; }
-    .text-insight-disabled { @apply text-insight-text-disabled; }
-    .text-insight-inverse { @apply text-insight-text-inverse; }
+/*
+* Elevation-based border utilities.
+* Match borders to the appropriate elevation level.
+*/
+@utility border-insight-surface {
+    border-color: var(--color-insight-border-surface);
+}
+@utility border-insight-raised {
+    border-color: var(--color-insight-border-raised);
+}
+@utility border-insight-overlay {
+    border-color: var(--color-insight-border-overlay);
+}
+
+/*
+* Semantic text utilities.
+* Shorthand for common text hierarchy patterns.
+*/
+@utility text-insight-headline {
+    color: var(--color-insight-text-headline);
+}
+@utility text-insight-body {
+    color: var(--color-insight-text-body);
+}
+@utility text-insight-muted {
+    color: var(--color-insight-text-muted);
+}
+@utility text-insight-disabled {
+    color: var(--color-insight-text-disabled);
+}
+@utility text-insight-inverse {
+    color: var(--color-insight-text-inverse);
 }
 
 /*

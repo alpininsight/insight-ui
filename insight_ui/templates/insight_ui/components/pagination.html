@@ -13,7 +13,7 @@
     <div class="flex gap-4 items-end w-full">
         <div class="flex flex-1 gap-1 justify-between w-full h-fit">
             {% if previous_url %}
-                {% button tag_id=pagination_config.tag_id|add:'-previous' request_url=previous_url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' htmx_config=pagination_config.htmx %}
+                {% button tag_id=pagination_config.tag_id|add:'-previous' request_url=previous_url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
                 {% button tag_id=pagination_config.tag_id|add:'-previous' label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
@@ -27,13 +27,13 @@
                             <span class="sr-only">{{ page.label }}</span><span aria-hidden="true">{{ page.number }}</span>
                         </span>
                     {% else %}
-                        {% button tag_id=page.id request_url=page.url label=page.number size='s' aria_label=page.label htmx_config=pagination_config.htmx %}
+                        {% button tag_id=page.id request_url=page.url label=page.number size='s' aria_label=page.label htmx=pagination_config.htmx %}
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if next_url %}
-                {% button tag_id=pagination_config.tag_id|add:'-next' request_url=next_url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' htmx_config=pagination_config.htmx %}
+                {% button tag_id=pagination_config.tag_id|add:'-next' request_url=next_url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
                 {% button tag_id=pagination_config.tag_id|add:'-next' label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}

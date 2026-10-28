@@ -121,11 +121,6 @@ jobs:
             exit 1
           fi
 
-      - name: Install the pinned browser for native download acceptance
-        run: uv run --no-sync --with playwright==1.64.0 python -m playwright install --with-deps chromium
-      - name: Verify native downloads without page JavaScript
-        run: uv run --no-sync --with playwright==1.64.0 python -m tests.browser.button_download_smoke
-
   distribution:
     name: Wheel and sdist installation
     runs-on: ubuntu-latest

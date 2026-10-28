@@ -36,11 +36,16 @@ in [Migrating to 2.0](migration-2.0.md) before editing a host stylesheet:
 | Surface shadow | `--shadow-insight-surface` | `shadow-insight-surface` |
 | Overlay shadow | `--shadow-insight-overlay` | `shadow-insight-overlay` |
 
-The background, border and text shorthands are explicit `@layer utilities`
-classes, not interchangeable with generated Tailwind utilities. Prefer them for
-plain classes, but do not assume state or opacity variants exist. For example,
-the [table template](../insight_ui/templates/insight_ui/components/table.html)
-uses `odd:bg-insight-bg-raised/50`, which is present in the generated CSS.
+The background, border and text shorthands are defined with `@utility` in
+`input.css`, so they work with variants (`hover:bg-insight-raised`,
+`even:bg-insight-base`, `after:bg-insight-surface`) like any Tailwind utility.
+Define new shorthands the same way: a plain class in `@layer utilities` gets no
+variants, and the variant class silently does nothing
+([test](../tests/insight_ui/unit/test_utility_variants.py)). The plain classes
+are always in the package stylesheet; a variant is only generated where a
+package template or your own Tailwind build uses it. Opacity modifiers such as
+`/50` need the token utility, e.g. `odd:bg-insight-bg-raised/50` in the
+[table template](../insight_ui/templates/insight_ui/components/table.html).
 
 The [token checker](../scripts/check_design_tokens.py) flags selected raw color,
 radius, shadow and verbose utility patterns. Some replacement suggestions are
