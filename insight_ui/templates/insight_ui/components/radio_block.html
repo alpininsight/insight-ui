@@ -9,11 +9,12 @@
         An integrated block is sent with the surrounding form; otherwise it has its own form, so the options
         can send a request with htmx. Both render the same options.
     {% endcomment %}
-    <{% if radio_block_config.integrated %}div{% else %}form{% endif %} id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
+    <{% if radio_block_config.integrated %}div{% else %}form{% endif %} id="{{ radio_block_config.name }}" class="control-{{ radio_block_config.color }} choice-group-{{ radio_block_config.variant }} flex w-fit{% if radio_block_config.as_row == False %} flex-col{% endif %}">
     {% for item in radio_block_config.items %}
         {% with item_key=item.tag_id|default:item.value %}
             {% with item_id=radio_block_config.name|add:'-'|add:item_key %}
-                <div>
+                {# Outlined options overlap by their border width, so every option keeps a full border. #}
+                <div class="flex{% if radio_block_config.variant == 'outline' and not forloop.first %}{% if radio_block_config.as_row == False %} -mt-0.5{% else %} -ms-0.5{% endif %}{% endif %}">
                     <input
                         type="radio"
                         id="{{ item_id }}"
@@ -28,16 +29,16 @@
                         {% endif %}
                         {% data_attributes item.data_attrs %}
                         {% if item.disabled and item.disabled_reason %}aria-describedby="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled"{% endif %}
-                        class="sr-only peer"
+                        class="sr-only"
                     >
                     <label
                         for="{{ item_id }}"
-                        class="btn-solid btn-primary flex items-center {% if item.disabled %}btn-disabled cursor-not-allowed{% else %}cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
+                        class="choice choice-{{ radio_block_config.variant }} grow px-4 py-1{% if radio_block_config.variant == 'outline' %}{% if radio_block_config.as_row == False %}{% if forloop.first %} rounded-t-insight-control{% endif %}{% if forloop.last %} rounded-b-insight-control{% endif %}{% else %}{% if forloop.first %} rounded-s-insight-control{% endif %}{% if forloop.last %} rounded-e-insight-control{% endif %}{% endif %}{% endif %}"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
                         {% endif %}
-                        <span>{{ item.label }}</span>
+                        {% if item.label %}<span class="choice-text" data-text="{{ item.label }}">{{ item.label }}</span>{% endif %}
                     </label>
                 </div>
             {% endwith %}
