@@ -3,9 +3,9 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn btn-round btn-outline-secondary size-10 overflow-hidden" aria-label="{{ usermenu.avatar_alt|default:user.get_username }}">
-            {% if usermenu.avatar_url %}
-                <img src="{{ usermenu.avatar_url }}" alt="{{ usermenu.avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
+        <button type="button" data-insight-dropdown="user-menu" class="btn btn-round btn-outline btn-secondary size-10 overflow-hidden" aria-label="{{ user_menu.avatar_alt|default:user.get_username }}">
+            {% if user_menu.avatar_url %}
+                <img src="{{ user_menu.avatar_url }}" alt="{{ user_menu.avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
             {% else %}
                 {{ user.get_username|default:''|slice:":1"|upper }}
             {% endif %}
@@ -15,9 +15,9 @@
                 <span class="text-insight-body">{% trans "Logged in as" %}: </span>
                 <span class="font-bold">{{ user.get_username }}</span>
             </span>
-            {% if usermenu.links %}
+            {% if user_menu.links %}
                 <ul>
-                    {% for link in usermenu.links %}
+                    {% for link in user_menu.links %}
                         <li>
                             {% if not link.staff_only or user.is_staff %}
                                 <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-base">
@@ -43,10 +43,10 @@
     {# Login and Register buttons #}
     <div class="flex gap-2">
         {% if register_url %}
-            {% button request_url=register_url label=_("Register") type="secondary" size="s" extra_classes="lg:hidden xl:inline-flex" %}
+            {% button request_url=register_url label=_("Register") color="secondary" size="s" extra_classes="lg:hidden xl:inline-flex" %}
         {% endif %}
         {% if login_url %}
-            {% button request_url=login_url label=_("Login") type="primary" size="s" extra_classes="lg:*:hidden xl:*:inline-block" %}
+            {% button request_url=login_url label=_("Login") color="primary" size="s" extra_classes="lg:*:hidden xl:*:inline-block" %}
         {% endif %}
     </div>
 {% endif %}

@@ -8,10 +8,10 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-base border-b border-insight-surface shadow-insight-surface md:px-6"
+  class="relative{% if not align_to_content %} insight-gutter{% endif %} w-full h-(--insight-navbar-height) bg-insight-base border-b border-insight-surface shadow-insight-surface"
 >
   {# Desktop Navigation #}
-  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap">
+  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap{% if align_to_content %} insight-content-box{% endif %}">
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
@@ -112,7 +112,7 @@
           {% endif%}
           <div class="flex gap-2 h-10">
             {% if login_url or user.is_authenticated %}
-              {% include "insight_ui/components/user_dropdown.html" with usermenu=navbar_config.usermenu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
+              {% include "insight_ui/components/user_dropdown.html" with user_menu=navbar_config.user_menu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}

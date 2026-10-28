@@ -128,20 +128,20 @@ class TestNavbar(TemplateTagsTestCase):
 
     def test_navbar_keeps_existing_positional_arguments(self) -> None:
         """Keyword arguments work as expected."""
-        usermenu = UserMenuConfig()
+        user_menu = UserMenuConfig()
         search_bar = SearchBarConfig(placeholder="Search...")
         nav_config = NavbarConfig(
             brand=None,
             links=[],
             search_bar=search_bar,
-            usermenu=usermenu,
+            user_menu=user_menu,
             hide_login=True,
             show_language_selector=True,
             show_theme_toggle=True,
         )
 
         assert nav_config.search_bar is search_bar
-        assert nav_config.usermenu is usermenu
+        assert nav_config.user_menu is user_menu
         assert nav_config.hide_login is True
         assert nav_config.show_language_selector is True
         assert nav_config.show_theme_toggle is True
@@ -153,7 +153,7 @@ class TestNavbar(TemplateTagsTestCase):
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 avatar_url="/media/avatars/demo.webp",
                 avatar_alt="Demo user avatar",
             ),
@@ -207,7 +207,7 @@ class TestNavbar(TemplateTagsTestCase):
         """User menu icon names render through the documented string contract."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon=IconConfig("user"))],
             ),
         )

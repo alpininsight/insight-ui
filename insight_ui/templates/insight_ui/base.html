@@ -4,7 +4,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-[calc(var(--insight-navbar-height)+2rem)]" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,7 +72,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base"{% with max_width=content_max_width|default:INSIGHT_UI.content_max_width %}{% if max_width %} style="--insight-content-max-width: {{ max_width }}"{% endif %}{% endwith %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">
@@ -80,24 +80,25 @@
             {% endblock background_image %}
         </div>
 
-        <header id="header">
+        {# A sticky header stays in the flow, so nothing has to reserve its height. #}
+        <header id="header"{% if INSIGHT_UI.navbar_fixed %} class="sticky top-0 z-50"{% endif %}>
             {% block navbar %}
             {% endblock navbar %}
         </header>
 
-        <main id="main" class="flex grow {% if INSIGHT_UI.navbar_fixed %}pt-16{% endif %}">
-            <div id="left-aside" class="flex">
+        <main id="main" class="flex grow">
+            <div id="left-aside" class="flex shrink-0">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>
             <div id="main-content" class="relative w-full min-w-0 {% if content_fill %}flex flex-col{% endif %}">
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full leading-loose {% if content_fill %}flex flex-col grow{% endif %}">
+                <div id="content" class="w-full leading-loose{% if content_fill %} flex flex-col grow{% if not content_full_width %} insight-content-box{% endif %}{% elif not content_full_width %} insight-content-grid{% endif %}">
                     {% block content %}{% endblock content %}
                 </div>
             </div>
-            <div id="right-aside" class="flex">
+            <div id="right-aside" class="flex shrink-0">
                 {% with _sidebar_side="right" %}{% block sidebar_right %}{% endblock sidebar_right %}{% endwith %}
             </div>
         </main>

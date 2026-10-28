@@ -15,7 +15,7 @@
   {# Feed items must be direct article children of the feed landmark. #}
   {% for item in infinite_scroll_config.items %}
     <article class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
-      <h3>{{ item.title }}</h3>
+      <h{{ infinite_scroll_config.heading_level }} class="font-medium text-xl text-insight-headline md:text-2xl">{{ item.title }}</h{{ infinite_scroll_config.heading_level }}>
       <p class="text-insight-body">{{ item.content }}</p>
     </article>
   {% endfor %}

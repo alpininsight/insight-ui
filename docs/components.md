@@ -22,8 +22,9 @@ catalog. Start with [getting started](getting-started.md) for host setup or
 | Regression tests | [Python tests](../tests/insight_ui/) and [Vitest tests](../tests/js/) | Public behavior, escaping, edge cases and lifecycle. |
 
 Use the Config's real fields and tag signature. Not every tag accepts arbitrary
-keyword arguments or a dictionary. For example, `navbar` requires a `config`
-argument and does not use the shared Config builder. Type annotations alone do
+keyword arguments or a dictionary. `{% navbar %}` without a config renders the
+brand from `INSIGHT_UI["brand"]` and no links. A `NavbarConfig` is passed
+through `build_config()`, which rejects a dictionary. Type annotations alone do
 not validate every value; check the Config constructor and rendering tests.
 
 ## Configs And Supported Overrides
@@ -33,18 +34,18 @@ The button supports both inline arguments and Config objects:
 ```python
 from insight_ui.configs import ButtonConfig
 
-save_button = ButtonConfig(label="Save", type="primary", button_type="submit")
+save_button = ButtonConfig(label="Save", color="primary", button_type="submit")
 ```
 
 ```django
 {% load insight_tags %}
-{% button label="Save" type="primary" button_type="submit" %}
+{% button label="Save" color="primary" button_type="submit" %}
 {% button config=save_button %}
 {% button config=save_button label="Save changes" %}
 ```
 
-Pass `save_button` in the host view's template context. `type` selects the visual
-variant; `button_type` selects the HTML button type.
+Pass `save_button` in the host view's template context. `color` and `variant`
+(solid, outline, subtle, link, plain) select the look; `button_type` selects the HTML button type.
 
 With an existing Config, `build_config()` returns a copy with supplied overrides.
 Generated tags forward only supplied `**kwargs`; they do not declare `UNSET`
@@ -65,6 +66,21 @@ Underscores become hyphens and values become strings. Supplying `data_*`,
 it. This example supplies only a trigger; the host must supply the target element
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
+
+## HTMX Requests
+
+Components that send requests take an optional `htmx: HtmxConfig` for the options
+shared by all components: target, swap method, method, push URL, indicator,
+confirm, vals and the global loading bar. Templates render it only through
+`{% htmx_attributes %}`; a test rejects direct field access.
+
+What a component's mechanism needs is fixed by the component and passed to
+`htmx_attributes` as an override: its own URL (`request_url`), `trigger`,
+`target`, `swap`, `method`, `indicator`, `push_url` and `global_indicator` for
+background requests. For example, the chat always posts and appends to its own
+response container; `live_content` polls with its interval and stays out of the
+global loading bar unless the Config asks for it.
+`HtmxConfig.show_global_loading_indicator=None` keeps that component default.
 
 ## Find A Component's Arguments
 

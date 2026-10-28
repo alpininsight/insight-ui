@@ -9,16 +9,16 @@ from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
 from insight_ui.configs.types import (
-    ButtonType,
+    ButtonColor,
+    ButtonVariant,
     HtmlButtonType,
     HtmlInputType,
-    HtmxSwapMethod,
     Size,
     SliderLegendMode,
-    validate_button_type,
+    validate_button_color,
+    validate_button_variant,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_swap_method,
     validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
@@ -29,25 +29,24 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    Renders a <button>, or an <a> if request_url is set. An htmx without its own request_url
     requests the link URL, so the link also works without JavaScript.
 
     Attributes:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL of the link (renders as <a>).
-        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
+        external: **True** to open the link in a new tab.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
         icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
-        type: Defines the color of the button (primary, secondary, danger, etc.).
+        color: Color of the button.
+        variant: Visual style of the button.
         size: Defines the size of the button.
-        outline: **True** to use the outline design of the button.
-        subtle: **True** to use the subtle design of the button.
         round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
-        htmx_config: Configuration for asynchronous requests.
+        htmx: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
         disabled: **True** to disable the button.
         disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
@@ -68,13 +67,12 @@ class ButtonConfig:
             icon=IconConfig("rocket-launch", "m"),
             icon_end=True,
             icon_only=False,
-            type="primary",
+            color="primary",
+            variant="solid",
             size="xl",
-            outline=False,
-            subtle=False,
             round=False,
             tooltip="Click to calculate something",
-            htmx_config=HtmxConfig(...),
+            htmx=HtmxConfig(...),
             hidden=False,
             button_type="submit",
             extra_classes="w-full",
@@ -85,12 +83,7 @@ class ButtonConfig:
     label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     request_url: str = field(default="", metadata={"doc": "URL of the link (renders as <a>)."})
-    external: bool = field(
-        default=False,
-        metadata={
-            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
-        },
-    )
+    external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
     on_click: str = field(
         default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
     )
@@ -107,15 +100,12 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: ButtonType = field(
-        default="primary", metadata={"doc": "Defines the color of the button (primary, secondary, danger, etc.)."}
-    )
+    color: ButtonColor = field(default="primary", metadata={"doc": _("Color of the button.")})
+    variant: ButtonVariant = field(default="solid", metadata={"doc": _("Visual style of the button.")})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
-    outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
-    subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
@@ -144,23 +134,31 @@ class ButtonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require a label and validate type, size, and button_type after initialization."""
+        """Require a label, validate the values and reject options that would be silently ignored.
+
+        Raises:
+            ValueError: If a value is invalid or an option does not apply to the rendered element.
+
+        """
         # The label is the accessible name, also for icon-only buttons (aria-label).
         validate_not_empty(self, "label")
-        # Override type when disabled=True
-        if self.disabled:
-            object.__setattr__(self, "type", "disabled")
-            if self.disabled_reason is None:
-                warnings.warn(
-                    f"ButtonConfig {self.label} is disabled without a disabled_reason. "
-                    "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
-                    stacklevel=2,
-                )
-        else:
-            validate_button_type(self.type, "type")
-
+        validate_button_color(self.color)
+        validate_button_variant(self.variant)
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
+        # A request_url renders an <a>: it has no type or onclick of a button, and without it there is no link.
+        if self.external and not self.request_url:
+            raise ValueError(f"ButtonConfig {self.label}: external only applies together with request_url.")  # noqa: TRY003
+        if self.request_url and (self.on_click or self.button_type != "button"):
+            raise ValueError(  # noqa: TRY003
+                f"ButtonConfig {self.label}: on_click and button_type only apply to buttons without request_url."
+            )
+        if self.disabled and self.disabled_reason is None:
+            warnings.warn(
+                f"ButtonConfig {self.label} is disabled without a disabled_reason. "
+                "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -174,7 +172,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
@@ -184,8 +182,9 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -215,9 +214,6 @@ class InputFieldConfig(BaseFormFieldConfig):
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
     )
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
-    )
 
     def __post_init__(self) -> None:
         """Validate input_type, minimum/maximum, and min_length/max_length after initialization."""
@@ -242,14 +238,15 @@ class TextareaConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -269,9 +266,6 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
-    )
 
 
 @dataclass
@@ -285,11 +279,13 @@ class CheckboxConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -317,7 +313,7 @@ class CheckboxItemConfig:
         label: Label text.
         value: Value submitted when checked.
         disabled: **True** if the checkbox should be disabled.
-        disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
@@ -335,7 +331,7 @@ class CheckboxItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -370,6 +366,8 @@ class CheckboxGroupConfig:
         minimum_checked: Number of checkbox elements that must be selected at minimum.
         maximum_checked: Number of checkbox elements that may be selected at the same time.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -401,6 +399,10 @@ class CheckboxGroupConfig:
     )
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
     def __post_init__(self) -> None:
@@ -496,7 +498,7 @@ class RadioItemConfig:
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
-        disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
@@ -516,7 +518,7 @@ class RadioItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+                "Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
             )
         },
     )
@@ -548,6 +550,8 @@ class RadioGroupConfig:
         as_row: **True** if the radio elements should be displayed side by side.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -574,6 +578,10 @@ class RadioGroupConfig:
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name, set first option for current_value if empty, and validate it against items."""
@@ -597,11 +605,12 @@ class RadioBlockConfig:
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
         request_url: The URL to which the request should be sent when clicking one of the radio buttons.
-        hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
-        hx_swap_method: The way in which the target is to be replaced.
+        htmx: HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -613,7 +622,8 @@ class RadioBlockConfig:
                 RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
-            hx_target_id="content-area",
+            request_url="/products/",
+            htmx=HtmxConfig(target="#content-area", swap_method="outerHTML"),
         )
         """
 
@@ -633,11 +643,11 @@ class RadioBlockConfig:
         default="",
         metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
-    hx_target_id: str = field(
-        default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
-    )
-    hx_swap_method: HtmxSwapMethod = field(
-        default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
+    htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.")
+        },
     )
     method: str = field(
         default="",
@@ -647,11 +657,26 @@ class RadioBlockConfig:
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
+    help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
+    error_text: str = field(
+        default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
+    )
 
     def __post_init__(self) -> None:
-        """Require a non-empty name and validate hx_swap_method and current_value."""
+        """Require a non-empty name, reject HTMX options that would be ignored and validate current_value."""
         validate_not_empty(self, "name")
-        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
+        if self.htmx is not None:
+            if self.integrated:
+                msg = (
+                    f"RadioBlockConfig {self.name!r}: integrated radio blocks are sent with their form, not with htmx."
+                )
+                raise ValueError(msg)
+            if not (self.request_url or self.htmx.request_url):
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs a request_url."
+                raise ValueError(msg)
+            if not self.htmx.target:
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs htmx.target, otherwise the radio button is swapped."
+                raise ValueError(msg)
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):
@@ -669,7 +694,7 @@ class SliderConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
@@ -681,6 +706,8 @@ class SliderConfig(BaseFormFieldConfig):
         value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -763,7 +790,7 @@ class ToggleConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
@@ -771,6 +798,8 @@ class ToggleConfig(BaseFormFieldConfig):
         switch: **True** if the toggle button should look like a typical switch select.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -806,12 +835,13 @@ class SelectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
-        explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -827,9 +857,6 @@ class SelectConfig(BaseFormFieldConfig):
         )
         """
 
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the filter that appears in a tooltip.")}
-    )
     options: list[str] | dict[str, str] = field(
         default_factory=list, metadata={"doc": _("List of values that can be selected.")}
     )
@@ -860,13 +887,15 @@ class MultiselectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
         options: List of values that can be selected.
         selected_options: List of currently selected options.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
+        help_text: Hint shown below the field.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -915,8 +944,12 @@ class ChatConfig:
 
     Renders a chat interface with an input line and a response container.
 
+    The message is posted as ``msg``; the response is appended to the response container.
+
     Attributes:
         request_url: URL for sending chat messages via HTMX POST.
+        tag_id: Prefix of the element IDs, unique on the page.
+        htmx: Shared request options such as vals or a loading indicator.
 
     """
 
@@ -925,7 +958,11 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+    tag_id: str = field(default="chat", metadata={"doc": _("Prefix of the element IDs, unique on the page.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as vals or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "request_url")
+        validate_not_empty(self, "request_url", "tag_id")
