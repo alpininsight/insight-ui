@@ -268,8 +268,8 @@ class BaseFormFieldConfig:
     )
 
     @property
-    def message_id(self) -> str:
-        """Id prefix of the help and error texts: the tag_id, otherwise the name."""
+    def field_id(self) -> str:
+        """Id of the field: the tag_id, otherwise the name. Label, help and error texts build their ids on it."""
         return self.tag_id or self.name
 
     def __post_init__(self) -> None:

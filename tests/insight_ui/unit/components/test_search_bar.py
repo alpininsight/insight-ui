@@ -4,6 +4,7 @@
 
 import json
 
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs import HtmxConfig, SearchBarConfig
 
@@ -41,3 +42,37 @@ class TestSearchBar(TemplateTagsTestCase):
 
         assert search_container is not None
         assert search_container["data-search-index"] == "/static/documentation/data/search-index-de.json"
+
+    def test_search_bar_ids_and_name_default_to_search(self) -> None:
+        """Without tag_id and name the markup stays as before."""
+        soup = BeautifulSoup(
+            self.render_template("{% load insight_tags %}{% search_bar enable_search=True %}"), "html.parser"
+        )
+        search = soup.find("input", {"type": "search"})
+
+        assert search["id"] == "search"
+        assert search["name"] == "search"
+        assert soup.find("label", {"for": "search"}) is not None
+        assert soup.find(id=search["aria-controls"]).has_attr("data-search-results")
+
+    def test_two_search_bars_on_one_page_keep_their_own_ids(self) -> None:
+        """A second search bar, e.g. next to the one in the navbar, gets its own label and results list."""
+        rendered = self.render_template(
+            "{% load insight_tags %}"
+            "{% search_bar enable_search=True %}"
+            '{% search_bar tag_id="product-search" name="q" enable_search=True %}'
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+        search = soup.find(id="product-search")
+
+        assert search["name"] == "q"
+        assert soup.find("label", {"for": "product-search"}) is not None
+        assert search["aria-controls"] == "product-search-results"
+        assert len(soup.find_all(id="search")) == 1
+        assert len(soup.find_all(id="search-results")) == 1
+
+    def test_search_bar_rejects_an_empty_id_or_name(self) -> None:
+        """An empty id or name would break the label or never submit the query."""
+        for field in ("tag_id", "name"):
+            with self.subTest(field=field), pytest.raises(ValueError, match=field):
+                SearchBarConfig(**{field: ""})

@@ -49,7 +49,7 @@ function createMultiselectDOM(options = {}) {
         ${optionsHTML}
       </div>
       <div class="info"></div>
-      <div id="${name}-aria-status" aria-live="polite"></div>
+      <div id="${name}-aria-status" aria-live="polite" data-multiselect-status></div>
       ${buttonsHTML}
     </div>
   `);

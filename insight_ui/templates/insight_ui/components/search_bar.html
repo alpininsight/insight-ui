@@ -17,22 +17,22 @@
         {% endif %}
         class="h-full"
     >
-        <label for="search" class="sr-only">{% trans "Search" %}</label>
+        <label for="{{ search_bar_config.tag_id }}" class="sr-only">{% trans "Search" %}</label>
         <div class="relative h-full">
             <div class="start-0 flex absolute inset-y-0 items-center ps-3 text-insight-body pointer-events-none">
                 {% icon name="magnifying-glass" size="s" %}
             </div>
             <input
                 type="search"
-                id="search"
-                name="search"
+                id="{{ search_bar_config.tag_id }}"
+                name="{{ search_bar_config.name }}"
                 placeholder="{{ search_bar_config.placeholder|default:_('Search...') }}"
                 value="{{ search_bar_config.search_query }}"
                 autocomplete="off"
                 {% if search_bar_config.enable_search %}
                     role="combobox"
                     aria-expanded="false"
-                    aria-controls="search-results"
+                    aria-controls="{{ search_bar_config.tag_id }}-results"
                     aria-autocomplete="list"
                     aria-haspopup="listbox"
                 {% endif %}
@@ -46,7 +46,7 @@
 
     {% if search_bar_config.enable_search %}
         <div
-            id="search-results"
+            id="{{ search_bar_config.tag_id }}-results"
             data-search-results
             role="listbox"
             aria-label="{% trans 'Search results' %}"
