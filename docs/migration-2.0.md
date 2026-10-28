@@ -26,7 +26,7 @@ pattern for a host project.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
 - [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
-- [ ] Expect `aria-disabled="true"` on a disabled link button, with no `href` and no `hx-*`.
+- [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
@@ -628,9 +628,9 @@ ButtonConfig(label="Cancel", color="secondary", variant="outline")
 BadgeConfig(label="Archived", color="neutral", disabled=True)
 ```
 
-`disabled=True` no longer replaces the color. The look comes from the
-`disabled` attribute (or `aria-disabled="true"` on links), so a button that
-JavaScript enables again shows its color. Combinations that used to be ignored
+`disabled=True` no longer replaces the color. The look comes from
+`aria-disabled="true"` (or a native `disabled` set by a script), so a button
+that JavaScript enables again shows its color. Combinations that used to be ignored
 now raise `ValueError`: `external=True` without `request_url`, and `on_click` or
 `button_type` together with `request_url`.
 
@@ -930,30 +930,43 @@ button .inline-flex { }
 Search: `footer h4`, `button > div`, `aria-label="Required"`,
 `data-accordion-chevron`.
 
-### Disabled link buttons
+### Disabled buttons and links
 
-[#718](https://github.com/alpininsight/insight-ui/pull/718).
+[#718](https://github.com/alpininsight/insight-ui/pull/718) (links),
+[#776](https://github.com/alpininsight/insight-ui/pull/776) (buttons).
 
 `ButtonConfig(disabled=True)` keeps its color; see
 [Button and badge color and variant](#button-and-badge-color-and-variant).
-A link (`request_url` set) renders `aria-disabled="true"` and omits `href`,
-`htmx_attributes` and `hx_*`. v1.15.1 already omitted `href`, and it still
-wrote `disabled` plus the HTMX attributes. A `<button>` still uses the
-`disabled` attribute.
+A disabled button or link renders `aria-disabled="true"` instead of the native
+`disabled` attribute. It stays focusable, so keyboard and screen reader users
+reach it and its `disabled_reason`, and the focus is not lost when a button
+becomes disabled, e.g. "Next" on the last page. It renders no `href`,
+`onclick`, `htmx_attributes` or `hx_*`. The base JavaScript blocks its click,
+also by Enter and Space, so a disabled submit or reset button does nothing.
+v1.15.1 omitted `href` on links and still wrote `disabled` plus the HTMX
+attributes; buttons used `disabled`.
 
 Before:
 
 ```html
 <a disabled hx-get="/save/" hx-target="#main">Save</a>
+<button type="submit" onclick="save()" disabled>Save</button>
 ```
 
 After:
 
 ```html
 <a aria-disabled="true">Save</a>
+<button type="submit" aria-disabled="true">Save</button>
 ```
 
-Search: `a[disabled]`, and tests that expect `hx-` on a disabled link.
+A script that enables a disabled button removes `aria-disabled` instead of
+setting `button.disabled = false`. A script may still set the native `disabled`
+while a request runs; such a button looks disabled as well.
+
+Search: `a[disabled]`, `button[disabled]` and `:disabled` in host CSS, scripts
+and tests, `.disabled = false` on package buttons, and tests that expect `hx-`
+on a disabled link.
 
 ### Form error container and indicator
 
