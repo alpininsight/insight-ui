@@ -19,6 +19,7 @@ pattern for a host project.
 ## Checklist
 
 - [ ] Rename the six color-family tokens in two passes. Do this before any other class edit.
+- [ ] Replace the family `-hover` / `-active` tokens with `-action-hover` / `-action-active`, and use `-text` for colored text.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
 - [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
@@ -58,7 +59,7 @@ The old names still match a real token, and the meaning has changed.
 
 | v1.15.1 | Meaning then | 2.0 name |
 | --- | --- | --- |
-| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-fill` |
+| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-action` |
 | `--color-insight-<family>-foreground` | Colored text and icons | `--color-insight-<family>-text` |
 | `--color-insight-<family>-foreground-dark` | Same color in the dark theme | `--color-insight-<family>-text-dark` |
 
@@ -71,21 +72,22 @@ that class was white text on a filled button. It is now the colored text tone
 (`#0856C0` in the light theme).
 
 Do the replacement in this order. Pass 2 writes the new `-text` names. Running
-it first makes a later `-text` → `-on-fill` pass rewrite those names as well.
+it first makes a later `-text` → `-on-action` pass rewrite those names as well.
 
 ```bash
-# 1. Old on-fill token. The (?!-) skip keeps a later -text-dark result intact.
-perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-fill/g' FILES
+# 1. Old on-action token. The (?!-) skip keeps a later -text-dark result intact.
+perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-action/g' FILES
 
 # 2. Old colored-text token, including the -dark variant.
 perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-foreground/insight-$1-text/g' FILES
 ```
 
-Limit both passes to those six families. A global `-text` → `-on-fill` replace
+Limit both passes to those six families. A global `-text` → `-on-action` replace
 also rewrites `--color-insight-text-body`, `--color-insight-text-headline`,
 `--color-insight-text-muted` and `--color-insight-text-link`. Those names did
-not change. There is no `-on-fill-dark` token. The old on-fill value was
-`#FFFFFF` in both themes.
+not change. The old value was `#FFFFFF` in both themes; 2.0 keeps it for
+`-on-action` and the new `-on-action-dark`, which a theme can set for a dark
+theme fill that needs other text.
 
 Before:
 
@@ -97,7 +99,7 @@ Before:
 After:
 
 ```html
-<button class="bg-insight-danger-action text-insight-danger-on-fill">Delete</button>
+<button class="bg-insight-danger-action text-insight-danger-on-action">Delete</button>
 <p class="text-insight-danger-text">Something failed.</p>
 ```
 
@@ -109,6 +111,60 @@ insight-(primary|secondary|success|warning|danger|info)-(text|foreground)
 
 Review matches of `-text` before editing. A match that is already the colored
 text tone on a migrated tree must stay `-text`.
+
+### Readable text colors and fewer state tokens
+
+The six color families keep these tokens: the accent (`primary`), `-text`,
+`-action` with `-action-hover` and `-action-active`, `-on-action` and `-soft`.
+The table in [the design system guide](design-system.md#color-families) says
+which one to use for what.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `--color-insight-<family>-hover`, `-active` and their `-dark` variants | Removed. Fills use `-action-hover` / `-action-active`; text uses `-text`. |
+| `--color-insight-text-link` without a dark value | `--color-insight-text-link-dark` (`#72AEFF`) |
+| `--color-insight-text-link-hover` `#72AEFF` in both themes | `#1555B0` in the light theme, `--color-insight-text-link-hover-dark` `#90C5FF` |
+| `{% icon color="primary" %}` renders `text-insight-primary` | Renders `text-insight-primary-text`, readable in the dark theme |
+
+The family accent (`text-insight-danger`) does not change with the theme, and
+as text it lacks contrast in one of them. The package templates now use the
+`-text` token for text and icons, so colored text and icons get lighter in the
+dark theme: the info box title, form and login errors, the logout entry, the
+footer mail link, hover colors of collapsible and table headers, sidebar
+category headings and the current table of contents entry. Tabs keep the
+`-text` color after switching; before, the tab that was active on page load
+kept its primary classes.
+
+Before:
+
+```css
+@theme {
+    --color-insight-primary-hover: #4F46E5;
+    --color-insight-primary-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger">Something failed.</p>
+```
+
+After, set the states of filled controls and use the text token:
+
+```css
+@theme {
+    --color-insight-primary-action-hover: #4F46E5;
+    --color-insight-primary-action-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger-text">Something failed.</p>
+```
+
+Search: `-hover:` and `-active:` after a family name in theme files,
+`text-insight-<family>-hover`, and `text-insight-<family>` followed by a space
+or quote in templates. The [token check](../scripts/check_design_tokens.py)
+reports the last one.
 
 ## Page shell
 
@@ -1352,7 +1408,7 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
+| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-action token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15

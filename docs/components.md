@@ -29,12 +29,6 @@ not validate every value; check the Config constructor and rendering tests.
 
 ## Configs And Supported Overrides
 
-### Native link downloads
-
-Set `download=True` on a link button to download its target, or pass a string
-such as `download="report.svg"` to suggest a filename. Downloads require
-`request_url` and cannot be combined with HTMX request settings.
-
 The button supports both inline arguments and Config objects:
 
 ```python
@@ -72,6 +66,12 @@ Underscores become hyphens and values become strings. Supplying `data_*`,
 it. This example supplies only a trigger; the host must supply the target element
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
+
+### Native link downloads
+
+Set `download=True` on a link button to download its target, or pass a string
+such as `download="report.svg"` to suggest a filename. Downloads require
+`request_url` and cannot be combined with HTMX request settings.
 
 ## HTMX Requests
 
