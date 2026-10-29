@@ -8,7 +8,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 This guide covers consumer changes on `develop` since the `v1.15.1` tag.
 There is no `2.0.0` tag yet. The runtime Python and Django requirements are
 unchanged. The dev pin `django-stubs` moved from 6.1.1 to 6.1.2. No template,
-static file or Python module was removed.
+static file or Python module was removed, except the two carousel templates
+(see [Carousel](#carousel)).
 
 Apply the checklist, then read the section for each hit. Every break below
 has a before/after snippet, the pull request that introduced it, and a search
@@ -27,7 +28,7 @@ pattern for a host project.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
 - [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
-- [ ] Expect `aria-disabled="true"` on a disabled link button, with no `href` and no `hx-*`.
+- [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
@@ -50,6 +51,7 @@ pattern for a host project.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
+- [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
 
 ## Color tokens are a silent break
 
@@ -685,9 +687,9 @@ ButtonConfig(label="Cancel", color="secondary", variant="outline")
 BadgeConfig(label="Archived", color="neutral", disabled=True)
 ```
 
-`disabled=True` no longer replaces the color. The look comes from the
-`disabled` attribute (or `aria-disabled="true"` on links), so a button that
-JavaScript enables again shows its color. Combinations that used to be ignored
+`disabled=True` no longer replaces the color. The look comes from
+`aria-disabled="true"` (or a native `disabled` set by a script), so a button
+that JavaScript enables again shows its color. Combinations that used to be ignored
 now raise `ValueError`: `external=True` without `request_url`, and `on_click` or
 `button_type` together with `request_url`.
 
@@ -838,7 +840,7 @@ These fields raise `ValueError` at construction when they are empty or `None`.
 accessible name.
 
 - `ButtonConfig.label`
-- `ImageConfig.url`, `ImageCarouselItemConfig.url`
+- `ImageConfig.url`, `CarouselImageConfig.url`, `CarouselConfig.item_template`
 - `ModalConfig.id`, `MessageDialogConfig.message`
 - `CheckboxItemConfig.tag_id`
 - `name` on `BaseFormFieldConfig`, `CheckboxGroupConfig`, `RadioGroupConfig`, `RadioBlockConfig`
@@ -987,30 +989,43 @@ button .inline-flex { }
 Search: `footer h4`, `button > div`, `aria-label="Required"`,
 `data-accordion-chevron`.
 
-### Disabled link buttons
+### Disabled buttons and links
 
-[#718](https://github.com/alpininsight/insight-ui/pull/718).
+[#718](https://github.com/alpininsight/insight-ui/pull/718) (links),
+[#776](https://github.com/alpininsight/insight-ui/pull/776) (buttons).
 
 `ButtonConfig(disabled=True)` keeps its color; see
 [Button and badge color and variant](#button-and-badge-color-and-variant).
-A link (`request_url` set) renders `aria-disabled="true"` and omits `href`,
-`htmx_attributes` and `hx_*`. v1.15.1 already omitted `href`, and it still
-wrote `disabled` plus the HTMX attributes. A `<button>` still uses the
-`disabled` attribute.
+A disabled button or link renders `aria-disabled="true"` instead of the native
+`disabled` attribute. It stays focusable, so keyboard and screen reader users
+reach it and its `disabled_reason`, and the focus is not lost when a button
+becomes disabled, e.g. "Next" on the last page. It renders no `href`,
+`onclick`, `htmx_attributes` or `hx_*`. The base JavaScript blocks its click,
+also by Enter and Space, so a disabled submit or reset button does nothing.
+v1.15.1 omitted `href` on links and still wrote `disabled` plus the HTMX
+attributes; buttons used `disabled`.
 
 Before:
 
 ```html
 <a disabled hx-get="/save/" hx-target="#main">Save</a>
+<button type="submit" onclick="save()" disabled>Save</button>
 ```
 
 After:
 
 ```html
 <a aria-disabled="true">Save</a>
+<button type="submit" aria-disabled="true">Save</button>
 ```
 
-Search: `a[disabled]`, and tests that expect `hx-` on a disabled link.
+A script that enables a disabled button removes `aria-disabled` instead of
+setting `button.disabled = false`. A script may still set the native `disabled`
+while a request runs; such a button looks disabled as well.
+
+Search: `a[disabled]`, `button[disabled]` and `:disabled` in host CSS, scripts
+and tests, `.disabled = false` on package buttons, and tests that expect `hx-`
+on a disabled link.
 
 ### Form error container and indicator
 
@@ -1356,6 +1371,85 @@ Remove the `get_allowed_operators` view and its URL pattern.
 
 Search: `model_fields=`, `query_builder_utils`, `get_filter_settings_for_field`,
 `build_dynamic_query`, `get_allowed_operators` and `custom_filters`.
+
+## Carousel
+
+[#770](https://github.com/alpininsight/insight-ui/pull/770).
+
+### One carousel for any content
+
+The carousel only provides the browsing now. Each item is rendered with
+`item_template`, which gets `item` and the page context (`request`, `user`,
+`csrf_token`). Cards and images are shipped item templates; the
+`image_carousel` tag is gone.
+
+| Before | After |
+|--------|-------|
+| `CardCarouselConfig` | `CarouselConfig` |
+| `ImageCarouselConfig` | `CarouselConfig(item_template="insight_ui/components/items/image_item.html")` |
+| `ImageCarouselItemConfig` | `CarouselImageConfig` |
+| `carousel_items=` | `items=` |
+| `ImageCarouselItemConfig.description` | `CarouselImageConfig.caption` |
+| `{% image_carousel %}` | `{% carousel %}` with the image item template |
+
+Before:
+
+```python
+ImageCarouselConfig(
+    carousel_items=[ImageCarouselItemConfig(url="/img/lake.jpg", alt="Lake at dawn", description="Lake Constance")],
+)
+```
+
+After:
+
+```python
+CarouselConfig(
+    items=[CarouselImageConfig(url="/img/lake.jpg", alt="Lake at dawn", caption="Lake Constance")],
+    item_template="insight_ui/components/items/image_item.html",
+)
+```
+
+Own content needs no config per item:
+
+```python
+CarouselConfig(items=Product.objects.filter(featured=True), item_template="shop/product_slide.html")
+```
+
+The caption is a `<figcaption>` below the image instead of text over it. It is
+as wide as the image (at least 12rem) and starts at the text edge, which reads
+better over several lines; `center_caption=True` centers a short caption.
+Every image is shown whole and centered on a stage of the same height (60vh,
+at most 4:3 of the item width), so the captions of a page line up.
+
+### Items per page
+
+`items_per_slide` is the maximum now. With `min_item_width` (a CSS length such
+as `"16rem"`), a narrow carousel shows fewer items per page, down to one.
+Without it, the carousel shows `items_per_slide` items at every width, as
+before.
+
+### Markup
+
+- The script builds the page dots; the server renders an empty
+  `.carousel-dots`. Each dot is a 24px button labelled "Go to page n", and the
+  current one has `aria-current="true"`. When the dots do not fit, the script
+  hides them and shows the page number instead, so `.carousel-index-text` is
+  always rendered and `hidden` without `show_index`.
+- Only the current dot is in the tab order. Arrow keys, Home and End on a dot
+  change the page and move the focus to the new dot; on the arrow buttons they
+  change the page. Inside an item the keys are left to its content.
+- The track sits in a `.carousel-viewport`. From `sm` on, the arrows sit beside
+  it instead of over the items; below `sm` they sit in the row with the dots.
+- Items on other pages are `inert`, so the keyboard focus stays on the visible
+  page.
+- The carousel is a `role="region"` with `aria-roledescription="carousel"`;
+  `label` names it.
+- The templates `carousels/card_carousel.html` and
+  `carousels/image_carousel.html` are removed; `carousel.html` replaces both.
+
+Search: `image_carousel`, `CardCarouselConfig`, `ImageCarouselConfig`,
+`ImageCarouselItemConfig`, `carousel_items`, `card_carousel.html` and
+`.carousel-dot`.
 
 ## Checked, and not a 2.0 break
 

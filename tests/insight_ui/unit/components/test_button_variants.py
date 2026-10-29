@@ -56,13 +56,28 @@ def test_link_and_plain_ignore_the_color(variant: str) -> None:
 
 
 def test_disabled_button_keeps_its_color_and_uses_the_attribute() -> None:
-    """The disabled look comes from the attribute, so a script can enable the button again."""
+    """The disabled look comes from aria-disabled, so a script can enable the button again by removing it."""
     soup = render('{% button label="Delete" color="danger" disabled=True disabled_reason="" %}')
     button = soup.find("button")
 
-    assert button.has_attr("disabled")
+    assert button["aria-disabled"] == "true"
     assert "btn-danger" in button["class"]
     assert "btn-disabled" not in button["class"]
+
+
+def test_disabled_button_stays_focusable_without_actions() -> None:
+    """A disabled button is not disabled natively, so it keeps the focus and its reason; it has no actions."""
+    soup = render(
+        '{% button label="Save" button_type="submit" on_click="save()" hx_post="/save/" '
+        'disabled=True disabled_reason="Nothing changed" %}'
+    )
+    button = soup.find("button")
+
+    assert not button.has_attr("disabled")
+    assert not button.has_attr("onclick")
+    assert not button.has_attr("hx-post")
+    assert button["type"] == "submit"
+    assert button["data-insight-tooltip"] == "Nothing changed"
 
 
 def test_disabled_link_is_aria_disabled_without_href_or_requests() -> None:
@@ -113,7 +128,7 @@ def test_disabled_badge_is_dimmed_and_disables_its_remove_button() -> None:
     soup = render("{% badge config=config %}", {"config": config})
 
     assert "badge-disabled" in soup.find(class_="badge")["class"]
-    assert soup.find("button").has_attr("disabled")
+    assert soup.find("button")["aria-disabled"] == "true"
 
 
 @pytest.mark.parametrize(("color", "button_class"), [("neutral", "btn-plain"), ("danger", "btn-danger")])

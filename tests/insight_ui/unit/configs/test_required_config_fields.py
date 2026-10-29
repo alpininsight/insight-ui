@@ -11,13 +11,13 @@ from django.template import Context, Template
 from insight_ui.configs import (
     AccordionConfig,
     ButtonConfig,
+    CarouselImageConfig,
     ChartConfig,
     ChatConfig,
     CheckboxItemConfig,
     DropdownConfig,
     DropdownItemConfig,
     FilterConfig,
-    ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
     LiveContentConfig,
@@ -91,9 +91,7 @@ REQUIRED_FIELDS: list = [
         id="UserMenuLinkConfig.request_url",
     ),
     pytest.param(lambda: ImageConfig(url="/static/logo.png"), "url", id="ImageConfig.url"),
-    pytest.param(
-        lambda: ImageCarouselItemConfig(url="/static/slide.png", alt=""), "url", id="ImageCarouselItemConfig.url"
-    ),
+    pytest.param(lambda: CarouselImageConfig(url="/static/slide.png", alt=""), "url", id="CarouselImageConfig.url"),
     # Accessible name of a button, also for icon-only buttons
     pytest.param(lambda: ButtonConfig(label="Save"), "label", id="ButtonConfig.label"),
 ]
@@ -111,7 +109,7 @@ def test_required_field_rejects_empty_value(build: Callable[[], object], field_n
 
 def test_empty_alt_text_stays_allowed() -> None:
     """Decorative images use an empty alt text on purpose, so it is not treated like a missing URL."""
-    assert ImageCarouselItemConfig(url="/static/slide.png", alt="").alt == ""
+    assert CarouselImageConfig(url="/static/slide.png", alt="").alt == ""
 
 
 def test_undefined_template_variable_is_rejected() -> None:
