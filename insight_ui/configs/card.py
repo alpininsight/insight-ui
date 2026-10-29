@@ -206,7 +206,7 @@ class CarouselConfig:
         metadata={"doc": _("Items to display, e.g. CardConfig, CarouselImageConfig or model instances.")},
     )
     item_template: str = field(
-        default="insight_ui/components/carousels/card_item.html",
+        default="insight_ui/components/items/card_item.html",
         metadata={"doc": _("Template that renders one item; gets item and the page context.")},
     )
     tag_id: str = field(default="", metadata={"doc": _("Optional unique ID of the carousel.")})
@@ -243,7 +243,7 @@ class CarouselImageConfig:
     __example__ = """
         CarouselConfig(
             items=[CarouselImageConfig(url="/img/photo1.jpg", alt="Lake at dawn", caption="Lake Constance")],
-            item_template="insight_ui/components/carousels/image_item.html",
+            item_template="insight_ui/components/items/image_item.html",
         )
         """
 

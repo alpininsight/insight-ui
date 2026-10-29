@@ -52,7 +52,7 @@ class TestCarousel(TemplateTagsTestCase):
         """The caption is a figcaption of the image, not text laid over it."""
         config = CarouselConfig(
             items=[CarouselImageConfig(url="/img/lake.jpg", alt="Lake at dawn", caption="Lake Constance")],
-            item_template="insight_ui/components/carousels/image_item.html",
+            item_template="insight_ui/components/items/image_item.html",
         )
         figure = self.render_carousel(config).select_one(".carousel-item figure")
 
@@ -64,7 +64,7 @@ class TestCarousel(TemplateTagsTestCase):
         """An image without caption renders no empty caption."""
         config = CarouselConfig(
             items=[CarouselImageConfig(url="/img/lake.jpg", alt="")],
-            item_template="insight_ui/components/carousels/image_item.html",
+            item_template="insight_ui/components/items/image_item.html",
         )
 
         assert self.render_carousel(config).figcaption is None
@@ -116,7 +116,7 @@ class TestCarousel(TemplateTagsTestCase):
                 CarouselImageConfig(url="/img/a.jpg", alt="", caption="A long caption"),
                 CarouselImageConfig(url="/img/b.jpg", alt="", caption="Short", center_caption=True),
             ],
-            item_template="insight_ui/components/carousels/image_item.html",
+            item_template="insight_ui/components/items/image_item.html",
         )
         start, centered = self.render_carousel(config).select("figcaption")
 

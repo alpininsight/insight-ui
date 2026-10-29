@@ -1373,7 +1373,7 @@ The carousel only provides the browsing now. Each item is rendered with
 | Before | After |
 |--------|-------|
 | `CardCarouselConfig` | `CarouselConfig` |
-| `ImageCarouselConfig` | `CarouselConfig(item_template="insight_ui/components/carousels/image_item.html")` |
+| `ImageCarouselConfig` | `CarouselConfig(item_template="insight_ui/components/items/image_item.html")` |
 | `ImageCarouselItemConfig` | `CarouselImageConfig` |
 | `carousel_items=` | `items=` |
 | `ImageCarouselItemConfig.description` | `CarouselImageConfig.caption` |
@@ -1392,7 +1392,7 @@ After:
 ```python
 CarouselConfig(
     items=[CarouselImageConfig(url="/img/lake.jpg", alt="Lake at dawn", caption="Lake Constance")],
-    item_template="insight_ui/components/carousels/image_item.html",
+    item_template="insight_ui/components/items/image_item.html",
 )
 ```
 
