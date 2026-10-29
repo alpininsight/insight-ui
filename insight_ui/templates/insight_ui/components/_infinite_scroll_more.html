@@ -1,0 +1,20 @@
+{% load i18n insight_tags %}
+
+{% comment %}
+    The container is the default hx-indicator: while a request runs, HTMX marks it and the loading text appears.
+    The text is hidden from screen readers; the global loading indicator announces the request and sets aria-busy.
+{% endcomment %}
+<div id="{{ infinite_scroll_config.tag_id }}-more"{% if next_page %} hx-swap-oob="true"{% endif %} class="flex flex-col gap-insight-s items-center py-insight-m">
+    {% if load_more %}
+        {% if infinite_scroll_config.auto_fetch %}
+            {# Loads the next page as soon as it scrolls into view. #}
+            <div {% htmx_attributes load_more trigger="revealed" %} class="w-full min-h-px"></div>
+        {% else %}
+            {# Disabled while loading, so a second click does not request the same page again. #}
+            {% button label=_("Load more") size="l" htmx=load_more hx_disabled_elt="this" %}
+        {% endif %}
+        <span class="htmx-indicator text-sm text-insight-body" aria-hidden="true">{% translate "More content is loading..." %}</span>
+    {% elif set_size %}
+        <p class="text-sm text-insight-body">{% translate "All content loaded." %}</p>
+    {% endif %}
+</div>
