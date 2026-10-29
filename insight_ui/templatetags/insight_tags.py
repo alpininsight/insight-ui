@@ -1835,6 +1835,7 @@ def form(
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "form_config": config,
+        "native_form_action": (config.htmx.request_url if config.htmx else "") or config.request_url,
         "rendered_fields": [_render_form_field(field) for field in config.fields],
         # "find" keeps the indicator to this form; a plain class selector would show every indicator on the page.
         "form_indicator": "find .htmx-indicator" if config.show_loading_indicator else "",
