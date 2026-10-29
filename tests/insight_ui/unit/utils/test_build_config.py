@@ -90,8 +90,6 @@ FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "multiselect": {"required"},
     # required has no effect: a range always has a value.
     "slider": {"required"},
-    # Dead field, removed with the toggle_view review.
-    "toggle_view": {"current_view"},
 }
 
 
