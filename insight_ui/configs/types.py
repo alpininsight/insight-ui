@@ -28,7 +28,7 @@ from typing import Literal
 from urllib.parse import urlsplit
 
 from django.utils.encoding import force_str
-from django.utils.functional import Promise
+from django.utils.functional import Promise, lazy
 from django.utils.safestring import SafeData
 
 # =============================================================================
@@ -338,11 +338,25 @@ def url_scheme(url: str) -> str:
     return urlsplit(url).scheme.lower()
 
 
+def _validated_url(value: str | Promise, allowed: tuple[str, ...], field_label: str) -> str:
+    """Check the resolved URL while preserving its original escaping behavior."""
+    resolved = force_str(value)
+    # Templates preserve trusted entities; the browser decodes them in attributes.
+    scheme_value = unescape(resolved) if isinstance(resolved, SafeData) else resolved
+    scheme = url_scheme(scheme_value)
+    if scheme and scheme not in allowed:
+        msg = f"{field_label}: the scheme '{scheme}:' is not allowed. Use a relative URL or {', '.join(allowed)}."
+        raise ValueError(msg)
+    return resolved
+
+
 def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
     """Validate the schemes of all URL fields of a config.
 
     URL fields are found by name: url, url_dark and *image_url / *avatar_url are images, every other
-    *_url and href is a link or an endpoint. Empty values are skipped; required URLs use validate_not_empty.
+    *_url and href is a link or an endpoint. Plain strings are checked immediately.
+    Django lazy strings remain lazy and are checked whenever resolved. Required URLs
+    also use validate_not_empty.
 
     Args:
         config: The config instance to check.
@@ -358,17 +372,11 @@ def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
         if not _URL_FIELDS.search(name) or not isinstance(value, (str, Promise)):
             continue
         allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
-        rendered_value = force_str(value)
-        if isinstance(rendered_value, SafeData):
-            # Templates preserve trusted entities; the browser decodes them in attributes.
-            rendered_value = unescape(rendered_value)
-        scheme = url_scheme(rendered_value)
-        if scheme and scheme not in allowed:
-            msg = (
-                f"{config.__class__.__name__}.{name}: the scheme '{scheme}:' is not allowed. "
-                f"Use a relative URL or {', '.join(allowed)}."
-            )
-            raise ValueError(msg)
+        field_label = f"{config.__class__.__name__}.{name}"
+        if isinstance(value, Promise):
+            setattr(config, name, lazy(_validated_url, str)(value, allowed, field_label))
+        else:
+            _validated_url(value, allowed, field_label)
 
 
 def validate_heading_level(value: int, field_name: str = "heading_level") -> None:

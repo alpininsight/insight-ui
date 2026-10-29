@@ -5,13 +5,17 @@
 import dataclasses
 import inspect
 import re
+from types import ModuleType
 from typing import Any
 
 import pytest
 from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.test import override_settings
+from django.urls import clear_url_caches, path, reverse_lazy
 from django.utils.functional import lazy
 from django.utils.safestring import mark_safe
-from insight_ui.configs import FooterContactConfig, PaginationConfig, WebSocketConfig
+from insight_ui.configs import FooterContactConfig, NavbarBrandConfig, PaginationConfig, WebSocketConfig
 
 from insight_ui import configs
 
@@ -85,7 +89,7 @@ def test_lazy_url_field_rejects_script_urls(config_class: type, name: str) -> No
     config = build(config_class)
     script_url = lazy(lambda: "java\tscript:alert(1)", str)()
     with pytest.raises(ValueError, match="is not allowed"):
-        dataclasses.replace(config, **{name: script_url})
+        str(getattr(dataclasses.replace(config, **{name: script_url}), name))
 
 
 @pytest.mark.parametrize(("config_class", "name"), FIELDS)
@@ -114,7 +118,7 @@ def test_lazy_safe_url_field_rejects_encoded_script_schemes(config_class: type, 
     config = build(config_class)
     value = lazy(lambda: mark_safe("javascript&colon;alert(1)"), str)()
     with pytest.raises(ValueError, match="is not allowed"):
-        dataclasses.replace(config, **{name: value})
+        str(getattr(dataclasses.replace(config, **{name: value}), name))
 
 
 @pytest.mark.parametrize(("config_class", "name"), FIELDS)
@@ -122,6 +126,18 @@ def test_plain_url_field_preserves_literal_entity_text(config_class: type, name:
     """An ordinary URL is escaped by Django rather than treated as trusted HTML."""
     config = build(config_class)
     dataclasses.replace(config, **{name: "javascript&colon;label"})
+
+
+def test_reverse_lazy_waits_until_the_urlconf_is_ready() -> None:
+    """Module-level navbar configuration can be created before URL patterns exist."""
+    urlconf = ModuleType("deferred_urlconf")
+    urlconf.urlpatterns = []
+    with override_settings(ROOT_URLCONF=urlconf):
+        config = NavbarBrandConfig(request_url=reverse_lazy("home"))
+        urlconf.urlpatterns = [path("home/", lambda _: HttpResponse(), name="home")]
+        clear_url_caches()
+        assert str(config.request_url) == "/home/"
+    clear_url_caches()
 
 
 def test_url_kinds_allow_their_schemes() -> None:
