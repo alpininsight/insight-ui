@@ -50,6 +50,7 @@ pattern for a host project.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Rebuild query builder views on `parse_filters` and `build_query`, and rename `model_fields` to `fields`.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
+- [ ] Rebuild infinite scroll views on `current_page` and answer further pages with `{% infinite_scroll_items %}`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
 - [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
@@ -1544,6 +1545,70 @@ parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
 
 Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
 `#list-container`.
+
+## Infinite scroll
+
+[#772](https://github.com/alpininsight/insight-ui/pull/772).
+
+`infinite_scroll` was rebuilt on Django's `Paginator`, like the pagination.
+Its config, its next-page response and its markup changed.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `items`, `page`, `has_next` | `current_page`, a Django `Page` |
+| `tag_id` optional | `tag_id` required; the feed has this ID |
+| `?page=` appended to `request_url` | The page parameter (`page_param`, default `page`) replaces only itself; other query parameters stay |
+| `threshold` | Removed. It never reached the markup, and HTMX's `revealed` has no threshold |
+| `auto_fetch` passed back in the URL | Set on the config of every request |
+| Response: `infinite_scroll_items.html` with `items`, `has_next`, `page`, `request_url`, `auto_fetch`, `heading_level` | Response: `{% infinite_scroll_items config %}` with the same config as the feed |
+| Fixed title/content card | `item_template` renders the inside of each item; the default shows `item.title` and `item.content` |
+| — | `htmx` for shared options such as the indicator; URL, target, swap and history stay fixed |
+
+The feed now holds only the item articles, with `aria-posinset` and
+`aria-setsize`. The loading control follows the feed as
+`#<tag_id>-more`. It appends the next page to the feed and is replaced out of
+band by the response. While a request runs, the global loading indicator sets
+`aria-busy` on the feed. After "Load more" the focus moves to the first new
+item. The feed is no longer a live region.
+
+While a request runs, the control shows "More content is loading..." unless
+`htmx.loading_indicator_id` names an own indicator, and the "Load more" button
+is disabled. The global loading bar runs as for other requests; turn it off
+with `HtmxConfig(show_global_loading_indicator=False)`.
+
+Before:
+
+```python
+InfiniteScrollConfig(request_url="/news/", items=first_items, page=2, has_next=True)
+```
+
+```python
+# next-page view
+render(request, "insight_ui/components/infinite_scroll_items.html", {
+    "items": items, "has_next": has_next, "page": page + 1, "request_url": "/news/", "auto_fetch": "True",
+})
+```
+
+After, one view for the page and for the requests of further pages:
+
+```python
+def news(request):
+    page = Paginator(News.objects.all(), 10).get_page(request.GET.get("page"))
+    feed = InfiniteScrollConfig(tag_id="news", request_url=reverse("news"), current_page=page)
+    template = "news/_feed_page.html" if request.headers.get("HX-Request") else "news/index.html"
+    return render(request, template, {"feed": feed})
+```
+
+```text
+{# news/index.html #}
+{% infinite_scroll config=feed %}
+
+{# news/_feed_page.html #}
+{% load insight_tags %}{% infinite_scroll_items config=feed %}
+```
+
+Search: `InfiniteScrollConfig(`, `infinite_scroll_items.html`, `threshold=`,
+`has_next=` and `auto_fetch` in query strings.
 
 ## Query builder
 
