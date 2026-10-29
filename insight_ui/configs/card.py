@@ -16,6 +16,7 @@ from insight_ui.configs.types import (
     validate_heading_level,
     validate_not_empty,
     validate_toggle_view_type,
+    validate_urls,
 )
 from insight_ui.configs.utils import BadgeConfig
 
@@ -97,6 +98,7 @@ class AppCardConfig:
 
     def __post_init__(self) -> None:
         """Validate heading_level after initialization."""
+        validate_urls(self)
         validate_heading_level(self.heading_level)
 
 
@@ -146,6 +148,7 @@ class FlipCardConfig:
 
     def __post_init__(self) -> None:
         """Validate heading_level after initialization."""
+        validate_urls(self)
         validate_heading_level(self.heading_level)
 
 
@@ -231,7 +234,8 @@ class CarouselImageConfig:
     center_caption: bool = field(default=False, metadata={"doc": _("Center the caption; suits short captions.")})
 
     def __post_init__(self) -> None:
-        """Reject an empty URL."""
+        """Reject an empty URL and a URL with a scheme that is not allowed."""
+        validate_urls(self)
         validate_not_empty(self, "url")
 
 
