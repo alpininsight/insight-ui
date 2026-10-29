@@ -28,7 +28,7 @@ import { Search } from "./insight-ui-search.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
-import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
+import { RingCarousel } from "./insight-ui-ring-carousel.js";
 
 // Expose component classes for lifecycle cleanup lookups in insight-ui-utils.js
 window.InsightUI = window.InsightUI || {};
@@ -51,7 +51,7 @@ Object.assign(window.InsightUI, {
 	Sidebar,
 	Tabs,
 	ThemeToggle,
-	ThreeDCarousel,
+	RingCarousel,
 });
 
 /**
@@ -77,7 +77,7 @@ function initAll() {
 	Sidebar.initAll();
 	Tabs.initAll();
 	ThemeToggle.initAll();
-	ThreeDCarousel.initAll();
+	RingCarousel.initAll();
 	InsightUI.WebSocket?.init();
 }
 

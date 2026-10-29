@@ -52,9 +52,11 @@ pattern for a host project.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
+- [ ] Rename `three_d_carousel` / `ThreeDCarouselConfig` to `ring_carousel` / `RingCarouselConfig`, pass `items=` (and `item_template=` for own content) instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
 
 ## Color tokens are a silent break
 
@@ -883,7 +885,7 @@ accessible name.
 - `DropdownConfig.tag_id`, `DropdownItemConfig.request_url`
 - `UserMenuLinkConfig.request_url`
 - `TabConfig.tag_id` and `TabConfig.request_url`
-- `AccordionConfig.tag_id`, `ThreeDCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
+- `AccordionConfig.tag_id`, `RingCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
 - `request_url` on `LiveContentConfig`, `WebSocketConfig`, `ChatConfig`, `InfiniteScrollConfig`, `PaginationConfig`
 - `FilterConfig.name`, `QueryBuilderFieldConfig.field`
 - `BadgeListConfig.tag_id` and `BadgeListConfig.label`
@@ -1006,6 +1008,46 @@ wrap the control and its texts in a `<div>`. The form's error container now has
 
 Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
 expect a checkbox or toggle `<input>` as the outermost element.
+
+### Field IDs
+
+[#777](https://github.com/alpininsight/insight-ui/pull/777).
+
+Every form field takes its id from `tag_id`, otherwise from `name`. Input,
+textarea, checkbox and toggle used to render no id without a `tag_id`, so their
+label was not associated with the control; toggle and slider rendered
+`id="None"`. The textarea label pointed at the `name` while the textarea had the
+`tag_id`. The label and the derived ids (slider `_label`, `_min`, `_max`, and
+`-help`, `-error`) now follow the same rule. The multiselect builds its ids
+(`-label`, `-search`, `-listbox`, `-opt-<n>`, `-aria-status`) from the `tag_id`
+too, and its tag accepts `tag_id=`. `name` stays the request parameter.
+
+Before:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input name="email">, label not associated #}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input id="email" name="email"> #}
+{% input_field tag_id="billing-email" name="email" label="E-Mail" %}
+```
+
+Two fields with the same `name` on one page need their own `tag_id`, otherwise
+the ids collide. Groups (checkbox group, radio group, radio block) already used
+the `name` and are unchanged.
+
+The search bar had fixed ids (`search`, `search-results`), which collided when
+the navbar and the page both rendered one. `SearchBarConfig` now has `tag_id`
+and `name`, both defaulting to `search`, so the markup only changes when you set
+them. The results list is `<tag_id>-results`.
+
+Search: two form fields with the same `name` and no `tag_id` on one page, and
+selectors or scripts that look up a multiselect by `#<name>-…`.
 
 ## Markup selectors
 
@@ -1392,6 +1434,87 @@ switch replaces the whole toggle view. Other options of the switch's
 `HtmxConfig`, such as `push_url`, are kept.
 
 Search: `hx_target_id` and `hx_swap_method`.
+
+## Ring carousel
+
+[#771](https://github.com/alpininsight/insight-ui/pull/771).
+
+### `three_d_carousel` is `ring_carousel`
+
+The name says what the carousel shows: items on a turning ring. The tag, the
+config, the template and the script hook are renamed:
+
+| Before | After |
+|--------|-------|
+| `{% three_d_carousel %}` | `{% ring_carousel %}` |
+| `ThreeDCarouselConfig` | `RingCarouselConfig` |
+| `carousels/3D_carousel.html` | `carousels/ring_carousel.html` |
+| `insight-ui-3D-carousel.js`, `ThreeDCarousel` | `insight-ui-ring-carousel.js`, `RingCarousel` |
+| `data-insight-3D-carousel` | `data-insight-ring-carousel` |
+
+### Any content on the ring
+
+Like `{% carousel %}`, the ring carousel renders each item with `item_template`,
+which gets `item` and the page context. The default template shows a
+`CardConfig` as card. `CarouselItemConfig` is gone.
+
+| Before | After |
+|--------|-------|
+| `carousel_items=[CarouselItemConfig(...)]` | `items=[CardConfig(...)]` or any objects with `item_template` |
+| `velocity` | `duration` (milliseconds of a turn, default 600) |
+| - | `label` names the carousel |
+
+Before:
+
+```python
+ThreeDCarouselConfig(
+    tag_id="showcase",
+    carousel_items=[CarouselItemConfig(title="Lamp", content="Brass, 40 cm")],
+    velocity=800,
+)
+```
+
+After:
+
+```python
+RingCarouselConfig(
+    tag_id="showcase",
+    items=[CardConfig(title="Lamp", content="Brass, 40 cm")],
+    duration=800,
+)
+```
+
+### Size and layout
+
+- The carousel sizes itself: no parent with a fixed height is needed any more.
+  The ring takes the width of the carousel; the items get the height of the
+  tallest content, at most 70% of the window, above which the front item
+  scrolls.
+- The ring has as many places as fit the width, at most 12. With more items
+  only those around the front one are shown; the others wait hidden at the
+  back.
+- Images and videos in an item shrink to its width; wider content is clipped,
+  so neighbouring items never overlap.
+- With `tilt` and without `face_camera` the radius grows with the item height,
+  so the top corners of the tilted items keep apart.
+- With `face_camera` and very few items (about 3), the items behind cover part
+  of the front one; the ring without `face_camera` suits few items better.
+
+### Markup and behaviour
+
+- The `<style>` block in the template is gone; the classes
+  `.ring-carousel*` in the stylesheet replace `.threeD_carousel`,
+  `.item_wrapper` and `.item`.
+- Only the front item can be focused and is read; the others are `inert`. The
+  position is announced ("2 of 6"). Arrow keys, Home and End turn the ring
+  from the controls; inside an item they are left to its content. A swipe
+  turns the ring on touch screens.
+- With a single item the controls are left out.
+- Nothing is animated on page load or with reduced motion.
+
+Search: `three_d_carousel`, `ThreeDCarouselConfig`, `3D_carousel`,
+`data-insight-3D-carousel`, `carousel_items`, `CarouselItemConfig`,
+`velocity=`, `.threeD_carousel` and `.item_wrapper`.
 
 ## Pagination
 
