@@ -4,11 +4,11 @@
     {% for item in items %}
         <li class="flex gap-4 items-center px-6 w-full h-20"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if item.status == "completed" %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-primary-action rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-insight-primary-on-action bg-insight-primary-action rounded-insight-full">
                     {% icon name="check" size="xl" %}
                 </div>
             {% elif item.status == "failed" %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-danger-action rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-insight-danger-on-action bg-insight-danger-action rounded-insight-full">
                     {% icon name="x-mark" size="xl" %}
                 </div>
             {% else %}

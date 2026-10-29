@@ -103,7 +103,7 @@ repos:
         name: Check design token usage
         entry: uv run python scripts/check_design_tokens.py
         language: system
-        files: '(^|/)templates/.*\.html$'
+        files: '(^|/)templates/.*\.html$|^insight_ui/static/insight_ui/js/.*(?<!\.min)\.js$|^insight_ui/utils/input\.css$'
         require_serial: true
 
       # Run pytest
