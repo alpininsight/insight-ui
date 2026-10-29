@@ -15,6 +15,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
+from django.utils.encoding import force_str
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Sequence
@@ -1440,27 +1441,93 @@ def badge_list(
 # =============================================================
 
 
-@register.inclusion_tag("insight_ui/components/infinite_scroll.html")
+@register.inclusion_tag("insight_ui/components/infinite_scroll.html", takes_context=True)
 def infinite_scroll(
+    context: template.Context,
     config: InfiniteScrollConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    items: Sequence[Any] | _Unset = UNSET,
-    page: int | _Unset = UNSET,
-    has_next: bool | _Unset = UNSET,
+    current_page: Page | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
-    threshold: int | _Unset = UNSET,
     heading_level: HeadingLevel | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
-    """Render a container for infinite scroll."""
-    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"infinite_scroll_config": config}
+    """Render a feed of the current page that loads the next pages."""
+    config = build_config(
+        InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    return _infinite_scroll_context(context, config, next_page=False)
+
+
+@register.inclusion_tag("insight_ui/components/infinite_scroll_items.html", takes_context=True)
+def infinite_scroll_items(context: template.Context, config: InfiniteScrollConfig) -> dict[str, Any]:
+    """Render the response to a request for the next page of an infinite_scroll feed."""
+    config = build_config(InfiniteScrollConfig, config)
+    return _infinite_scroll_context(context, config, next_page=True)
+
+
+def _infinite_scroll_context(
+    context: template.Context, config: InfiniteScrollConfig, *, next_page: bool
+) -> dict[str, Any]:
+    """Build the context shared by the feed and the responses for further pages.
+
+    Args:
+        context: The caller's page context, also available to custom item templates.
+        config: The feed configuration with the page to render.
+        next_page: True for a response that appends to an existing feed.
+
+    Returns:
+        The template context.
+
+    """
+    page = config.current_page
+    load_more = None
+    if page.has_next():
+        options = config.htmx or HtmxConfig()
+        number = page.next_page_number()
+        next_url = _page_url(config.request_url, config.page_param, number)
+        if options.method == "get":
+            # HTMX appends vals to GET URLs. Keep the owned page value in vals exactly once.
+            query = parse_qsl(urlsplit(next_url).query, keep_blank_values=True)
+            next_url = _url_with_query(next_url, [(key, value) for key, value in query if key != config.page_param])
+        # The control after the feed appends the next page to the feed and is replaced out of band.
+        load_more = replace(
+            options,
+            request_url=next_url,
+            vals={**(options.vals or {}), config.page_param: number},
+            target=f"#{config.tag_id}",
+            swap_method="beforeend",
+            push_url=False,
+            # Without an own indicator the control container shows its loading text.
+            loading_indicator_id=(config.htmx and config.htmx.loading_indicator_id) or f"#{config.tag_id}-more",
+        )
+    return {
+        **context.flatten(),
+        "infinite_scroll_config": config,
+        "items": [
+            {"item": item, "position": page.start_index() + offset} for offset, item in enumerate(page.object_list)
+        ],
+        "set_size": page.paginator.count,
+        "load_more": load_more,
+        "next_page": next_page,
+        # After "Load more" the focus moves to the first new item; on scroll it stays where it is.
+        "focus_first": next_page and not config.auto_fetch,
+    }
 
 
 def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
     """Return the URL with its query string replaced by the given parameters."""
-    return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
+    return urlunsplit(urlsplit(force_str(url))._replace(query=urlencode(query)))
+
+
+def _page_url(url: str, page_param: str, number: int) -> str:
+    """Return the URL of a page: other query parameters (filters, search) stay, only the page number is set."""
+    url = force_str(url)
+    query = [(key, value) for key, value in parse_qsl(urlsplit(url).query, keep_blank_values=True) if key != page_param]
+    return _url_with_query(url, [*query, (page_param, str(number))])
 
 
 @register.inclusion_tag("insight_ui/components/pagination.html")
@@ -1482,12 +1549,13 @@ def pagination(
     page = config.current_page
     paginator = page.paginator
 
-    # Keep the other query parameters of request_url (filters, search) and only set the page number.
-    query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
+    # The other query parameters of request_url (filters, search) are kept; the page size form needs them too.
+    resolved_url = force_str(config.request_url)
+    query = parse_qsl(urlsplit(resolved_url).query, keep_blank_values=True)
     base_params = [(key, value) for key, value in query if key != config.page_param]
 
     def page_url(number: int) -> str:
-        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+        return _page_url(resolved_url, config.page_param, number)
 
     pages = [
         {"ellipsis": True}
@@ -1531,7 +1599,7 @@ def pagination(
         "next_url": page_url(page.next_page_number()) if page.has_next() else "",
         "include": include,
         "ipp_select": ipp_select,
-        "ipp_action": _url_with_query(config.request_url, []),
+        "ipp_action": _url_with_query(resolved_url, []),
         "ipp_hidden_params": ipp_hidden_params,
     }
 
