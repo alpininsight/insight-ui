@@ -1547,9 +1547,10 @@ These showed up in earlier notes. The current tree does not do them.
   the case. Host utilities belong in the host build.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
-  With `assets.cdn_enabled`, the asset helper now keeps paths outside
-  `insight_ui/` local, so a host's own `INSIGHT_UI["stylesheet"]` no longer
-  points at the package CDN, where it never existed.
+  With `assets.cdn_enabled`, a stylesheet set in `INSIGHT_UI["stylesheet"]`
+  is now served from the host's staticfiles, whatever its path; only the
+  unset default comes from the CDN. Before, it pointed at the package CDN,
+  where it never existed.
 - `INSIGHT_UI["use_tailwind_cli"]` is gone. It never took effect: the template
   it included only loaded the `tailwind_cli` tag library, which does not reach
   `base.html`. Running `manage.py tailwind runserver` needs only

@@ -331,6 +331,8 @@
     *   The tokens are defined in "@layer theme" below this block, not here: Tailwind writes
     *   theme shadows into its shadow-* classes as fixed values, so a theme stylesheet could
     *   not change them. The shadow-insight-* utilities read the variables instead.
+    *   They combine a token with ring-* in one box-shadow list, so a token must stay a shadow:
+    *   "0 0 #0000" removes one; "none" would invalidate the whole list, ring included.
     *
     */
 

@@ -86,8 +86,10 @@ does not. Hosts own their layout CSS:
 - To change only token values (colors, radii, font), no build is needed; see
   [theming a host](design-system.md#theming-a-host).
 
-Host paths in `INSIGHT_UI["stylesheet"]` and `INSIGHT_UI["theme_stylesheet"]`
-are always served from your staticfiles, also with `assets.cdn_enabled`.
+With `assets.cdn_enabled`, the main stylesheet comes from the package CDN only
+while `INSIGHT_UI["stylesheet"]` is not set. Once you set it, to any path, it
+is your own build and is served from your staticfiles, like
+`INSIGHT_UI["theme_stylesheet"]`.
 
 Do not edit the generated package CSS in `site-packages`.
 

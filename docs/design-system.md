@@ -141,6 +141,10 @@ staticfiles, also with the package CDN enabled.
   `--radius-insight-*`, `--spacing-insight-*`, `--shadow-insight-*`,
   `--font-sans` and Tailwind's `--text-*` sizes. Breakpoints cannot: media
   queries do not read variables, so Tailwind writes their values into the CSS.
+- To remove a shadow, set its token to `0 0 #0000`, not `none`. The
+  `shadow-insight-*` classes combine the token with focus rings in one
+  `box-shadow` list, and `none` makes that whole list invalid, ring included.
+  Tailwind's own `shadow-none` uses the same value.
 
 **Your own build.** Compile a stylesheet that imports the package's `input.css`
 and also scans your templates, then point `INSIGHT_UI["stylesheet"]` at its

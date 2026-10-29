@@ -13,7 +13,6 @@ from pathlib import Path
 import pytest
 from bs4 import BeautifulSoup
 from django.test import override_settings
-from insight_ui.asset_urls import insight_asset_url
 
 import insight_ui
 
@@ -48,16 +47,6 @@ def test_no_theme_stylesheet_by_default(client) -> None:  # noqa: ANN001
 def test_theme_stylesheet_stays_local_with_the_cdn(client) -> None:  # noqa: ANN001
     """The CDN only hosts the package's files; the host's theme stylesheet is served locally."""
     assert "/static/brand/theme.css" in stylesheets(client)
-
-
-@override_settings(INSIGHT_UI=CDN)
-def test_own_stylesheet_stays_local_with_the_cdn() -> None:
-    """A host's own Tailwind build in INSIGHT_UI["stylesheet"] is not looked up on the package CDN."""
-    assert insight_asset_url("css/app.css") == "/static/css/app.css"
-    assert (
-        insight_asset_url("insight_ui/css/tailwind.css")
-        == "https://cdn.example.com/insight-ui/v1.2.3/css/tailwind.min.css"
-    )
 
 
 @pytest.fixture(scope="module")
