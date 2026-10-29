@@ -69,6 +69,27 @@ def test_form_without_challenge_does_not_load_or_render_turnstile() -> None:
     assert soup.select_one("[data-insight-turnstile]") is None
 
 
+@pytest.mark.parametrize(
+    ("htmx_url", "native_url", "expected_action"),
+    [("/enhanced/", "", "/enhanced/"), ("", "/native/", "/native/"), ("", "", "")],
+)
+def test_protected_htmx_form_keeps_a_native_post_fallback(htmx_url: str, native_url: str, expected_action: str) -> None:
+    """A missing or unavailable HTMX request never sends the token in a GET query."""
+    config = FormConfig(
+        request_url=native_url,
+        method="get",
+        htmx=HtmxConfig(request_url=htmx_url, method="post"),
+        turnstile=TurnstileConfig(site_key="public"),
+    )
+    form = render("{% form config=config %}", config=config).find("form")
+    assert form["method"] == "post"
+    assert form["action"] == expected_action
+    if htmx_url:
+        assert form["hx-post"] == htmx_url
+    else:
+        assert not form.has_attr("hx-post")
+
+
 @pytest.mark.parametrize("show_loading_indicator", [True, False])
 def test_protected_form_preserves_field_configs_and_loading_indicator(show_loading_indicator: bool) -> None:
     """Turnstile composes with the current field API and the per-form HTMX indicator."""

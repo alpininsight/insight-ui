@@ -3,6 +3,10 @@
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
   {% if form_config.htmx %}
+    {% if form_config.turnstile %}
+      action="{{ form_config.htmx.request_url|default:form_config.request_url }}"
+      method="post"
+    {% endif %}
     {% htmx_attributes form_config.htmx trigger="submit" indicator=form_indicator %}
   {% else %}
     action="{{ form_config.request_url }}"
