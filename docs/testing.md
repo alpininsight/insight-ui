@@ -22,7 +22,7 @@ documentation application, credentials or running deployment is needed.
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_button.py
-npm test -- tests/js/tabs.test.js
+npx --no-install vitest run tests/js/tabs.test.js
 uv run pytest tests/insight_ui/unit/test_contributor_docs.py
 ```
 

@@ -216,7 +216,7 @@ uv run pytest tests/insight_ui/unit/components/test_example_panel.py
 If you added JavaScript, run its focused test too:
 
 ```bash
-npm test -- tests/js/example-panel.test.js
+npx --no-install vitest run tests/js/example-panel.test.js
 ```
 
 Then run the package checks before opening the PR:

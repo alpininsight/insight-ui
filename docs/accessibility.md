@@ -101,7 +101,7 @@ After [contributor setup](../CONTRIBUTING.md), run focused package checks:
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_form_field_messages.py tests/insight_ui/unit/test_design_tokens.py
-npm test -- tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
+npx --no-install vitest run tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
 ```
 
 [Vitest is configured for jsdom](../vitest.config.js), not a real browser.
