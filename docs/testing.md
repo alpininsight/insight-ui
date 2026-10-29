@@ -26,6 +26,18 @@ npm test -- tests/js/tabs.test.js
 uv run pytest tests/insight_ui/unit/test_contributor_docs.py
 ```
 
+Native link downloads also have a real-browser check, not a jsdom substitute:
+
+```bash
+uv run --with playwright==1.64.0 python -m playwright install chromium
+uv run --with playwright==1.64.0 python -m tests.browser.button_download_smoke
+```
+
+It renders the public tag, serves a local SVG and downloads it using Enter
+with page JavaScript disabled. Default, empty and suggested filenames and file
+bytes are checked. Contributor CI runs it in the required browser job;
+Playwright remains a test-only tool, not a package runtime dependency.
+
 The [existing button tests](../tests/insight_ui/unit/components/test_button.py)
 and [tabs tests](../tests/js/tabs.test.js) are working examples. Test the public
 contract rather than copying assertions from a different component blindly.
