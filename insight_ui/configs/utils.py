@@ -10,14 +10,12 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
-    BadgeType,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
     InlinePosition,
     Severity,
     Size,
-    validate_badge_type,
     validate_color_type,
     validate_corner_position,
     validate_geo_map_marker_type,
@@ -165,7 +163,7 @@ class BrandMarkConfig:
             primary_text="Insight",
             secondary_text="UI",
             primary_text_color="text-insight-headline",
-            secondary_text_color="text-insight-secondary",
+            secondary_text_color="text-insight-secondary-text",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -181,7 +179,7 @@ class BrandMarkConfig:
         default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
     )
     secondary_text_color: str = field(
-        default="text-insight-secondary", metadata={"doc": _("CSS class for secondary text color.")}
+        default="text-insight-secondary-text", metadata={"doc": _("CSS class for secondary text color.")}
     )
     logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
@@ -222,8 +220,8 @@ class StatusScreenConfig:
             severity="error",
             notice_title="What happened?",
             notice="Please try again or contact support if the issue persists.",
-            primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
-            secondary_action=ButtonConfig(label="Back to start", request_url="/", type="secondary"),
+            primary_action=ButtonConfig(label="Try again", request_url="/login/", color="primary"),
+            secondary_action=ButtonConfig(label="Back to start", request_url="/", color="secondary"),
         )
         """
 
@@ -256,7 +254,7 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
+        foreground_color: Optional semantic text color. Empty uses the text color made for the fill.
         request_url: Optional URL that turns the ribbon into a link.
         aria_label: Optional accessible label for the linked ribbon.
 
@@ -283,7 +281,7 @@ class CornerRibbonConfig:
     )
     foreground_color: ColorType | str = field(
         default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
+        metadata={"doc": _("Optional semantic text color. Empty uses the text color made for the fill.")},
     )
     request_url: str = field(
         default="",
@@ -303,21 +301,21 @@ class CornerRibbonConfig:
 
     @property
     def background_class(self) -> str:
-        """Map neutral to an existing elevation token, not an undefined color."""
+        """Fill the ribbon like a solid button; neutral maps to an existing elevation token."""
         if self.color == "neutral":
             return "bg-insight-bg-raised"
-        return f"bg-insight-{self.color}"
+        return f"bg-insight-{self.color}-action"
 
     @property
     def foreground_class(self) -> str:
-        """Use the neutral body text role and preserve semantic color overrides."""
+        """Use the text color made for the fill; keep semantic color overrides."""
         if self.foreground_color == "neutral":
             return "text-insight-text-body"
         if self.foreground_color:
             return f"text-insight-{self.foreground_color}"
         if self.color == "neutral":
             return "text-insight-text-body"
-        return "text-white"
+        return f"text-insight-{self.color}-on-action"
 
 
 @dataclass
@@ -613,14 +611,15 @@ class ChartConfig:
 class LiveContentConfig:
     """Configuration for the live_content component.
 
-    Renders a container that auto-refreshes via HTMX polling.
+    Renders a container that auto-refreshes via HTMX polling. The updates stay out of the
+    global loading bar unless htmx sets show_global_loading_indicator=True.
 
     Attributes:
         request_url: URL for content updates.
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
-        show_global_loading_indicator: Whether the updates also show the global loading bar.
+        htmx: Shared request options such as target, swap method or vals.
 
     """
 
@@ -637,8 +636,8 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
-    show_global_loading_indicator: bool = field(
-        default=False, metadata={"doc": _("Whether the updates also show the global loading bar.")}
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as target, swap method or vals.")}
     )
 
     def __post_init__(self) -> None:
@@ -695,8 +694,9 @@ class BadgeConfig:
         label: Badge label.
         icon: An optional icon displayed before the text.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
-        type: Defines the color of the badge.
+        color: Color of the badge.
         size: Defines the size of the badge.
+        disabled: **True** to show the badge as disabled; also disables its remove button.
         tooltip: Optional tooltip text displayed on hover.
         remove_htmx: Request sent by a remove button next to the label. The button is only shown if this is set.
         remove_label: Accessible name of the remove button, followed by the badge label. Defaults to "Remove".
@@ -715,8 +715,12 @@ class BadgeConfig:
             "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
         },
     )
-    type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
+    color: ColorType = field(default="primary", metadata={"doc": _("Color of the badge.")})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    disabled: bool = field(
+        default=False,
+        metadata={"doc": _("**True** to show the badge as disabled; also disables its remove button.")},
+    )
     tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
     remove_htmx: HtmxConfig | None = field(
         default=None,
@@ -730,8 +734,8 @@ class BadgeConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate type, size and the target of the remove request after initialization."""
-        validate_badge_type(self.type, "type")
+        """Validate color, size and the target of the remove request after initialization."""
+        validate_color_type(self.color)
         validate_size(self.size, "size")
         _require_htmx_target(self, "remove_htmx")
 

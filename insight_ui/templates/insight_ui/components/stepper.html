@@ -4,11 +4,11 @@
     {% for item in items %}
         <li class="flex gap-4 items-center px-6 w-full h-20"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if item.status == "completed" %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-primary-action rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-insight-primary-on-action bg-insight-primary-action rounded-insight-full">
                     {% icon name="check" size="xl" %}
                 </div>
             {% elif item.status == "failed" %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-danger-action rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-insight-danger-on-action bg-insight-danger-action rounded-insight-full">
                     {% icon name="x-mark" size="xl" %}
                 </div>
             {% else %}
@@ -30,7 +30,7 @@
         </li>
         {% if not forloop.last %}
             <li aria-hidden="true" class="hidden text-insight-muted md:block">
-                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="rtl:rotate-180 w-6 h-20">
+                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="rtl:-scale-x-100 w-6 h-20">
                     <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
                 </svg>
             </li>

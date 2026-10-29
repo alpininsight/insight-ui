@@ -1,10 +1,19 @@
 {% load i18n insight_tags %}
-{# Sidebar Navigation Partial - renders navigation categories and items for use inside a sidebar layout tag. #}
+
+{% comment %}
+  Sidebar Navigation Partial - renders navigation categories and items for use inside the sidebar layout tag.
+
+  Heading levels follow what is rendered, so they never skip a level: title h2, each further heading one deeper.
+  The classes, not the level, define the look; data-sidebar-heading is the stable hook for styling and scripts.
+{% endcomment %}
+
+{% if sidebar_data.title %}{% firstof "3" as section_level %}{% else %}{% firstof "2" as section_level %}{% endif %}
+{% if sidebar_data.categories_title %}{% firstof section_level|add:1 as category_level %}{% else %}{% firstof section_level as category_level %}{% endif %}
 
 {# Optional title #}
 {% if sidebar_data.title %}
   <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-surface">
-    <h2 class="flex gap-2 items-center text-lg">
+    <h2 data-sidebar-heading="title" class="flex gap-2 items-center font-medium text-lg text-insight-headline">
       {% if sidebar_data.icon %}
         {% icon sidebar_data.icon %}
       {% endif %}
@@ -44,21 +53,21 @@
 
   {# Optional categories section title #}
   {% if sidebar_data.categories_title %}
-    <h3 class="flex gap-1 pt-8 mt-4 font-semibold text-lg tracking-wide border-t border-insight-surface">
+    <h{{ section_level }} data-sidebar-heading="categories-title" class="flex gap-1 pt-8 mt-4 font-semibold text-lg text-insight-headline tracking-wide border-t border-insight-surface">
       {{ sidebar_data.categories_title }}
-    </h3>
+    </h{{ section_level }}>
   {% endif %}
 
   {# Navigation categories #}
   <ul>
     {% for category in sidebar_data.categories %}
       <li>
-        <h4 class="flex gap-1 pt-4 pb-2 font-semibold text-base text-insight-primary-hover tracking-wide">
+        <h{{ category_level }} data-sidebar-heading="category" class="flex gap-1 pt-4 pb-2 font-semibold text-base text-insight-primary-text tracking-wide">
           {% if category.icon %}
             {% icon category.icon %}
           {% endif %}
           {{ category.caption }}
-        </h4>
+        </h{{ category_level }}>
         <ul>
           {% for item in category.items %}
             {% if item.request_url %}

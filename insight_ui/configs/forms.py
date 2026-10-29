@@ -91,9 +91,9 @@ class FormConfig:
         reset_label: Label for the reset button.
         request_url: Target URL for form submission.
         method: HTTP method for form submission (get or post).
-        htmx_config: HTMX configuration for AJAX submission.
-        turnstile: Optional Turnstile widget; the host must verify its token.
+        htmx: HTMX configuration for AJAX submission.
         show_loading_indicator: Whether to show the loading indicator of the form during HTMX requests.
+        turnstile: Optional Turnstile widget; the host must verify its token.
 
     """
 
@@ -119,7 +119,7 @@ class FormConfig:
                 TextareaConfig(name="message", label="Message", rows=5),
             ],
             show_reset_button=True,
-            htmx_config=HtmxConfig(request_url="/contact_submission", target="#form-response", swap_method="innerHTML"),
+            htmx=HtmxConfig(request_url="/contact_submission", target="#form-response", swap_method="innerHTML"),
         )
         """
 
@@ -132,17 +132,18 @@ class FormConfig:
     reset_label: str = field(default="", metadata={"doc": _("Label for the reset button.")})
     request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
     method: str = field(default="post", metadata={"doc": _("HTTP method for form submission (get or post).")})
-    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
-    turnstile: TurnstileConfig | None = field(
-        default=None, metadata={"doc": _("Optional Turnstile widget; the host must verify its token.")}
-    )
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
     show_loading_indicator: bool = field(
         default=True,
         metadata={"doc": _("Whether to show the loading indicator of the form during HTMX requests.")},
     )
+    # Keep the existing positional fields stable.
+    turnstile: TurnstileConfig | None = field(
+        default=None, metadata={"doc": _("Optional Turnstile widget; the host must verify its token.")}
+    )
 
     def __post_init__(self) -> None:
-        """Validate the field configs and warn if request_url and htmx_config.request_url are both set."""
+        """Validate the field configs and warn if request_url and htmx.request_url are both set."""
         for form_field in self.fields:
             if not isinstance(form_field, FORM_FIELD_CONFIGS):
                 supported = ", ".join(config.__name__ for config in FORM_FIELD_CONFIGS)
@@ -152,15 +153,15 @@ class FormConfig:
         if self.turnstile is not None:
             if not isinstance(self.turnstile, TurnstileConfig):
                 raise TypeError("FormConfig turnstile must be a TurnstileConfig instance.")  # noqa: TRY003
-            method = self.htmx_config.method if self.htmx_config else self.method
+            method = self.htmx.method if self.htmx else self.method
             if method.lower() != "post":
                 raise ValueError("Turnstile-protected forms must submit via POST.")  # noqa: TRY003
-        if self.request_url and self.htmx_config and self.htmx_config.request_url:
+        if self.request_url and self.htmx and self.htmx.request_url:
             identifier = self.tag_id or self.title or "(unnamed)"
             warnings.warn(
-                f"FormConfig {identifier} has both 'request_url' and 'htmx_config.request_url' set. "
+                f"FormConfig {identifier} has both 'request_url' and 'htmx.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for a plain form submission, or "
-                "'htmx_config.request_url' for HTMX requests, but not both.",
+                "'htmx.request_url' for HTMX requests, but not both.",
                 UserWarning,
                 stacklevel=2,
             )

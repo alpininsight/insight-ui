@@ -11,18 +11,19 @@ from django.template import Context, Template
 from insight_ui.configs import (
     AccordionConfig,
     ButtonConfig,
+    CarouselImageConfig,
     ChartConfig,
     ChatConfig,
     CheckboxItemConfig,
     DropdownConfig,
     DropdownItemConfig,
     FilterConfig,
-    ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
     LiveContentConfig,
     ModalConfig,
     PaginationConfig,
+    QueryBuilderConfig,
     QueryBuilderFieldConfig,
     TabConfig,
     ThreeDCarouselConfig,
@@ -35,8 +36,17 @@ REQUIRED_FIELDS: list = [
     # Names and identifiers
     pytest.param(lambda: FilterConfig(name="status"), "name", id="FilterConfig.name"),
     pytest.param(
-        lambda: QueryBuilderFieldConfig(field="status", label="Status"), "field", id="QueryBuilderFieldConfig.field"
+        lambda: QueryBuilderFieldConfig(field="status", label="Status", operations={"exact": "is"}),
+        "field",
+        id="QueryBuilderFieldConfig.field",
     ),
+    pytest.param(
+        lambda: QueryBuilderFieldConfig(field="status", label="Status", operations={"exact": "is"}),
+        "operations",
+        id="QueryBuilderFieldConfig.operations",
+    ),
+    pytest.param(QueryBuilderConfig, "tag_id", id="QueryBuilderConfig.tag_id"),
+    pytest.param(QueryBuilderConfig, "param_name", id="QueryBuilderConfig.param_name"),
     # Element IDs that JavaScript and ARIA attributes refer to
     pytest.param(lambda: AccordionConfig(tag_id="faq"), "tag_id", id="AccordionConfig.tag_id"),
     pytest.param(lambda: ChartConfig(tag_id="sales"), "tag_id", id="ChartConfig.tag_id"),
@@ -59,6 +69,7 @@ REQUIRED_FIELDS: list = [
         id="TabConfig.request_url",
     ),
     pytest.param(lambda: ChatConfig(request_url="/chat/"), "request_url", id="ChatConfig.request_url"),
+    pytest.param(lambda: ChatConfig(request_url="/chat/"), "tag_id", id="ChatConfig.tag_id"),
     pytest.param(
         lambda: InfiniteScrollConfig(request_url="/items/"), "request_url", id="InfiniteScrollConfig.request_url"
     ),
@@ -80,9 +91,7 @@ REQUIRED_FIELDS: list = [
         id="UserMenuLinkConfig.request_url",
     ),
     pytest.param(lambda: ImageConfig(url="/static/logo.png"), "url", id="ImageConfig.url"),
-    pytest.param(
-        lambda: ImageCarouselItemConfig(url="/static/slide.png", alt=""), "url", id="ImageCarouselItemConfig.url"
-    ),
+    pytest.param(lambda: CarouselImageConfig(url="/static/slide.png", alt=""), "url", id="CarouselImageConfig.url"),
     # Accessible name of a button, also for icon-only buttons
     pytest.param(lambda: ButtonConfig(label="Save"), "label", id="ButtonConfig.label"),
 ]
@@ -100,7 +109,7 @@ def test_required_field_rejects_empty_value(build: Callable[[], object], field_n
 
 def test_empty_alt_text_stays_allowed() -> None:
     """Decorative images use an empty alt text on purpose, so it is not treated like a missing URL."""
-    assert ImageCarouselItemConfig(url="/static/slide.png", alt="").alt == ""
+    assert CarouselImageConfig(url="/static/slide.png", alt="").alt == ""
 
 
 def test_undefined_template_variable_is_rejected() -> None:

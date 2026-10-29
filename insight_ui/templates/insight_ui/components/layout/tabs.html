@@ -1,47 +1,54 @@
+{% load insight_tags %}
+
 <div data-insight-tabs{% if tag_id %}="{{ tag_id }}"{% endif %}>
   <div
     role="tablist"
-    aria-label="{{ label }}"
+    {% if label %}aria-label="{{ label }}"{% endif %}
     class="flex border-b border-insight-surface"
   >
     {% for tab in tabs %}
       <button
         id="{{ tab.id }}"
+        type="button"
         role="tab"
         aria-selected="{{ tab.active|yesno:'true,false' }}"
         aria-controls="{% if is_htmx %}{{ tag_id }}-tab-content{% else %}{{ tab.panel_id }}{% endif %}"
         tabindex="{% if tab.active %}0{% else %}-1{% endif %}"
         {% if tab.url %}
-          hx-get="{{ tab.url }}"
-          hx-target="#{{ tag_id }}-tab-content"
-          hx-swap="innerHTML"
+          {# The active tab loads its content right away; the others on click. The load on page view does not push the fragment URL. #}
+          {% if tab.active %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" trigger="load, click" push_url=False %}
+          {% else %}
+            {% htmx_attributes htmx request_url=tab.url target=panel_target swap="innerHTML" %}
+          {% endif %}
         {% elif not is_htmx %}
           data-tab-panel="{{ tab.panel_id }}"
         {% endif %}
-        class="px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary-text focus:outline-none focus:text-insight-primary-text {% if tab.active %}text-insight-primary-text border-insight-primary-text{% else %}text-insight-body border-transparent{% endif %}"
+        class="flex gap-2 items-center px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary-text focus:outline-hidden focus:text-insight-primary-text {% if tab.active %}text-insight-primary-text border-insight-primary-text{% else %}text-insight-body border-transparent{% endif %}"
       >
-        {% if tab.icon %}<span class="mr-2">{{ tab.icon }}</span>{% endif %}
+        {% if tab.icon %}{% icon name=tab.icon size="s" %}{% endif %}
         {{ tab.label }}
       </button>
     {% endfor %}
   </div>
   {% if is_htmx %}
-    <div id="{{ tag_id }}-tab-content" role="tabpanel" class="mt-4">
+    {# One panel for all tabs; the script points aria-labelledby at the selected tab. #}
+    <div id="{{ tag_id }}-tab-content" role="tabpanel" aria-labelledby="{{ active_tab_id }}" tabindex="0" class="mt-4">
       <!-- Content loaded via HTMX -->
     </div>
   {% else %}
     <div data-tab-panels class="mt-4">
       {% for tab in tabs %}
-        {% if tab.content %}
-          <div
-            id="{{ tab.panel_id }}"
-            role="tabpanel"
-            aria-hidden="{{ tab.active|yesno:'false,true' }}"
-            {% if not tab.active %}class="hidden"{% endif %}
-          >
-            {{ tab.content }}
-          </div>
-        {% endif %}
+        <div
+          id="{{ tab.panel_id }}"
+          role="tabpanel"
+          aria-labelledby="{{ tab.id }}"
+          tabindex="0"
+          aria-hidden="{{ tab.active|yesno:'false,true' }}"
+          {% if not tab.active %}class="hidden"{% endif %}
+        >
+          {{ tab.content }}
+        </div>
       {% endfor %}
     </div>
   {% endif %}

@@ -22,6 +22,7 @@ import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
 import { ProgressBar } from "./insight-ui-progress-bar.js";
+import { QueryBuilder } from "./insight-ui-query-builder.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
 import { Search } from "./insight-ui-search.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
@@ -45,6 +46,7 @@ Object.assign(window.InsightUI, {
 	Modal,
 	Multiselect,
 	ProgressBar,
+	QueryBuilder,
 	RangeSlider,
 	Search,
 	Sidebar,
@@ -71,6 +73,7 @@ function initAll() {
 	Modal.initAll();
 	Multiselect.initAll();
 	ProgressBar.initAll();
+	QueryBuilder.initAll();
 	RangeSlider.initAll();
 	Search.initAll();
 	Sidebar.initAll();

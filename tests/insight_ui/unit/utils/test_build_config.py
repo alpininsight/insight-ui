@@ -74,8 +74,8 @@ def test_build_config_rejects_non_dataclass_config(config: object) -> None:
 
 # Tag arguments that are not config fields but are converted into one (icon_name/icon_size -> icon).
 CONVENIENCE_ARGUMENTS: dict[str, set[str]] = {
-    "badge": {"icon_name", "icon_size"},
-    "button": {"icon_name", "icon_size"},
+    "badge": {"icon_name", "icon_size", "icon_mirror_rtl"},
+    "button": {"icon_name", "icon_size", "icon_mirror_rtl"},
 }
 
 # Tags that only accept a complete config and offer no field arguments.
@@ -85,7 +85,6 @@ CONFIG_ONLY_TAGS = {"accordion", "checkbox_group", "dropdown", "footer", "navbar
 FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "badge": {"icon"},
     "brand_mark": {"primary_text_color", "secondary_text_color"},
-    "bullet_point_list": {"htmx"},
     "button": {"icon", "aria_attrs", "data_attrs", "hx_attrs"},
     "logo": {"icon"},
     "multiselect": {"required", "tag_id"},

@@ -2,8 +2,8 @@
 
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
-  {% if form_config.htmx_config %}
-    {% htmx_attributes form_config.htmx_config trigger="submit" indicator=form_indicator %}
+  {% if form_config.htmx %}
+    {% htmx_attributes form_config.htmx trigger="submit" indicator=form_indicator %}
   {% else %}
     action="{{ form_config.request_url }}"
     method="{{ form_config.method }}"
@@ -32,19 +32,19 @@
 
   <div class="flex gap-2 justify-end pt-4 border-t border-insight-surface">
     {% if form_config.show_reset_button %}
-      {% button label=form_config.reset_label|default:_("Reset") type="secondary" button_type="reset" %}
+      {% button label=form_config.reset_label|default:_("Reset") color="secondary" button_type="reset" %}
     {% endif %}
-    {% button label=form_config.submit_label|default:_("Submit") type="primary" button_type="submit" %}
+    {% button label=form_config.submit_label|default:_("Submit") color="primary" button_type="submit" %}
   </div>
 
-  {% if form_config.htmx_config and form_config.show_loading_indicator %}
+  {% if form_config.htmx and form_config.show_loading_indicator %}
     {# HTMX Loading Indicator. The live region wrapper stays in the accessibility #}
     {# tree; only the indicator inside it is revealed while a request is running, #}
     {# so idle pages expose no stray loading text and the reveal is announced as  #}
     {# a change inside an existing polite region. #}
     <div role="status" aria-live="polite">
-      <div class="htmx-indicator fixed top-4 right-4 px-4 py-2 text-white bg-insight-primary-action rounded-insight-overlay shadow-insight-overlay">
-        <svg class="animate-spin inline mr-3 -ml-1 w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <div class="htmx-indicator fixed top-4 right-4 px-4 py-2 text-insight-primary-on-action bg-insight-primary-action rounded-insight-overlay shadow-insight-overlay">
+        <svg class="animate-spin inline mr-3 -ml-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
@@ -52,8 +52,8 @@
       </div>
     </div>
   {% endif %}
-  {% if form_config.htmx_config %}
+  {% if form_config.htmx %}
     {# Container for server-side errors, e.g. via HX-Retarget. Derived from tag_id, so several forms can share a page. #}
-    <div id="{% if form_config.tag_id %}{{ form_config.tag_id }}-error{% else %}form-error{% endif %}" class="mt-4"></div>
+    <div id="{% if form_config.tag_id %}{{ form_config.tag_id }}-error{% else %}form-error{% endif %}" role="alert" aria-atomic="true" class="mt-4"></div>
   {% endif %}
 </form>

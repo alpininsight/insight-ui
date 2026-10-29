@@ -67,7 +67,7 @@ def test_protected_form_preserves_field_configs_and_loading_indicator(show_loadi
     """Turnstile composes with the current field API and the per-form HTMX indicator."""
     config = FormConfig(
         fields=[InputFieldConfig(name="email", input_type="email"), TextareaConfig(name="message")],
-        htmx_config=HtmxConfig(request_url="/submit/", method="post"),
+        htmx=HtmxConfig(request_url="/submit/", method="post"),
         turnstile=TurnstileConfig(site_key="public"),
         show_loading_indicator=show_loading_indicator,
     )
@@ -101,13 +101,13 @@ def test_protected_form_rejects_get_method() -> None:
     with pytest.raises(ValueError, match="POST"):
         FormConfig(method="get", turnstile=challenge)
     with pytest.raises(ValueError, match="POST"):
-        FormConfig(htmx_config=HtmxConfig(request_url="/submit/", method="get"), turnstile=challenge)
+        FormConfig(htmx=HtmxConfig(request_url="/submit/", method="get"), turnstile=challenge)
 
 
 def test_protected_form_accepts_htmx_post() -> None:
     """The challenge works with HTMX as long as the request method is POST."""
     config = FormConfig(
-        htmx_config=HtmxConfig(request_url="/submit/", method="post"),
+        htmx=HtmxConfig(request_url="/submit/", method="post"),
         turnstile=TurnstileConfig(site_key="public"),
     )
 

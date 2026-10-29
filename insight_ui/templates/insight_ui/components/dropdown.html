@@ -2,9 +2,9 @@
 
 <div class="relative">
     {% if dropdown_config.show_arrow %}
-        {% button label=dropdown_config.title icon_name="chevron-down" icon_size="s" icon_end=True data_insight_dropdown=dropdown_config.tag_id aria_expanded="false" aria_haspopup="menu" aria_controls=dropdown_config.tag_id %}
+        {% button label=dropdown_config.title color=dropdown_config.color variant=dropdown_config.variant icon_name="chevron-down" icon_size="s" icon_end=True data_insight_dropdown=dropdown_config.tag_id aria_expanded="false" aria_haspopup="menu" aria_controls=dropdown_config.tag_id %}
     {% else %}
-        {% button label=dropdown_config.title data_insight_dropdown=dropdown_config.tag_id aria_expanded="false" aria_haspopup="menu" aria_controls=dropdown_config.tag_id %}
+        {% button label=dropdown_config.title color=dropdown_config.color variant=dropdown_config.variant data_insight_dropdown=dropdown_config.tag_id aria_expanded="false" aria_haspopup="menu" aria_controls=dropdown_config.tag_id %}
     {% endif %}
     <div id="{{ dropdown_config.tag_id }}" role="menu" class="hidden border border-insight-surface rounded-insight-overlay shadow-insight-overlay">
         {% for item in dropdown_config.items %}
@@ -15,7 +15,7 @@
                     {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url swap_modifiers="show:window:top" %}
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
-                class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
+                class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-t-insight-control{% elif forloop.last %}rounded-b-insight-control{% endif %}"
             >
                 {% if item.icon %}
                     <div>

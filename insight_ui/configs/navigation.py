@@ -10,7 +10,15 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.types import Size, StepStatus, validate_not_empty, validate_size, validate_step_status
+from insight_ui.configs.types import (
+    HeadingLevel,
+    Size,
+    StepStatus,
+    validate_heading_level,
+    validate_not_empty,
+    validate_size,
+    validate_step_status,
+)
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
@@ -226,15 +234,15 @@ class NavbarConfig:
 
     Renders a full navigation bar with brand, links, and optional features.
 
-    The user menu behavior is controlled by LOGIN_URL and the usermenu config:
+    The user menu behavior is controlled by LOGIN_URL and the user_menu config:
     - If LOGIN_URL is set and user is not authenticated: show login button (unless hide_login=True)
-    - If user is authenticated: show user dropdown with logout (and custom links from usermenu)
+    - If user is authenticated: show user dropdown with logout (and custom links from user_menu)
 
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         search_bar: Configuration for the search bar. If None, no search bar is displayed.
-        usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
+        user_menu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
@@ -259,7 +267,7 @@ class NavbarConfig:
                 placeholder="Search...",
                 enable_search=True,
             ),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
                 ],
@@ -278,7 +286,7 @@ class NavbarConfig:
         default=None,
         metadata={"doc": _("Configuration for the search bar. If None, no search bar is displayed.")},
     )
-    usermenu: UserMenuConfig | None = field(
+    user_menu: UserMenuConfig | None = field(
         default=None,
         metadata={"doc": _("Configuration for the user dropdown menu. None uses defaults (logout only).")},
     )
@@ -708,23 +716,23 @@ class BulletPointItemConfig:
     Attributes:
         title: Title of the item.
         description: Additional description of the item below the title.
-        request_url: The URL to be called when clicking on the respective item.
-        completed: Displays a checkmark instead of a bullet point.
-        current: Highlights the title by color.
+        request_url: URL called when the user clicks on the item.
+        status: Status of the item.
 
     """
 
     __example__ = """
-        BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True)
+        BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the item.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the item below the title.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
-    )
-    completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
+    request_url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the item.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the item.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_step_status(self.status)
 
 
 @dataclass
@@ -742,8 +750,8 @@ class BulletPointListConfig:
     __example__ = """
         BulletPointListConfig(
             items=[
-                BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-                BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+                BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed"),
+                BulletPointItemConfig(title="Configure", description="Add settings", status="current"),
                 BulletPointItemConfig(title="Deploy", description="Push to production"),
             ],
         )
@@ -785,6 +793,7 @@ class AccordionConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         items: List of individual sections.
         exclusive: If **True** only one section can be open at a time.
+        heading_level: Heading level of the section titles.
 
     """
 
@@ -802,10 +811,12 @@ class AccordionConfig:
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the section titles.")})
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
+        """Reject an empty tag_id and validate heading_level."""
         validate_not_empty(self, "tag_id")
+        validate_heading_level(self.heading_level)
 
 
 @dataclass
@@ -844,6 +855,7 @@ class TabsConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         tabs: List of tab buttons.
         label: Non-visible additional title that is to be read aloud by screen readers.
+        htmx: Shared request options such as push_url or a loading indicator.
 
     """
 
@@ -864,9 +876,19 @@ class TabsConfig:
     label: str = field(
         default="", metadata={"doc": _("Non-visible additional title that is to be read aloud by screen readers.")}
     )
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as push_url or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
-        """Set the first tab as active if no tab is currently active."""
+        """Require at least one tab and set the first tab as active if no tab is currently active.
+
+        Raises:
+            ValueError: If tabs is empty.
+
+        """
+        if not self.tabs:
+            raise ValueError(f"TabsConfig {self.tag_id} needs at least one tab.")  # noqa: TRY003
         if any(tab.active for tab in self.tabs):
             return
 

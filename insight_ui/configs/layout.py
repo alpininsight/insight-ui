@@ -31,7 +31,7 @@ class PageHeaderConfig:
             title="Page Header",
             chapter="Insight UI",
             description="A header component for documentation pages.",
-            badges=[BadgeConfig(label="New", type="success")],
+            badges=[BadgeConfig(label="New", color="success")],
             buttons=[ButtonConfig(label="Get Started", request_url="/start")],
         )
         """
@@ -416,7 +416,7 @@ class HeroConfig:
         cta_primary: Primary 'Call-to-Action' button.
         cta_secondary: Secondary 'Call-to-Action' button.
         background_image_url: URL of the background image.
-        badge_config: A badge with icon and text.
+        badge: A badge with icon and text.
 
     """
 
@@ -425,9 +425,9 @@ class HeroConfig:
             title="Welcome to Our Platform",
             subtitle="The Future of Web Development",
             description="Build amazing applications with modern tools.",
-            cta_primary=ButtonConfig(label="Get Started", request_url="/signup/", type="primary"),
-            cta_secondary=ButtonConfig(label="Learn More", request_url="/docs/", type="secondary"),
-            badge_config=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
+            cta_primary=ButtonConfig(label="Get Started", request_url="/signup/", color="primary"),
+            cta_secondary=ButtonConfig(label="Learn More", request_url="/docs/", color="secondary"),
+            badge=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
         )
         """
 
@@ -439,7 +439,7 @@ class HeroConfig:
     cta_primary: ButtonConfig | None = field(default=None, metadata={"doc": _("Primary 'Call-to-Action' button.")})
     cta_secondary: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
-    badge_config: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+    badge: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
 
 
 @dataclass
@@ -466,8 +466,8 @@ class ModalConfig:
         {% modal id="confirm-delete" title="Confirm Deletion" %}
             <p>Are you sure you want to delete this item?</p>
             {% hbox gap="s" h_align="end" %}
-                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
-                {% button label="Delete" type="danger" %}
+                {% button label="Cancel" color="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" color="danger" %}
             {% endhbox %}
         {% endmodal %}
 

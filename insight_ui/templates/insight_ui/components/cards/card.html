@@ -10,7 +10,7 @@
   <div class="flex flex-1 flex-col p-6 min-h-0">
     {% if card_config.title %}
       <div>
-        <h3 class="text-xl text-insight-headline">{{ card_config.title }}</h3>
+        <h{{ card_config.heading_level }} class="font-medium text-xl text-insight-headline">{{ card_config.title }}</h{{ card_config.heading_level }}>
         {% if card_config.subtitle %}
           <p class="text-insight-body">{{ card_config.subtitle }}</p>
         {% endif %}
