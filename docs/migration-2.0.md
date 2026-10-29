@@ -52,6 +52,7 @@ pattern for a host project.
 - [ ] Rebuild infinite scroll views on `current_page` and answer further pages with `{% infinite_scroll_items %}`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
@@ -979,6 +980,46 @@ wrap the control and its texts in a `<div>`. The form's error container now has
 
 Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
 expect a checkbox or toggle `<input>` as the outermost element.
+
+### Field IDs
+
+[#777](https://github.com/alpininsight/insight-ui/pull/777).
+
+Every form field takes its id from `tag_id`, otherwise from `name`. Input,
+textarea, checkbox and toggle used to render no id without a `tag_id`, so their
+label was not associated with the control; toggle and slider rendered
+`id="None"`. The textarea label pointed at the `name` while the textarea had the
+`tag_id`. The label and the derived ids (slider `_label`, `_min`, `_max`, and
+`-help`, `-error`) now follow the same rule. The multiselect builds its ids
+(`-label`, `-search`, `-listbox`, `-opt-<n>`, `-aria-status`) from the `tag_id`
+too, and its tag accepts `tag_id=`. `name` stays the request parameter.
+
+Before:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input name="email">, label not associated #}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input id="email" name="email"> #}
+{% input_field tag_id="billing-email" name="email" label="E-Mail" %}
+```
+
+Two fields with the same `name` on one page need their own `tag_id`, otherwise
+the ids collide. Groups (checkbox group, radio group, radio block) already used
+the `name` and are unchanged.
+
+The search bar had fixed ids (`search`, `search-results`), which collided when
+the navbar and the page both rendered one. `SearchBarConfig` now has `tag_id`
+and `name`, both defaulting to `search`, so the markup only changes when you set
+them. The results list is `<tag_id>-results`.
+
+Search: two form fields with the same `name` and no `tag_id` on one page, and
+selectors or scripts that look up a multiselect by `#<name>-…`.
 
 ## Markup selectors
 
