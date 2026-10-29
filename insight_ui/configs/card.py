@@ -360,6 +360,9 @@ class ToggleViewConfig:
         """Require an ID and a template; every switch value must be a view, and the table view needs a table."""
         validate_not_empty(self, "tag_id", "item_template")
         views = [item.value for item in self.view_switch.items]
+        if not views:
+            msg = f"ToggleViewConfig {self.tag_id!r} requires at least one view mode."
+            raise ValueError(msg)
         for view in views:
             validate_toggle_view_type(view, "view_switch item value")
         if "table" in views and self.table is None:

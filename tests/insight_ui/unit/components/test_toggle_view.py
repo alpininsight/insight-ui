@@ -142,6 +142,12 @@ def test_table_view_needs_a_table() -> None:
         ToggleViewConfig(tag_id="products", items=CARDS, view_switch=switch("grid", "table"))
 
 
+def test_empty_view_switch_is_rejected() -> None:
+    """A switch with no offered modes must not silently render an empty table."""
+    with pytest.raises(ValueError, match="at least one view mode"):
+        ToggleViewConfig(tag_id="products", view_switch=switch())
+
+
 def test_view_switch_is_required() -> None:
     """The switch picks the view, so the component cannot render without it."""
     with pytest.raises(ValueError, match="view_switch"):
