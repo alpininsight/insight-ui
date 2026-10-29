@@ -317,12 +317,12 @@ SURFACE_VARIANT_CLASSES: dict[str, str] = {
 
 # Surface radius classes
 RADIUS_CLASSES: dict[str, str] = {
-    "xs": "rounded-sm",
-    "s": "rounded",
-    "m": "rounded-lg",
-    "l": "rounded-xl",
-    "xl": "rounded-2xl",
-    "none": "",
+    "xs": "rounded-insight-xs",
+    "s": "rounded-insight-s",
+    "m": "rounded-insight-m",
+    "l": "rounded-insight-l",
+    "xl": "rounded-insight-xl",
+    "none": "rounded-none",
 }
 
 # Link surface hover classes (added to base surface classes)
