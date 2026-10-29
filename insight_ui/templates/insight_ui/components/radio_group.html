@@ -5,7 +5,7 @@
     {% if radio_group_config.label %}
         <legend id="{{ radio_group_config.name }}-legend" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
     {% endif %}
-    <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
+    <div class="flex {% if not radio_group_config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in radio_group_config.items %}
             <div>
                 <label class="flex gap-1 items-center">

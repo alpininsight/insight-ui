@@ -84,7 +84,7 @@ def main() -> None:
     synthetic = "".join(
         f"--color-insight-{family}-{role}{suffix}: {value};"
         for family in FAMILIES
-        for role, value in (("action-hover", "#e2e8f0"), ("action-active", "#cbd5e1"), ("on-fill", "#111827"))
+        for role, value in (("action-hover", "#e2e8f0"), ("action-active", "#cbd5e1"), ("on-action", "#111827"))
         for suffix in ("", "-dark")
     )
     count = 0

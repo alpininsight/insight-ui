@@ -5,86 +5,49 @@
     {% if radio_block_config.label %}
         <legend id="{{ radio_block_config.name }}-legend" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_block_config.label }}</legend>
     {% endif %}
-    {% if radio_block_config.integrated %}
-        {# To use with other elements in a extern <form> #}
-        <div id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
-            {% for item in radio_block_config.items %}
-                {% with item_key=item.tag_id|default:item.value %}
-                    {% with item_id=radio_block_config.name|add:'-'|add:item_key %}
-                        <div>
-                            <input
-                                type="radio"
-                                id="{{ item_id }}"
-                                name="{{ radio_block_config.name }}"
-                                value="{{ item.value }}"
-                                aria-label="{{ item.label|default:item.value }}"
-                                {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
-                                {% if item.disabled %}disabled{% endif %}
-                                {% if radio_block_config.method %}
-                                    data-radio-callback="{{ radio_block_config.method }}"
-                                {% endif %}
-                                {% data_attributes item.data_attrs %}
-                                {% if item.disabled and item.disabled_reason %}aria-describedby="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled"{% endif %}
-                                class="sr-only peer"
-                            >
-                            <label
-                                for="{{ item_id }}"
-                                class="btn-solid btn-primary flex items-center {% if item.disabled %}btn-disabled cursor-not-allowed{% else %}cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
-                            >
-                                {% if item.icon %}
-                                    {% icon item.icon %}
-                                {% endif %}
-                                <span>{{ item.label }}</span>
-                            </label>
-                        </div>
-                    {% endwith %}
-                {% endwith %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <form id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
-            {% for item in radio_block_config.items %}
-                {% with item_key=item.tag_id|default:item.value %}
-                    {% with item_id=radio_block_config.name|add:'-'|add:item_key %}
-                        <div>
-                            <input
-                                type="radio"
-                                id="{{ item_id }}"
-                                name="{{ radio_block_config.name }}"
-                                value="{{ item.value }}"
-                                aria-label="{{ item.label|default:item.value }}"
-                                {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
-                                {% if item.disabled %}disabled{% endif %}
-                                {% if radio_block_config.request_url and radio_block_config.hx_target_id %}
-                                    hx-get="{{ radio_block_config.request_url }}"
-                                    hx-target="#{{ radio_block_config.hx_target_id }}"
-                                    hx-swap="{{ radio_block_config.hx_swap_method|default:"outerHTML" }}"
-                                {% endif %}
-                                {% if radio_block_config.method %}
-                                    data-radio-callback="{{ radio_block_config.method }}"
-                                {% endif %}
-                                {% data_attributes item.data_attrs %}
-                                {% if item.disabled and item.disabled_reason %}aria-describedby="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled"{% endif %}
-                                class="sr-only peer"
-                            >
-                            <label
-                                for="{{ item_id }}"
-                                class="btn-solid btn-primary flex items-center {% if item.disabled %}btn-disabled cursor-not-allowed{% else %}cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
-                            >
-                                {% if item.icon %}
-                                    {% icon item.icon %}
-                                {% endif %}
-                                <span>{{ item.label }}</span>
-                            </label>
-                        </div>
-                    {% endwith %}
-                {% endwith %}
-            {% endfor %}
-        </form>
-    {% endif %}
-    {# The options are compact buttons, so their disabled reasons are listed below the block. #}
+    {% comment %}
+        An integrated block is sent with the surrounding form; otherwise it has its own form, so the options
+        can send a request with htmx. Both render the same options.
+    {% endcomment %}
+    <{% if radio_block_config.integrated %}div{% else %}form{% endif %} id="{{ radio_block_config.name }}" class="control-{{ radio_block_config.color }} choice-group-{{ radio_block_config.variant }} flex w-fit{% if radio_block_config.as_row == False %} flex-col{% endif %}">
     {% for item in radio_block_config.items %}
-        {% if item.disabled and item.disabled_reason %}<p id="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled" class="mt-1 text-sm text-insight-muted">{{ item.label|default:item.value }}: {{ item.disabled_reason }}</p>{% endif %}
+        {% with item_key=item.tag_id|default:item.value %}
+            {% with item_id=radio_block_config.name|add:'-'|add:item_key %}
+                {# Outlined options overlap by their border width, so every option keeps a full border. #}
+                <div class="flex{% if radio_block_config.variant == 'outline' and not forloop.first %}{% if radio_block_config.as_row == False %} -mt-0.5{% else %} -ms-0.5{% endif %}{% endif %}">
+                    <input
+                        type="radio"
+                        id="{{ item_id }}"
+                        name="{{ radio_block_config.name }}"
+                        value="{{ item.value }}"
+                        aria-label="{{ item.label|default:item.value }}"
+                        {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
+                        {% if item.disabled %}disabled{% endif %}
+                        {% htmx_attributes radio_block_config.htmx request_url=radio_block_config.request_url %}
+                        {% if radio_block_config.method %}
+                            data-radio-callback="{{ radio_block_config.method }}"
+                        {% endif %}
+                        {% data_attributes item.data_attrs %}
+                        {% if item.disabled and item.disabled_reason %}aria-describedby="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled"{% endif %}
+                        class="sr-only"
+                    >
+                    <label
+                        for="{{ item_id }}"
+                        class="choice choice-{{ radio_block_config.variant }} grow px-4 py-1{% if radio_block_config.variant == 'outline' %}{% if radio_block_config.as_row == False %}{% if forloop.first %} rounded-t-insight-control{% endif %}{% if forloop.last %} rounded-b-insight-control{% endif %}{% else %}{% if forloop.first %} rounded-s-insight-control{% endif %}{% if forloop.last %} rounded-e-insight-control{% endif %}{% endif %}{% endif %}"
+                    >
+                        {% if item.icon %}
+                            {% icon item.icon %}
+                        {% endif %}
+                        {% if item.label %}<span class="choice-text" data-text="{{ item.label }}">{{ item.label }}</span>{% endif %}
+                    </label>
+                </div>
+            {% endwith %}
+        {% endwith %}
     {% endfor %}
-    {% include "insight_ui/components/_form_field_messages.html" with field_id=radio_block_config.name help_text=radio_block_config.help_text error_text=radio_block_config.error_text disabled=radio_block_config.disabled disabled_reason=radio_block_config.disabled_reason %}
+</{% if radio_block_config.integrated %}div{% else %}form{% endif %}>
+    {# The options are compact buttons, so their disabled reasons are listed below the block. #}
+{% for item in radio_block_config.items %}
+    {% if item.disabled and item.disabled_reason %}<p id="{{ radio_block_config.name }}-{{ forloop.counter }}-disabled" class="mt-1 text-sm text-insight-muted">{{ item.label|default:item.value }}: {{ item.disabled_reason }}</p>{% endif %}
+{% endfor %}
+{% include "insight_ui/components/_form_field_messages.html" with field_id=radio_block_config.name help_text=radio_block_config.help_text error_text=radio_block_config.error_text disabled=radio_block_config.disabled disabled_reason=radio_block_config.disabled_reason %}
 </fieldset>

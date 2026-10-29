@@ -73,7 +73,7 @@ class MessageDialogConfig(ModalConfig):
             alert=True,
             actions=[
                 ButtonConfig(label="Cancel", color="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
-                ButtonConfig(label="Delete", color="danger", htmx_config=HtmxConfig("/projects/7/delete/", method="post")),
+                ButtonConfig(label="Delete", color="danger", htmx=HtmxConfig("/projects/7/delete/", method="post")),
             ],
         )
         """

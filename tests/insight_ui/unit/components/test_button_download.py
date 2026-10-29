@@ -95,8 +95,17 @@ def test_filename_control_characters_are_rejected(value: str) -> None:
 def test_download_rejects_explicit_htmx_interception() -> None:
     """A native download cannot also request an HTMX partial update."""
     with pytest.raises(ValueError, match="HTMX request"):
-        ButtonConfig(label="Download", request_url="/file.svg", download=True, htmx_config=HtmxConfig())
+        ButtonConfig(label="Download", request_url="/file.svg", download=True, htmx=HtmxConfig())
     with pytest.raises(ValueError, match="HTMX request"):
         ButtonConfig(
             label="Download", request_url="/file.svg", download=True, hx_attrs=[DataAttrConfig("get", "/file")]
         )
+
+
+def test_empty_filename_override_enables_native_download() -> None:
+    """An empty inline override enables downloads even when the Config disables them."""
+    config = ButtonConfig(label="Download", request_url="/file.svg")
+    assert ButtonConfig(label="Download", request_url="/file.svg", download="").download is True
+    element = render_download(config, download="")
+    assert element["download"] == ""
+    assert element.has_attr("hx-disable")

@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
@@ -44,8 +43,8 @@ from insight_ui.configs import (
     ButtonColor,
     ButtonConfig,
     ButtonVariant,
-    CardCarouselConfig,
     CardConfig,
+    CarouselConfig,
     CarouselItemConfig,
     ChartConfig,
     ChartDatasetConfig,
@@ -53,6 +52,7 @@ from insight_ui.configs import (
     CheckboxConfig,
     CheckboxGroupConfig,
     ColorType,
+    ControlVariant,
     CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
@@ -69,10 +69,9 @@ from insight_ui.configs import (
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
+    HttpMethod,
     IconColor,
     IconConfig,
-    ImageCarouselConfig,
-    ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
     InfoboxConfig,
@@ -89,6 +88,7 @@ from insight_ui.configs import (
     PaginationIppConfig,
     QueryBuilderConfig,
     QueryBuilderFieldConfig,
+    QueryBuilderFilterConfig,
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
@@ -109,6 +109,7 @@ from insight_ui.configs import (
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
+from insight_ui.utils import query_builder as query_builder_utils
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -289,10 +290,14 @@ def htmx_attributes(
     htmx: HtmxConfig | None,
     *,
     request_url: str = "",
+    method: HttpMethod | None = None,
+    target: str = "",
+    swap: str = "",
     trigger: str = "",
     indicator: str = "",
     push_url: bool | None = None,
     swap_modifiers: str = "",
+    global_indicator: bool = True,
 ) -> SafeString:
     """Render the HTMX attributes of an HtmxConfig in one consistent way.
 
@@ -302,10 +307,15 @@ def htmx_attributes(
     Args:
         htmx: The request options. Renders nothing if None.
         request_url: URL of the component, e.g. of a breadcrumb item, used instead of htmx.request_url.
+        method: HTTP method the component needs, used instead of htmx.method.
+        target: Target the component needs, e.g. its own response container, used instead of htmx.target.
+        swap: Swap method the component needs, used instead of htmx.swap_method.
         trigger: hx-trigger of the component. Empty keeps the HTMX default of the element.
         indicator: hx-indicator of the component, used instead of htmx.loading_indicator_id.
         push_url: Forces hx-push-url on or off. None uses htmx.push_url.
         swap_modifiers: Appended to hx-swap, e.g. "show:window:top".
+        global_indicator: Whether the component shows the global loading bar when
+            htmx.show_global_loading_indicator is None; background requests like polling pass False.
 
     Returns:
         The attributes, separated by spaces.
@@ -316,11 +326,13 @@ def htmx_attributes(
         return format_html_join(" ", '{}="{}"', attributes)
     url = request_url or htmx.request_url
     if url:
-        attributes.append((f"hx-{htmx.method}", url))
-    if htmx.target:
-        attributes.append(("hx-target", htmx.target))
+        attributes.append((f"hx-{method or htmx.method}", url))
+    if target or htmx.target:
+        attributes.append(("hx-target", target or htmx.target))
     settle = f"settle:{htmx.swap_settle}" if htmx.swap_settle else ""
-    attributes.append(("hx-swap", " ".join(part for part in (htmx.swap_method, settle, swap_modifiers) if part)))
+    attributes.append(
+        ("hx-swap", " ".join(part for part in (swap or htmx.swap_method, settle, swap_modifiers) if part))
+    )
     if trigger:
         attributes.append(("hx-trigger", trigger))
     if htmx.push_url if push_url is None else push_url:
@@ -331,7 +343,8 @@ def htmx_attributes(
         attributes.append(("hx-confirm", htmx.confirm))
     if htmx.vals:
         attributes.append(("hx-vals", json_attribute(htmx.vals)))
-    if not htmx.show_global_loading_indicator:
+    show_global = htmx.show_global_loading_indicator
+    if not (global_indicator if show_global is None else show_global):
         attributes.append(("data-insight-global-indicator", "false"))
     return format_html_join(" ", '{}="{}"', attributes)
 
@@ -435,7 +448,7 @@ def hero(
     cta_primary: ButtonConfig | _Unset = UNSET,
     cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge_config: BadgeConfig | _Unset = UNSET,
+    badge: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -637,7 +650,7 @@ def button(
     size: Size | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
@@ -723,7 +736,7 @@ def button(
         size=size,
         round=round,
         tooltip=tooltip,
-        htmx_config=htmx_config,
+        htmx=htmx,
         hidden=hidden,
         disabled=disabled,
         disabled_reason=disabled_reason,
@@ -867,10 +880,11 @@ def radio_block(
     integrated: bool | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    hx_target_id: str | _Unset = UNSET,
-    hx_swap_method: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    variant: ControlVariant | _Unset = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
@@ -902,6 +916,7 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
@@ -910,7 +925,10 @@ def slider(
     """Render a range slider."""
     data_attrs = _collect_data_attrs("slider", config, data_attrs, kwargs)
     config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
-    return {"slider_config": config}
+    # Each legend item sits at the share of the track where the thumb stands for its value (0 = start, 1 = end).
+    last = max(len(config.items) - 1, 1)
+    legend = [{"text": item, "position": f"{index / last:.4f}"} for index, item in enumerate(config.items)]
+    return {"slider_config": config, "legend": legend}
 
 
 @register.inclusion_tag("insight_ui/components/toggle_button.html")
@@ -922,11 +940,14 @@ def toggle(
     value: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     icon: IconConfig | _Unset | None = UNSET,
+    icon_only: bool | _Unset = UNSET,
     checked: bool | _Unset = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
+    variant: ControlVariant | _Unset = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     method: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
@@ -988,10 +1009,16 @@ def multiselect(
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
-def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
+def chat(
+    config: ChatConfig | None = None,
+    *,
+    request_url: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
     config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"request_url": config.request_url}
+    return {"chat_config": config, "htmx": config.htmx or HtmxConfig(), "response_target": f"#{config.tag_id}-response"}
 
 
 # =============================================================
@@ -1023,6 +1050,8 @@ def message_dialog(
         "show_close": config.show_close,
         "role": "alertdialog" if config.alert else "dialog",
         "describedby": f"{config.id}-message",
+        # Extra classes of the {% modal %} layout tag; a message dialog has none.
+        "wrapper_class": "",
         "paragraphs": [config.message] if isinstance(config.message, str) else config.message,
         "actions": config.actions,
     }
@@ -1288,17 +1317,15 @@ def live_content(
     request_url: str | _Unset = UNSET,
     interval: int | _Unset = UNSET,
     initial_content: str | _Unset = UNSET,
-    show_global_loading_indicator: bool | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    live_request = {
-        "request_url": config.request_url,
+    return {
+        "live_content_config": config,
+        "htmx": config.htmx or HtmxConfig(),
         "trigger": f"load, every {config.interval}s",
-        "swap": "innerHTML",
     }
-
-    return {"live_content_config": config, "live_request": live_request}
 
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
@@ -1370,7 +1397,7 @@ def badge(
             round=True,
             size="xs",
             button_type="button",
-            htmx_config=config.remove_htmx,
+            htmx=config.remove_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-remove")],
             # Compensate the button padding and border, so the badge keeps its height.
             extra_classes="-my-1.5 -me-2",
@@ -1398,7 +1425,7 @@ def badge_list(
             variant="subtle",
             size="s",
             button_type="button",
-            htmx_config=config.clear_all_htmx,
+            htmx=config.clear_all_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
         )
     return {"badge_list_config": config, "clear_all_button": clear_all_button}
@@ -1528,7 +1555,7 @@ def search_bar(
     request_url: str | _Unset = UNSET,
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
     search_index_url: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -1544,20 +1571,52 @@ def generic_filter(
     filters: list[FilterConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     vertical: bool | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
     config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"generic_filter_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
+@register.inclusion_tag("insight_ui/components/query_builder.html")
 def query_builder(
-    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | _Unset = UNSET
+    config: QueryBuilderConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    fields: list[QueryBuilderFieldConfig] | _Unset = UNSET,
+    filters: list[QueryBuilderFilterConfig] | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    param_name: str | _Unset = UNSET,
+    max_filters: int | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+    show_summary: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a filter for constructing custom search queries."""
+    """Render a form to combine filters on model fields."""
     config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"model_fields": config.model_fields}
+    by_name = {field.field: field for field in config.fields}
+    rows = []
+    active: list[QueryBuilderFilterConfig | None] = list(config.filters) or [None]
+    for item in active:
+        field = by_name.get(item.field) if item else None
+        definition = query_builder_utils.field_definition(field) if field else {}
+        rows.append(
+            {
+                "filter": item,
+                "operations": definition.get("operations", {}),
+                "choices": definition.get("choices", {}),
+                "input_type": definition.get("input_type", "text"),
+                "value": query_builder_utils.format_value(item.value) if item else "",
+            }
+        )
+    return {
+        "query_builder_config": config,
+        "field_definitions": [query_builder_utils.field_definition(field) for field in config.fields],
+        "rows": rows,
+        "summary": query_builder_utils.describe_filters(config.filters, config.fields) if config.show_summary else "",
+        # Reset loads the request URL without filters; with HTMX it also resets the browser URL.
+        "reset_url": config.request_url or "?",
+        "reset_htmx": replace(config.htmx, push_url=True) if config.htmx else None,
+    }
 
 
 # =============================================================
@@ -1620,44 +1679,30 @@ def flip_card(
     return {"flip_card_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
+@register.inclusion_tag("insight_ui/components/carousel.html", takes_context=True)
 def carousel(
-    config: CardCarouselConfig | None = None,
+    context: template.Context,
+    config: CarouselConfig | None = None,
     *,
-    carousel_items: Sequence[CardConfig] | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
     items_per_slide: int | _Unset = UNSET,
+    min_item_width: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a card carousel."""
-    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "carousel_config": config,
-        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
-        if config.carousel_items
-        else range(0),
-    }
+    """Render any items as browsable pages; each item is rendered with the item template.
 
-
-@register.inclusion_tag("insight_ui/components/carousels/image_carousel.html")
-def image_carousel(
-    config: ImageCarouselConfig | None = None,
-    *,
-    carousel_items: Sequence[ImageCarouselItemConfig] | _Unset = UNSET,
-    autoplay: bool | _Unset = UNSET,
-    show_dots: bool | _Unset = UNSET,
-    show_index: bool | _Unset = UNSET,
-    items_per_slide: int | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render an image carousel."""
-    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "carousel_config": config,
-        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
-        if config.carousel_items
-        else range(0),
-    }
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        CarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
 @register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
@@ -1681,12 +1726,17 @@ def toggle_view(
     *,
     tag_id: str | _Unset = UNSET,
     cards: list[CardConfig] | _Unset = UNSET,
-    table_config: TableConfig | _Unset = UNSET,
-    view_radio_config: RadioBlockConfig | _Unset | None = UNSET,
+    table: TableConfig | _Unset = UNSET,
+    view_switch: RadioBlockConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
     config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"toggle_view_config": config}
+    switch = config.view_switch
+    # Switching the view reloads the whole component, so the radio block targets it and replaces it.
+    if switch is not None and switch.request_url:
+        htmx = replace(switch.htmx or HtmxConfig(), target=f"#{config.tag_id}", swap_method="outerHTML")
+        switch = replace(switch, htmx=htmx)
+    return {"toggle_view_config": config, "view_switch": switch}
 
 
 # =============================================================
@@ -1747,7 +1797,7 @@ def form(
     reset_label: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""

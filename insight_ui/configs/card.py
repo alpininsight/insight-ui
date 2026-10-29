@@ -3,6 +3,7 @@
 """Configuration classes for card components."""
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
@@ -171,95 +172,89 @@ class CarouselItemConfig:
 
 
 @dataclass
-class CardCarouselConfig:
-    """Configuration for the carousel (card carousel) component.
+class CarouselConfig:
+    """Configuration for the carousel component.
 
-    Renders a card carousel with navigation.
+    Renders any items as pages that can be browsed. Each item is rendered with item_template;
+    the default shows CardConfig items as cards.
 
     Attributes:
-        carousel_items: List of items to display.
-        autoplay: Auto-advance slides every 5 seconds.
-        show_dots: Show pagination dots.
-        show_index: Show current/total index.
-        items_per_slide: Number of items visible per slide.
+        items: Items to display, e.g. CardConfig, CarouselImageConfig or model instances.
+        item_template: Template that renders one item; gets item and the page context.
+        tag_id: Optional unique ID of the carousel.
+        label: Accessible name of the carousel.
+        autoplay: Auto-advance pages every 5 seconds.
+        show_dots: Show a dot per page.
+        show_index: Show the current and total page.
+        items_per_slide: Maximum number of items visible per page.
+        min_item_width: Minimum width of an item, e.g. "16rem"; narrow screens then show fewer items per page.
 
     """
 
     __example__ = """
-        CardCarouselConfig(
-            carousel_items=[
-                CarouselItemConfig(title="Item 1", content="Description 1"),
-                CarouselItemConfig(title="Item 2", content="Description 2"),
-            ],
-            autoplay=True,
-            show_dots=True,
+        CarouselConfig(
+            items=Product.objects.filter(featured=True),
+            item_template="shop/product_slide.html",
+            label="Featured products",
             items_per_slide=3,
+            min_item_width="16rem",
         )
         """
 
-    carousel_items: list[CardConfig] = field(default_factory=list, metadata={"doc": _("List of items to display.")})
-    autoplay: bool = field(default=False, metadata={"doc": _("Auto-advance slides every 5 seconds.")})
-    show_dots: bool = field(default=True, metadata={"doc": _("Show pagination dots.")})
-    show_index: bool = field(default=False, metadata={"doc": _("Show current/total index.")})
-    items_per_slide: int = field(default=1, metadata={"doc": _("Number of items visible per slide.")})
+    items: list[Any] = field(
+        default_factory=list,
+        metadata={"doc": _("Items to display, e.g. CardConfig, CarouselImageConfig or model instances.")},
+    )
+    item_template: str = field(
+        default="insight_ui/components/items/card_item.html",
+        metadata={"doc": _("Template that renders one item; gets item and the page context.")},
+    )
+    tag_id: str = field(default="", metadata={"doc": _("Optional unique ID of the carousel.")})
+    label: str = field(default="", metadata={"doc": _("Accessible name of the carousel.")})
+    autoplay: bool = field(default=False, metadata={"doc": _("Auto-advance pages every 5 seconds.")})
+    show_dots: bool = field(default=True, metadata={"doc": _("Show a dot per page.")})
+    show_index: bool = field(default=False, metadata={"doc": _("Show the current and total page.")})
+    items_per_slide: int = field(default=1, metadata={"doc": _("Maximum number of items visible per page.")})
+    min_item_width: str = field(
+        default="",
+        metadata={"doc": _('Minimum width of an item, e.g. "16rem"; narrow screens then show fewer items per page.')},
+    )
+
+    def __post_init__(self) -> None:
+        """Require a template and at least one item per page."""
+        validate_not_empty(self, "item_template")
+        if self.items_per_slide < 1:
+            msg = f"CarouselConfig needs items_per_slide of at least 1, got {self.items_per_slide}."
+            raise ValueError(msg)
 
 
 @dataclass
-class ImageCarouselItemConfig:
-    """Configuration for an image carousel item.
+class CarouselImageConfig:
+    """An image shown by the carousel with the image item template.
 
     Attributes:
         url: Image URL.
-        alt: Image alt text.
-        description: Optional caption/description.
+        alt: Alternative text; empty for a decorative image.
+        caption: Optional caption below the image.
+        center_caption: Center the caption; suits short captions.
 
     """
 
     __example__ = """
-        ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1")
-        """
-
-    url: str = field(metadata={"doc": _("Image URL.")})
-    alt: str = field(metadata={"doc": _("Image alt text.")})
-    description: str = field(default="", metadata={"doc": _("Optional caption/description.")})
-
-    def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "url")
-
-
-@dataclass
-class ImageCarouselConfig:
-    """Configuration for the image_carousel component.
-
-    Renders an image-focused carousel.
-
-    Attributes:
-        carousel_items: List of image configurations.
-        autoplay: Auto-advance slides.
-        show_dots: Show pagination dots.
-        show_index: Show current/total index.
-        items_per_slide: Images visible per slide.
-
-    """
-
-    __example__ = """
-        ImageCarouselConfig(
-            carousel_items=[
-                ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1"),
-                ImageCarouselItemConfig(url="/img/photo2.jpg", alt="Photo 2"),
-            ],
-            autoplay=True,
+        CarouselConfig(
+            items=[CarouselImageConfig(url="/img/photo1.jpg", alt="Lake at dawn", caption="Lake Constance")],
+            item_template="insight_ui/components/items/image_item.html",
         )
         """
 
-    carousel_items: list[ImageCarouselItemConfig] = field(
-        default_factory=list, metadata={"doc": _("List of image configurations.")}
-    )
-    autoplay: bool = field(default=False, metadata={"doc": _("Auto-advance slides.")})
-    show_dots: bool = field(default=True, metadata={"doc": _("Show pagination dots.")})
-    show_index: bool = field(default=False, metadata={"doc": _("Show current/total index.")})
-    items_per_slide: int = field(default=1, metadata={"doc": _("Images visible per slide.")})
+    url: str = field(metadata={"doc": _("Image URL.")})
+    alt: str = field(metadata={"doc": _("Alternative text; empty for a decorative image.")})
+    caption: str = field(default="", metadata={"doc": _("Optional caption below the image.")})
+    center_caption: bool = field(default=False, metadata={"doc": _("Center the caption; suits short captions.")})
+
+    def __post_init__(self) -> None:
+        """Reject an empty URL."""
+        validate_not_empty(self, "url")
 
 
 @dataclass
@@ -309,8 +304,8 @@ class ToggleViewConfig:
     Attributes:
         tag_id: Unique ID for the component.
         cards: The cards to be displayed.
-        table_config: Configuration of the table view.
-        view_radio_config: Radio block config for view switching.
+        table: Configuration of the table view.
+        view_switch: Radio block for switching the view.
         current_view: Currently active view ('card', 'table', 'carousel').
 
     """
@@ -319,8 +314,8 @@ class ToggleViewConfig:
         ToggleViewConfig(
             tag_id="products-view",
             cards=products_list,
-            table_config=TableConfig(headers, rows),
-            view_radio_config=RadioBlockConfig(
+            table=TableConfig(headers, rows),
+            view_switch=RadioBlockConfig(
                 name="view",
                 items=[
                     RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
@@ -333,9 +328,9 @@ class ToggleViewConfig:
 
     tag_id: str = field(metadata={"doc": _("Unique ID for the component.")})
     cards: list[CardConfig] = field(default_factory=list, metadata={"doc": _("The cards to be displayed.")})
-    table_config: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
-    view_radio_config: RadioBlockConfig | None = field(
-        default=None, metadata={"doc": _("Radio block config for view switching.")}
+    table: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
+    view_switch: RadioBlockConfig | None = field(
+        default=None, metadata={"doc": _("Radio block for switching the view.")}
     )
     current_view: ToggleViewType = field(
         default="card", metadata={"doc": _("Currently active view ('card', 'table', 'carousel').")}

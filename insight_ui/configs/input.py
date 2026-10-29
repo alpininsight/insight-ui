@@ -12,16 +12,16 @@ from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxCon
 from insight_ui.configs.types import (
     ButtonColor,
     ButtonVariant,
+    ControlVariant,
     HtmlButtonType,
     HtmlInputType,
-    HtmxSwapMethod,
     Size,
     SliderLegendMode,
     validate_button_color,
     validate_button_variant,
+    validate_control_variant,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_swap_method,
     validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
@@ -32,7 +32,7 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    Renders a <button>, or an <a> if request_url is set. An htmx without its own request_url
     requests the link URL, so the link also works without JavaScript.
 
     Attributes:
@@ -49,7 +49,7 @@ class ButtonConfig:
         size: Defines the size of the button.
         round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
-        htmx_config: Configuration for asynchronous requests.
+        htmx: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
         disabled: **True** to disable the button.
         disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
@@ -58,7 +58,7 @@ class ButtonConfig:
         data_attrs: List of custom data attributes to add to the button element.
         aria_attrs: List of ARIA attributes to add to the button element.
         hx_attrs: List of HTMX attributes to add to the button element.
-        download: Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename.
+        download: Lets the browser download the link target; a string suggests the file name.
 
     """
 
@@ -76,7 +76,7 @@ class ButtonConfig:
             size="xl",
             round=False,
             tooltip="Click to calculate something",
-            htmx_config=HtmxConfig(...),
+            htmx=HtmxConfig(...),
             hidden=False,
             button_type="submit",
             extra_classes="w-full",
@@ -109,7 +109,7 @@ class ButtonConfig:
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
@@ -139,15 +139,8 @@ class ButtonConfig:
     # Append to preserve positional construction of all existing fields.
     download: bool | str = field(
         default=False,
-        metadata={
-            "doc": "Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename."
-        },
+        metadata={"doc": "Lets the browser download the link target; a string suggests the file name."},
     )
-
-    @property
-    def download_enabled(self) -> bool:
-        """An empty filename still requests native download behavior."""
-        return self.download is not False
 
     def __post_init__(self) -> None:
         """Require a label, validate the values and reject options that would be silently ignored.
@@ -160,9 +153,11 @@ class ButtonConfig:
         validate_not_empty(self, "label")
         if not isinstance(self.download, (bool, str)):
             raise TypeError("ButtonConfig.download must be a bool or a filename string.")  # noqa: TRY003
-        if self.download_enabled:
+        if self.download == "":
+            self.download = True
+        if self.download:
             validate_not_empty(self, "request_url")
-            if self.htmx_config is not None or self.hx_attrs:
+            if self.htmx is not None or self.hx_attrs:
                 raise ValueError("Native downloads cannot be combined with HTMX request attributes.")  # noqa: TRY003
             if isinstance(self.download, str) and any(category(char) == "Cc" for char in self.download):
                 raise ValueError("Download filenames must not contain control characters.")  # noqa: TRY003
@@ -482,6 +477,8 @@ class DropdownConfig:
         title: Label of the dropdown button.
         show_arrow: **True** displays an arrow behind the title.
         items: A list of the menu elements.
+        color: Color of the dropdown button.
+        variant: Visual style of the dropdown button.
 
     """
 
@@ -506,10 +503,14 @@ class DropdownConfig:
     title: str = field(metadata={"doc": _("Label of the dropdown button.")})
     show_arrow: bool = field(default=True, metadata={"doc": _("**True** displays an arrow behind the title.")})
     items: list[DropdownItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the menu elements.")})
+    color: ButtonColor = field(default="primary", metadata={"doc": _("Color of the dropdown button.")})
+    variant: ButtonVariant = field(default="solid", metadata={"doc": _("Visual style of the dropdown button.")})
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
+        """Reject empty values for fields that identify or locate the component and validate the button look."""
         validate_not_empty(self, "tag_id")
+        validate_button_color(self.color)
+        validate_button_variant(self.variant)
 
 
 @dataclass
@@ -629,10 +630,11 @@ class RadioBlockConfig:
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
         request_url: The URL to which the request should be sent when clicking one of the radio buttons.
-        hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
-        hx_swap_method: The way in which the target is to be replaced.
+        htmx: HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
+        variant: Visual style of the options.
+        color: Color of the options; ignored by the neutral variant.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
         error_text: Error message shown below the field; marks the field as invalid.
@@ -647,7 +649,8 @@ class RadioBlockConfig:
                 RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
-            hx_target_id="content-area",
+            request_url="/products/",
+            htmx=HtmxConfig(target="#content-area", swap_method="outerHTML"),
         )
         """
 
@@ -667,17 +670,21 @@ class RadioBlockConfig:
         default="",
         metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
-    hx_target_id: str = field(
-        default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
-    )
-    hx_swap_method: HtmxSwapMethod = field(
-        default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
+    htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("HTMX configuration; the radio buttons send their value to request_url and swap htmx.target.")
+        },
     )
     method: str = field(
         default="",
         metadata={"doc": _("Name of the JavaScript method to be executed when clicking one of the radio buttons.")},
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    variant: ControlVariant = field(default="neutral", metadata={"doc": _("Visual style of the options.")})
+    color: ButtonColor = field(
+        default="primary", metadata={"doc": _("Color of the options; ignored by the neutral variant.")}
+    )
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
@@ -687,9 +694,22 @@ class RadioBlockConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require a non-empty name and validate hx_swap_method and current_value."""
+        """Require a non-empty name, reject HTMX options that would be ignored and validate the values."""
         validate_not_empty(self, "name")
-        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
+        validate_control_variant(self.variant)
+        validate_button_color(self.color)
+        if self.htmx is not None:
+            if self.integrated:
+                msg = (
+                    f"RadioBlockConfig {self.name!r}: integrated radio blocks are sent with their form, not with htmx."
+                )
+                raise ValueError(msg)
+            if not (self.request_url or self.htmx.request_url):
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs a request_url."
+                raise ValueError(msg)
+            if not self.htmx.target:
+                msg = f"RadioBlockConfig {self.name!r} with htmx needs htmx.target, otherwise the radio button is swapped."
+                raise ValueError(msg)
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):
@@ -718,6 +738,7 @@ class SliderConfig(BaseFormFieldConfig):
         dual: **True** to enable dual-thumb mode for selecting a range with min and max values.
         value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
+        color: Color of the filled track and the thumb border.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
         error_text: Error message shown below the field; marks the field as invalid.
@@ -770,11 +791,15 @@ class SliderConfig(BaseFormFieldConfig):
     value_max: int | None = field(
         default=None, metadata={"doc": _("The maximum value in dual-thumb mode. Defaults to `maximum`.")}
     )
+    color: ButtonColor = field(
+        default="primary", metadata={"doc": _("Color of the filled track and the thumb border.")}
+    )
 
     def __post_init__(self) -> None:
         """Validate slider configuration."""
         super().__post_init__()
         validate_slider_legend_mode(self.legend_mode, "legend_mode")
+        validate_button_color(self.color)
         if self.minimum >= self.maximum:
             raise ValueError(f"minimum ({self.minimum}) must be less than maximum ({self.maximum})")  # noqa: TRY003
         if self.value is not None and not (self.minimum <= self.value <= self.maximum):
@@ -807,8 +832,11 @@ class ToggleConfig(BaseFormFieldConfig):
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
+        icon_only: **True** shows only the icon; the label becomes the accessible name and tooltip.
         checked: **True** if the toggle button should be selected.
         switch: **True** if the toggle button should look like a typical switch select.
+        variant: Visual style of the toggle button; switches ignore it.
+        color: Color of the toggle button or the switched-on track; ignored by the neutral variant.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
@@ -827,14 +855,38 @@ class ToggleConfig(BaseFormFieldConfig):
 
     value: str = field(default="", metadata={"doc": _("The value of the toggle button.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon configuration.")})
+    icon_only: bool = field(
+        default=False,
+        metadata={"doc": _("**True** shows only the icon; the label becomes the accessible name and tooltip.")},
+    )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the toggle button should be selected.")})
     switch: bool = field(
         default=False, metadata={"doc": _("**True** if the toggle button should look like a typical switch select.")}
+    )
+    variant: ControlVariant = field(
+        default="neutral", metadata={"doc": _("Visual style of the toggle button; switches ignore it.")}
+    )
+    color: ButtonColor = field(
+        default="primary",
+        metadata={"doc": _("Color of the toggle button or the switched-on track; ignored by the neutral variant.")},
     )
     method: str = field(
         default="",
         metadata={"doc": _("Name of the JavaScript method to be executed when the toggle button is clicked.")},
     )
+
+    def __post_init__(self) -> None:
+        """Validate the look and require an icon and a label for an icon-only toggle button."""
+        super().__post_init__()
+        validate_control_variant(self.variant)
+        validate_button_color(self.color)
+        if self.icon_only:
+            if self.switch:
+                msg = f"ToggleConfig {self.name!r}: icon_only applies to toggle buttons, not to switches."
+                raise ValueError(msg)
+            if self.icon is None or not self.label:
+                msg = f"ToggleConfig {self.name!r}: icon_only needs an icon and a label as its accessible name."
+                raise ValueError(msg)
 
 
 @dataclass
@@ -957,8 +1009,12 @@ class ChatConfig:
 
     Renders a chat interface with an input line and a response container.
 
+    The message is posted as ``msg``; the response is appended to the response container.
+
     Attributes:
         request_url: URL for sending chat messages via HTMX POST.
+        tag_id: Prefix of the element IDs, unique on the page.
+        htmx: Shared request options such as vals or a loading indicator.
 
     """
 
@@ -967,7 +1023,11 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+    tag_id: str = field(default="chat", metadata={"doc": _("Prefix of the element IDs, unique on the page.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as vals or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "request_url")
+        validate_not_empty(self, "request_url", "tag_id")

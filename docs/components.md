@@ -96,6 +96,27 @@ it. This example supplies only a trigger; the host must supply the target elemen
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
 
+### Native link downloads
+
+Set `download=True` on a link button to download its target, or pass a string
+such as `download="report.svg"` to suggest a filename. Downloads require
+`request_url` and cannot be combined with HTMX request settings.
+
+## HTMX Requests
+
+Components that send requests take an optional `htmx: HtmxConfig` for the options
+shared by all components: target, swap method, method, push URL, indicator,
+confirm, vals and the global loading bar. Templates render it only through
+`{% htmx_attributes %}`; a test rejects direct field access.
+
+What a component's mechanism needs is fixed by the component and passed to
+`htmx_attributes` as an override: its own URL (`request_url`), `trigger`,
+`target`, `swap`, `method`, `indicator`, `push_url` and `global_indicator` for
+background requests. For example, the chat always posts and appends to its own
+response container; `live_content` polls with its interval and stays out of the
+global loading bar unless the Config asks for it.
+`HtmxConfig.show_global_loading_indicator=None` keeps that component default.
+
 ## Find A Component's Arguments
 
 This guide is not a catalog. The full per-component reference with live examples
