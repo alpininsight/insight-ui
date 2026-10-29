@@ -14,6 +14,13 @@ def render(template: str, **context: object) -> BeautifulSoup:
     return BeautifulSoup(html, "html.parser")
 
 
+def test_optional_turnstile_preserves_existing_form_positional_arguments() -> None:
+    """The new widget option does not shift the existing loading-indicator argument."""
+    config = FormConfig("account", "Account", "", [], False, "Save", "Reset", "/save/", "post", None, False)
+    assert config.show_loading_indicator is False
+    assert config.turnstile is None
+
+
 def test_turnstile_tag_renders_only_public_widget_configuration() -> None:
     """Never put a server secret or a vendor script URL in the widget markup."""
     soup = render(
