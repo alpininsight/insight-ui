@@ -37,16 +37,13 @@ package uses the browser binaries already included in that image; CI does not
 download a browser at runtime. Both browser programs gate the PR through the
 existing quality gate.
 
-## Integration and release
+## Component contract
 
-The native download API from [#743](https://github.com/alpininsight/insight-ui/pull/743)
-and shared control colors from [#778](https://github.com/alpininsight/insight-ui/pull/778)
-are already integrated into `develop`. This suite uses their current `htmx`,
-`--tone-on-action` and `--color-insight-<family>-on-action` contracts. It preserves
-the existing empty-filename normalization and does not introduce a second download
-property or restore obsolete button-specific color rules.
+The outline and native-download checks use the same public button Config and
+template tag as applications. Interaction colors use `--tone-on-action` and
+`--color-insight-<family>-on-action`. Native downloads use `download` and `htmx`;
+an empty suggested filename is normalized to the browser's default filename.
 
-Recheck CI and independent review on the final PR head before merging. Stable
-v1.15.1 predates the current control token contract. Consumers must choose a
-tested package and matching token contract; this source PR neither upgrades a
-consumer nor changes live traffic.
+Applications should pair their theme tokens with the installed package version.
+Changing package source or passing the browser checks does not update an
+application's installed package or activate a release.
