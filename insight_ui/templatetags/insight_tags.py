@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
@@ -44,8 +43,8 @@ from insight_ui.configs import (
     ButtonColor,
     ButtonConfig,
     ButtonVariant,
-    CardCarouselConfig,
     CardConfig,
+    CarouselConfig,
     CarouselItemConfig,
     ChartConfig,
     ChartDatasetConfig,
@@ -53,6 +52,7 @@ from insight_ui.configs import (
     CheckboxConfig,
     CheckboxGroupConfig,
     ColorType,
+    ControlVariant,
     CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
@@ -72,8 +72,6 @@ from insight_ui.configs import (
     HttpMethod,
     IconColor,
     IconConfig,
-    ImageCarouselConfig,
-    ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
     InfoboxConfig,
@@ -885,6 +883,8 @@ def radio_block(
     htmx: HtmxConfig | _Unset | None = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    variant: ControlVariant | _Unset = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
@@ -916,6 +916,7 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
@@ -939,11 +940,14 @@ def toggle(
     value: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     icon: IconConfig | _Unset | None = UNSET,
+    icon_only: bool | _Unset = UNSET,
     checked: bool | _Unset = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
+    variant: ControlVariant | _Unset = UNSET,
+    color: ButtonColor | _Unset = UNSET,
     method: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     error_text: str | _Unset = UNSET,
@@ -1675,44 +1679,30 @@ def flip_card(
     return {"flip_card_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
+@register.inclusion_tag("insight_ui/components/carousel.html", takes_context=True)
 def carousel(
-    config: CardCarouselConfig | None = None,
+    context: template.Context,
+    config: CarouselConfig | None = None,
     *,
-    carousel_items: Sequence[CardConfig] | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
     items_per_slide: int | _Unset = UNSET,
+    min_item_width: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a card carousel."""
-    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "carousel_config": config,
-        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
-        if config.carousel_items
-        else range(0),
-    }
+    """Render any items as browsable pages; each item is rendered with the item template.
 
-
-@register.inclusion_tag("insight_ui/components/carousels/image_carousel.html")
-def image_carousel(
-    config: ImageCarouselConfig | None = None,
-    *,
-    carousel_items: Sequence[ImageCarouselItemConfig] | _Unset = UNSET,
-    autoplay: bool | _Unset = UNSET,
-    show_dots: bool | _Unset = UNSET,
-    show_index: bool | _Unset = UNSET,
-    items_per_slide: int | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render an image carousel."""
-    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "carousel_config": config,
-        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
-        if config.carousel_items
-        else range(0),
-    }
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        CarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
 @register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")

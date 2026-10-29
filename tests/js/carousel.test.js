@@ -23,6 +23,7 @@ describe('Carousel Component', () => {
   beforeEach(() => {
     globalThis.InsightUI = {};
     globalThis.window.InsightUI = globalThis.InsightUI;
+    globalThis.interpolate = (s, vars) => s.replace(/%\((\w+)\)s/g, (_, key) => vars[key]);
     loadComponent('insight-ui-carousel.js');
   });
 
@@ -275,6 +276,195 @@ describe('Carousel Component', () => {
         // 100 / 3 = 33.333...%
         expect(item.style.flex).toContain('33.3333');
       });
+    });
+  });
+
+  describe('Responsive items per page', () => {
+    /**
+     * Renders a carousel of six items whose viewport is `width` pixels wide; 1rem counts as 16px.
+     */
+    function createResponsiveCarousel(width, attributes = 'data-items-per-slide="3" data-min-item-width="16rem"') {
+      const container = TestUtils.createDOM(`
+        <div data-insight-carousel data-autoplay="false" data-show-dots="true" ${attributes}>
+          <div class="carousel-viewport">
+            <div class="carousel-track">
+              ${[1, 2, 3, 4, 5, 6].map(n => `<div class="carousel-item"><a href="#${n}">${n}</a></div>`).join('')}
+            </div>
+          </div>
+          <button class="carousel-prev">Prev</button>
+          <div class="carousel-dots"></div>
+          <button class="carousel-next">Next</button>
+        </div>
+      `);
+      const viewport = container.querySelector('.carousel-viewport');
+      Object.defineProperty(viewport, 'clientWidth', { configurable: true, get: () => width });
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+        return { width: parseFloat(this.style.width) * 16 || 0 };
+      });
+      return { element: container.querySelector('[data-insight-carousel]'), viewport };
+    }
+
+    it('shows the maximum when the items fit', () => {
+      const { element } = createResponsiveCarousel(1000);
+
+      const carousel = new InsightUI.Carousel(element);
+
+      expect(carousel.itemsPerSlide).toBe(3);
+      expect(carousel.totalSlides).toBe(2);
+    });
+
+    it('shows fewer items on a narrow carousel', () => {
+      const { element } = createResponsiveCarousel(600);
+
+      const carousel = new InsightUI.Carousel(element);
+
+      // 600px / 256px = 2 items per page
+      expect(carousel.itemsPerSlide).toBe(2);
+      expect(carousel.totalSlides).toBe(3);
+    });
+
+    it('shows at least one item when even one does not fit', () => {
+      const { element } = createResponsiveCarousel(200);
+
+      expect(new InsightUI.Carousel(element).itemsPerSlide).toBe(1);
+    });
+
+    it('uses the maximum without a minimum item width', () => {
+      const { element } = createResponsiveCarousel(200, 'data-items-per-slide="2"');
+
+      expect(new InsightUI.Carousel(element).itemsPerSlide).toBe(2);
+    });
+
+    it('keeps showing the first item of the page when the width changes', () => {
+      let width = 1000;
+      const { element, viewport } = createResponsiveCarousel(0);
+      Object.defineProperty(viewport, 'clientWidth', { configurable: true, get: () => width });
+      const carousel = new InsightUI.Carousel(element);
+      carousel.next(); // items 4-6
+
+      width = 300;
+      window.dispatchEvent(new Event('resize'));
+
+      // One item per page: item 4 is on page 4
+      expect(carousel.itemsPerSlide).toBe(1);
+      expect(carousel.index).toBe(3);
+      expect(element.querySelectorAll('.carousel-dot')).toHaveLength(6);
+    });
+  });
+
+  describe('Page dots', () => {
+    function createDottedCarousel() {
+      const container = TestUtils.createDOM(`
+        <div data-insight-carousel data-autoplay="false" data-show-dots="true" data-items-per-slide="2">
+          <div class="carousel-track">
+            <div class="carousel-item"><a href="#1">1</a></div>
+            <div class="carousel-item"><a href="#2">2</a></div>
+            <div class="carousel-item"><a href="#3">3</a></div>
+          </div>
+          <button class="carousel-prev">Prev</button>
+          <div class="carousel-dots"></div>
+          <button class="carousel-next">Next</button>
+        </div>
+      `);
+      return container.querySelector('[data-insight-carousel]');
+    }
+
+    it('creates a labelled dot per page', () => {
+      const element = createDottedCarousel();
+
+      new InsightUI.Carousel(element);
+
+      const dots = [...element.querySelectorAll('.carousel-dot')];
+      expect(dots.map(dot => dot.getAttribute('aria-label'))).toEqual(['Go to page 1', 'Go to page 2']);
+      expect(dots.every(dot => dot.tagName === 'BUTTON' && dot.type === 'button')).toBe(true);
+    });
+
+    it('marks the dot of the current page', () => {
+      const element = createDottedCarousel();
+      const carousel = new InsightUI.Carousel(element);
+
+      carousel.next();
+
+      const dots = element.querySelectorAll('.carousel-dot');
+      expect(dots[0].hasAttribute('aria-current')).toBe(false);
+      expect(dots[1].getAttribute('aria-current')).toBe('true');
+    });
+
+    it('shows the page of a clicked dot', () => {
+      const element = createDottedCarousel();
+      const carousel = new InsightUI.Carousel(element);
+
+      TestUtils.click(element.querySelectorAll('.carousel-dot')[1]);
+
+      expect(carousel.index).toBe(1);
+    });
+
+    it('keeps only the dot of the current page in the tab order', () => {
+      const element = createDottedCarousel();
+      const carousel = new InsightUI.Carousel(element);
+
+      carousel.next();
+
+      expect([...element.querySelectorAll('.carousel-dot')].map(dot => dot.tabIndex)).toEqual([-1, 0]);
+    });
+
+    it('moves the focus to the dot of the new page on arrow keys', () => {
+      const element = createDottedCarousel();
+      const carousel = new InsightUI.Carousel(element);
+      const dots = element.querySelectorAll('.carousel-dot');
+      dots[0].focus();
+
+      dots[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+
+      expect(carousel.index).toBe(1);
+      expect(document.activeElement).toBe(dots[1]);
+    });
+
+    it('leaves arrow keys inside an item to its content', () => {
+      const element = createDottedCarousel();
+      const carousel = new InsightUI.Carousel(element);
+      const link = element.querySelector('.carousel-item a');
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+
+      link.dispatchEvent(event);
+
+      expect(carousel.index).toBe(0);
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('shows the page number instead of dots that do not fit', () => {
+      const element = createDottedCarousel();
+      element.insertAdjacentHTML('beforeend', '<span class="carousel-index-text" hidden></span>');
+      const row = element;
+      Object.defineProperty(row, 'clientWidth', { configurable: true, get: () => 100 });
+      Object.defineProperty(row, 'scrollWidth', { configurable: true, get: () => 300 });
+
+      new InsightUI.Carousel(element);
+
+      expect(element.querySelector('.carousel-dots').hidden).toBe(true);
+      const indexText = element.querySelector('.carousel-index-text');
+      expect(indexText.hidden).toBe(false);
+      expect(indexText.textContent).toBe('Page 1 / 2');
+    });
+
+    it('keeps the dots when they fit', () => {
+      const element = createDottedCarousel();
+
+      new InsightUI.Carousel(element);
+
+      expect(element.querySelector('.carousel-dots').hidden).toBe(false);
+    });
+
+    it('makes items on other pages inert', () => {
+      const element = createDottedCarousel();
+      const items = element.querySelectorAll('.carousel-item');
+      const carousel = new InsightUI.Carousel(element);
+
+      expect([...items].map(item => item.inert)).toEqual([false, false, true]);
+
+      carousel.next();
+
+      expect([...items].map(item => item.inert)).toEqual([true, true, false]);
     });
   });
 
