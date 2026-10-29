@@ -27,7 +27,7 @@ pattern for a host project.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
 - [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
@@ -404,6 +404,12 @@ After, with `name` equal to `intro`, the id is `tab-intro`.
 
 Search: `{% section`, `{% surface`, `{% hbox`, `{% tabs` and `{% tab` with a
 `|` filter on a quoted argument, and `_("` inside those tags.
+
+`{% surface radius=… %}` uses the radius token of the same name
+(`rounded-insight-m` for `"m"`), so a theme can change it. The old classes were
+one Tailwind step larger: `"m"` was 8px and is 6px now, `"xl"` was 16px and is
+12px. `radius="none"` now squares the corners; before, it kept the variant's
+rounding. Search: `{% surface` with `radius=`.
 
 `{% modal %}` accepts `config=ModalConfig(...)`. A single `id`, `title`,
 `width` or `show_close` argument overrides the config.
@@ -992,6 +998,13 @@ scripts should use `[data-sidebar-heading]`.
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
 another level. Allowed values are 2–6.
+
+The skip link ("Jump to main content") is the first element of `<body>` in
+`base.html`. It was rendered by `{% navbar %}`, so a page without the package
+navbar had none, and when focused it was hidden behind the navbar.
+`#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
+to your own base template, or keep yours and expect two. A layout that renders
+`{% navbar %}` without extending `insight_ui/base.html` now needs its own.
 
 The icon wrapper is `<span class="inline-flex">`. It was a `<div>`.
 Tooltip wrappers on input, select and textarea are `<span>`. They were
