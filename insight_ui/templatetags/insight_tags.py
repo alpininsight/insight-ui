@@ -107,6 +107,7 @@ from insight_ui.configs import (
     TextDiffConfig,
     ToggleConfig,
     ToggleViewConfig,
+    TurnstileConfig,
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
@@ -1828,6 +1829,20 @@ def toggle_view(
 # =============================================================
 
 
+@register.inclusion_tag("insight_ui/components/turnstile.html")
+def turnstile(
+    config: TurnstileConfig | None = None,
+    *,
+    site_key: str | _Unset = UNSET,
+    theme: Literal["auto", "light", "dark"] | _Unset = UNSET,
+    size: Literal["normal", "flexible", "compact"] | _Unset = UNSET,
+    action: str | _Unset = UNSET,
+) -> dict[str, TurnstileConfig]:
+    """Render the public Turnstile widget; the host must verify its token."""
+    config = build_config(TurnstileConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"turnstile_config": config}
+
+
 # Tag and template that render each field config supported by the form component.
 _FORM_FIELD_RENDERERS: dict[type, tuple[Callable[..., dict[str, Any]], str]] = {
     InputFieldConfig: (input_field, "insight_ui/components/input.html"),
@@ -1881,11 +1896,13 @@ def form(
     method: str | _Unset = UNSET,
     htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
+    turnstile: TurnstileConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "form_config": config,
+        "native_form_action": (config.htmx.request_url if config.htmx else "") or config.request_url,
         "rendered_fields": [_render_form_field(field) for field in config.fields],
         # "find" keeps the indicator to this form; a plain class selector would show every indicator on the page.
         "form_indicator": "find .htmx-indicator" if config.show_loading_indicator else "",
