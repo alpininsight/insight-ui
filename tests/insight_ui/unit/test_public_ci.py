@@ -157,6 +157,22 @@ def test_artifacts_are_uploaded_only_after_installation_smoke() -> None:
     assert "publish" not in "\n".join(step.get("run", "") for step in steps)
 
 
+def test_browser_acceptance_uses_a_matching_digest_pinned_image() -> None:
+    """Use the image's browsers without downloading a mutable browser in CI."""
+    job = _workflows()["feature-ci.yml"]["jobs"]["browser"]
+    container = job["container"]
+    image = re.fullmatch(
+        r"mcr\.microsoft\.com/playwright/python:v(\d+\.\d+\.\d+)-noble@sha256:[a-f0-9]{64}",
+        container["image"],
+    )
+    assert image is not None, "Pin the official Playwright image by version and digest"
+    assert container["options"] == "--init --ipc=host"
+    commands = [step["run"] for step in job["steps"] if "run" in step]
+    assert not any("playwright install" in command for command in commands)
+    for module in ("button_download_smoke", "outline_ink_smoke"):
+        assert f"uv run --no-sync --with playwright=={image.group(1)} python -m tests.browser.{module}" in commands
+
+
 def test_locked_dependencies_require_only_public_indexes() -> None:
     """Contributor setup must not start depending on a private Git or package host."""
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
