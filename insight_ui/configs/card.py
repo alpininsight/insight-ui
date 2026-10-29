@@ -10,7 +10,13 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
-from insight_ui.configs.types import HeadingLevel, validate_heading_level, validate_not_empty, validate_toggle_view_type
+from insight_ui.configs.types import (
+    HeadingLevel,
+    validate_heading_level,
+    validate_not_empty,
+    validate_toggle_view_type,
+    validate_urls,
+)
 from insight_ui.configs.utils import BadgeConfig
 
 
@@ -91,6 +97,7 @@ class AppCardConfig:
 
     def __post_init__(self) -> None:
         """Validate heading_level after initialization."""
+        validate_urls(self)
         validate_heading_level(self.heading_level)
 
 
@@ -140,6 +147,7 @@ class FlipCardConfig:
 
     def __post_init__(self) -> None:
         """Validate heading_level after initialization."""
+        validate_urls(self)
         validate_heading_level(self.heading_level)
 
 
@@ -163,6 +171,10 @@ class CarouselItemConfig:
     content: str = field(default="", metadata={"doc": _("Item content/description.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
     request_url: str = field(default="", metadata={"doc": _("Optional link URL.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -247,7 +259,8 @@ class CarouselImageConfig:
     center_caption: bool = field(default=False, metadata={"doc": _("Center the caption; suits short captions.")})
 
     def __post_init__(self) -> None:
-        """Reject an empty URL."""
+        """Reject an empty URL and a URL with a scheme that is not allowed."""
+        validate_urls(self)
         validate_not_empty(self, "url")
 
 

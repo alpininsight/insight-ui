@@ -25,6 +25,7 @@ from insight_ui.configs.types import (
     validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
+    validate_urls,
 )
 
 
@@ -149,6 +150,7 @@ class ButtonConfig:
             ValueError: If a value is invalid or an option does not apply to the rendered element.
 
         """
+        validate_urls(self)
         # The label is the accessible name, also for icon-only buttons (aria-label).
         validate_not_empty(self, "label")
         if not isinstance(self.download, (bool, str)):
@@ -463,6 +465,7 @@ class DropdownItemConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "request_url")
 
 
@@ -695,6 +698,7 @@ class RadioBlockConfig:
 
     def __post_init__(self) -> None:
         """Require a non-empty name, reject HTMX options that would be ignored and validate the values."""
+        validate_urls(self)
         validate_not_empty(self, "name")
         validate_control_variant(self.variant)
         validate_button_color(self.color)
@@ -1030,4 +1034,5 @@ class ChatConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "request_url", "tag_id")
