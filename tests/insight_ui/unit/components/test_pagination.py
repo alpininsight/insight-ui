@@ -8,6 +8,7 @@ import pytest
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator
 from django.template import Context, Template
+from django.utils.functional import lazy
 from insight_ui.configs import HtmxConfig, PaginationConfig, PaginationIppConfig
 
 
@@ -21,6 +22,12 @@ def render_pagination(page_number: int = 2, total: int = 30, **options: object) 
         warnings.simplefilter("error")
         rendered = Template("{% load insight_tags %}{% pagination config %}").render(Context({"config": config}))
     return BeautifulSoup(rendered, "html.parser")
+
+
+def test_lazy_request_url_keeps_filters_in_pagination_links() -> None:
+    """Pagination resolves lazy URLs before parsing links and page-size form parameters."""
+    soup = render_pagination(request_url=lazy(lambda: "/items/?topic=tech", str)())
+    assert "topic=tech" in page_links(soup)["1"]
 
 
 def page_links(soup: BeautifulSoup) -> dict[str, str]:

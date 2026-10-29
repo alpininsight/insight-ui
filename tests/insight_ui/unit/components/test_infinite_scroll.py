@@ -2,10 +2,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the infinite_scroll component."""
 
+import json
+from types import SimpleNamespace
+
 import pytest
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator
 from django.template import Context, Template
+from django.test import override_settings
+from django.utils.functional import lazy
 from insight_ui.configs import HtmxConfig, InfiniteScrollConfig
 
 ITEMS = [{"title": f"Title {number}", "content": f"Text {number}"} for number in range(1, 6)]
@@ -46,7 +51,8 @@ def test_scrolling_to_the_end_loads_the_next_page_into_the_feed() -> None:
     """The control requests the next page when revealed and appends it to the feed."""
     control = render("infinite_scroll", feed_config()).find(id="news-more").find(attrs={"hx-get": True})
 
-    assert control["hx-get"] == "/news/?page=2"
+    assert control["hx-get"] == "/news/"
+    assert json.loads(control["hx-vals"]) == {"page": 2}
     assert control["hx-trigger"] == "revealed"
     assert control["hx-target"] == "#news"
     assert control["hx-swap"] == "beforeend"
@@ -57,7 +63,8 @@ def test_load_more_button_without_auto_fetch() -> None:
     button = render("infinite_scroll", feed_config(auto_fetch=False)).find(id="news-more").find("button")
 
     assert button.get_text(strip=True) == "Load more"
-    assert button["hx-get"] == "/news/?page=2"
+    assert button["hx-get"] == "/news/"
+    assert json.loads(button["hx-vals"]) == {"page": 2}
     assert button["hx-target"] == "#news"
     assert not button.has_attr("hx-trigger")
 
@@ -67,7 +74,9 @@ def test_next_page_replaces_the_control_out_of_band() -> None:
     control = render("infinite_scroll_items", feed_config(page=2)).find(id="news-more")
 
     assert control["hx-swap-oob"] == "true"
-    assert control.find(attrs={"hx-get": True})["hx-get"] == "/news/?page=3"
+    request = control.find(attrs={"hx-get": True})
+    assert request["hx-get"] == "/news/"
+    assert json.loads(request["hx-vals"]) == {"page": 3}
 
 
 def test_last_page_says_that_all_content_is_loaded() -> None:
@@ -101,7 +110,67 @@ def test_request_url_keeps_its_query_and_page_param() -> None:
 
     control = render("infinite_scroll", config).find(attrs={"hx-get": True})
 
-    assert control["hx-get"] == "/news/?topic=tech&p=2"
+    assert control["hx-get"] == "/news/?topic=tech"
+    assert json.loads(control["hx-vals"]) == {"p": 2}
+
+
+@pytest.mark.parametrize("tag", ["infinite_scroll", "infinite_scroll_items"])
+def test_lazy_request_url_is_resolved_for_page_links(tag: str) -> None:
+    """A validated Django lazy URL remains usable when the next request is built."""
+    config = feed_config(request_url=lazy(lambda: "/news/?topic=tech", str)())
+    control = render(tag, config).find(attrs={"hx-get": True})
+    assert control["hx-get"] == "/news/?topic=tech"
+    assert json.loads(control["hx-vals"]) == {"page": 2}
+
+
+@pytest.mark.parametrize("method", ["get", "post"])
+def test_next_page_owns_its_parameter_without_mutating_shared_values(method: str) -> None:
+    """A shared or inherited page value cannot restart the feed at the first page."""
+    values = {"p": 1, "tenant": "one"}
+    options = HtmxConfig(method=method, vals=values)
+    config = feed_config(request_url="/news/?topic=tech&p=9", page_param="p", htmx=options)
+    control = render("infinite_scroll", config).find(attrs={f"hx-{method}": True})
+    assert json.loads(control["hx-vals"]) == {"p": 2, "tenant": "one"}
+    assert values == {"p": 1, "tenant": "one"}
+    assert options.vals is values
+    assert control[f"hx-{method}"] == ("/news/?topic=tech" if method == "get" else "/news/?topic=tech&p=2")
+
+
+@pytest.mark.parametrize("tag", ["infinite_scroll", "infinite_scroll_items"])
+def test_custom_item_template_receives_the_host_page_context(tag: str) -> None:
+    """Both full feeds and appended fragments preserve request, user and host variables."""
+    templates = [
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "APP_DIRS": False,
+            "OPTIONS": {
+                "loaders": [
+                    (
+                        "django.template.loaders.locmem.Loader",
+                        {
+                            "host/item.html": (
+                                "<p>{{ request.path }}|{{ user.username }}|{{ host_label }}|{{ item.title }}</p>"
+                            )
+                        },
+                    ),
+                    "django.template.loaders.app_directories.Loader",
+                ]
+            },
+        }
+    ]
+    with override_settings(TEMPLATES=templates):
+        config = feed_config(item_template="host/item.html")
+        context = Context(
+            {
+                "config": config,
+                "request": SimpleNamespace(path="/host/"),
+                "user": SimpleNamespace(username="Ada"),
+                "host_label": "Tenant",
+            }
+        )
+        html = Template(f"{{% load insight_tags %}}{{% {tag} config %}}").render(context)
+    assert "/host/|Ada|Tenant|Title 1" in html
+    assert "/host/|Ada|Tenant|Title 2" in html
 
 
 def test_shared_htmx_options_are_kept() -> None:
