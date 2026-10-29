@@ -424,9 +424,6 @@
   .top-4 {
     top: calc(var(--spacing) * 4);
   }
-  .top-5 {
-    top: calc(var(--spacing) * 5);
-  }
   .top-16 {
     top: calc(var(--spacing) * 16);
   }
@@ -447,9 +444,6 @@
   }
   .bottom-2 {
     bottom: calc(var(--spacing) * 2);
-  }
-  .bottom-10 {
-    bottom: calc(var(--spacing) * 10);
   }
   .bottom-16 {
     bottom: calc(var(--spacing) * 16);
@@ -747,9 +741,6 @@
   }
   .h-24 {
     height: calc(var(--spacing) * 24);
-  }
-  .h-\[35vh\] {
-    height: 35vh;
   }
   .h-\[calc\(100dvh-var\(--insight-navbar-height\)\)\] {
     height: calc(100dvh - var(--insight-navbar-height));
@@ -1577,9 +1568,6 @@
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
   }
-  .px-8 {
-    padding-inline: calc(var(--spacing) * 8);
-  }
   .py-0 {
     padding-block: 0px;
   }
@@ -1891,6 +1879,10 @@
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .ring {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .ring-insight-focus {
     --tw-ring-color: var(--color-insight-focus);
   }
@@ -2171,9 +2163,6 @@
     .sm\:top-1\/2 {
       top: calc(1 / 2 * 100%);
     }
-    .sm\:bottom-10 {
-      bottom: calc(var(--spacing) * 10);
-    }
     .sm\:mx-14 {
       margin-inline: calc(var(--spacing) * 14);
     }
@@ -2321,9 +2310,6 @@
     }
     .lg\:p-8 {
       padding: calc(var(--spacing) * 8);
-    }
-    .lg\:px-0 {
-      padding-inline: 0px;
     }
     .lg\:py-3 {
       padding-block: calc(var(--spacing) * 3);
@@ -3484,6 +3470,78 @@
   }
   .slider-legend-item:last-child:dir(rtl) {
     translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
+  }
+  .ring-carousel {
+    overflow-x: clip;
+  }
+  .ring-carousel-stage {
+    position: relative;
+    perspective: 1000px;
+  }
+  .ring-carousel-ring {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .ring-carousel-item {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-style: preserve-3d;
+    transition: transform var(--insight-ring-carousel-duration) ease, visibility var(--insight-ring-carousel-duration);
+  }
+  .ring-carousel-faces {
+    display: grid;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+  .ring-carousel-faces > * {
+    grid-area: 1 / 1;
+    height: 100%;
+    backface-visibility: hidden;
+    opacity: var(--insight-ring-carousel-fade, 1);
+    transition: opacity var(--insight-ring-carousel-duration) ease;
+  }
+  .ring-carousel-front {
+    position: relative;
+    overflow: hidden;
+  }
+  .ring-carousel-faces > ::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-insight-surface);
+    background-color: var(--color-insight-bg-base);
+    opacity: 0.45;
+    pointer-events: none;
+    transition: opacity var(--insight-ring-carousel-duration) ease;
+  }
+  .ring-carousel-item[data-current] .ring-carousel-faces > ::after {
+    opacity: 0;
+  }
+  .ring-carousel-front > * {
+    height: 100%;
+  }
+  .ring-carousel-front img, .ring-carousel-front video {
+    max-width: 100%;
+    height: auto;
+  }
+  .ring-carousel-item[data-current] .ring-carousel-front {
+    overflow-y: auto;
+  }
+  .ring-carousel-back {
+    transform: rotateY(180deg);
+    background-color: var(--color-insight-bg-raised);
+    border: 1px solid var(--color-insight-border-raised);
+    border-radius: var(--radius-insight-surface);
+  }
+  .ring-carousel:not([data-ready]) .ring-carousel-item, .ring-carousel:not([data-ready]) .ring-carousel-faces > *, .ring-carousel:not([data-ready]) .ring-carousel-faces > ::after, .ring-carousel-item[data-snap], .ring-carousel-item[data-snap] .ring-carousel-faces > *, .ring-carousel-item[data-snap] .ring-carousel-faces > ::after {
+    transition: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ring-carousel-item, .ring-carousel-faces > *, .ring-carousel-faces > ::after {
+      transition: none;
+    }
   }
 }
 @property --tw-translate-x {

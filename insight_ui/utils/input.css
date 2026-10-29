@@ -1516,4 +1516,116 @@
         translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
     }
 
+    /*
+    * ========================================================
+    *   Ring Carousel
+    * ========================================================
+    *
+    *   insight-ui-ring-carousel.js sets the size and place of every item and the height of the stage.
+    *   These rules keep the 3D context, the solid backs and the clipping: the ring sets the item
+    *   width, media shrink to it and wider content is clipped, so neighbouring items never overlap.
+    */
+    /* The items beside the ring reach past the carousel; they must not widen the page. */
+    .ring-carousel {
+        overflow-x: clip;
+    }
+
+    .ring-carousel-stage {
+        position: relative;
+        perspective: 1000px;
+    }
+
+    .ring-carousel-ring {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+    }
+
+    .ring-carousel-item {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-style: preserve-3d;
+        /* visibility stays visible while it transitions, so a leaving item is hidden once it has faded out. */
+        transition: transform var(--insight-ring-carousel-duration) ease, visibility var(--insight-ring-carousel-duration);
+    }
+
+    .ring-carousel-faces {
+        display: grid;
+        height: 100%;
+        transform-style: preserve-3d;
+    }
+
+    /* Fading the faces, not the item: opacity on a 3D item flattens it and shows its mirrored front. */
+    .ring-carousel-faces > * {
+        grid-area: 1 / 1;
+        height: 100%;
+        backface-visibility: hidden;
+        opacity: var(--insight-ring-carousel-fade, 1);
+        transition: opacity var(--insight-ring-carousel-duration) ease;
+    }
+
+    .ring-carousel-front {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Items behind the front one fade towards the page background: lighter in light mode, darker in
+       dark mode, so the front item stands out in both. */
+    .ring-carousel-faces > ::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius-insight-surface);
+        background-color: var(--color-insight-bg-base);
+        opacity: 0.45;
+        pointer-events: none;
+        transition: opacity var(--insight-ring-carousel-duration) ease;
+    }
+
+    .ring-carousel-item[data-current] .ring-carousel-faces > ::after {
+        opacity: 0;
+    }
+
+    /* A height, not a minimum: content such as a card brings its own min-height utility, which wins. */
+    .ring-carousel-front > * {
+        height: 100%;
+    }
+
+    .ring-carousel-front img,
+    .ring-carousel-front video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Content above the height limit scrolls in the front item. */
+    .ring-carousel-item[data-current] .ring-carousel-front {
+        overflow-y: auto;
+    }
+
+    .ring-carousel-back {
+        transform: rotateY(180deg);
+        background-color: var(--color-insight-bg-raised);
+        border: 1px solid var(--color-insight-border-raised);
+        border-radius: var(--radius-insight-surface);
+    }
+
+    /* Nothing moves before the first layout, while an item jumps to its place, or with reduced motion. */
+    .ring-carousel:not([data-ready]) .ring-carousel-item,
+    .ring-carousel:not([data-ready]) .ring-carousel-faces > *,
+    .ring-carousel:not([data-ready]) .ring-carousel-faces > ::after,
+    .ring-carousel-item[data-snap],
+    .ring-carousel-item[data-snap] .ring-carousel-faces > *,
+    .ring-carousel-item[data-snap] .ring-carousel-faces > ::after {
+        transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ring-carousel-item,
+        .ring-carousel-faces > *,
+        .ring-carousel-faces > ::after {
+            transition: none;
+        }
+    }
+
 }
