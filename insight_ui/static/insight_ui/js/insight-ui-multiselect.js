@@ -52,7 +52,7 @@ export class Multiselect {
         this.options = this.element.querySelector('.options');
         this.optionItems = Array.from(this.element.querySelectorAll('.option'));
         this.info = this.element.querySelector('.info');
-        this.ariaStatus = this.element.querySelector(`#${this.name}-aria-status`);
+        this.ariaStatus = this.element.querySelector("[data-multiselect-status]");
         this.selectAllBtn = this.element.querySelector('.select-all');
         this.deselectAllBtn = this.element.querySelector('.deselect-all');
 
