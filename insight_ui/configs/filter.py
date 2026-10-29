@@ -15,6 +15,7 @@ from insight_ui.configs.types import (
     validate_filter_field_type,
     validate_not_empty,
     validate_query_logic,
+    validate_urls,
 )
 
 
@@ -74,6 +75,7 @@ class SearchBarConfig:
 
     def __post_init__(self) -> None:
         """Validate the id and name, and that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "name")
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
@@ -174,6 +176,7 @@ class GenericFilterConfig:
 
     def __post_init__(self) -> None:
         """Validate that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
                 f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
@@ -318,7 +321,8 @@ class QueryBuilderConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require an ID and a parameter name."""
+        """Require an ID and a parameter name; reject a request_url with a scheme that is not allowed."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "param_name")
         if self.max_filters < 1:
             msg = f"QueryBuilderConfig {self.tag_id!r} needs max_filters of at least 1."

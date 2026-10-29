@@ -40,6 +40,7 @@ pattern for a host project.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
+- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
@@ -897,6 +898,42 @@ Search: `DataAttrConfig(`.
 `required` attribute on `select`, `checkbox` and `toggle` when `required=True`.
 The required asterisk is `aria-hidden="true"`. v1.15.1 used
 `aria-label="Required"` on the input, select and textarea asterisk.
+
+### URL schemes
+
+[#774](https://github.com/alpininsight/insight-ui/pull/774).
+
+URL fields of the configs accept relative URLs and the schemes of their kind.
+Another scheme raises `ValueError` at construction. Empty fields are not
+checked.
+
+| Field | Schemes besides relative URLs |
+| --- | --- |
+| Links and request endpoints: `request_url`, `href`, every other `*_url` | `http`, `https`, `mailto`, `tel` |
+| Images: `url`, `url_dark`, `avatar_url`, `background_image_url` | `http`, `https`, `data` |
+| `WebSocketConfig.request_url` | `ws`, `wss`, `http`, `https` |
+
+`{% surface href=... %}` follows the link rule and now also accepts `tel`.
+
+`FooterContactConfig.imprint` and `.privacy` are now `imprint_url` and
+`privacy_url`, like every other URL field. `mail_url` is now `email`: it takes
+the address, which is also the link text, and the link adds `mailto:`. An
+email with `mailto:` or text that is no address raises `ValueError`.
+
+Before:
+
+```python
+FooterContactConfig(mail_url="team@example.com", imprint="/imprint/", privacy="/privacy/")
+```
+
+After:
+
+```python
+FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/")
+```
+
+Search: URL fields filled from data, e.g. user profiles, app links with an
+own scheme such as `myapp://`, and `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig`.
 
 ### Help, error and disabled texts
 
