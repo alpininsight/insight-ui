@@ -27,10 +27,8 @@
 @source "../configs/";
 @source "../static/insight_ui/js/";
 @source "../templatetags/";
-/* Public icon and ribbon colors must not depend on host or docs templates. */
+/* Public icon and family accent colors must not depend on host or docs templates. */
 @source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
-@source inline("bg-insight-{primary,secondary,success,warning,danger,info}-action");
-@source inline("text-insight-{primary,secondary,success,warning,danger,info}-on-action");
 @source inline("text-insight-text-{headline,body,muted,link}");
 /* Icon colors use the readable -text token of a color family (IconConfig.color_class). */
 @source inline("text-insight-{primary,secondary,success,warning,danger,info}-text");
@@ -1001,6 +999,14 @@
         --tone-fill-active: var(--color-insight-light-active);
         --tone-on-action: var(--color-insight-on-light);
         --tone-ink: var(--color-insight-light);
+    }
+    /* Neutral has no button color; components that offer it (corner ribbon) fill with the raised surface. */
+    .control-neutral {
+        --tone-fill: var(--color-insight-bg-raised);
+        --tone-fill-hover: var(--color-insight-bg-overlay);
+        --tone-fill-active: var(--color-insight-bg-overlay);
+        --tone-on-action: var(--color-insight-text-body);
+        --tone-ink: var(--color-insight-text-body);
     }
 
     /* Variants. Hover and active only apply to enabled buttons. Solid is the default of .btn. */
