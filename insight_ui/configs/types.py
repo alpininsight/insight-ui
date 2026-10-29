@@ -73,6 +73,12 @@ BUTTON_VARIANT_VALUES: tuple[str, ...] = ("solid", "outline", "subtle", "link", 
 # Type alias for button variants
 type ButtonVariant = Literal["solid", "outline", "subtle", "link", "plain"]
 
+# Tuple of valid variants of toggle buttons and radio blocks; "neutral" ignores the color
+CONTROL_VARIANT_VALUES: tuple[str, ...] = ("neutral", "subtle", "outline")
+
+# Type alias for control variants
+type ControlVariant = Literal["neutral", "subtle", "outline"]
+
 # Icon color values: semantic colors + text colors
 ICON_COLOR_VALUES: tuple[str, ...] = (
     "",
@@ -375,6 +381,20 @@ def validate_button_variant(value: str, field_name: str = "variant") -> None:
     _validate_literal(value, BUTTON_VARIANT_VALUES, field_name)
 
 
+def validate_control_variant(value: str, field_name: str = "variant") -> None:
+    """Validate that a toggle button or radio block variant is one of the allowed variants.
+
+    Args:
+        value: The control variant to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid control variant.
+
+    """
+    _validate_literal(value, CONTROL_VARIANT_VALUES, field_name)
+
+
 def validate_step_status(value: str, field_name: str = "status") -> None:
     """Validate that a step status value is one of the allowed values.
 
@@ -662,6 +682,10 @@ TYPE_REGISTRY: dict[str, dict] = {
     "ButtonColor": {
         "values": BUTTON_COLOR_VALUES,
         "description": "Button colors; 'light' is for dark or colored surfaces.",
+    },
+    "ControlVariant": {
+        "values": CONTROL_VARIANT_VALUES,
+        "description": "Visual style of toggle buttons and radio blocks; 'neutral' ignores the color.",
     },
     "ButtonVariant": {
         "values": BUTTON_VARIANT_VALUES,

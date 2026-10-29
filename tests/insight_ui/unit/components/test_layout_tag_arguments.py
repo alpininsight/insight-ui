@@ -110,3 +110,18 @@ def test_filtered_surface_href_is_resolved_before_the_scheme_check() -> None:
 
     with pytest.raises(ValueError, match="is not allowed"):
         render('{% surface href="java"|add:rest %}x{% endsurface %}', {"rest": "script:alert(1)"})
+
+
+@pytest.mark.parametrize("radius", ["xs", "s", "m", "l", "xl"])
+def test_surface_radius_uses_the_radius_token(radius: str) -> None:
+    """Radius picks the theme's radius token of the same name, so a theme stylesheet can change it."""
+    surface = render(f'{{% surface radius="{radius}" %}}x{{% endsurface %}}').find("div")
+
+    assert f"rounded-insight-{radius}" in surface["class"]
+
+
+def test_surface_radius_none_removes_the_rounding() -> None:
+    """radius="none" squares the corners instead of keeping the variant's rounding."""
+    surface = render('{% surface radius="none" %}x{% endsurface %}').find("div")
+
+    assert "rounded-none" in surface["class"]

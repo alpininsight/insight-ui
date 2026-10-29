@@ -160,6 +160,16 @@ def test_header_is_not_sticky_by_default() -> None:
     assert "sticky" not in classes(render_base().find(id="header"))
 
 
+@pytest.mark.parametrize("navbar_fixed", [True, False])
+def test_header_stacks_above_the_page(navbar_fixed: bool) -> None:
+    """The open mobile menu reaches below the navbar; it must cover the page header, sticky or not."""
+    with override_settings(INSIGHT_UI={**settings.INSIGHT_UI, "navbar_fixed": navbar_fixed}):
+        header = render_base().find(id="header")
+
+    assert "z-50" in classes(header)
+    assert {"relative", "sticky"} & classes(header)
+
+
 def test_static_sidebar_sticks_below_a_fixed_navbar() -> None:
     """The sidebar starts below the navbar and is exactly as tall as the rest of the window."""
     with override_settings(INSIGHT_UI={**settings.INSIGHT_UI, "navbar_fixed": True}):
