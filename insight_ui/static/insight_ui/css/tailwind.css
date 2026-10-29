@@ -1024,6 +1024,9 @@
   .grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
+  .grid-cols-\[repeat\(auto-fill\,minmax\(min\(100\%\,var\(--item-min-width\,18rem\)\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fill,minmax(min(100%, var(--item-min-width,18rem)),1fr));
+  }
   .grid-rows-\[min\(60vh\,75cqw\)_auto\] {
     grid-template-rows: min(60vh, 75cqw) auto;
   }
