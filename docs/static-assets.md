@@ -82,8 +82,12 @@ does not. Hosts own their layout CSS:
 - For a few rules, add a host stylesheet in the base template's `extra_head` block.
 - For Tailwind in host templates, run a host Tailwind build that scans your
   templates *and* the installed `insight_ui` package. Then point
-  `INSIGHT_UI["stylesheet"]` at its output, or set `use_tailwind_cli` when you
-  use `django-tailwind-cli`.
+  `INSIGHT_UI["stylesheet"]` at its output, whichever compiler produced it.
+- To change only token values (colors, radii, font), no build is needed; see
+  [theming a host](design-system.md#theming-a-host).
+
+Host paths in `INSIGHT_UI["stylesheet"]` and `INSIGHT_UI["theme_stylesheet"]`
+are always served from your staticfiles, also with `assets.cdn_enabled`.
 
 Do not edit the generated package CSS in `site-packages`.
 
@@ -155,8 +159,6 @@ For either update, run the focused reproducibility tests and
 The Tailwind source explicitly scans package templates, configs, JS and tags.
 It does not scan this Markdown or the separate documentation application's
 templates. Dynamically assembled classes need explicit build coverage.
-`use_tailwind_cli=False` selects packaged CSS at runtime; it does not mean the
-source build can skip Tailwind compilation.
 
 ## Optional Host-Owned CDN
 

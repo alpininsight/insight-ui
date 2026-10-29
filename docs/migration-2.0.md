@@ -1388,8 +1388,22 @@ These showed up in earlier notes. The current tree does not do them.
   the case. Host utilities belong in the host build.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
+  With `assets.cdn_enabled`, the asset helper now keeps paths outside
+  `insight_ui/` local, so a host's own `INSIGHT_UI["stylesheet"]` no longer
+  points at the package CDN, where it never existed.
+- `INSIGHT_UI["use_tailwind_cli"]` is gone. It never took effect: the template
+  it included only loaded the `tailwind_cli` tag library, which does not reach
+  `base.html`. Running `manage.py tailwind runserver` needs only
+  `django_tailwind_cli` in `INSTALLED_APPS`; load its output through
+  `INSIGHT_UI["stylesheet"]`. Delete the key; a leftover one is ignored.
+- `shadow-insight-*` classes render the same shadows. They now read the
+  `--shadow-insight-*` variables at runtime, so a theme stylesheet can change
+  them; the shadow color modifier (`shadow-insight-raised/50`,
+  `shadow-red-500` on the same element) no longer applies to them.
 
-Other additions you can adopt without a rename: `download` on link buttons
+Other additions you can adopt without a rename: `INSIGHT_UI["theme_stylesheet"]`
+for brand tokens without a Tailwind build (see
+[theming a host](design-system.md#theming-a-host)), `download` on link buttons
 (`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,

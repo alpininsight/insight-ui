@@ -1,8 +1,4 @@
 {% load static i18n insight_tags insight_assets %}
-{% if INSIGHT_UI.use_tailwind_cli %}
-    {% include "insight_ui/tailwind_cli.html" %}
-{% endif %}
-
 <!DOCTYPE html>
 <html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-[calc(var(--insight-navbar-height)+2rem)]" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
@@ -67,8 +63,11 @@
 
         <script src="{% insight_asset 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
-        <!-- Main stylesheet -->
+        <!-- Main stylesheet, then the host's theme tokens (always local, never from the CDN) -->
         <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
+        {% if INSIGHT_UI.theme_stylesheet %}
+            <link rel="stylesheet" href="{% static INSIGHT_UI.theme_stylesheet %}">
+        {% endif %}
 
         {% block extra_head %}{% endblock %}
     </head>

@@ -189,7 +189,8 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 | `meta.seo.{description,keywords,author}` | placeholder text | `<meta>` tags rendered by the base template. |
 | `load_prism`, `load_leaflet`, `load_echarts` | `False` | Opt-in third-party libraries (syntax highlighting, maps, charts). |
 | `JS_DEBUG` | `False` | Enable the package's browser console logging. |
-| `use_tailwind_cli` | `False` | Serve packaged CSS instead of a project-run Tailwind CLI build. |
+| `stylesheet` | `"insight_ui/css/tailwind.css"` | Static path of the main stylesheet; point it at your own Tailwind build. |
+| `theme_stylesheet` | `""` | Static path of a stylesheet that sets theme tokens anew, loaded after the main one; see [theming a host](design-system.md#theming-a-host). |
 | `assets.{use_minified,cdn_enabled,cdn_base_url,cdn_prefix,cdn_version}` | local, unminified | Static delivery mode; see [Static assets](static-assets.md). |
 | `htmx.{src,integrity,ws_src,ws_integrity}` | jsdelivr URLs with SRI | HTMX and its WebSocket extension loaded by the base template, independent of `assets`; see [self-hosted HTMX](static-assets.md#self-hosted-htmx). |
 

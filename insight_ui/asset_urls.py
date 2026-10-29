@@ -84,6 +84,9 @@ def _asset_config() -> Mapping[str, Any]:
 def insight_asset_url(asset_path: str, *, minified: bool | None = None) -> str:
     """Resolve an Insight UI-owned CSS/JS asset to local staticfiles or CDN.
 
+    Only paths below ``insight_ui/`` use the CDN; any other path, e.g. a host's own
+    stylesheet in ``INSIGHT_UI["stylesheet"]``, resolves to local staticfiles.
+
     Args:
         asset_path: The relative path to the asset.
         minified: Whether to use the minified CDN version. Local staticfiles
@@ -94,7 +97,8 @@ def insight_asset_url(asset_path: str, *, minified: bool | None = None) -> str:
 
     """
     asset_config = _asset_config()
-    use_cdn = bool(asset_config.get("cdn_enabled", False))
+    # The CDN only hosts the package's own files; a host path such as its own stylesheet stays local.
+    use_cdn = bool(asset_config.get("cdn_enabled", False)) and asset_path.startswith("insight_ui/")
     use_minified = bool(asset_config.get("use_minified", use_cdn))
     if minified is not None:
         use_minified = minified

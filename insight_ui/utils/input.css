@@ -10,7 +10,8 @@
 *
 *   Structure:
 *   1. Tailwind Import & Configuration
-*   2. @theme - Design Tokens (colors, spacing, radii, shadows, animations)
+*   2. @theme - Design Tokens (colors, spacing, radii, animations); shadow tokens follow in
+*      a plain @layer theme block, so Tailwind does not inline them into its shadow classes
 *   3. @layer base - Browser resets, dark mode switching, default typography
 *   4. @utility - Shorthand utility classes
 *   5. @layer components - Reusable component classes (buttons, badges, inputs)
@@ -36,6 +37,7 @@
 @source inline("bg-insight-{base,surface,raised,overlay}");
 @source inline("border-insight-{surface,raised,overlay}");
 @source inline("text-insight-{headline,body,muted,disabled,inverse}");
+@source inline("shadow-insight-{subtle,surface,raised,overlay,focus}");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
@@ -324,13 +326,11 @@
     *   - overlay: Maximum shadow for floating elements (modals)
     *   - focus:   Ring for focus states (accessibility)
     *
+    *   The tokens are defined in "@layer theme" below this block, not here: Tailwind writes
+    *   theme shadows into its shadow-* classes as fixed values, so a theme stylesheet could
+    *   not change them. The shadow-insight-* utilities read the variables instead.
+    *
     */
-
-    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
     /*
     * ========================================================
@@ -402,6 +402,17 @@
         75% {
             transform: translate(-20px, -40px) scale(0.95);
         }
+    }
+}
+
+/* Shadow tokens, outside @theme on purpose (see "Shadows" above); used by the shadow-insight-* utilities. */
+@layer theme {
+    :root {
+        --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
     }
 }
 
@@ -683,6 +694,31 @@
 }
 
 /*
+* Elevation shadows. They read the shadow tokens at runtime and combine with ring-* like
+* Tailwind's own shadow utilities (both feed the same box-shadow list).
+*/
+@utility shadow-insight-subtle {
+    --tw-shadow: var(--shadow-insight-subtle);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-insight-surface {
+    --tw-shadow: var(--shadow-insight-surface);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-insight-raised {
+    --tw-shadow: var(--shadow-insight-raised);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-insight-overlay {
+    --tw-shadow: var(--shadow-insight-overlay);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-insight-focus {
+    --tw-shadow: var(--shadow-insight-focus);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+/*
 * ============================================================================
 *   @layer components - Reusable Component Classes
 * ============================================================================
@@ -762,8 +798,10 @@
         align-content: start;
     }
 
+    /* min-width: 0 lets wide content (code blocks, tables) scroll inside the column instead of widening it. */
     .insight-content-grid > * {
         grid-column: content;
+        min-width: 0;
     }
 
     .insight-content-grid > .insight-full-bleed {
