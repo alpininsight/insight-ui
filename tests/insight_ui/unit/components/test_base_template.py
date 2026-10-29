@@ -183,3 +183,28 @@ def test_slow_requests_are_announced_through_a_polite_status_region() -> None:
     assert region["aria-live"] == "polite"
     assert region["data-message"] == "Loading..."
     assert region.get_text(strip=True) == ""
+
+
+@override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+def test_skip_link_is_the_first_stop_on_every_page() -> None:
+    """Every page, with or without the package navbar, starts with a link that jumps over the navigation."""
+    soup = BeautifulSoup(render_to_string("insight_ui/base.html", get_config()), "html.parser")
+
+    first_link = soup.body.find(["a", "button", "input", "select", "textarea"])
+    assert first_link["href"] == "#main-content"
+    assert first_link.get_text(strip=True) == "Jump to main content"
+
+
+@override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+def test_skip_link_target_takes_the_focus() -> None:
+    """The target is focusable, so screen readers continue reading there after the jump."""
+    soup = BeautifulSoup(render_to_string("insight_ui/base.html", get_config()), "html.parser")
+
+    assert soup.find(id="main-content")["tabindex"] == "-1"
+
+
+def test_navbar_has_no_skip_link_of_its_own() -> None:
+    """The base template provides the skip link once; a navbar must not add a second one."""
+    soup = BeautifulSoup(Template("{% load insight_tags %}{% navbar %}").render(Context()), "html.parser")
+
+    assert soup.find("a", href="#main-content") is None

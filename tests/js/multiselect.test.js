@@ -328,7 +328,7 @@ describe('Multiselect Component', () => {
       search.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
 
       expect(multiselect.focusedIndex).toBe(0);
-      expect(options[0].classList.contains('bg-blue-50')).toBe(true);
+      expect(options[0].hasAttribute('data-active')).toBe(true);
     });
 
     it('should move focus up with ArrowUp', () => {
