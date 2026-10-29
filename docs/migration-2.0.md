@@ -38,6 +38,7 @@ pattern for a host project.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
+- [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
@@ -49,11 +50,15 @@ pattern for a host project.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
 - [ ] Rebuild query builder views on `parse_filters` and `build_query`, and rename `model_fields` to `fields`.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
+- [ ] Rebuild infinite scroll views on `current_page` and answer further pages with `{% infinite_scroll_items %}`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
+- [ ] Rename `cards=` to `items=` on `toggle_view`, the view value `"card"` to `"grid"`, drop `current_view=`, and always pass a `view_switch`.
+- [ ] Rename `three_d_carousel` / `ThreeDCarouselConfig` to `ring_carousel` / `RingCarouselConfig`, pass `items=` (and `item_template=` for own content) instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
 
 ## Color tokens are a silent break
 
@@ -652,6 +657,46 @@ Search: `success=True` and `failed=True` on `StepperItemConfig`, `items=` on
 `{% minimal_stepper` and `MinimalStepperConfig`, and the strings `"active"`
 and `"success"` in step lists. `{% stepper items=` stays valid.
 
+### The `diff` filter is replaced by `text_diff` and `code_diff`
+
+[#782](https://github.com/alpininsight/insight-ui/pull/782).
+
+The `diff` template filter is removed, and so are `file_template` and `styles`
+in `insight_ui.utils.diff`, which now holds the diff functions of the new tags.
+It returned HTML with inline styles and marked changes by color, and it lost
+line breaks and indentation. Two tags replace it:
+
+- `{% text_diff before=... after=... %}` marks changed words for any reader:
+  removed words struck through, added words underlined, each announced to
+  screen readers. A legend below the text explains the markings
+  (`show_legend=False` hides it).
+- `{% code_diff before=... after=... language="python" %}` shows a short
+  snippet as a unified diff in a code block, with `+` / `-` markers per line
+  and syntax highlighting. In a changed line that resembles its counterpart,
+  the changed part (e.g. one attribute) is marked as well. It needs
+  `INSIGHT_UI["load_prism"]`.
+
+Before:
+
+```text
+{{ old_text|diff:new_text|safe }}
+```
+
+After:
+
+```text
+{% text_diff before=old_text after=new_text %}
+{% code_diff before=old_code after=new_code language="python" %}
+```
+
+Both tags escape their input; drop `|safe`. The code block element accepts two
+new data attributes: `data-diff` for diff content (with optional
+`data-diff-marks` for changed parts inside lines; a diff has no copy button)
+and `data-copy="false"` to hide the copy button of a normal code block.
+
+Search: `|diff:` and imports of `file_template` or `styles` from
+`insight_ui.utils.diff`.
+
 ### Button and badge color and variant
 
 [#733](https://github.com/alpininsight/insight-ui/pull/733).
@@ -855,7 +900,7 @@ accessible name.
 - `DropdownConfig.tag_id`, `DropdownItemConfig.request_url`
 - `UserMenuLinkConfig.request_url`
 - `TabConfig.tag_id` and `TabConfig.request_url`
-- `AccordionConfig.tag_id`, `ThreeDCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
+- `AccordionConfig.tag_id`, `RingCarouselConfig.tag_id`, `ToggleViewConfig.tag_id`, `ChartConfig.tag_id`
 - `request_url` on `LiveContentConfig`, `WebSocketConfig`, `ChatConfig`, `InfiniteScrollConfig`, `PaginationConfig`
 - `FilterConfig.name`, `QueryBuilderFieldConfig.field`
 - `BadgeListConfig.tag_id` and `BadgeListConfig.label`
@@ -978,6 +1023,46 @@ wrap the control and its texts in a `<div>`. The form's error container now has
 
 Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
 expect a checkbox or toggle `<input>` as the outermost element.
+
+### Field IDs
+
+[#777](https://github.com/alpininsight/insight-ui/pull/777).
+
+Every form field takes its id from `tag_id`, otherwise from `name`. Input,
+textarea, checkbox and toggle used to render no id without a `tag_id`, so their
+label was not associated with the control; toggle and slider rendered
+`id="None"`. The textarea label pointed at the `name` while the textarea had the
+`tag_id`. The label and the derived ids (slider `_label`, `_min`, `_max`, and
+`-help`, `-error`) now follow the same rule. The multiselect builds its ids
+(`-label`, `-search`, `-listbox`, `-opt-<n>`, `-aria-status`) from the `tag_id`
+too, and its tag accepts `tag_id=`. `name` stays the request parameter.
+
+Before:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input name="email">, label not associated #}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input id="email" name="email"> #}
+{% input_field tag_id="billing-email" name="email" label="E-Mail" %}
+```
+
+Two fields with the same `name` on one page need their own `tag_id`, otherwise
+the ids collide. Groups (checkbox group, radio group, radio block) already used
+the `name` and are unchanged.
+
+The search bar had fixed ids (`search`, `search-results`), which collided when
+the navbar and the page both rendered one. `SearchBarConfig` now has `tag_id`
+and `name`, both defaulting to `search`, so the markup only changes when you set
+them. The results list is `<tag_id>-results`.
+
+Search: two form fields with the same `name` and no `tag_id` on one page, and
+selectors or scripts that look up a multiselect by `#<name>-…`.
 
 ## Markup selectors
 
@@ -1365,6 +1450,87 @@ switch replaces the whole toggle view. Other options of the switch's
 
 Search: `hx_target_id` and `hx_swap_method`.
 
+## Ring carousel
+
+[#771](https://github.com/alpininsight/insight-ui/pull/771).
+
+### `three_d_carousel` is `ring_carousel`
+
+The name says what the carousel shows: items on a turning ring. The tag, the
+config, the template and the script hook are renamed:
+
+| Before | After |
+|--------|-------|
+| `{% three_d_carousel %}` | `{% ring_carousel %}` |
+| `ThreeDCarouselConfig` | `RingCarouselConfig` |
+| `carousels/3D_carousel.html` | `carousels/ring_carousel.html` |
+| `insight-ui-3D-carousel.js`, `ThreeDCarousel` | `insight-ui-ring-carousel.js`, `RingCarousel` |
+| `data-insight-3D-carousel` | `data-insight-ring-carousel` |
+
+### Any content on the ring
+
+Like `{% carousel %}`, the ring carousel renders each item with `item_template`,
+which gets `item` and the page context. The default template shows a
+`CardConfig` as card. `CarouselItemConfig` is gone.
+
+| Before | After |
+|--------|-------|
+| `carousel_items=[CarouselItemConfig(...)]` | `items=[CardConfig(...)]` or any objects with `item_template` |
+| `velocity` | `duration` (milliseconds of a turn, default 600) |
+| - | `label` names the carousel |
+
+Before:
+
+```python
+ThreeDCarouselConfig(
+    tag_id="showcase",
+    carousel_items=[CarouselItemConfig(title="Lamp", content="Brass, 40 cm")],
+    velocity=800,
+)
+```
+
+After:
+
+```python
+RingCarouselConfig(
+    tag_id="showcase",
+    items=[CardConfig(title="Lamp", content="Brass, 40 cm")],
+    duration=800,
+)
+```
+
+### Size and layout
+
+- The carousel sizes itself: no parent with a fixed height is needed any more.
+  The ring takes the width of the carousel; the items get the height of the
+  tallest content, at most 70% of the window, above which the front item
+  scrolls.
+- The ring has as many places as fit the width, at most 12. With more items
+  only those around the front one are shown; the others wait hidden at the
+  back.
+- Images and videos in an item shrink to its width; wider content is clipped,
+  so neighbouring items never overlap.
+- With `tilt` and without `face_camera` the radius grows with the item height,
+  so the top corners of the tilted items keep apart.
+- With `face_camera` and very few items (about 3), the items behind cover part
+  of the front one; the ring without `face_camera` suits few items better.
+
+### Markup and behaviour
+
+- The `<style>` block in the template is gone; the classes
+  `.ring-carousel*` in the stylesheet replace `.threeD_carousel`,
+  `.item_wrapper` and `.item`.
+- Only the front item can be focused and is read; the others are `inert`. The
+  position is announced ("2 of 6"). Arrow keys, Home and End turn the ring
+  from the controls; inside an item they are left to its content. A swipe
+  turns the ring on touch screens.
+- With a single item the controls are left out.
+- Nothing is animated on page load or with reduced motion.
+
+Search: `three_d_carousel`, `ThreeDCarouselConfig`, `3D_carousel`,
+`data-insight-3D-carousel`, `carousel_items`, `CarouselItemConfig`,
+`velocity=`, `.threeD_carousel` and `.item_wrapper`.
+
 ## Pagination
 
 [#738](https://github.com/alpininsight/insight-ui/pull/738).
@@ -1419,6 +1585,70 @@ parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
 
 Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
 `#list-container`.
+
+## Infinite scroll
+
+[#772](https://github.com/alpininsight/insight-ui/pull/772).
+
+`infinite_scroll` was rebuilt on Django's `Paginator`, like the pagination.
+Its config, its next-page response and its markup changed.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `items`, `page`, `has_next` | `current_page`, a Django `Page` |
+| `tag_id` optional | `tag_id` required; the feed has this ID |
+| `?page=` appended to `request_url` | The page parameter (`page_param`, default `page`) replaces only itself; other query parameters stay |
+| `threshold` | Removed. It never reached the markup, and HTMX's `revealed` has no threshold |
+| `auto_fetch` passed back in the URL | Set on the config of every request |
+| Response: `infinite_scroll_items.html` with `items`, `has_next`, `page`, `request_url`, `auto_fetch`, `heading_level` | Response: `{% infinite_scroll_items config %}` with the same config as the feed |
+| Fixed title/content card | `item_template` renders the inside of each item; the default shows `item.title` and `item.content` |
+| — | `htmx` for shared options such as the indicator; URL, target, swap and history stay fixed |
+
+The feed now holds only the item articles, with `aria-posinset` and
+`aria-setsize`. The loading control follows the feed as
+`#<tag_id>-more`. It appends the next page to the feed and is replaced out of
+band by the response. While a request runs, the global loading indicator sets
+`aria-busy` on the feed. After "Load more" the focus moves to the first new
+item. The feed is no longer a live region.
+
+While a request runs, the control shows "More content is loading..." unless
+`htmx.loading_indicator_id` names an own indicator, and the "Load more" button
+is disabled. The global loading bar runs as for other requests; turn it off
+with `HtmxConfig(show_global_loading_indicator=False)`.
+
+Before:
+
+```python
+InfiniteScrollConfig(request_url="/news/", items=first_items, page=2, has_next=True)
+```
+
+```python
+# next-page view
+render(request, "insight_ui/components/infinite_scroll_items.html", {
+    "items": items, "has_next": has_next, "page": page + 1, "request_url": "/news/", "auto_fetch": "True",
+})
+```
+
+After, one view for the page and for the requests of further pages:
+
+```python
+def news(request):
+    page = Paginator(News.objects.all(), 10).get_page(request.GET.get("page"))
+    feed = InfiniteScrollConfig(tag_id="news", request_url=reverse("news"), current_page=page)
+    template = "news/_feed_page.html" if request.headers.get("HX-Request") else "news/index.html"
+    return render(request, template, {"feed": feed})
+```
+
+```text
+{# news/index.html #}
+{% infinite_scroll config=feed %}
+
+{# news/_feed_page.html #}
+{% load insight_tags %}{% infinite_scroll_items config=feed %}
+```
+
+Search: `InfiniteScrollConfig(`, `infinite_scroll_items.html`, `threshold=`,
+`has_next=` and `auto_fetch` in query strings.
 
 ## Query builder
 
@@ -1552,6 +1782,57 @@ before.
 Search: `image_carousel`, `CardCarouselConfig`, `ImageCarouselConfig`,
 `ImageCarouselItemConfig`, `carousel_items`, `card_carousel.html` and
 `.carousel-dot`.
+
+### Toggle view shows any items
+
+[#781](https://github.com/alpininsight/insight-ui/pull/781).
+
+`toggle_view` takes `items` and `item_template` like the carousel. The grid and
+the carousel view render each item with the template, which gets `item` and the
+page context; the default renders a `CardConfig` as a full card. v1.15.1 passed
+only title, subtitle, content and actions of each card, so images and
+`heading_level` were lost.
+
+| Before | After |
+|--------|-------|
+| `cards=[CardConfig(...)]` | `items=[CardConfig(...)]` or any objects with `item_template` |
+| view value `"card"` | `"grid"` |
+| `current_view=` | removed; it was never read. The switch's `current_value` picks the view |
+| `view_switch=None` | `view_switch` is required |
+
+The grid fills as many columns as fit, each at least `min_item_width` wide
+(`18rem` by default); the carousel view gets the same width. Each value of the
+switch's items must be `"grid"`, `"table"` or `"carousel"`, and offering
+`"table"` needs `table`; otherwise `ToggleViewConfig` raises `ValueError`.
+Before, an unknown value showed the table, and a missing table showed an empty
+one. The content no longer is an `aria-live` region: the whole component is
+replaced on a switch, and the live region was never announced.
+
+Before:
+
+```python
+ToggleViewConfig(
+    tag_id="products",
+    cards=cards,
+    table=table,
+    view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(value="card"), RadioItemConfig(value="table")]),
+    current_view="card",
+)
+```
+
+After:
+
+```python
+ToggleViewConfig(
+    tag_id="products",
+    items=cards,
+    table=table,
+    view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(value="grid"), RadioItemConfig(value="table")]),
+)
+```
+
+Search: `ToggleViewConfig`, `toggle_view` with `cards=` or `current_view=`, and
+`value="card"` in its view switch.
 
 ## Checked, and not a 2.0 break
 

@@ -79,18 +79,17 @@ CONVENIENCE_ARGUMENTS: dict[str, set[str]] = {
 }
 
 # Tags that only accept a complete config and offer no field arguments.
-CONFIG_ONLY_TAGS = {"accordion", "checkbox_group", "dropdown", "footer", "navbar", "table"}
+CONFIG_ONLY_TAGS = {"accordion", "checkbox_group", "dropdown", "footer", "infinite_scroll_items", "navbar", "table"}
 
 # Known config fields without a matching tag argument. Settable only via config.
 FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "badge": {"icon"},
-    "brand_mark": {"primary_text_color", "secondary_text_color"},
     "button": {"icon", "aria_attrs", "data_attrs", "hx_attrs"},
     "logo": {"icon"},
-    "multiselect": {"required", "tag_id"},
-    "search_bar": {"button_label", "placeholder"},
+    # required has no effect yet: the hidden inputs cannot carry it, it would need JS validation.
+    "multiselect": {"required"},
+    # required has no effect: a range always has a value.
     "slider": {"required"},
-    "toggle_view": {"current_view"},
 }
 
 

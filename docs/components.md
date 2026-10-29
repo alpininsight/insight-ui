@@ -27,6 +27,9 @@ brand from `INSIGHT_UI["brand"]` and no links. A `NavbarConfig` is passed
 through `build_config()`, which rejects a dictionary. Type annotations alone do
 not validate every value; check the Config constructor and rendering tests.
 
+Public forms can opt into the [Turnstile component](turnstile.md). Its widget
+must be paired with server-side verification in the host application.
+
 ## Configs And Supported Overrides
 
 The button supports both inline arguments and Config objects:

@@ -12,7 +12,6 @@ from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
 from insight_ui.configs.types import (
     HeadingLevel,
-    ToggleViewType,
     validate_heading_level,
     validate_not_empty,
     validate_toggle_view_type,
@@ -153,32 +152,6 @@ class FlipCardConfig:
 
 
 @dataclass
-class CarouselItemConfig:
-    """Configuration for a carousel item.
-
-    Attributes:
-        title: Item title.
-        content: Item content/description.
-        image: Optional image configuration.
-        request_url: Optional link URL.
-
-    """
-
-    __example__ = """
-        CarouselItemConfig(title="Item 1", content="Description 1")
-        """
-
-    title: str = field(default="", metadata={"doc": _("Item title.")})
-    content: str = field(default="", metadata={"doc": _("Item content/description.")})
-    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
-    request_url: str = field(default="", metadata={"doc": _("Optional link URL.")})
-
-    def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
-        validate_urls(self)
-
-
-@dataclass
 class CarouselConfig:
     """Configuration for the carousel component.
 
@@ -266,85 +239,124 @@ class CarouselImageConfig:
 
 
 @dataclass
-class ThreeDCarouselConfig:
-    """Configuration for the three_d_carousel component.
+class RingCarouselConfig:
+    """Configuration for the ring_carousel component.
 
-    Renders items in a 3D circular arrangement.
+    Arranges any items on a turning ring. Each item is rendered with item_template; the default shows
+    CardConfig items as cards.
 
     Attributes:
         tag_id: Unique ID for the carousel.
-        carousel_items: List of items to display.
-        velocity: Rotation speed.
-        tilt: Camera tilt angle.
-        face_camera: If True, items always face the camera.
+        items: Items to display, e.g. CardConfig or model instances.
+        item_template: Template that renders one item; gets item and the page context.
+        label: Accessible name of the carousel.
+        duration: Duration of a turn in milliseconds.
+        tilt: Camera tilt in degrees; the ring is seen from above.
+        face_camera: Turn every item towards the camera; otherwise items tilt with the ring.
 
     """
 
     __example__ = """
-        ThreeDCarouselConfig(
+        RingCarouselConfig(
             tag_id="product-showcase",
-            carousel_items=[...],
-            velocity=1000,
+            items=Product.objects.filter(featured=True),
+            item_template="shop/product_slide.html",
             tilt=15,
-            face_camera=True,
         )
         """
 
     tag_id: str = field(metadata={"doc": _("Unique ID for the carousel.")})
-    carousel_items: list[CarouselItemConfig] = field(
-        default_factory=list, metadata={"doc": _("List of items to display.")}
+    items: list[Any] = field(
+        default_factory=list, metadata={"doc": _("Items to display, e.g. CardConfig or model instances.")}
     )
-    velocity: int = field(default=1000, metadata={"doc": _("Rotation speed.")})
-    tilt: int = field(default=0, metadata={"doc": _("Camera tilt angle.")})
-    face_camera: bool = field(default=False, metadata={"doc": _("If True, items always face the camera.")})
+    item_template: str = field(
+        default="insight_ui/components/items/card_item.html",
+        metadata={"doc": _("Template that renders one item; gets item and the page context.")},
+    )
+    label: str = field(default="", metadata={"doc": _("Accessible name of the carousel.")})
+    duration: int = field(default=600, metadata={"doc": _("Duration of a turn in milliseconds.")})
+    tilt: int = field(default=0, metadata={"doc": _("Camera tilt in degrees; the ring is seen from above.")})
+    face_camera: bool = field(
+        default=False,
+        metadata={"doc": _("Turn every item towards the camera; otherwise items tilt with the ring.")},
+    )
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "tag_id")
+        """Require an ID and a template, and reject a negative duration."""
+        validate_not_empty(self, "tag_id", "item_template")
+        if self.duration < 0:
+            msg = f"RingCarouselConfig needs a duration of at least 0, got {self.duration}."
+            raise ValueError(msg)
 
 
 @dataclass
 class ToggleViewConfig:
     """Configuration for the toggle_view component.
 
-    Allows switching between different data views (cards, table, carousel).
+    Shows the same data as a grid, a table or a carousel; the view switch picks the view. Grid and carousel
+    render each item with item_template, the default shows CardConfig items as cards.
 
     Attributes:
         tag_id: Unique ID for the component.
-        cards: The cards to be displayed.
-        table: Configuration of the table view.
-        view_switch: Radio block for switching the view.
-        current_view: Currently active view ('card', 'table', 'carousel').
+        view_switch: Radio block whose item values ("grid", "table", "carousel") pick the view.
+        items: Items of the grid and carousel views, e.g. CardConfig.
+        item_template: Template that renders one item; gets item and the page context.
+        table: Configuration of the table view; required when the view switch offers it.
+        min_item_width: Minimum width of an item in the grid and carousel, e.g. "16rem".
 
     """
 
     __example__ = """
         ToggleViewConfig(
             tag_id="products-view",
-            cards=products_list,
-            table=TableConfig(headers, rows),
+            items=products,
+            item_template="shop/product_tile.html",
+            table=TableConfig(headers=headers, rows=rows),
             view_switch=RadioBlockConfig(
                 name="view",
                 items=[
-                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
-                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
+                    RadioItemConfig(value="grid", label="Grid", icon=IconConfig(name="squares-2x2")),
+                    RadioItemConfig(value="table", label="Table", icon=IconConfig(name="list-bullet")),
                 ],
+                current_value=request.GET.get("view", "grid"),
+                request_url="/products/",
             ),
-            current_view="card",
         )
         """
 
     tag_id: str = field(metadata={"doc": _("Unique ID for the component.")})
-    cards: list[CardConfig] = field(default_factory=list, metadata={"doc": _("The cards to be displayed.")})
-    table: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
-    view_switch: RadioBlockConfig | None = field(
-        default=None, metadata={"doc": _("Radio block for switching the view.")}
+    view_switch: RadioBlockConfig = field(
+        metadata={"doc": _('Radio block whose item values ("grid", "table", "carousel") pick the view.')}
     )
-    current_view: ToggleViewType = field(
-        default="card", metadata={"doc": _("Currently active view ('card', 'table', 'carousel').")}
+    items: list[Any] = field(
+        default_factory=list,
+        metadata={"doc": _("Items of the grid and carousel views, e.g. CardConfig.")},
+    )
+    item_template: str = field(
+        default="insight_ui/components/items/card_item.html",
+        metadata={"doc": _("Template that renders one item; gets item and the page context.")},
+    )
+    table: TableConfig | None = field(
+        default=None, metadata={"doc": _("Configuration of the table view; required when the view switch offers it.")}
+    )
+    min_item_width: str = field(
+        default="", metadata={"doc": _('Minimum width of an item in the grid and carousel, e.g. "16rem".')}
     )
 
     def __post_init__(self) -> None:
-        """Require a tag_id and validate current_view after initialization."""
-        validate_not_empty(self, "tag_id")
-        validate_toggle_view_type(self.current_view, "current_view")
+        """Require an ID and a template; every switch value must be a view, and the table view needs a table."""
+        validate_not_empty(self, "tag_id", "item_template")
+        views = [item.value for item in self.view_switch.items]
+        if not views:
+            msg = f"ToggleViewConfig {self.tag_id!r} requires at least one view mode."
+            raise ValueError(msg)
+        for view in views:
+            validate_toggle_view_type(view, "view_switch item value")
+        if "table" in views and self.table is None:
+            msg = f'ToggleViewConfig {self.tag_id!r} offers the "table" view but has no table.'
+            raise ValueError(msg)
+
+    @property
+    def active_view(self) -> str:
+        """The view the switch has selected; the first one when nothing is selected."""
+        return self.view_switch.current_value or (self.view_switch.items[0].value if self.view_switch.items else "")

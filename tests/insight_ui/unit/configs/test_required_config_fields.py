@@ -25,8 +25,10 @@ from insight_ui.configs import (
     PaginationConfig,
     QueryBuilderConfig,
     QueryBuilderFieldConfig,
+    RadioBlockConfig,
+    RadioItemConfig,
+    RingCarouselConfig,
     TabConfig,
-    ThreeDCarouselConfig,
     ToggleViewConfig,
     UserMenuLinkConfig,
     WebSocketConfig,
@@ -57,8 +59,15 @@ REQUIRED_FIELDS: list = [
         "tag_id",
         id="TabConfig.tag_id",
     ),
-    pytest.param(lambda: ThreeDCarouselConfig(tag_id="showcase"), "tag_id", id="ThreeDCarouselConfig.tag_id"),
-    pytest.param(lambda: ToggleViewConfig(tag_id="products"), "tag_id", id="ToggleViewConfig.tag_id"),
+    pytest.param(lambda: RingCarouselConfig(tag_id="showcase"), "tag_id", id="RingCarouselConfig.tag_id"),
+    pytest.param(
+        lambda: ToggleViewConfig(
+            tag_id="products",
+            view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(label="Grid", value="grid")]),
+        ),
+        "tag_id",
+        id="ToggleViewConfig.tag_id",
+    ),
     pytest.param(
         lambda: CheckboxItemConfig(tag_id="en", label="English", value="en"), "tag_id", id="CheckboxItemConfig.tag_id"
     ),
@@ -71,7 +80,9 @@ REQUIRED_FIELDS: list = [
     pytest.param(lambda: ChatConfig(request_url="/chat/"), "request_url", id="ChatConfig.request_url"),
     pytest.param(lambda: ChatConfig(request_url="/chat/"), "tag_id", id="ChatConfig.tag_id"),
     pytest.param(
-        lambda: InfiniteScrollConfig(request_url="/items/"), "request_url", id="InfiniteScrollConfig.request_url"
+        lambda: InfiniteScrollConfig(tag_id="feed", request_url="/items/", current_page=Paginator([1, 2], 1).page(1)),
+        "request_url",
+        id="InfiniteScrollConfig.request_url",
     ),
     pytest.param(lambda: LiveContentConfig(request_url="/status/"), "request_url", id="LiveContentConfig.request_url"),
     pytest.param(

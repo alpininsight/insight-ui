@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from dataclasses import MISSING, fields, is_dataclass, replace
-from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -15,6 +14,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
+from django.utils.encoding import force_str
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Sequence
@@ -45,12 +45,12 @@ from insight_ui.configs import (
     ButtonVariant,
     CardConfig,
     CarouselConfig,
-    CarouselItemConfig,
     ChartConfig,
     ChartDatasetConfig,
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
+    CodeDiffConfig,
     ColorType,
     ControlVariant,
     CornerPosition,
@@ -92,6 +92,7 @@ from insight_ui.configs import (
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
+    RingCarouselConfig,
     SearchBarConfig,
     SelectConfig,
     Severity,
@@ -103,14 +104,15 @@ from insight_ui.configs import (
     StepStatus,
     TableConfig,
     TextareaConfig,
-    ThreeDCarouselConfig,
+    TextDiffConfig,
     ToggleConfig,
     ToggleViewConfig,
+    TurnstileConfig,
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils import query_builder as query_builder_utils
-from insight_ui.utils.diff import file_template, styles
+from insight_ui.utils.diff import text_parts, unified_diff
 
 register = template.Library()
 
@@ -987,6 +989,7 @@ def select(
 def multiselect(
     config: MultiselectConfig | None = None,
     *,
+    tag_id: str | _Unset | None = UNSET,
     name: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     maximum: int | _Unset | None = UNSET,
@@ -1125,44 +1128,33 @@ def legal_notice(
     return {"legal_config": config, "metadata": [item for item in metadata if item["text"]]}
 
 
-@register.filter
-def diff(a: str, b: str, simple: bool = True) -> str:
-    """Generate a visualization of the differences between two texts.
+@register.inclusion_tag("insight_ui/components/text_diff.html")
+def text_diff(
+    config: TextDiffConfig | None = None,
+    *,
+    before: str | _Unset = UNSET,
+    after: str | _Unset = UNSET,
+    show_legend: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the changes between two texts with removed words struck through and added words underlined."""
+    config = build_config(TextDiffConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"parts": text_parts(str(config.before), str(config.after)), "show_legend": config.show_legend}
 
-    Args:
-        a: The original version of the text.
-        b: The modified version of the text.
-        simple: 'True' for a simplified display.
 
-    Returns:
-        The HTML code for the graphical representation of the differences.
-
-    """
-    if not simple:
-        differentiator = HtmlDiff()
-        differentiator._file_template = file_template
-        differentiator._styles = styles
-        diff_result = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
-        return "\n".join(list(diff_result))
-
-    diff_result = ndiff(a.split(), b.split())
-    html = ""
-
-    for word in diff_result:
-        if word.startswith("  "):
-            html += f"{word[2:]} "
-        elif word.startswith("- "):
-            html += f"<span class='del'>{word[2:]}</span> "
-        elif word.startswith("+ "):
-            html += f"<span class='ins'>{word[2:]}</span> "
-
-    return f"""
-        <style>
-            .del {{ background-color: #ffbbbb; color: #721c24; text-decoration: line-through; }}
-            .ins {{ background-color: #bbffbb; color: #155724; }}
-        </style>
-        <p class='text-insight-headline'>{html}</p>
-    """
+@register.inclusion_tag("insight_ui/components/code_diff.html")
+def code_diff(
+    config: CodeDiffConfig | None = None,
+    *,
+    before: str | _Unset = UNSET,
+    after: str | _Unset = UNSET,
+    language: str | _Unset = UNSET,
+    filename: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the changes between two short code snippets as a unified diff in a code block."""
+    config = build_config(CodeDiffConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    diff_text, marks = unified_diff(str(config.before), str(config.after))
+    return {"code_diff_config": config, "diff_text": diff_text, "diff_marks": json_attribute(marks) if marks else ""}
 
 
 @register.inclusion_tag("insight_ui/components/logo.html")
@@ -1212,6 +1204,8 @@ def brand_mark(
     *,
     primary_text: str | _Unset = UNSET,
     secondary_text: str | _Unset = UNSET,
+    primary_text_color: str | _Unset = UNSET,
+    secondary_text_color: str | _Unset = UNSET,
     logo: LogoConfig | _Unset = UNSET,
     logo_position: str | _Unset = UNSET,
     css_class: str | _Unset = UNSET,
@@ -1438,27 +1432,93 @@ def badge_list(
 # =============================================================
 
 
-@register.inclusion_tag("insight_ui/components/infinite_scroll.html")
+@register.inclusion_tag("insight_ui/components/infinite_scroll.html", takes_context=True)
 def infinite_scroll(
+    context: template.Context,
     config: InfiniteScrollConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    items: Sequence[Any] | _Unset = UNSET,
-    page: int | _Unset = UNSET,
-    has_next: bool | _Unset = UNSET,
+    current_page: Page | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
-    threshold: int | _Unset = UNSET,
     heading_level: HeadingLevel | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
-    """Render a container for infinite scroll."""
-    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"infinite_scroll_config": config}
+    """Render a feed of the current page that loads the next pages."""
+    config = build_config(
+        InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    return _infinite_scroll_context(context, config, next_page=False)
+
+
+@register.inclusion_tag("insight_ui/components/infinite_scroll_items.html", takes_context=True)
+def infinite_scroll_items(context: template.Context, config: InfiniteScrollConfig) -> dict[str, Any]:
+    """Render the response to a request for the next page of an infinite_scroll feed."""
+    config = build_config(InfiniteScrollConfig, config)
+    return _infinite_scroll_context(context, config, next_page=True)
+
+
+def _infinite_scroll_context(
+    context: template.Context, config: InfiniteScrollConfig, *, next_page: bool
+) -> dict[str, Any]:
+    """Build the context shared by the feed and the responses for further pages.
+
+    Args:
+        context: The caller's page context, also available to custom item templates.
+        config: The feed configuration with the page to render.
+        next_page: True for a response that appends to an existing feed.
+
+    Returns:
+        The template context.
+
+    """
+    page = config.current_page
+    load_more = None
+    if page.has_next():
+        options = config.htmx or HtmxConfig()
+        number = page.next_page_number()
+        next_url = _page_url(config.request_url, config.page_param, number)
+        if options.method == "get":
+            # HTMX appends vals to GET URLs. Keep the owned page value in vals exactly once.
+            query = parse_qsl(urlsplit(next_url).query, keep_blank_values=True)
+            next_url = _url_with_query(next_url, [(key, value) for key, value in query if key != config.page_param])
+        # The control after the feed appends the next page to the feed and is replaced out of band.
+        load_more = replace(
+            options,
+            request_url=next_url,
+            vals={**(options.vals or {}), config.page_param: number},
+            target=f"#{config.tag_id}",
+            swap_method="beforeend",
+            push_url=False,
+            # Without an own indicator the control container shows its loading text.
+            loading_indicator_id=(config.htmx and config.htmx.loading_indicator_id) or f"#{config.tag_id}-more",
+        )
+    return {
+        **context.flatten(),
+        "infinite_scroll_config": config,
+        "items": [
+            {"item": item, "position": page.start_index() + offset} for offset, item in enumerate(page.object_list)
+        ],
+        "set_size": page.paginator.count,
+        "load_more": load_more,
+        "next_page": next_page,
+        # After "Load more" the focus moves to the first new item; on scroll it stays where it is.
+        "focus_first": next_page and not config.auto_fetch,
+    }
 
 
 def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
     """Return the URL with its query string replaced by the given parameters."""
-    return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
+    return urlunsplit(urlsplit(force_str(url))._replace(query=urlencode(query)))
+
+
+def _page_url(url: str, page_param: str, number: int) -> str:
+    """Return the URL of a page: other query parameters (filters, search) stay, only the page number is set."""
+    url = force_str(url)
+    query = [(key, value) for key, value in parse_qsl(urlsplit(url).query, keep_blank_values=True) if key != page_param]
+    return _url_with_query(url, [*query, (page_param, str(number))])
 
 
 @register.inclusion_tag("insight_ui/components/pagination.html")
@@ -1480,12 +1540,13 @@ def pagination(
     page = config.current_page
     paginator = page.paginator
 
-    # Keep the other query parameters of request_url (filters, search) and only set the page number.
-    query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
+    # The other query parameters of request_url (filters, search) are kept; the page size form needs them too.
+    resolved_url = force_str(config.request_url)
+    query = parse_qsl(urlsplit(resolved_url).query, keep_blank_values=True)
     base_params = [(key, value) for key, value in query if key != config.page_param]
 
     def page_url(number: int) -> str:
-        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+        return _page_url(resolved_url, config.page_param, number)
 
     pages = [
         {"ellipsis": True}
@@ -1529,7 +1590,7 @@ def pagination(
         "next_url": page_url(page.next_page_number()) if page.has_next() else "",
         "include": include,
         "ipp_select": ipp_select,
-        "ipp_action": _url_with_query(config.request_url, []),
+        "ipp_action": _url_with_query(resolved_url, []),
         "ipp_hidden_params": ipp_hidden_params,
     }
 
@@ -1553,8 +1614,12 @@ def search_bar(
     config: SearchBarConfig | None = None,
     *,
     request_url: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    name: str | _Unset = UNSET,
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
+    placeholder: str | _Unset = UNSET,
+    button_label: str | _Unset = UNSET,
     htmx: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
     search_index_url: str | _Unset = UNSET,
@@ -1705,38 +1770,56 @@ def carousel(
     return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
-@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
-def three_d_carousel(
-    config: ThreeDCarouselConfig | None = None,
+@register.inclusion_tag("insight_ui/components/carousels/ring_carousel.html", takes_context=True)
+def ring_carousel(
+    context: template.Context,
+    config: RingCarouselConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    velocity: int | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    duration: int | _Unset = UNSET,
     tilt: int | _Unset = UNSET,
     face_camera: bool | _Unset = UNSET,
-    carousel_items: Sequence[CarouselItemConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a 3D version of the carousel component."""
-    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"carousel_config": config}
+    """Render any items on a turning ring; each item is rendered with the item template.
+
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        RingCarouselConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
-@register.inclusion_tag("insight_ui/components/toggle_view.html")
+@register.inclusion_tag("insight_ui/components/toggle_view.html", takes_context=True)
 def toggle_view(
+    context: template.Context,
     config: ToggleViewConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    cards: list[CardConfig] | _Unset = UNSET,
+    view_switch: RadioBlockConfig | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
     table: TableConfig | _Unset = UNSET,
-    view_switch: RadioBlockConfig | _Unset | None = UNSET,
+    min_item_width: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a view of data that can be displayed in various ways."""
-    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    """Render the same data as a grid, a table or a carousel; the view switch picks the view.
+
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        ToggleViewConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
     switch = config.view_switch
     # Switching the view reloads the whole component, so the radio block targets it and replaces it.
-    if switch is not None and switch.request_url:
+    if switch.request_url:
         htmx = replace(switch.htmx or HtmxConfig(), target=f"#{config.tag_id}", swap_method="outerHTML")
         switch = replace(switch, htmx=htmx)
-    return {"toggle_view_config": config, "view_switch": switch}
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "toggle_view_config": config, "view_switch": switch}
 
 
 # =============================================================
@@ -1744,6 +1827,20 @@ def toggle_view(
 #   Form Tags
 #
 # =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/turnstile.html")
+def turnstile(
+    config: TurnstileConfig | None = None,
+    *,
+    site_key: str | _Unset = UNSET,
+    theme: Literal["auto", "light", "dark"] | _Unset = UNSET,
+    size: Literal["normal", "flexible", "compact"] | _Unset = UNSET,
+    action: str | _Unset = UNSET,
+) -> dict[str, TurnstileConfig]:
+    """Render the public Turnstile widget; the host must verify its token."""
+    config = build_config(TurnstileConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"turnstile_config": config}
 
 
 # Tag and template that render each field config supported by the form component.
@@ -1799,11 +1896,13 @@ def form(
     method: str | _Unset = UNSET,
     htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
+    turnstile: TurnstileConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "form_config": config,
+        "native_form_action": (config.htmx.request_url if config.htmx else "") or config.request_url,
         "rendered_fields": [_render_form_field(field) for field in config.fields],
         # "find" keeps the indicator to this form; a plain class selector would show every indicator on the page.
         "form_indicator": "find .htmx-indicator" if config.show_loading_indicator else "",

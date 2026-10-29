@@ -37,9 +37,8 @@ from insight_ui.configs.card import (
     CardConfig,
     CarouselConfig,
     CarouselImageConfig,
-    CarouselItemConfig,
     FlipCardConfig,
-    ThreeDCarouselConfig,
+    RingCarouselConfig,
     ToggleViewConfig,
 )
 from insight_ui.configs.filter import (
@@ -50,7 +49,7 @@ from insight_ui.configs.filter import (
     QueryBuilderFilterConfig,
     SearchBarConfig,
 )
-from insight_ui.configs.forms import FORM_FIELD_CONFIGS, FormConfig, FormField
+from insight_ui.configs.forms import FORM_FIELD_CONFIGS, FormConfig, FormField, TurnstileConfig
 from insight_ui.configs.input import (
     ButtonConfig,
     ChatConfig,
@@ -182,6 +181,7 @@ from insight_ui.configs.utils import (
     BrandMarkConfig,
     ChartConfig,
     ChartDatasetConfig,
+    CodeDiffConfig,
     CornerRibbonConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
@@ -191,6 +191,7 @@ from insight_ui.configs.utils import (
     LogoConfig,
     ProgressBarConfig,
     StatusScreenConfig,
+    TextDiffConfig,
     WebSocketConfig,
 )
 
@@ -234,13 +235,13 @@ __all__ = [
     "CardConfig",
     "CarouselConfig",
     "CarouselImageConfig",
-    "CarouselItemConfig",
     "ChartConfig",
     "ChartDatasetConfig",
     "ChatConfig",
     "CheckboxConfig",
     "CheckboxGroupConfig",
     "CheckboxItemConfig",
+    "CodeDiffConfig",
     "ColorType",
     "ControlVariant",
     "CornerPosition",
@@ -302,6 +303,7 @@ __all__ = [
     "RadioBlockConfig",
     "RadioGroupConfig",
     "RadioItemConfig",
+    "RingCarouselConfig",
     "SearchBarConfig",
     "SectionConfig",
     "SelectConfig",
@@ -322,11 +324,12 @@ __all__ = [
     "TabConfig",
     "TableConfig",
     "TabsConfig",
+    "TextDiffConfig",
     "TextareaConfig",
-    "ThreeDCarouselConfig",
     "ToggleConfig",
     "ToggleViewConfig",
     "ToggleViewType",
+    "TurnstileConfig",
     "UserMenuConfig",
     "UserMenuLinkConfig",
     "VBoxConfig",
