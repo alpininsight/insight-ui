@@ -152,32 +152,6 @@ class FlipCardConfig:
 
 
 @dataclass
-class CarouselItemConfig:
-    """Configuration for a carousel item.
-
-    Attributes:
-        title: Item title.
-        content: Item content/description.
-        image: Optional image configuration.
-        request_url: Optional link URL.
-
-    """
-
-    __example__ = """
-        CarouselItemConfig(title="Item 1", content="Description 1")
-        """
-
-    title: str = field(default="", metadata={"doc": _("Item title.")})
-    content: str = field(default="", metadata={"doc": _("Item content/description.")})
-    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
-    request_url: str = field(default="", metadata={"doc": _("Optional link URL.")})
-
-    def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
-        validate_urls(self)
-
-
-@dataclass
 class CarouselConfig:
     """Configuration for the carousel component.
 
@@ -265,41 +239,54 @@ class CarouselImageConfig:
 
 
 @dataclass
-class ThreeDCarouselConfig:
-    """Configuration for the three_d_carousel component.
+class RingCarouselConfig:
+    """Configuration for the ring_carousel component.
 
-    Renders items in a 3D circular arrangement.
+    Arranges any items on a turning ring. Each item is rendered with item_template; the default shows
+    CardConfig items as cards.
 
     Attributes:
         tag_id: Unique ID for the carousel.
-        carousel_items: List of items to display.
-        velocity: Rotation speed.
-        tilt: Camera tilt angle.
-        face_camera: If True, items always face the camera.
+        items: Items to display, e.g. CardConfig or model instances.
+        item_template: Template that renders one item; gets item and the page context.
+        label: Accessible name of the carousel.
+        duration: Duration of a turn in milliseconds.
+        tilt: Camera tilt in degrees; the ring is seen from above.
+        face_camera: Turn every item towards the camera; otherwise items tilt with the ring.
 
     """
 
     __example__ = """
-        ThreeDCarouselConfig(
+        RingCarouselConfig(
             tag_id="product-showcase",
-            carousel_items=[...],
-            velocity=1000,
+            items=Product.objects.filter(featured=True),
+            item_template="shop/product_slide.html",
             tilt=15,
-            face_camera=True,
         )
         """
 
     tag_id: str = field(metadata={"doc": _("Unique ID for the carousel.")})
-    carousel_items: list[CarouselItemConfig] = field(
-        default_factory=list, metadata={"doc": _("List of items to display.")}
+    items: list[Any] = field(
+        default_factory=list, metadata={"doc": _("Items to display, e.g. CardConfig or model instances.")}
     )
-    velocity: int = field(default=1000, metadata={"doc": _("Rotation speed.")})
-    tilt: int = field(default=0, metadata={"doc": _("Camera tilt angle.")})
-    face_camera: bool = field(default=False, metadata={"doc": _("If True, items always face the camera.")})
+    item_template: str = field(
+        default="insight_ui/components/items/card_item.html",
+        metadata={"doc": _("Template that renders one item; gets item and the page context.")},
+    )
+    label: str = field(default="", metadata={"doc": _("Accessible name of the carousel.")})
+    duration: int = field(default=600, metadata={"doc": _("Duration of a turn in milliseconds.")})
+    tilt: int = field(default=0, metadata={"doc": _("Camera tilt in degrees; the ring is seen from above.")})
+    face_camera: bool = field(
+        default=False,
+        metadata={"doc": _("Turn every item towards the camera; otherwise items tilt with the ring.")},
+    )
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
-        validate_not_empty(self, "tag_id")
+        """Require an ID and a template, and reject a negative duration."""
+        validate_not_empty(self, "tag_id", "item_template")
+        if self.duration < 0:
+            msg = f"RingCarouselConfig needs a duration of at least 0, got {self.duration}."
+            raise ValueError(msg)
 
 
 @dataclass
