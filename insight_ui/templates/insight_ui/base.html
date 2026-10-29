@@ -64,7 +64,7 @@
         <script src="{% insight_asset 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
         <!-- Main stylesheet, then the host's theme tokens (always local, never from the CDN) -->
-        <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
+        <link rel="stylesheet" href="{% insight_stylesheet %}">
         {% if INSIGHT_UI.theme_stylesheet %}
             <link rel="stylesheet" href="{% static INSIGHT_UI.theme_stylesheet %}">
         {% endif %}

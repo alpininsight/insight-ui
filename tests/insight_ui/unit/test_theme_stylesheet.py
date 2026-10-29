@@ -66,6 +66,17 @@ def built_css() -> str:
     return BUILT_CSS.read_text(encoding="utf-8")
 
 
+@pytest.mark.django_db
+@pytest.mark.parametrize("path", ["css/app.css", "insight_ui/css/app.css", "insight_ui/css/tailwind.css"])
+@pytest.mark.parametrize("use_minified", [False, True])
+def test_configured_main_stylesheet_stays_local(client, path: str, use_minified: bool) -> None:  # noqa: ANN001
+    """An explicit host build never resolves to a package CDN file."""
+    with override_settings(
+        INSIGHT_UI={**CDN, "stylesheet": path, "assets": {**CDN["assets"], "use_minified": use_minified}}
+    ):
+        assert stylesheets(client)[-1] == f"/static/{path}"
+
+
 @pytest.mark.parametrize(
     ("class_name", "token"),
     [
