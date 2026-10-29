@@ -3255,8 +3255,8 @@
   :checked + .choice-neutral {
     background-color: var(--color-insight-bg-base);
     color: var(--color-insight-text-headline);
-    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    --tw-shadow: var(--shadow-insight-subtle);
+    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     border-color: color-mix(in srgb, #687386 55%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in srgb, var(--color-insight-text-muted) 55%, transparent);
