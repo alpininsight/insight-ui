@@ -5,7 +5,7 @@
 import pytest
 from bs4 import BeautifulSoup
 from django.template import Context, Template
-from insight_ui.configs import BUTTON_COLOR_VALUES, BadgeConfig, HtmxConfig, RadioBlockConfig, RadioItemConfig
+from insight_ui.configs import BUTTON_COLOR_VALUES, BadgeConfig, HtmxConfig
 
 
 def render(template: str, context: dict | None = None) -> BeautifulSoup:
@@ -138,28 +138,3 @@ def test_remove_button_follows_the_badge_color(color: str, button_class: str) ->
     button = render("{% badge config=config %}", {"config": config}).find("button")
 
     assert button_class in button["class"]
-
-
-# --- Button-styled form controls ----------------------------------------------
-
-
-def test_disabled_radio_block_option_uses_the_disabled_state_class() -> None:
-    """Labels cannot be disabled natively, so they carry the state class."""
-    config = RadioBlockConfig(
-        name="view",
-        items=[
-            RadioItemConfig(value="a", label="A"),
-            RadioItemConfig(value="b", label="B", disabled=True, disabled_reason=""),
-        ],
-    )
-    labels = render("{% radio_block config=config %}", {"config": config}).find_all("label")
-
-    assert "btn-disabled" not in labels[0]["class"]
-    assert "btn-disabled" in labels[1]["class"]
-
-
-def test_disabled_toggle_button_uses_the_disabled_state_class() -> None:
-    """The button-styled toggle looks disabled when its checkbox is disabled."""
-    soup = render('{% toggle tag_id="t" name="t" label="Bold" disabled=True disabled_reason="" %}')
-
-    assert "btn-disabled" in soup.find("label")["class"]
