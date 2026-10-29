@@ -1736,23 +1736,32 @@ def ring_carousel(
     return {**page_context, "carousel_config": config, "item_count": len(config.items)}
 
 
-@register.inclusion_tag("insight_ui/components/toggle_view.html")
+@register.inclusion_tag("insight_ui/components/toggle_view.html", takes_context=True)
 def toggle_view(
+    context: template.Context,
     config: ToggleViewConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    cards: list[CardConfig] | _Unset = UNSET,
+    view_switch: RadioBlockConfig | _Unset = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
+    item_template: str | _Unset = UNSET,
     table: TableConfig | _Unset = UNSET,
-    view_switch: RadioBlockConfig | _Unset | None = UNSET,
+    min_item_width: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a view of data that can be displayed in various ways."""
-    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    """Render the same data as a grid, a table or a carousel; the view switch picks the view.
+
+    The item template sees the page context (request, user, csrf_token) besides item.
+    """
+    config = build_config(
+        ToggleViewConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "context")}
+    )
     switch = config.view_switch
     # Switching the view reloads the whole component, so the radio block targets it and replaces it.
-    if switch is not None and switch.request_url:
+    if switch.request_url:
         htmx = replace(switch.htmx or HtmxConfig(), target=f"#{config.tag_id}", swap_method="outerHTML")
         switch = replace(switch, htmx=htmx)
-    return {"toggle_view_config": config, "view_switch": switch}
+    page_context = cast("dict[str, Any]", context.flatten())
+    return {**page_context, "toggle_view_config": config, "view_switch": switch}
 
 
 # =============================================================
