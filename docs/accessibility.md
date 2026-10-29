@@ -39,7 +39,7 @@ Check source and rendered output rather than relying on descriptive comments:
 
 - The [modal template](../insight_ui/templates/insight_ui/components/layout/modal.html)
   declares a dialog with `aria-modal` and a title reference. Supply a unique
-  `tag_id` and meaningful title; these attributes do not prove background isolation.
+  `id` and meaningful title; these attributes do not prove background isolation.
 - The [modal](../insight_ui/static/insight_ui/js/insight-ui-modal.js) and
   [sidebar](../insight_ui/static/insight_ui/js/insight-ui-sidebar.js) implement
   Escape handling and attempt focus restoration. A paired Sidebar's mobile
@@ -75,7 +75,7 @@ and page composition remain with the consumer.
 
 Use semantic roles from [input.css](../insight_ui/utils/input.css), such as
 `text-insight-headline`, `text-insight-body`, `*-action` for filled controls and
-`*-foreground` on matching `*-soft` surfaces. Do not substitute a brand/accent
+`*-text` on matching `*-soft` surfaces. Do not substitute a brand/accent
 color for readable text just because it shares the same hue.
 
 Recheck both default light/dark themes and every new theme or override against
@@ -91,8 +91,9 @@ Never communicate an error or selection through color alone.
   [SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 
 [Token tests](../tests/insight_ui/unit/test_design_tokens.py) check selected
-action/text and foreground/soft pairs in source CSS for both themes. They do
-not measure every rendered state or prove a new theme accessible.
+pairs in source CSS for both themes: the text on each `*-action` fill and
+`*-text` on `*-soft`. They do not measure every rendered state or prove a new
+theme accessible.
 
 ## Verification And Ownership
 
@@ -100,7 +101,7 @@ After [contributor setup](../CONTRIBUTING.md), run focused package checks:
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_form_field_messages.py tests/insight_ui/unit/test_design_tokens.py
-npm test -- tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
+npx --no-install vitest run tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
 ```
 
 [Vitest is configured for jsdom](../vitest.config.js), not a real browser.

@@ -68,7 +68,7 @@ migration; authentication and application endpoints need a separate test host.
 
 ## 2. Choose The Component Shape
 
-Check the [component reference](https://insight-ui.com/docs/configs) and existing
+Check the [component reference](https://django-insight-ui.com/docs/configs) and existing
 source before adding a new component. Prefer composing existing components over
 copying their markup or behavior.
 
@@ -216,7 +216,7 @@ uv run pytest tests/insight_ui/unit/components/test_example_panel.py
 If you added JavaScript, run its focused test too:
 
 ```bash
-npm test -- tests/js/example-panel.test.js
+npx --no-install vitest run tests/js/example-panel.test.js
 ```
 
 Then run the package checks before opening the PR:

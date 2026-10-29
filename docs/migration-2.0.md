@@ -7,9 +7,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 This guide covers consumer changes on `develop` since the `v1.15.1` tag.
 There is no `2.0.0` tag yet. The runtime Python and Django requirements are
-unchanged. The dev pin `django-stubs` moved from 6.1.1 to 6.1.2. No template,
-static file or Python module was removed, except the two carousel templates
-(see [Carousel](#carousel)).
+unchanged. The dev pin `django-stubs` moved from 6.1.1 to 6.1.2. The carousel
+refactors replace the old card, image and 3D carousel templates, along with
+the 3D carousel browser module. See the carousel sections below for their
+replacements.
 
 Apply the checklist, then read the section for each hit. Every break below
 has a before/after snippet, the pull request that introduced it, and a search

@@ -22,9 +22,25 @@ documentation application, credentials or running deployment is needed.
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_button.py
-npm test -- tests/js/tabs.test.js
+npx --no-install vitest run tests/js/tabs.test.js
 uv run pytest tests/insight_ui/unit/test_contributor_docs.py
 ```
+
+### What To Assert
+
+Test the public contract: parameter names and accepted values, rendered content,
+accessibility attributes, data attributes that drive behavior, and state changes.
+
+- Classes are fine to assert when a public parameter maps to them with fixed
+  values, for example `{% sidebar width="narrow" %}` renders `w-56`. The value is
+  the API and the class is its documented effect. The same holds for semantic
+  component classes, theme classes and state classes that JavaScript relies on.
+- Do not assert incidental styling that no parameter controls, such as `flex` or
+  `gap-2` in a template.
+- Do not write tests that only record a refactoring, for example that a new token
+  or class is present and the old one is gone. They document the diff instead of
+  testing behavior; the migration guide covers renames.
+- Do not test internal names: template variables, private helpers, local names.
 
 Native link downloads also have a real-browser check, not a jsdom substitute:
 
@@ -64,6 +80,14 @@ The minimal host is [tests/settings.py](../tests/settings.py), not a removed
 Docs `core.settings`. Package Python tests and all Vitest behavior tests stay
 here. Do not replace a failing required check with a skipped test or an ignored
 shell exit code. Report commands, versions and known limits in the PR.
+
+The generated `insight_ui/static/insight_ui/css/tailwind.css` is committed. CI
+rebuilds it and fails on a difference, so rebuild and commit it whenever a
+template, Config, script or template tag gains a new utility class. After
+renaming a CSS class, also update `requiredPatterns` in
+[build-static-assets.mjs](../scripts/build-static-assets.mjs) and the
+[CDN manifest](../insight_ui/cdn_manifest.json) where they list it, then run
+`npm run verify:static-build`.
 
 Use `uv run pytest --cov=insight_ui --cov-report=term-missing` and
 `npm run test:coverage` to inspect coverage; a percentage is not proof that the
