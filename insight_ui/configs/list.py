@@ -8,7 +8,7 @@ from django.core.paginator import Page
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig
-from insight_ui.configs.types import HeadingLevel, validate_heading_level, validate_not_empty
+from insight_ui.configs.types import HeadingLevel, validate_heading_level, validate_not_empty, validate_urls
 
 
 @dataclass
@@ -57,6 +57,7 @@ class InfiniteScrollConfig:
 
     def __post_init__(self) -> None:
         """Require ID, URL and page parameter and validate heading_level."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "request_url", "page_param", "item_template")
         validate_heading_level(self.heading_level)
 
@@ -148,6 +149,7 @@ class PaginationConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values and HTMX requests without a swap target."""
+        validate_urls(self)
         validate_not_empty(self, "request_url", "tag_id", "page_param")
         if self.htmx is not None and not self.htmx.target.strip():
             raise ValueError(  # noqa: TRY003
