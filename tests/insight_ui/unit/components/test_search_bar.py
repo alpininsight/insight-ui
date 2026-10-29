@@ -14,6 +14,15 @@ from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTest
 class TestSearchBar(TemplateTagsTestCase):
     """Test suite for the search_bar component."""
 
+    def test_existing_positional_config_arguments_keep_their_meaning(self) -> None:
+        """New IDs and names do not silently remap existing positional calls."""
+        config = SearchBarConfig("/search/", True, "term", "Find")
+        assert config.simple is True
+        assert config.search_query == "term"
+        assert config.placeholder == "Find"
+        assert config.tag_id == "search"
+        assert config.name == "search"
+
     def test_search_bar_serializes_htmx_vals_as_json(self) -> None:
         """Mappings render as valid JSON in the HTMX attribute."""
         vals = {"entity": "de", "filter": {"query": '<script>&"'}}

@@ -53,11 +53,6 @@ class SearchBarConfig:
             )
         },
     )
-    tag_id: str = dc_field(
-        default="search",
-        metadata={"doc": _("Id of the search input and prefix of the results list, unique on the page.")},
-    )
-    name: str = dc_field(default="search", metadata={"doc": _("Name of the request parameter.")})
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
     placeholder: str = dc_field(default="", metadata={"doc": _("Placeholder text for the search input.")})
@@ -70,6 +65,12 @@ class SearchBarConfig:
         default="",
         metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
+    # Append new defaults so existing positional callers retain their meanings.
+    tag_id: str = dc_field(
+        default="search",
+        metadata={"doc": _("Id of the search input and prefix of the results list, unique on the page.")},
+    )
+    name: str = dc_field(default="search", metadata={"doc": _("Name of the request parameter.")})
 
     def __post_init__(self) -> None:
         """Validate the id and name, and that request_url and htmx.request_url are not both set."""
