@@ -779,6 +779,28 @@
     }
 
     /*
+    * Text diff: removed words struck through, added words underlined, so the change does not
+    * depend on color alone (WCAG 1.4.1). Code diffs are styled in prism.css.
+    */
+    .insight-diff-delete {
+        background-color: var(--color-insight-danger-soft);
+        color: var(--color-insight-danger-text);
+        text-decoration: line-through;
+    }
+
+    .insight-diff-insert {
+        background-color: var(--color-insight-success-soft);
+        color: var(--color-insight-success-text);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    /* A replaced word: keep the removed and the added version apart. */
+    .insight-diff-delete + .insight-diff-insert {
+        margin-inline-start: 0.25em;
+    }
+
+    /*
     * Layout tag support.
     * page-peek: Shows a "peek" of the next section to encourage scrolling.
     */

@@ -895,6 +895,9 @@
   .min-w-fit {
     min-width: fit-content;
   }
+  .min-w-full {
+    min-width: 100%;
+  }
   .flex-1 {
     flex: 1;
   }
@@ -1747,6 +1750,9 @@
   }
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+  .whitespace-pre-line {
+    white-space: pre-line;
   }
   .text-insight-body {
     color: var(--color-insight-text-body);
@@ -2712,6 +2718,20 @@
   .insight-content-box .insight-content-box, .insight-content-grid > :not(.insight-full-bleed) .insight-content-box {
     max-width: none;
     padding-inline: 0;
+  }
+  .insight-diff-delete {
+    background-color: var(--color-insight-danger-soft);
+    color: var(--color-insight-danger-text);
+    text-decoration: line-through;
+  }
+  .insight-diff-insert {
+    background-color: var(--color-insight-success-soft);
+    color: var(--color-insight-success-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .insight-diff-delete + .insight-diff-insert {
+    margin-inline-start: 0.25em;
   }
   .page-peek {
     min-height: calc(100vh - 10rem);

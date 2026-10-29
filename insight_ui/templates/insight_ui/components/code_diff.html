@@ -1,0 +1,2 @@
+{# The code block script renders the diff: markers per line, highlighted lines, no copy button by default. #}
+<pre{% if code_diff_config.tag_id %} id="{{ code_diff_config.tag_id }}"{% endif %} data-insight-code-block="{{ code_diff_config.language }}" data-diff{% if diff_marks %} data-diff-marks="{{ diff_marks }}"{% endif %}{% if code_diff_config.filename %} data-filename="{{ code_diff_config.filename }}"{% endif %}>{{ diff_text }}</pre>
