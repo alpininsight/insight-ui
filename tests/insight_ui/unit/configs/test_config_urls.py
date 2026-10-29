@@ -9,6 +9,7 @@ from typing import Any
 
 import pytest
 from django.core.paginator import Paginator
+from django.utils.functional import lazy
 from insight_ui.configs import FooterContactConfig, PaginationConfig, WebSocketConfig
 
 from insight_ui import configs
@@ -73,8 +74,26 @@ def test_url_field_accepts_relative_and_web_urls(config_class: type, name: str) 
     """Relative URLs, query strings, fragments and web URLs stay valid."""
     config = build(config_class)
 
-    for url in ("/news/?page=2", "news/", "#section", "?q=lamp", "https://example.com/a"):
+    for url in ("/news/?page=2", "news/", "report 1:summary", "#section", "?q=lamp", "https://example.com/a"):
         dataclasses.replace(config, **{name: url})
+
+
+@pytest.mark.parametrize(("config_class", "name"), FIELDS)
+def test_lazy_url_field_rejects_script_urls(config_class: type, name: str) -> None:
+    """Django lazy string values obey the same scheme validation as plain strings."""
+    config = build(config_class)
+    script_url = lazy(lambda: "java\tscript:alert(1)", str)()
+    with pytest.raises(ValueError, match="is not allowed"):
+        dataclasses.replace(config, **{name: script_url})
+
+
+@pytest.mark.parametrize(("config_class", "name"), FIELDS)
+def test_lazy_url_field_accepts_relative_urls(config_class: type, name: str) -> None:
+    """Safe lazy strings stay usable, including spaces in relative path segments."""
+    config = build(config_class)
+    url = lazy(lambda: "report 1:summary", str)()
+    updated = dataclasses.replace(config, **{name: url})
+    assert str(getattr(updated, name)) == "report 1:summary"
 
 
 def test_url_kinds_allow_their_schemes() -> None:

@@ -26,6 +26,9 @@ from functools import lru_cache
 from typing import Literal
 from urllib.parse import urlsplit
 
+from django.utils.encoding import force_str
+from django.utils.functional import Promise
+
 # =============================================================================
 # Heading Level
 # =============================================================================
@@ -320,7 +323,8 @@ _URL_FIELDS = re.compile(r"^url(_dark)?$|_url$|^href$")
 def url_scheme(url: str) -> str:
     """Return the scheme of a URL as a browser reads it, lowercased; empty for a relative URL.
 
-    Browsers ignore ASCII whitespace and control characters inside the scheme, so they are ignored here too.
+    Python 3.12+ strips leading C0 controls/spaces and removes embedded tabs/newlines,
+    while preserving embedded spaces that make a URL relative.
 
     Args:
         url: The URL to read.
@@ -329,7 +333,7 @@ def url_scheme(url: str) -> str:
         The scheme without the colon, e.g. "https", or "" for a relative URL.
 
     """
-    return urlsplit(re.sub(r"[\x00-\x20]", "", url)).scheme.lower()
+    return urlsplit(url).scheme.lower()
 
 
 def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
@@ -349,10 +353,10 @@ def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
     for config_field in fields(config):  # type: ignore[arg-type]
         name = config_field.name
         value = getattr(config, name)
-        if not _URL_FIELDS.search(name) or not isinstance(value, str) or not value:
+        if not _URL_FIELDS.search(name) or not isinstance(value, (str, Promise)):
             continue
         allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
-        scheme = url_scheme(value)
+        scheme = url_scheme(force_str(value))
         if scheme and scheme not in allowed:
             msg = (
                 f"{config.__class__.__name__}.{name}: the scheme '{scheme}:' is not allowed. "
