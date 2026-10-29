@@ -37,8 +37,10 @@ pattern for a host project.
 - [ ] In a right-to-left container, ArrowLeft moves to the next tab.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
+- [ ] Drop `foreground_color=` on `corner_ribbon`; the text follows the fill color.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
+- [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
@@ -657,6 +659,46 @@ Search: `success=True` and `failed=True` on `StepperItemConfig`, `items=` on
 `{% minimal_stepper` and `MinimalStepperConfig`, and the strings `"active"`
 and `"success"` in step lists. `{% stepper items=` stays valid.
 
+### The `diff` filter is replaced by `text_diff` and `code_diff`
+
+[#782](https://github.com/alpininsight/insight-ui/pull/782).
+
+The `diff` template filter is removed, and so are `file_template` and `styles`
+in `insight_ui.utils.diff`, which now holds the diff functions of the new tags.
+It returned HTML with inline styles and marked changes by color, and it lost
+line breaks and indentation. Two tags replace it:
+
+- `{% text_diff before=... after=... %}` marks changed words for any reader:
+  removed words struck through, added words underlined, each announced to
+  screen readers. A legend below the text explains the markings
+  (`show_legend=False` hides it).
+- `{% code_diff before=... after=... language="python" %}` shows a short
+  snippet as a unified diff in a code block, with `+` / `-` markers per line
+  and syntax highlighting. In a changed line that resembles its counterpart,
+  the changed part (e.g. one attribute) is marked as well. It needs
+  `INSIGHT_UI["load_prism"]`.
+
+Before:
+
+```text
+{{ old_text|diff:new_text|safe }}
+```
+
+After:
+
+```text
+{% text_diff before=old_text after=new_text %}
+{% code_diff before=old_code after=new_code language="python" %}
+```
+
+Both tags escape their input; drop `|safe`. The code block element accepts two
+new data attributes: `data-diff` for diff content (with optional
+`data-diff-marks` for changed parts inside lines; a diff has no copy button)
+and `data-copy="false"` to hide the copy button of a normal code block.
+
+Search: `|diff:` and imports of `file_template` or `styles` from
+`insight_ui.utils.diff`.
+
 ### Button and badge color and variant
 
 [#733](https://github.com/alpininsight/insight-ui/pull/733).
@@ -766,6 +808,33 @@ templates already rendered them with `{% badge config=tag %}` in v1.15.1.
 A list of strings did not become badges.
 
 Search: `back_style=`.
+
+### Corner ribbon colors
+
+[#784](https://github.com/alpininsight/insight-ui/pull/784).
+
+`corner_ribbon` fills like a solid button: `color` picks the fill and the text
+takes the color made for it, through the same `.control-{color}` classes as
+toggles and radio blocks. `foreground_color` is gone; a free text color on a
+colored band could fail contrast. v1.15.1 put white text on the decorative
+family color, which was not readable on every color. `neutral` fills with the
+raised surface and body text. A linked ribbon darkens on hover like a button.
+
+Before:
+
+```text
+{% corner_ribbon text="Beta" color="warning" foreground_color="primary" %}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% corner_ribbon text="Beta" color="warning" %}
+```
+
+Search: `foreground_color` and selectors on the ribbon's `bg-insight-*` or
+`text-white` classes.
 
 ## Forms
 

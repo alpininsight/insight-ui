@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from dataclasses import MISSING, fields, is_dataclass, replace
-from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -51,6 +50,7 @@ from insight_ui.configs import (
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
+    CodeDiffConfig,
     ColorType,
     ControlVariant,
     CornerPosition,
@@ -104,13 +104,15 @@ from insight_ui.configs import (
     StepStatus,
     TableConfig,
     TextareaConfig,
+    TextDiffConfig,
     ToggleConfig,
     ToggleViewConfig,
+    TurnstileConfig,
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils import query_builder as query_builder_utils
-from insight_ui.utils.diff import file_template, styles
+from insight_ui.utils.diff import text_parts, unified_diff
 
 register = template.Library()
 
@@ -1126,44 +1128,33 @@ def legal_notice(
     return {"legal_config": config, "metadata": [item for item in metadata if item["text"]]}
 
 
-@register.filter
-def diff(a: str, b: str, simple: bool = True) -> str:
-    """Generate a visualization of the differences between two texts.
+@register.inclusion_tag("insight_ui/components/text_diff.html")
+def text_diff(
+    config: TextDiffConfig | None = None,
+    *,
+    before: str | _Unset = UNSET,
+    after: str | _Unset = UNSET,
+    show_legend: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the changes between two texts with removed words struck through and added words underlined."""
+    config = build_config(TextDiffConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"parts": text_parts(str(config.before), str(config.after)), "show_legend": config.show_legend}
 
-    Args:
-        a: The original version of the text.
-        b: The modified version of the text.
-        simple: 'True' for a simplified display.
 
-    Returns:
-        The HTML code for the graphical representation of the differences.
-
-    """
-    if not simple:
-        differentiator = HtmlDiff()
-        differentiator._file_template = file_template
-        differentiator._styles = styles
-        diff_result = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
-        return "\n".join(list(diff_result))
-
-    diff_result = ndiff(a.split(), b.split())
-    html = ""
-
-    for word in diff_result:
-        if word.startswith("  "):
-            html += f"{word[2:]} "
-        elif word.startswith("- "):
-            html += f"<span class='del'>{word[2:]}</span> "
-        elif word.startswith("+ "):
-            html += f"<span class='ins'>{word[2:]}</span> "
-
-    return f"""
-        <style>
-            .del {{ background-color: #ffbbbb; color: #721c24; text-decoration: line-through; }}
-            .ins {{ background-color: #bbffbb; color: #155724; }}
-        </style>
-        <p class='text-insight-headline'>{html}</p>
-    """
+@register.inclusion_tag("insight_ui/components/code_diff.html")
+def code_diff(
+    config: CodeDiffConfig | None = None,
+    *,
+    before: str | _Unset = UNSET,
+    after: str | _Unset = UNSET,
+    language: str | _Unset = UNSET,
+    filename: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the changes between two short code snippets as a unified diff in a code block."""
+    config = build_config(CodeDiffConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    diff_text, marks = unified_diff(str(config.before), str(config.after))
+    return {"code_diff_config": config, "diff_text": diff_text, "diff_marks": json_attribute(marks) if marks else ""}
 
 
 @register.inclusion_tag("insight_ui/components/logo.html")
@@ -1231,7 +1222,6 @@ def corner_ribbon(
     text: str | _Unset = UNSET,
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
-    foreground_color: ColorType | str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -1838,6 +1828,20 @@ def toggle_view(
 # =============================================================
 
 
+@register.inclusion_tag("insight_ui/components/turnstile.html")
+def turnstile(
+    config: TurnstileConfig | None = None,
+    *,
+    site_key: str | _Unset = UNSET,
+    theme: Literal["auto", "light", "dark"] | _Unset = UNSET,
+    size: Literal["normal", "flexible", "compact"] | _Unset = UNSET,
+    action: str | _Unset = UNSET,
+) -> dict[str, TurnstileConfig]:
+    """Render the public Turnstile widget; the host must verify its token."""
+    config = build_config(TurnstileConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"turnstile_config": config}
+
+
 # Tag and template that render each field config supported by the form component.
 _FORM_FIELD_RENDERERS: dict[type, tuple[Callable[..., dict[str, Any]], str]] = {
     InputFieldConfig: (input_field, "insight_ui/components/input.html"),
@@ -1891,11 +1895,13 @@ def form(
     method: str | _Unset = UNSET,
     htmx: HtmxConfig | _Unset | None = UNSET,
     show_loading_indicator: bool | _Unset = UNSET,
+    turnstile: TurnstileConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "form_config": config,
+        "native_form_action": (config.htmx.request_url if config.htmx else "") or config.request_url,
         "rendered_fields": [_render_form_field(field) for field in config.fields],
         # "find" keeps the indicator to this form; a plain class selector would show every indicator on the page.
         "form_indicator": "find .htmx-indicator" if config.show_loading_indicator else "",
