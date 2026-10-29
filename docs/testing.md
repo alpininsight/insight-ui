@@ -35,7 +35,7 @@ uv run --with playwright==1.64.0 python -m tests.browser.button_download_smoke
 
 It renders the public tag, serves a local SVG and downloads it using Enter
 with page JavaScript disabled. Default, empty and suggested filenames and file
-bytes are checked. Contributor CI runs it in the required stylesheet job;
+bytes are checked. Contributor CI runs it in the required browser job;
 Playwright remains a test-only tool, not a package runtime dependency.
 
 The [existing button tests](../tests/insight_ui/unit/components/test_button.py)
