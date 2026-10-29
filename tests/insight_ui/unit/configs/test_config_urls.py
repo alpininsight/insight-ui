@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 from django.core.paginator import Paginator
 from django.utils.functional import lazy
+from django.utils.safestring import mark_safe
 from insight_ui.configs import FooterContactConfig, PaginationConfig, WebSocketConfig
 
 from insight_ui import configs
@@ -94,6 +95,33 @@ def test_lazy_url_field_accepts_relative_urls(config_class: type, name: str) -> 
     url = lazy(lambda: "report 1:summary", str)()
     updated = dataclasses.replace(config, **{name: url})
     assert str(getattr(updated, name)) == "report 1:summary"
+
+
+@pytest.mark.parametrize(("config_class", "name"), FIELDS)
+@pytest.mark.parametrize(
+    "encoded", ["javascript&colon;alert(1)", "java&#9;script&#58;alert(1)", "&#106;avascript:alert(1)"]
+)
+def test_safe_url_field_rejects_encoded_script_schemes(config_class: type, name: str, encoded: str) -> None:
+    """Trusted HTML entities cannot bypass the URL allowlist."""
+    config = build(config_class)
+    with pytest.raises(ValueError, match="is not allowed"):
+        dataclasses.replace(config, **{name: mark_safe(encoded)})  # noqa: S308 - hostile trusted fixture
+
+
+@pytest.mark.parametrize(("config_class", "name"), FIELDS)
+def test_lazy_safe_url_field_rejects_encoded_script_schemes(config_class: type, name: str) -> None:
+    """Lazy values that resolve to trusted HTML get the same entity check."""
+    config = build(config_class)
+    value = lazy(lambda: mark_safe("javascript&colon;alert(1)"), str)()
+    with pytest.raises(ValueError, match="is not allowed"):
+        dataclasses.replace(config, **{name: value})
+
+
+@pytest.mark.parametrize(("config_class", "name"), FIELDS)
+def test_plain_url_field_preserves_literal_entity_text(config_class: type, name: str) -> None:
+    """An ordinary URL is escaped by Django rather than treated as trusted HTML."""
+    config = build(config_class)
+    dataclasses.replace(config, **{name: "javascript&colon;label"})
 
 
 def test_url_kinds_allow_their_schemes() -> None:

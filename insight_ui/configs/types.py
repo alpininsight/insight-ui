@@ -23,11 +23,13 @@ import re
 from dataclasses import fields
 from difflib import get_close_matches
 from functools import lru_cache
+from html import unescape
 from typing import Literal
 from urllib.parse import urlsplit
 
 from django.utils.encoding import force_str
 from django.utils.functional import Promise
+from django.utils.safestring import SafeData
 
 # =============================================================================
 # Heading Level
@@ -356,7 +358,11 @@ def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
         if not _URL_FIELDS.search(name) or not isinstance(value, (str, Promise)):
             continue
         allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
-        scheme = url_scheme(force_str(value))
+        rendered_value = force_str(value)
+        if isinstance(rendered_value, SafeData):
+            # Templates preserve trusted entities; the browser decodes them in attributes.
+            rendered_value = unescape(rendered_value)
+        scheme = url_scheme(rendered_value)
         if scheme and scheme not in allowed:
             msg = (
                 f"{config.__class__.__name__}.{name}: the scheme '{scheme}:' is not allowed. "
