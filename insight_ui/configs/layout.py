@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.input import ButtonConfig
-from insight_ui.configs.types import validate_not_empty
+from insight_ui.configs.types import validate_not_empty, validate_urls
 from insight_ui.configs.utils import BadgeConfig
 
 
@@ -348,6 +348,10 @@ class SurfaceConfig:
     href: str = field(default="", metadata={"doc": _("URL for clickable surface (renders as <a> instead of <div>).")})
     external: bool = field(default=False, metadata={"doc": _("Open link in new tab (only when href is set).")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
+
 
 @dataclass
 class GridConfig:
@@ -440,6 +444,10 @@ class HeroConfig:
     cta_secondary: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
     badge: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass

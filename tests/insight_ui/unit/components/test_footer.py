@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the footer component."""
 
+import pytest
 from bs4 import BeautifulSoup
+from django.template import Context, Template
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import FooterConfig, FooterContactConfig, FooterDescriptionConfig, NavbarLinkConfig
 from insight_ui.configs.utils import LegalNoticeConfig, LogoConfig
@@ -81,8 +83,6 @@ class TestFooter(TemplateTagsTestCase):
 
 def test_footer_section_headings_are_h2() -> None:
     """Footer sections are top-level sections of the page, so they must not jump from h1/h2 to h4."""
-    from django.template import Context, Template  # noqa: PLC0415
-
     footer = FooterConfig(
         FooterDescriptionConfig("Insight UI", "Summary"),
         [NavbarLinkConfig("Startpage", "/")],
@@ -94,3 +94,22 @@ def test_footer_section_headings_are_h2() -> None:
     headings = soup.find("footer").find_all(["h2", "h3", "h4"])
     assert [h.name for h in headings] == ["h2", "h2", "h2"]
     assert [h.get_text(strip=True) for h in headings] == ["Insight UI", "Links", "Contact"]
+
+
+def test_contact_email_is_shown_and_linked_with_mailto() -> None:
+    """The address is the link text; the link adds mailto: itself."""
+    footer = FooterConfig(
+        FooterDescriptionConfig("Insight UI", "Summary"), [], FooterContactConfig(email="team@example.com")
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    link = BeautifulSoup(html, "html.parser").find("a", href="mailto:team@example.com")
+
+    assert link.get_text(strip=True) == "team@example.com"
+
+
+def test_contact_email_is_an_address() -> None:
+    """A mailto: URL or text that is no address is rejected instead of rendering a broken link."""
+    with pytest.raises(ValueError, match="without mailto:"):
+        FooterContactConfig(email="mailto:team@example.com")
+    with pytest.raises(ValueError, match="is not an email address"):
+        FooterContactConfig(email="team at example")
