@@ -66,13 +66,23 @@ export class RingCarousel {
         this.placed = new Map();
         this.width = null;
         this.frame = null;
+        this.startX = null;
+        this.startY = null;
 
         // Bind handlers for proper cleanup
         this.boundPrev = () => this.goTo(this.index - 1);
         this.boundNext = () => this.goTo(this.index + 1);
         this.boundKeyDown = this.handleKeyDown.bind(this);
-        this.boundTouchStart = (e) => { this.startX = e.touches[0].clientX; };
+        this.boundTouchStart = (e) => {
+            this.startX = null;
+            this.startY = null;
+            if (e.touches.length !== 1 ||
+                e.target.closest('input, select, textarea, [role="slider"], [contenteditable]:not([contenteditable="false"])')) return;
+            this.startX = e.touches[0].clientX;
+            this.startY = e.touches[0].clientY ?? 0;
+        };
         this.boundTouchEnd = this.handleTouchEnd.bind(this);
+        this.boundTouchCancel = () => { this.startX = null; this.startY = null; };
         this.boundRelayout = () => this.scheduleRelayout();
 
         this.init();
@@ -93,7 +103,10 @@ export class RingCarousel {
         this.element.addEventListener("keydown", this.boundKeyDown);
         this.stage.addEventListener("touchstart", this.boundTouchStart, { passive: true });
         this.stage.addEventListener("touchend", this.boundTouchEnd);
+        this.stage.addEventListener("touchcancel", this.boundTouchCancel);
         this.element.addEventListener("load", this.boundRelayout, true);
+        // Height caps depend on the viewport even when the observed width stays unchanged.
+        window.addEventListener("resize", this.boundRelayout);
 
         if ("ResizeObserver" in window) {
             this.stageObserver = new ResizeObserver(() => {
@@ -108,7 +121,6 @@ export class RingCarousel {
                 if (content) this.contentObserver.observe(content);
             });
         } else {
-            window.addEventListener("resize", this.boundRelayout);
             this.relayout();
         }
     }
@@ -316,8 +328,13 @@ export class RingCarousel {
      * @param {TouchEvent} e - The touch end event
      */
     handleTouchEnd(e) {
-        const diff = e.changedTouches[0].clientX - this.startX;
-        if (Math.abs(diff) <= 40) return;
+        const touch = e.changedTouches[0];
+        if (this.startX === null || !touch) return;
+        const diff = touch.clientX - this.startX;
+        const vertical = (touch.clientY ?? 0) - this.startY;
+        this.startX = null;
+        this.startY = null;
+        if (Math.abs(diff) <= 40 || Math.abs(diff) <= Math.abs(vertical)) return;
         const forward = (diff < 0) !== this.isRTL();
         this.goTo(this.index + (forward ? 1 : -1));
     }
@@ -335,6 +352,7 @@ export class RingCarousel {
         this.element.removeEventListener("keydown", this.boundKeyDown);
         this.stage.removeEventListener("touchstart", this.boundTouchStart);
         this.stage.removeEventListener("touchend", this.boundTouchEnd);
+        this.stage.removeEventListener("touchcancel", this.boundTouchCancel);
         this.element.removeEventListener("load", this.boundRelayout, true);
         window.removeEventListener("resize", this.boundRelayout);
         this.stageObserver?.disconnect();

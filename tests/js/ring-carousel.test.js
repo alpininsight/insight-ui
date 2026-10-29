@@ -170,7 +170,83 @@ describe('RingCarousel Component', () => {
     });
   });
 
+  describe('Viewport changes', () => {
+    it('updates the height cap when only viewport height changes with ResizeObserver present', () => {
+      const callbacks = [];
+      vi.stubGlobal('ResizeObserver', class {
+        constructor(callback) { callbacks.push(callback); }
+        observe() {}
+        disconnect() {}
+      });
+      vi.useFakeTimers();
+      const originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
+      Object.defineProperty(window, 'innerHeight', { configurable: true, writable: true, value: 1000 });
+      let carousel;
+      try {
+        const container = TestUtils.createRingCarousel('height-only', 4);
+        const element = container.querySelector('[data-insight-ring-carousel]');
+        const stage = element.querySelector('.ring-carousel-stage');
+        const items = [...element.querySelectorAll('.ring-carousel-item')];
+        Object.defineProperty(stage, 'clientWidth', { configurable: true, value: 800 });
+        items.forEach(item => Object.defineProperty(item, 'offsetHeight', { configurable: true, value: 900 }));
+        carousel = new InsightUI.RingCarousel(element);
+        callbacks[0]();
+        expect(items[0].style.height).toBe('700px');
+
+        window.innerHeight = 400;
+        window.dispatchEvent(new Event('resize'));
+        vi.advanceTimersToNextFrame();
+        expect(stage.clientWidth).toBe(800);
+        expect(items.every(item => item.style.height === '280px')).toBe(true);
+      } finally {
+        carousel?.destroy();
+        Object.defineProperty(window, 'innerHeight', originalHeight);
+        vi.useRealTimers();
+        vi.unstubAllGlobals();
+      }
+    });
+  });
+
   describe('Keyboard and touch', () => {
+    it.each(['input', 'select', 'textarea', 'editable'])('leaves touch gestures on %s content to the control', (kind) => {
+      const { element, items } = setup();
+      const control = document.createElement(kind === 'editable' ? 'div' : kind);
+      if (kind === 'input') control.type = 'range';
+      if (kind === 'editable') control.setAttribute('contenteditable', 'true');
+      items[0].querySelector('.ring-carousel-front').appendChild(control);
+      const start = new Event('touchstart', { bubbles: true });
+      start.touches = [{ clientX: 200, clientY: 0 }];
+      control.dispatchEvent(start);
+      const end = new Event('touchend', { bubbles: true });
+      end.changedTouches = [{ clientX: 100, clientY: 0 }];
+      control.dispatchEvent(end);
+      expect(frontItems(element)).toEqual([items[0]]);
+    });
+
+    it('does not turn after a cancelled touch gesture', () => {
+      const { element, items } = setup();
+      const stage = element.querySelector('.ring-carousel-stage');
+      const start = new Event('touchstart');
+      start.touches = [{ clientX: 200, clientY: 0 }];
+      stage.dispatchEvent(start);
+      stage.dispatchEvent(new Event('touchcancel'));
+      const end = new Event('touchend');
+      end.changedTouches = [{ clientX: 100, clientY: 0 }];
+      stage.dispatchEvent(end);
+      expect(frontItems(element)).toEqual([items[0]]);
+    });
+
+    it('leaves a mostly vertical gesture to page scrolling', () => {
+      const { element, items } = setup();
+      const stage = element.querySelector('.ring-carousel-stage');
+      const start = new Event('touchstart');
+      start.touches = [{ clientX: 200, clientY: 0 }];
+      stage.dispatchEvent(start);
+      const end = new Event('touchend');
+      end.changedTouches = [{ clientX: 100, clientY: 200 }];
+      stage.dispatchEvent(end);
+      expect(frontItems(element)).toEqual([items[0]]);
+    });
     it('turns with the arrow keys on the controls', () => {
       const { element, items } = setup();
 
