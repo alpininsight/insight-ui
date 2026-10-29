@@ -5,6 +5,8 @@
 import warnings
 from dataclasses import dataclass, field
 
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
@@ -18,6 +20,7 @@ from insight_ui.configs.types import (
     validate_not_empty,
     validate_size,
     validate_step_status,
+    validate_urls,
 )
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
@@ -48,6 +51,10 @@ class NavbarBrandConfig:
     request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
     mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -95,6 +102,7 @@ class NavbarLinkConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
         if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "
@@ -135,6 +143,7 @@ class UserMenuLinkConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "request_url")
 
 
@@ -168,6 +177,10 @@ class UserMenuConfig:
     )
     avatar_url: str = field(default="", metadata={"doc": _("URL to the user's avatar image.")})
     avatar_alt: str = field(default="", metadata={"doc": _("Alt text for the avatar image.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -226,6 +239,10 @@ class LoginScreenConfig:
         default="",
         metadata={"doc": _("URL for registration. Empty hides the link.")},
     )
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -327,6 +344,7 @@ class SidebarItemConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
         if not self.request_url:
             warnings.warn(
                 f"SidebarItemConfig '{self.text}' has no request_url set. The link will not be rendered.",
@@ -496,23 +514,37 @@ class FooterContactConfig:
     Contact information, link to the imprint, privacy policy and a contact email address.
 
     Attributes:
-        mail_url: URL of a contact email address.
-        imprint: Link to an imprint.
-        privacy: Link to a privacy policy.
+        email: Contact email address; the link adds mailto:.
+        imprint_url: Link to an imprint.
+        privacy_url: Link to a privacy policy.
 
     """
 
     __example__ = """
         FooterContactConfig(
-            mail_url="support@example.com",
-            imprint="/imprint/",
-            privacy="/privacy/",
+            email="support@example.com",
+            imprint_url="/imprint/",
+            privacy_url="/privacy/",
         )
         """
 
-    mail_url: str = field(default="", metadata={"doc": _("URL of a contact email address.")})
-    imprint: str = field(default="", metadata={"doc": _("Link to an imprint.")})
-    privacy: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
+    email: str = field(default="", metadata={"doc": _("Contact email address; the link adds mailto:.")})
+    imprint_url: str = field(default="", metadata={"doc": _("Link to an imprint.")})
+    privacy_url: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow and an email that is not an address."""
+        validate_urls(self)
+        if not self.email:
+            return
+        if self.email.lower().startswith("mailto:"):
+            msg = "FooterContactConfig.email: pass the address without mailto:, the link adds it."
+            raise ValueError(msg)
+        try:
+            validate_email(self.email)
+        except ValidationError as error:
+            msg = f"FooterContactConfig.email: {self.email!r} is not an email address."
+            raise ValueError(msg) from error
 
 
 @dataclass
@@ -541,9 +573,9 @@ class FooterConfig:
                 NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
             ],
             contact=FooterContactConfig(
-                mail_url="support@example.com",
-                imprint="/imprint/",
-                privacy="/privacy/",
+                email="support@example.com",
+                imprint_url="/imprint/",
+                privacy_url="/privacy/",
             ),
             legal=LegalNoticeConfig(
                 year=2026,
@@ -588,6 +620,10 @@ class BreadcrumbItemConfig:
     text: str = field(metadata={"doc": _("Label of the link.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
 @dataclass
@@ -645,6 +681,7 @@ class StepperItemConfig:
 
     def __post_init__(self) -> None:
         """Validate status after initialization."""
+        validate_urls(self)
         validate_step_status(self.status)
 
 
@@ -732,6 +769,7 @@ class BulletPointItemConfig:
 
     def __post_init__(self) -> None:
         """Validate status after initialization."""
+        validate_urls(self)
         validate_step_status(self.status)
 
 
@@ -842,6 +880,7 @@ class TabConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "request_url")
 
 

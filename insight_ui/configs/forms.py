@@ -22,6 +22,7 @@ from insight_ui.configs.input import (
     TextareaConfig,
     ToggleConfig,
 )
+from insight_ui.configs.types import validate_urls
 
 # Field configs the form component can render, in the order they appear in error messages.
 type FormField = (
@@ -144,6 +145,7 @@ class FormConfig:
 
     def __post_init__(self) -> None:
         """Validate the field configs and warn if request_url and htmx.request_url are both set."""
+        validate_urls(self)
         for form_field in self.fields:
             if not isinstance(form_field, FORM_FIELD_CONFIGS):
                 supported = ", ".join(config.__name__ for config in FORM_FIELD_CONFIGS)
