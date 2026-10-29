@@ -56,6 +56,7 @@ pattern for a host project.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
+- [ ] Rename `cards=` to `items=` on `toggle_view`, the view value `"card"` to `"grid"`, drop `current_view=`, and always pass a `view_switch`.
 - [ ] Rename `three_d_carousel` / `ThreeDCarouselConfig` to `ring_carousel` / `RingCarouselConfig`, pass `items=` (and `item_template=` for own content) instead of `carousel_items=`, rename `velocity=` to `duration=`, and drop the fixed-height wrapper.
 
 ## Color tokens are a silent break
@@ -1703,6 +1704,57 @@ before.
 Search: `image_carousel`, `CardCarouselConfig`, `ImageCarouselConfig`,
 `ImageCarouselItemConfig`, `carousel_items`, `card_carousel.html` and
 `.carousel-dot`.
+
+### Toggle view shows any items
+
+[#781](https://github.com/alpininsight/insight-ui/pull/781).
+
+`toggle_view` takes `items` and `item_template` like the carousel. The grid and
+the carousel view render each item with the template, which gets `item` and the
+page context; the default renders a `CardConfig` as a full card. v1.15.1 passed
+only title, subtitle, content and actions of each card, so images and
+`heading_level` were lost.
+
+| Before | After |
+|--------|-------|
+| `cards=[CardConfig(...)]` | `items=[CardConfig(...)]` or any objects with `item_template` |
+| view value `"card"` | `"grid"` |
+| `current_view=` | removed; it was never read. The switch's `current_value` picks the view |
+| `view_switch=None` | `view_switch` is required |
+
+The grid fills as many columns as fit, each at least `min_item_width` wide
+(`18rem` by default); the carousel view gets the same width. Each value of the
+switch's items must be `"grid"`, `"table"` or `"carousel"`, and offering
+`"table"` needs `table`; otherwise `ToggleViewConfig` raises `ValueError`.
+Before, an unknown value showed the table, and a missing table showed an empty
+one. The content no longer is an `aria-live` region: the whole component is
+replaced on a switch, and the live region was never announced.
+
+Before:
+
+```python
+ToggleViewConfig(
+    tag_id="products",
+    cards=cards,
+    table=table,
+    view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(value="card"), RadioItemConfig(value="table")]),
+    current_view="card",
+)
+```
+
+After:
+
+```python
+ToggleViewConfig(
+    tag_id="products",
+    items=cards,
+    table=table,
+    view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(value="grid"), RadioItemConfig(value="table")]),
+)
+```
+
+Search: `ToggleViewConfig`, `toggle_view` with `cards=` or `current_view=`, and
+`value="card"` in its view switch.
 
 ## Checked, and not a 2.0 break
 

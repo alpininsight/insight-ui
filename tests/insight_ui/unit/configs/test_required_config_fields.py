@@ -25,6 +25,8 @@ from insight_ui.configs import (
     PaginationConfig,
     QueryBuilderConfig,
     QueryBuilderFieldConfig,
+    RadioBlockConfig,
+    RadioItemConfig,
     RingCarouselConfig,
     TabConfig,
     ToggleViewConfig,
@@ -58,7 +60,14 @@ REQUIRED_FIELDS: list = [
         id="TabConfig.tag_id",
     ),
     pytest.param(lambda: RingCarouselConfig(tag_id="showcase"), "tag_id", id="RingCarouselConfig.tag_id"),
-    pytest.param(lambda: ToggleViewConfig(tag_id="products"), "tag_id", id="ToggleViewConfig.tag_id"),
+    pytest.param(
+        lambda: ToggleViewConfig(
+            tag_id="products",
+            view_switch=RadioBlockConfig(name="view", items=[RadioItemConfig(label="Grid", value="grid")]),
+        ),
+        "tag_id",
+        id="ToggleViewConfig.tag_id",
+    ),
     pytest.param(
         lambda: CheckboxItemConfig(tag_id="en", label="English", value="en"), "tag_id", id="CheckboxItemConfig.tag_id"
     ),
