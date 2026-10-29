@@ -25,8 +25,8 @@ from insight_ui.configs import (
     PaginationConfig,
     QueryBuilderConfig,
     QueryBuilderFieldConfig,
+    RingCarouselConfig,
     TabConfig,
-    ThreeDCarouselConfig,
     ToggleViewConfig,
     UserMenuLinkConfig,
     WebSocketConfig,
@@ -57,7 +57,7 @@ REQUIRED_FIELDS: list = [
         "tag_id",
         id="TabConfig.tag_id",
     ),
-    pytest.param(lambda: ThreeDCarouselConfig(tag_id="showcase"), "tag_id", id="ThreeDCarouselConfig.tag_id"),
+    pytest.param(lambda: RingCarouselConfig(tag_id="showcase"), "tag_id", id="RingCarouselConfig.tag_id"),
     pytest.param(lambda: ToggleViewConfig(tag_id="products"), "tag_id", id="ToggleViewConfig.tag_id"),
     pytest.param(
         lambda: CheckboxItemConfig(tag_id="en", label="English", value="en"), "tag_id", id="CheckboxItemConfig.tag_id"
