@@ -16,7 +16,7 @@
         <span class="info ml-auto text-insight-muted text-xs"></span>
         <div id="{{ multiselect_config.field_id }}-listbox" role="listbox" aria-multiselectable="true" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-surface border border-insight-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">
             {% for value, text in multiselect_config.options.items %}
-                <div id="{{ multiselect_config.field_id }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" data-value="{{ value }}" class="option px-3 py-2 text-insight-headline bg-insight-surface cursor-pointer hover:bg-insight-base">{{ text }}</div>
+                <div id="{{ multiselect_config.field_id }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" data-value="{{ value }}" class="option data-active:bg-insight-raised px-3 py-2 text-insight-headline bg-insight-surface cursor-pointer hover:bg-insight-raised">{{ text }}</div>
             {% endfor %}
         </div>
     </div>

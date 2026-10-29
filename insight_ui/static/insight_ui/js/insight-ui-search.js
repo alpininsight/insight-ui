@@ -340,10 +340,10 @@ export class Search {
             item.setAttribute('aria-selected', isHighlighted.toString());
 
             if (isHighlighted) {
-                item.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                item.classList.add('bg-insight-raised');
                 item.scrollIntoView({ block: 'nearest' });
             } else {
-                item.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+                item.classList.remove('bg-insight-raised');
             }
         });
 
