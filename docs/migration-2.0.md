@@ -401,6 +401,12 @@ After, with `name` equal to `intro`, the id is `tab-intro`.
 Search: `{% section`, `{% surface`, `{% hbox`, `{% tabs` and `{% tab` with a
 `|` filter on a quoted argument, and `_("` inside those tags.
 
+`{% surface radius=… %}` uses the radius token of the same name
+(`rounded-insight-m` for `"m"`), so a theme can change it. The old classes were
+one Tailwind step larger: `"m"` was 8px and is 6px now, `"xl"` was 16px and is
+12px. `radius="none"` now squares the corners; before, it kept the variant's
+rounding. Search: `{% surface` with `radius=`.
+
 `{% modal %}` accepts `config=ModalConfig(...)`. A single `id`, `title`,
 `width` or `show_close` argument overrides the config.
 `ModalConfig.id` must be non-empty ([#719](https://github.com/alpininsight/insight-ui/pull/719)).

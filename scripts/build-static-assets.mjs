@@ -126,7 +126,9 @@ function validateCssOutput(sourceFile, source, output) {
             `.${prefix}-insight-${color}`,
             new RegExp(`\\.${prefix}-insight-${color}\\{[^}]*${property}:\\s*var\\(--color-insight-${color}\\)`),
         ])),
-        [".text-white", /\.text-white\{[^}]*color:\s*var\(--color-white\)/],
+        // Corner ribbon fill and its text, built in Python and kept by @source inline.
+        [".bg-insight-primary-action", /\.bg-insight-primary-action\{[^}]*background-color:\s*var\(--color-insight-primary-action\)/],
+        [".text-insight-primary-on-action", /\.text-insight-primary-on-action\{[^}]*color:\s*var\(--color-insight-primary-on-action\)/],
         [".btn-primary", /\.btn-primary\{/],
         [".btn-light", /\.btn-light\{/],
         [".btn-outline", /\.btn-outline\{/],

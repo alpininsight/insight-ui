@@ -29,6 +29,8 @@
 @source "../templatetags/";
 /* Public icon and ribbon colors must not depend on host or docs templates. */
 @source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
+@source inline("bg-insight-{primary,secondary,success,warning,danger,info}-action");
+@source inline("text-insight-{primary,secondary,success,warning,danger,info}-on-action");
 @source inline("text-insight-text-{headline,body,muted,link}");
 /* Icon colors use the readable -text token of a color family (IconConfig.color_class). */
 @source inline("text-insight-{primary,secondary,success,warning,danger,info}-text");
@@ -40,7 +42,7 @@
 /*
 * Dark mode variant using data-theme attribute instead of media query.
 * This allows programmatic theme switching via JavaScript.
-* Usage in templates: dark:bg-gray-900, dark:text-white
+* Usage in templates: dark:hidden, dark:inline-block
 */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -1064,7 +1066,7 @@
     }
     .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):is(:disabled, [aria-disabled="true"], .btn-disabled),
     .btn-solid:is(:disabled, [aria-disabled="true"], .btn-disabled) {
-        @apply bg-insight-text-disabled border-insight-text-disabled text-white dark:text-gray-400;
+        @apply bg-insight-text-disabled border-insight-text-disabled text-insight-inverse dark:text-insight-muted;
     }
     .btn-outline:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply border-insight-text-disabled text-insight-text-disabled;
@@ -1117,7 +1119,7 @@
         @apply bg-insight-info-soft text-insight-info-text;
     }
     .badge-neutral {
-        @apply bg-white border border-gray-300 text-insight-text-body dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-body;
+        @apply bg-insight-surface border border-insight-overlay text-insight-body;
     }
 
     /* Disabled state: dimmed, whatever the color */
@@ -1137,7 +1139,7 @@
     * Usage: <code class="inline-tag">Ctrl+S</code>
     */
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary-text rounded-insight-control px-1 py-px text-nowrap;
+        @apply bg-insight-raised font-mono text-insight-primary-text rounded-insight-control px-1 py-px text-nowrap;
     }
 
     /*
@@ -1149,7 +1151,7 @@
         @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
 
         &:disabled {
-            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-disabled cursor-not-allowed;
+            @apply bg-insight-raised text-insight-text-disabled cursor-not-allowed;
 
             &::placeholder {
                 @apply text-insight-text-disabled;
@@ -1159,7 +1161,7 @@
 
     /* Multiselect component disabled state */
     [data-insight-multiselect][data-disabled="true"] .input {
-        @apply bg-neutral-100 dark:bg-neutral-900 cursor-not-allowed;
+        @apply bg-insight-raised cursor-not-allowed;
     }
 
     /* Multiselect search input - transparent within the multiselect container */
