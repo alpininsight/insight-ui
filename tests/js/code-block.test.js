@@ -316,7 +316,7 @@ describe('CodeBlock Component', () => {
     const diff = ' def greet(name):\n-    return "Hi " + name\n+    return f"Hello, {name}!"';
 
     function createDiffBlock(id, extra = '') {
-      return TestUtils.createDOM(`<pre id="${id}" data-insight-code-block="python" data-diff ${extra}>\n${diff}\n</pre>`)
+      return TestUtils.createDOM(`<pre id="${id}" data-insight-code-block="python" data-diff ${extra}>${diff}</pre>`)
         .querySelector('[data-insight-code-block]');
     }
 
@@ -389,6 +389,48 @@ describe('CodeBlock Component', () => {
       } finally {
         globalThis.Prism = originalPrism;
       }
+    });
+
+    it('marks the intended characters when astral characters precede the change', () => {
+      const text = '-message = "😀"; x = 1\n+message = "😀"; x = 2';
+      const element = document.createElement('pre');
+      element.id = 'cb-unicode';
+      element.dataset.insightCodeBlock = 'python';
+      element.dataset.diff = '';
+      element.dataset.diffMarks = '[[20,21],[42,43]]';
+      element.textContent = text;
+      document.body.appendChild(element);
+
+      new InsightUI.CodeBlock(element);
+
+      const code = document.querySelector('#cb-unicode code');
+      expect([...code.querySelectorAll('mark')].map(mark => mark.textContent)).toEqual(['1', '2']);
+      expect(code.textContent).toBe(text);
+    });
+
+    it('preserves and marks meaningful trailing spaces in server diff text', () => {
+      const text = '-x = 1 \n+x = 1  ';
+      const element = document.createElement('pre');
+      element.id = 'cb-trailing';
+      element.dataset.insightCodeBlock = 'python';
+      element.dataset.diff = '';
+      element.dataset.diffMarks = '[[15,16]]';
+      element.textContent = text;
+      document.body.appendChild(element);
+
+      new InsightUI.CodeBlock(element);
+
+      const code = document.querySelector('#cb-trailing code');
+      expect(code.textContent).toBe(text);
+      expect([...code.querySelectorAll('mark')].map(mark => mark.textContent)).toEqual([' ']);
+    });
+
+    it('keeps complete astral characters inside marked ranges across Prism nodes', () => {
+      const root = TestUtils.createDOM('<code id="astral"><span>😀 </span><span>a </span><span>🦄</span></code>')
+        .querySelector('#astral');
+      InsightUI.CodeBlock.markRanges(root, [[2, 3], [4, 5]]);
+      expect([...root.querySelectorAll('mark')].map(mark => mark.textContent)).toEqual(['a', '🦄']);
+      expect(root.textContent).toBe('😀 a 🦄');
     });
 
     it('should mark ranges across several text nodes', () => {

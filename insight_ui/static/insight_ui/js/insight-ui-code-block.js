@@ -184,9 +184,9 @@ export class CodeBlock {
 
         const codeElement = document.createElement('code');
         codeElement.classList.add('block', 'pe-6', this.isDiff ? 'min-w-full' : 'w-fit');
-        // A diff keeps its first column (the markers), so only blank lines around it are removed.
+        // Server diff offsets refer to this exact text, including meaningful trailing spaces.
         codeElement.textContent = this.isDiff
-            ? code.replace(/^(?:[ \t]*\n)+/, '').trimEnd()
+            ? code
             : this.cleanIndentation(code).trim();
 
         pre.appendChild(codeElement);
@@ -275,10 +275,16 @@ export class CodeBlock {
      * Works on the text nodes, so ranges may span the token spans Prism created.
      *
      * @param {HTMLElement} root The element whose text is marked.
-     * @param {Array<[number, number]>} ranges Sorted [start, end) offsets in root.textContent.
+     * @param {Array<[number, number]>} ranges Sorted Unicode code-point [start, end) offsets, as published by Python.
      */
     static markRanges(root, ranges) {
         if (!ranges.length) return;
+        // Python publishes Unicode code-point offsets; DOM text APIs use UTF-16 units.
+        const offsets = [0];
+        for (const character of root.textContent) {
+            offsets.push(offsets[offsets.length - 1] + character.length);
+        }
+        const domRanges = ranges.map(([start, end]) => [offsets[start], offsets[end]]);
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
         const nodes = [];
         while (walker.nextNode()) nodes.push(walker.currentNode);
@@ -289,7 +295,7 @@ export class CodeBlock {
             const nodeEnd = nodeStart + node.data.length;
             position = nodeEnd;
             // Collect the parts of this node that fall into a range, then wrap them from the end.
-            const parts = ranges
+            const parts = domRanges
                 .map(([start, end]) => [Math.max(start, nodeStart) - nodeStart, Math.min(end, nodeEnd) - nodeStart])
                 .filter(([start, end]) => end > start);
             for (const [start, end] of parts.reverse()) {
