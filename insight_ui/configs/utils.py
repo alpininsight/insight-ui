@@ -163,7 +163,7 @@ class BrandMarkConfig:
             primary_text="Insight",
             secondary_text="UI",
             primary_text_color="text-insight-headline",
-            secondary_text_color="text-insight-secondary",
+            secondary_text_color="text-insight-secondary-text",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -179,7 +179,7 @@ class BrandMarkConfig:
         default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
     )
     secondary_text_color: str = field(
-        default="text-insight-secondary", metadata={"doc": _("CSS class for secondary text color.")}
+        default="text-insight-secondary-text", metadata={"doc": _("CSS class for secondary text color.")}
     )
     logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
@@ -254,7 +254,7 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
+        foreground_color: Optional semantic text color. Empty uses the text color made for the fill.
         request_url: Optional URL that turns the ribbon into a link.
         aria_label: Optional accessible label for the linked ribbon.
 
@@ -281,7 +281,7 @@ class CornerRibbonConfig:
     )
     foreground_color: ColorType | str = field(
         default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
+        metadata={"doc": _("Optional semantic text color. Empty uses the text color made for the fill.")},
     )
     request_url: str = field(
         default="",
@@ -301,21 +301,21 @@ class CornerRibbonConfig:
 
     @property
     def background_class(self) -> str:
-        """Map neutral to an existing elevation token, not an undefined color."""
+        """Fill the ribbon like a solid button; neutral maps to an existing elevation token."""
         if self.color == "neutral":
             return "bg-insight-bg-raised"
-        return f"bg-insight-{self.color}"
+        return f"bg-insight-{self.color}-action"
 
     @property
     def foreground_class(self) -> str:
-        """Use the neutral body text role and preserve semantic color overrides."""
+        """Use the text color made for the fill; keep semantic color overrides."""
         if self.foreground_color == "neutral":
             return "text-insight-text-body"
         if self.foreground_color:
             return f"text-insight-{self.foreground_color}"
         if self.color == "neutral":
             return "text-insight-text-body"
-        return "text-white"
+        return f"text-insight-{self.color}-on-action"
 
 
 @dataclass
