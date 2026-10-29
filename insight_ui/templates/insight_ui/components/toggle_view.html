@@ -1,16 +1,24 @@
-{% load i18n insight_tags %}
+{% load insight_tags %}
 
+{% comment %}
+  Switching the view replaces the whole component (see the toggle_view tag), so the radio block keeps
+  its focus by id and screen readers continue at the selected option.
+{% endcomment %}
 <div id="{{ toggle_view_config.tag_id }}">
   <div class="flex justify-end mb-2 w-full">
     {% radio_block config=view_switch %}
   </div>
-  <div aria-live="polite" aria-atomic="true" tabindex="-1" data-toggle-view-content>
-    {% if toggle_view_config.view_switch.current_value == 'carousel' %}
-      {% carousel items=toggle_view_config.cards show_index=True items_per_slide=2 %}
-    {% elif toggle_view_config.view_switch.current_value == 'card' %}
-      <div class="flex flex-wrap gap-6">
-        {% for card in toggle_view_config.cards %}
-          {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+  <div data-toggle-view-content>
+    {% if toggle_view_config.active_view == "carousel" %}
+      {% carousel items=toggle_view_config.items item_template=toggle_view_config.item_template min_item_width=toggle_view_config.min_item_width show_index=True items_per_slide=2 %}
+    {% elif toggle_view_config.active_view == "grid" %}
+      {# Items fill the columns that fit: at least min_item_width wide (18rem by default), never wider than the grid. #}
+      <div
+        class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,var(--item-min-width,18rem)),1fr))] gap-6"
+        {% if toggle_view_config.min_item_width %}style="--item-min-width: {{ toggle_view_config.min_item_width }}"{% endif %}
+      >
+        {% for item in toggle_view_config.items %}
+          <div class="grid">{% include toggle_view_config.item_template %}</div>
         {% endfor %}
       </div>
     {% else %}

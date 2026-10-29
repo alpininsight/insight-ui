@@ -90,7 +90,6 @@ FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "multiselect": {"required", "tag_id"},
     "search_bar": {"button_label", "placeholder"},
     "slider": {"required"},
-    "toggle_view": {"current_view"},
 }
 
 

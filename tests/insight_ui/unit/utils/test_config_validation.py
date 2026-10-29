@@ -36,7 +36,6 @@ from insight_ui.configs import (
     SliderConfig,
     StatusScreenConfig,
     StepperItemConfig,
-    ToggleViewConfig,
     validate_button_color,
     validate_button_variant,
     validate_color_type,
@@ -1230,7 +1229,7 @@ def test_slider_config_default_legend_mode() -> None:
 
 def test_toggle_view_type_values_contains_expected_values() -> None:
     """Test that TOGGLE_VIEW_TYPE_VALUES contains all expected values."""
-    assert TOGGLE_VIEW_TYPE_VALUES == ("card", "table", "carousel")
+    assert TOGGLE_VIEW_TYPE_VALUES == ("grid", "table", "carousel")
 
 
 def test_toggle_view_type_values_is_tuple() -> None:
@@ -1249,33 +1248,11 @@ def test_validate_toggle_view_type_accepts_valid_values() -> None:
 
 def test_validate_toggle_view_type_rejects_invalid_value() -> None:
     """Test that validate_toggle_view_type raises ValueError for invalid values."""
-    with pytest.raises(ValueError, match="Invalid current_view 'grid'"):
-        validate_toggle_view_type("grid")
+    with pytest.raises(ValueError, match="Invalid view 'card'"):
+        validate_toggle_view_type("card")
 
 
 def test_validate_toggle_view_type_custom_field_name() -> None:
     """Test that validate_toggle_view_type uses the custom field name in error messages."""
     with pytest.raises(ValueError, match="Invalid view 'bad'"):
         validate_toggle_view_type("bad", field_name="view")
-
-
-# --- ToggleViewConfig current_view validation --------------------------------
-
-
-def test_toggle_view_config_accepts_valid_current_view() -> None:
-    """Test ToggleViewConfig accepts valid current_view values."""
-    for view_type in TOGGLE_VIEW_TYPE_VALUES:
-        config = ToggleViewConfig(tag_id="test", current_view=view_type)
-        assert config.current_view == view_type
-
-
-def test_toggle_view_config_rejects_invalid_current_view() -> None:
-    """Test ToggleViewConfig raises ValueError for invalid current_view."""
-    with pytest.raises(ValueError, match="Invalid current_view"):
-        ToggleViewConfig(tag_id="test", current_view="grid")
-
-
-def test_toggle_view_config_default_current_view() -> None:
-    """Test ToggleViewConfig has correct default current_view."""
-    config = ToggleViewConfig(tag_id="test")
-    assert config.current_view == "card"
