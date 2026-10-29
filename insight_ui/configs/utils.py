@@ -263,8 +263,7 @@ class CornerRibbonConfig:
     Attributes:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
-        color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses the text color made for the fill.
+        color: Fill of the ribbon; the text takes the color made for it.
         request_url: Optional URL that turns the ribbon into a link.
         aria_label: Optional accessible label for the linked ribbon.
 
@@ -275,7 +274,6 @@ class CornerRibbonConfig:
             text="Beta",
             position="top-right",
             color="warning",
-            foreground_color="primary",
             request_url="/beta",
         )
         """
@@ -287,11 +285,7 @@ class CornerRibbonConfig:
     )
     color: ColorType = field(
         default="primary",
-        metadata={"doc": _("Color variant for the ribbon.")},
-    )
-    foreground_color: ColorType | str = field(
-        default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses the text color made for the fill.")},
+        metadata={"doc": _("Fill of the ribbon; the text takes the color made for it.")},
     )
     request_url: str = field(
         default="",
@@ -307,26 +301,6 @@ class CornerRibbonConfig:
         validate_urls(self)
         validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
-        if self.foreground_color:
-            validate_color_type(self.foreground_color, "foreground_color")
-
-    @property
-    def background_class(self) -> str:
-        """Fill the ribbon like a solid button; neutral maps to an existing elevation token."""
-        if self.color == "neutral":
-            return "bg-insight-bg-raised"
-        return f"bg-insight-{self.color}-action"
-
-    @property
-    def foreground_class(self) -> str:
-        """Use the text color made for the fill; keep semantic color overrides."""
-        if self.foreground_color == "neutral":
-            return "text-insight-text-body"
-        if self.foreground_color:
-            return f"text-insight-{self.foreground_color}"
-        if self.color == "neutral":
-            return "text-insight-text-body"
-        return f"text-insight-{self.color}-on-action"
 
 
 @dataclass

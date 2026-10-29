@@ -1222,7 +1222,6 @@ def corner_ribbon(
     text: str | _Unset = UNSET,
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
-    foreground_color: ColorType | str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
