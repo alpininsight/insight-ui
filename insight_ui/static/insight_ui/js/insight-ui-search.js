@@ -248,7 +248,7 @@ export class Search {
         const clone = this.resultTemplate.content.cloneNode(true);
         const el = clone.querySelector('[role="option"]');
 
-        el.id = `search-result-${index}`;
+        el.id = `${this.input.id}-result-${index}`;
         el.dataset.index = index;
 
         const link = el.querySelector('a');
@@ -349,7 +349,7 @@ export class Search {
 
         // Update aria-activedescendant on input
         if (this.focusedIndex >= 0 && items[this.focusedIndex]) {
-            this.input.setAttribute('aria-activedescendant', `search-result-${this.focusedIndex}`);
+            this.input.setAttribute('aria-activedescendant', items[this.focusedIndex].id);
         } else {
             this.input.removeAttribute('aria-activedescendant');
         }

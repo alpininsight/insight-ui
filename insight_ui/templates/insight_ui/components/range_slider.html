@@ -3,8 +3,8 @@
 <div class="slider-wrapper control-{{ slider_config.color }} relative" data-insight-range-slider data-legend-mode="{{ slider_config.legend_mode|default:'static' }}">
     {% if slider_config.dual %}
         {# Dual-range mode with two thumbs #}
-        <div role="group" aria-labelledby="{{ slider_config.tag_id }}_label" {% data_attributes slider_config.data_attrs %} class="slider-dual-group">
-            <span id="{{ slider_config.tag_id }}_label" class="flex gap-1 font-bold text-sm text-insight-headline">{{ slider_config.label }}</span>
+        <div role="group" aria-labelledby="{{ slider_config.field_id }}_label" {% data_attributes slider_config.data_attrs %} class="slider-dual-group">
+            <span id="{{ slider_config.field_id }}_label" class="flex gap-1 font-bold text-sm text-insight-headline">{{ slider_config.label }}</span>
             <div class="slider-dual-container relative mt-1 h-6">
                 {# Background track #}
                 <div class="-translate-y-1/2 absolute top-1/2 w-full h-2 bg-insight-raised rounded-insight-full" aria-hidden="true"></div>
@@ -13,7 +13,7 @@
                 {# Min thumb input #}
                 <input
                     type="range"
-                    id="{{ slider_config.tag_id }}_min"
+                    id="{{ slider_config.field_id }}_min"
                     name="{{ slider_config.name }}_min"
                     value="{{ slider_config.value_min|default:slider_config.minimum }}"
                     min="{{ slider_config.minimum }}"
@@ -24,13 +24,13 @@
                     aria-valuemin="{{ slider_config.minimum }}"
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_min|default:slider_config.minimum }}"
-                    {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
+                    {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.field_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
                     class="slider-input-min range-thumb appearance-none absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-hidden"
                 >
                 {# Max thumb input #}
                 <input
                     type="range"
-                    id="{{ slider_config.tag_id }}_max"
+                    id="{{ slider_config.field_id }}_max"
                     name="{{ slider_config.name }}_max"
                     value="{{ slider_config.value_max|default:slider_config.maximum }}"
                     min="{{ slider_config.minimum }}"
@@ -41,17 +41,17 @@
                     aria-valuemin="{{ slider_config.minimum }}"
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_max|default:slider_config.maximum }}"
-                    {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
+                    {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.field_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
                     class="slider-input-max range-thumb appearance-none absolute inset-0 w-full h-full bg-transparent cursor-pointer pointer-events-none focus-visible:outline-hidden"
                 >
             </div>
         </div>
     {% else %}
         {# Single-range mode #}
-        <label class="flex gap-1 font-bold text-sm text-insight-headline" for="{{ slider_config.tag_id }}">{{ slider_config.label }}</label>
+        <label class="flex gap-1 font-bold text-sm text-insight-headline" for="{{ slider_config.field_id }}">{{ slider_config.label }}</label>
         <input
             type="range"
-            id="{{ slider_config.tag_id }}"
+            id="{{ slider_config.field_id }}"
             name="{{ slider_config.name }}"
             value="{{ slider_config.value }}"
             min="{{ slider_config.minimum }}"
@@ -62,7 +62,7 @@
             aria-valuemax="{{ slider_config.maximum }}"
             aria-valuenow="{{ slider_config.value }}"
             {% data_attributes slider_config.data_attrs %}
-            {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
+            {% include "insight_ui/components/_form_field_aria.html" with field_id=slider_config.field_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
             class="range-thumb range-custom appearance-none w-full h-6 bg-transparent cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-insight-focus focus-visible:ring-offset-2"
         >
     {% endif %}
@@ -74,5 +74,5 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% include "insight_ui/components/_form_field_messages.html" with field_id=slider_config.message_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=slider_config.field_id help_text=slider_config.help_text error_text=slider_config.error_text disabled=slider_config.disabled disabled_reason=slider_config.disabled_reason %}
 </div>
