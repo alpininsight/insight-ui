@@ -2120,11 +2120,14 @@
   .focus\:absolute:focus {
     position: absolute;
   }
+  .focus\:start-0:focus {
+    inset-inline-start: calc(var(--spacing) * 0);
+  }
   .focus\:top-0:focus {
     top: 0px;
   }
-  .focus\:left-0:focus {
-    left: 0px;
+  .focus\:z-60:focus {
+    z-index: 60;
   }
   .focus\:bg-insight-base:focus {
     background-color: var(--color-insight-bg-base);
