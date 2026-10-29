@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for={{ textarea_config.name }} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
+    <label for="{{ textarea_config.field_id }}" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
         {% if textarea_config.icon %}
             {% icon textarea_config.icon %}
         {% endif %}
@@ -10,16 +10,16 @@
     </label>
     <textarea
         type="textarea"
-        {% if textarea_config.tag_id %}id="{{ textarea_config.tag_id }}"{% endif %}
-        {% if textarea_config.name %}name="{{ textarea_config.name }}"{% endif %}
+        id="{{ textarea_config.field_id }}"
+        name="{{ textarea_config.name }}"
         {% if textarea_config.placeholder %}placeholder="{{ textarea_config.placeholder }}"{% endif %}
         {% if textarea_config.rows %}rows="{{ textarea_config.rows }}"{% endif %}
         {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
         {% if textarea_config.required %}required{% endif %}
         {% if textarea_config.disabled %}disabled{% endif %}
         {% data_attributes textarea_config.data_attrs %}
-        {% include "insight_ui/components/_form_field_aria.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=textarea_config.field_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
         class="input w-full"
     >{{ textarea_config.value|default:"" }}</textarea>
-    {% include "insight_ui/components/_form_field_messages.html" with field_id=textarea_config.message_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=textarea_config.field_id help_text=textarea_config.help_text error_text=textarea_config.error_text disabled=textarea_config.disabled disabled_reason=textarea_config.disabled_reason %}
 </div>

@@ -19,9 +19,17 @@ Example usage:
 
 """
 
+import re
+from dataclasses import fields
 from difflib import get_close_matches
 from functools import lru_cache
+from html import unescape
 from typing import Literal
+from urllib.parse import urlsplit
+
+from django.utils.encoding import force_str
+from django.utils.functional import Promise, lazy
+from django.utils.safestring import SafeData
 
 # =============================================================================
 # Heading Level
@@ -72,6 +80,12 @@ BUTTON_VARIANT_VALUES: tuple[str, ...] = ("solid", "outline", "subtle", "link", 
 
 # Type alias for button variants
 type ButtonVariant = Literal["solid", "outline", "subtle", "link", "plain"]
+
+# Tuple of valid variants of toggle buttons and radio blocks; "neutral" ignores the color
+CONTROL_VARIANT_VALUES: tuple[str, ...] = ("neutral", "subtle", "outline")
+
+# Type alias for control variants
+type ControlVariant = Literal["neutral", "subtle", "outline"]
 
 # Icon color values: semantic colors + text colors
 ICON_COLOR_VALUES: tuple[str, ...] = (
@@ -230,6 +244,12 @@ FILTER_FIELD_TYPE_VALUES: tuple[str, ...] = ("text", "number", "date", "datetime
 # Type alias for filter field types
 type FilterFieldType = Literal["text", "number", "date", "datetime", "time", "boolean", "choice"]
 
+# Tuple of valid values for combining query builder filters
+QUERY_LOGIC_VALUES: tuple[str, ...] = ("AND", "OR")
+
+# Type alias for combining query builder filters
+type QueryLogic = Literal["AND", "OR"]
+
 # Tuple of valid geo map marker type values
 GEO_MAP_MARKER_TYPE_VALUES: tuple[str, ...] = ("marker", "circle")
 
@@ -289,6 +309,74 @@ def validate_not_empty(config: object, *field_names: str) -> None:
     for field_name in field_names:
         if not getattr(config, field_name):
             raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
+# Schemes a URL field accepts besides relative URLs. Links and request endpoints, images (a data URL
+# embeds the image) and WebSocket endpoints differ.
+LINK_URL_SCHEMES: tuple[str, ...] = ("http", "https", "mailto", "tel")
+IMAGE_URL_SCHEMES: tuple[str, ...] = ("http", "https", "data")
+WEBSOCKET_URL_SCHEMES: tuple[str, ...] = ("ws", "wss", "http", "https")
+
+# Field names of images; every other "url", "*_url" or "href" field is a link or an endpoint.
+_IMAGE_URL_FIELDS = re.compile(r"^url(_dark)?$|(image|avatar)_url$")
+_URL_FIELDS = re.compile(r"^url(_dark)?$|_url$|^href$")
+
+
+def url_scheme(url: str) -> str:
+    """Return the scheme of a URL as a browser reads it, lowercased; empty for a relative URL.
+
+    Python 3.12+ strips leading C0 controls/spaces and removes embedded tabs/newlines,
+    while preserving embedded spaces that make a URL relative.
+
+    Args:
+        url: The URL to read.
+
+    Returns:
+        The scheme without the colon, e.g. "https", or "" for a relative URL.
+
+    """
+    return urlsplit(url).scheme.lower()
+
+
+def _validated_url(value: str | Promise, allowed: tuple[str, ...], field_label: str) -> str:
+    """Check the resolved URL while preserving its original escaping behavior."""
+    resolved = force_str(value)
+    # Templates preserve trusted entities; the browser decodes them in attributes.
+    scheme_value = unescape(resolved) if isinstance(resolved, SafeData) else resolved
+    scheme = url_scheme(scheme_value)
+    if scheme and scheme not in allowed:
+        msg = f"{field_label}: the scheme '{scheme}:' is not allowed. Use a relative URL or {', '.join(allowed)}."
+        raise ValueError(msg)
+    return resolved
+
+
+def validate_urls(config: object, **schemes: tuple[str, ...]) -> None:
+    """Validate the schemes of all URL fields of a config.
+
+    URL fields are found by name: url, url_dark and *image_url / *avatar_url are images, every other
+    *_url and href is a link or an endpoint. Plain strings are checked immediately.
+    Django lazy strings remain lazy and are checked whenever resolved. Required URLs
+    also use validate_not_empty.
+
+    Args:
+        config: The config instance to check.
+        **schemes: Allowed schemes for single fields that differ from their kind, e.g. a WebSocket endpoint.
+
+    Raises:
+        ValueError: If a URL uses a scheme its field does not allow.
+
+    """
+    for config_field in fields(config):  # type: ignore[arg-type]
+        name = config_field.name
+        value = getattr(config, name)
+        if not _URL_FIELDS.search(name) or not isinstance(value, (str, Promise)):
+            continue
+        allowed = schemes.get(name) or (IMAGE_URL_SCHEMES if _IMAGE_URL_FIELDS.search(name) else LINK_URL_SCHEMES)
+        field_label = f"{config.__class__.__name__}.{name}"
+        if isinstance(value, Promise):
+            setattr(config, name, lazy(_validated_url, str)(value, allowed, field_label))
+        else:
+            _validated_url(value, allowed, field_label)
 
 
 def validate_heading_level(value: int, field_name: str = "heading_level") -> None:
@@ -367,6 +455,20 @@ def validate_button_variant(value: str, field_name: str = "variant") -> None:
 
     """
     _validate_literal(value, BUTTON_VARIANT_VALUES, field_name)
+
+
+def validate_control_variant(value: str, field_name: str = "variant") -> None:
+    """Validate that a toggle button or radio block variant is one of the allowed variants.
+
+    Args:
+        value: The control variant to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid control variant.
+
+    """
+    _validate_literal(value, CONTROL_VARIANT_VALUES, field_name)
 
 
 def validate_step_status(value: str, field_name: str = "status") -> None:
@@ -457,6 +559,20 @@ def validate_filter_field_type(value: str, field_name: str = "type") -> None:
 
     """
     _validate_literal(value, FILTER_FIELD_TYPE_VALUES, field_name)
+
+
+def validate_query_logic(value: str, field_name: str = "logic") -> None:
+    """Validate that a query builder logic value is one of the allowed values.
+
+    Args:
+        value: The logic value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid logic value.
+
+    """
+    _validate_literal(value, QUERY_LOGIC_VALUES, field_name)
 
 
 def validate_html_input_type(value: str, field_name: str = "input_type") -> None:
@@ -643,6 +759,10 @@ TYPE_REGISTRY: dict[str, dict] = {
         "values": BUTTON_COLOR_VALUES,
         "description": "Button colors; 'light' is for dark or colored surfaces.",
     },
+    "ControlVariant": {
+        "values": CONTROL_VARIANT_VALUES,
+        "description": "Visual style of toggle buttons and radio blocks; 'neutral' ignores the color.",
+    },
     "ButtonVariant": {
         "values": BUTTON_VARIANT_VALUES,
         "description": "Visual style of buttons; 'link' and 'plain' ignore the color.",
@@ -690,6 +810,10 @@ TYPE_REGISTRY: dict[str, dict] = {
     "HeadingLevel": {
         "values": HEADING_LEVEL_VALUES,
         "description": "Heading level of component titles; h1 is reserved for the page title.",
+    },
+    "QueryLogic": {
+        "values": QUERY_LOGIC_VALUES,
+        "description": "Combination of a query builder filter with the previous one.",
     },
     "Size": {
         "values": SIZE_VALUES,

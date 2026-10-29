@@ -52,7 +52,7 @@ export class Multiselect {
         this.options = this.element.querySelector('.options');
         this.optionItems = Array.from(this.element.querySelectorAll('.option'));
         this.info = this.element.querySelector('.info');
-        this.ariaStatus = this.element.querySelector(`#${this.name}-aria-status`);
+        this.ariaStatus = this.element.querySelector("[data-multiselect-status]");
         this.selectAllBtn = this.element.querySelector('.select-all');
         this.deselectAllBtn = this.element.querySelector('.deselect-all');
 
@@ -216,10 +216,10 @@ export class Multiselect {
      * @returns null If the option ist empty.
      */
     focusOption(opt) {
-        this.optionItems.forEach(o => o.classList.remove('bg-blue-50'));
+        this.optionItems.forEach(o => delete o.dataset.active);
         if (!opt) return;
 
-        opt.classList.add('bg-blue-50');
+        opt.dataset.active = '';
         this.combobox.setAttribute('aria-activedescendant', opt.id);
     }
 
@@ -235,8 +235,8 @@ export class Multiselect {
             this.deselectValue(value);
         else {
             if (this.selectedValues.length >= this.max) {
-                this.selected.classList.add('animate-shake', 'border-red-500');
-                setTimeout(() => this.selected.classList.remove('animate-shake', 'border-red-500'), 300);
+                this.selected.classList.add('animate-shake', 'border-insight-danger');
+                setTimeout(() => this.selected.classList.remove('animate-shake', 'border-insight-danger'), 300);
                 return;
             }
             this.selectedValues.push(value);
@@ -296,7 +296,7 @@ export class Multiselect {
                 const remove = document.createElement('button');
                 remove.type = 'button';
                 remove.innerHTML = '&times;';
-                remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
+                remove.className = 'text-insight-text-link hover:text-insight-text-link-hover ml-1';
                 remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
                 tag.appendChild(remove);
             }

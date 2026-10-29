@@ -8,7 +8,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 This guide covers consumer changes on `develop` since the `v1.15.1` tag.
 There is no `2.0.0` tag yet. The runtime Python and Django requirements are
 unchanged. The dev pin `django-stubs` moved from 6.1.1 to 6.1.2. No template,
-static file or Python module was removed.
+static file or Python module was removed, except the two carousel templates
+(see [Carousel](#carousel)).
 
 Apply the checklist, then read the section for each hit. Every break below
 has a before/after snippet, the pull request that introduced it, and a search
@@ -19,14 +20,16 @@ pattern for a host project.
 ## Checklist
 
 - [ ] Rename the six color-family tokens in two passes. Do this before any other class edit.
+- [ ] Replace the family `-hover` / `-active` tokens with `-action-hover` / `-action-active`, and use `-text` for colored text.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
 - [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
-- [ ] Expect `aria-disabled="true"` on a disabled link button, with no `href` and no `hx-*`.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
+- [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
+- [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
@@ -37,17 +40,21 @@ pattern for a host project.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
+- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
 - [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view), `usermenu=` (navbar) and `empty_msg=` (table).
 - [ ] Re-check `swap_method` on navbar, footer, sidebar, search, generic filter, form and bullet lists.
 - [ ] Re-check `push_url=False` on dropdown items, the navbar user menu and the search bar.
+- [ ] Rebuild query builder views on `parse_filters` and `build_query`, and rename `model_fields` to `fields`.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
+- [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
 
 ## Color tokens are a silent break
 
@@ -57,7 +64,7 @@ The old names still match a real token, and the meaning has changed.
 
 | v1.15.1 | Meaning then | 2.0 name |
 | --- | --- | --- |
-| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-fill` |
+| `--color-insight-<family>-text` | White text on a filled button | `--color-insight-<family>-on-action` |
 | `--color-insight-<family>-foreground` | Colored text and icons | `--color-insight-<family>-text` |
 | `--color-insight-<family>-foreground-dark` | Same color in the dark theme | `--color-insight-<family>-text-dark` |
 
@@ -70,21 +77,22 @@ that class was white text on a filled button. It is now the colored text tone
 (`#0856C0` in the light theme).
 
 Do the replacement in this order. Pass 2 writes the new `-text` names. Running
-it first makes a later `-text` → `-on-fill` pass rewrite those names as well.
+it first makes a later `-text` → `-on-action` pass rewrite those names as well.
 
 ```bash
-# 1. Old on-fill token. The (?!-) skip keeps a later -text-dark result intact.
-perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-fill/g' FILES
+# 1. Old on-action token. The (?!-) skip keeps a later -text-dark result intact.
+perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-text(?!-)/insight-$1-on-action/g' FILES
 
 # 2. Old colored-text token, including the -dark variant.
 perl -pi -e 's/insight-(primary|secondary|success|warning|danger|info)-foreground/insight-$1-text/g' FILES
 ```
 
-Limit both passes to those six families. A global `-text` → `-on-fill` replace
+Limit both passes to those six families. A global `-text` → `-on-action` replace
 also rewrites `--color-insight-text-body`, `--color-insight-text-headline`,
 `--color-insight-text-muted` and `--color-insight-text-link`. Those names did
-not change. There is no `-on-fill-dark` token. The old on-fill value was
-`#FFFFFF` in both themes.
+not change. The old value was `#FFFFFF` in both themes; 2.0 keeps it for
+`-on-action` and the new `-on-action-dark`, which a theme can set for a dark
+theme fill that needs other text.
 
 Before:
 
@@ -96,7 +104,7 @@ Before:
 After:
 
 ```html
-<button class="bg-insight-danger-action text-insight-danger-on-fill">Delete</button>
+<button class="bg-insight-danger-action text-insight-danger-on-action">Delete</button>
 <p class="text-insight-danger-text">Something failed.</p>
 ```
 
@@ -108,6 +116,60 @@ insight-(primary|secondary|success|warning|danger|info)-(text|foreground)
 
 Review matches of `-text` before editing. A match that is already the colored
 text tone on a migrated tree must stay `-text`.
+
+### Readable text colors and fewer state tokens
+
+The six color families keep these tokens: the accent (`primary`), `-text`,
+`-action` with `-action-hover` and `-action-active`, `-on-action` and `-soft`.
+The table in [the design system guide](design-system.md#color-families) says
+which one to use for what.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `--color-insight-<family>-hover`, `-active` and their `-dark` variants | Removed. Fills use `-action-hover` / `-action-active`; text uses `-text`. |
+| `--color-insight-text-link` without a dark value | `--color-insight-text-link-dark` (`#72AEFF`) |
+| `--color-insight-text-link-hover` `#72AEFF` in both themes | `#1555B0` in the light theme, `--color-insight-text-link-hover-dark` `#90C5FF` |
+| `{% icon color="primary" %}` renders `text-insight-primary` | Renders `text-insight-primary-text`, readable in the dark theme |
+
+The family accent (`text-insight-danger`) does not change with the theme, and
+as text it lacks contrast in one of them. The package templates now use the
+`-text` token for text and icons, so colored text and icons get lighter in the
+dark theme: the info box title, form and login errors, the logout entry, the
+footer mail link, hover colors of collapsible and table headers, sidebar
+category headings and the current table of contents entry. Tabs keep the
+`-text` color after switching; before, the tab that was active on page load
+kept its primary classes.
+
+Before:
+
+```css
+@theme {
+    --color-insight-primary-hover: #4F46E5;
+    --color-insight-primary-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger">Something failed.</p>
+```
+
+After, set the states of filled controls and use the text token:
+
+```css
+@theme {
+    --color-insight-primary-action-hover: #4F46E5;
+    --color-insight-primary-action-active: #4338CA;
+}
+```
+
+```html
+<p class="text-insight-danger-text">Something failed.</p>
+```
+
+Search: `-hover:` and `-active:` after a family name in theme files,
+`text-insight-<family>-hover`, and `text-insight-<family>` followed by a space
+or quote in templates. The [token check](../scripts/check_design_tokens.py)
+reports the last one.
 
 ## Page shell
 
@@ -343,6 +405,12 @@ After, with `name` equal to `intro`, the id is `tab-intro`.
 
 Search: `{% section`, `{% surface`, `{% hbox`, `{% tabs` and `{% tab` with a
 `|` filter on a quoted argument, and `_("` inside those tags.
+
+`{% surface radius=… %}` uses the radius token of the same name
+(`rounded-insight-m` for `"m"`), so a theme can change it. The old classes were
+one Tailwind step larger: `"m"` was 8px and is 6px now, `"xl"` was 16px and is
+12px. `radius="none"` now squares the corners; before, it kept the variant's
+rounding. Search: `{% surface` with `radius=`.
 
 `{% modal %}` accepts `config=ModalConfig(...)`. A single `id`, `title`,
 `width` or `show_close` argument overrides the config.
@@ -628,9 +696,9 @@ ButtonConfig(label="Cancel", color="secondary", variant="outline")
 BadgeConfig(label="Archived", color="neutral", disabled=True)
 ```
 
-`disabled=True` no longer replaces the color. The look comes from the
-`disabled` attribute (or `aria-disabled="true"` on links), so a button that
-JavaScript enables again shows its color. Combinations that used to be ignored
+`disabled=True` no longer replaces the color. The look comes from
+`aria-disabled="true"` (or a native `disabled` set by a script), so a button
+that JavaScript enables again shows its color. Combinations that used to be ignored
 now raise `ValueError`: `external=True` without `request_url`, and `on_click` or
 `button_type` together with `request_url`.
 
@@ -781,7 +849,7 @@ These fields raise `ValueError` at construction when they are empty or `None`.
 accessible name.
 
 - `ButtonConfig.label`
-- `ImageConfig.url`, `ImageCarouselItemConfig.url`
+- `ImageConfig.url`, `CarouselImageConfig.url`, `CarouselConfig.item_template`
 - `ModalConfig.id`, `MessageDialogConfig.message`
 - `CheckboxItemConfig.tag_id`
 - `name` on `BaseFormFieldConfig`, `CheckboxGroupConfig`, `RadioGroupConfig`, `RadioBlockConfig`
@@ -831,6 +899,42 @@ Search: `DataAttrConfig(`.
 The required asterisk is `aria-hidden="true"`. v1.15.1 used
 `aria-label="Required"` on the input, select and textarea asterisk.
 
+### URL schemes
+
+[#774](https://github.com/alpininsight/insight-ui/pull/774).
+
+URL fields of the configs accept relative URLs and the schemes of their kind.
+Another scheme raises `ValueError` at construction. Empty fields are not
+checked.
+
+| Field | Schemes besides relative URLs |
+| --- | --- |
+| Links and request endpoints: `request_url`, `href`, every other `*_url` | `http`, `https`, `mailto`, `tel` |
+| Images: `url`, `url_dark`, `avatar_url`, `background_image_url` | `http`, `https`, `data` |
+| `WebSocketConfig.request_url` | `ws`, `wss`, `http`, `https` |
+
+`{% surface href=... %}` follows the link rule and now also accepts `tel`.
+
+`FooterContactConfig.imprint` and `.privacy` are now `imprint_url` and
+`privacy_url`, like every other URL field. `mail_url` is now `email`: it takes
+the address, which is also the link text, and the link adds `mailto:`. An
+email with `mailto:` or text that is no address raises `ValueError`.
+
+Before:
+
+```python
+FooterContactConfig(mail_url="team@example.com", imprint="/imprint/", privacy="/privacy/")
+```
+
+After:
+
+```python
+FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/")
+```
+
+Search: URL fields filled from data, e.g. user profiles, app links with an
+own scheme such as `myapp://`, and `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig`.
+
 ### Help, error and disabled texts
 
 [#746](https://github.com/alpininsight/insight-ui/pull/746).
@@ -876,6 +980,46 @@ wrap the control and its texts in a `<div>`. The form's error container now has
 Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
 expect a checkbox or toggle `<input>` as the outermost element.
 
+### Field IDs
+
+[#777](https://github.com/alpininsight/insight-ui/pull/777).
+
+Every form field takes its id from `tag_id`, otherwise from `name`. Input,
+textarea, checkbox and toggle used to render no id without a `tag_id`, so their
+label was not associated with the control; toggle and slider rendered
+`id="None"`. The textarea label pointed at the `name` while the textarea had the
+`tag_id`. The label and the derived ids (slider `_label`, `_min`, `_max`, and
+`-help`, `-error`) now follow the same rule. The multiselect builds its ids
+(`-label`, `-search`, `-listbox`, `-opt-<n>`, `-aria-status`) from the `tag_id`
+too, and its tag accepts `tag_id=`. `name` stays the request parameter.
+
+Before:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input name="email">, label not associated #}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input id="email" name="email"> #}
+{% input_field tag_id="billing-email" name="email" label="E-Mail" %}
+```
+
+Two fields with the same `name` on one page need their own `tag_id`, otherwise
+the ids collide. Groups (checkbox group, radio group, radio block) already used
+the `name` and are unchanged.
+
+The search bar had fixed ids (`search`, `search-results`), which collided when
+the navbar and the page both rendered one. `SearchBarConfig` now has `tag_id`
+and `name`, both defaulting to `search`, so the markup only changes when you set
+them. The results list is `<tag_id>-results`.
+
+Search: two form fields with the same `name` and no `tag_id` on one page, and
+selectors or scripts that look up a multiselect by `#<name>-…`.
+
 ## Markup selectors
 
 [#734](https://github.com/alpininsight/insight-ui/pull/734),
@@ -895,6 +1039,13 @@ scripts should use `[data-sidebar-heading]`.
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
 another level. Allowed values are 2–6.
+
+The skip link ("Jump to main content") is the first element of `<body>` in
+`base.html`. It was rendered by `{% navbar %}`, so a page without the package
+navbar had none, and when focused it was hidden behind the navbar.
+`#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
+to your own base template, or keep yours and expect two. A layout that renders
+`{% navbar %}` without extending `insight_ui/base.html` now needs its own.
 
 The icon wrapper is `<span class="inline-flex">`. It was a `<div>`.
 Tooltip wrappers on input, select and textarea are `<span>`. They were
@@ -930,30 +1081,94 @@ button .inline-flex { }
 Search: `footer h4`, `button > div`, `aria-label="Required"`,
 `data-accordion-chevron`.
 
-### Disabled link buttons
+### Toggle, switch, radio block and slider
 
-[#718](https://github.com/alpininsight/insight-ui/pull/718).
+[#778](https://github.com/alpininsight/insight-ui/pull/778).
+
+Toggle buttons and radio blocks take a `variant`, like buttons. The default
+`neutral` puts radio block options on a grey track and shows the selected one
+as a raised light knob; a neutral toggle is faint grey while off and the same
+knob while on. `subtle` uses a tint of `color` while off and fills the selected
+choice with it; `outline` is outlined while off and filled while selected.
+Before, a toggle and its options were filled in both states and only the shade
+changed, so the state relied on color alone. The selected choice is also
+semibold with heavier icon strokes.
+
+Their label is a `.choice` with `.choice-{variant}` instead of `.btn` /
+`.btn-solid` with `btn-primary`; a radio block is a `.choice-group-{variant}`.
+The disabled look comes from the disabled input, so labels no longer carry
+`btn-disabled`. The toggle's checkbox lies transparent on top of its label
+instead of being `sr-only`. In forced colors mode the selected choice and the
+switched-on track use the system highlight color.
+
+The switch is 44×24 px: an outlined track with a small thumb while off, a
+track in the control color with a larger thumb while on. The track is
+`<span class="switch-track" aria-hidden="true">` and replaces the `after:`
+utilities on the old span.
+
+The slider track and thumb use the `-action` color instead of the decorative
+`primary` color, and the focus ring of the single slider uses the focus color.
+
+New: `variant` on toggle and radio block (`neutral`, `subtle`, `outline`;
+`neutral` ignores the color), `color` on toggle, radio block and slider (button
+colors, default `primary`), `color` and `variant` on `DropdownConfig` for its
+button, and `icon_only=True` on the toggle. An icon-only toggle needs `icon` and `label`;
+the label is its accessible name and tooltip.
+
+Before:
+
+```css
+.btn.btn-primary.btn-s { }        /* toggle label */
+label.btn-disabled { }
+```
+
+After:
+
+```css
+.choice.choice-neutral { }        /* or variant="outline" for the outlined look */
+:disabled + .choice { }
+```
+
+Search: selectors or tests for `btn-disabled` or `btn-solid` on toggle and
+radio block labels, `peer-checked` overrides, and the switch's `after:` thumb.
+
+### Disabled buttons and links
+
+[#718](https://github.com/alpininsight/insight-ui/pull/718) (links),
+[#776](https://github.com/alpininsight/insight-ui/pull/776) (buttons).
 
 `ButtonConfig(disabled=True)` keeps its color; see
 [Button and badge color and variant](#button-and-badge-color-and-variant).
-A link (`request_url` set) renders `aria-disabled="true"` and omits `href`,
-`htmx_attributes` and `hx_*`. v1.15.1 already omitted `href`, and it still
-wrote `disabled` plus the HTMX attributes. A `<button>` still uses the
-`disabled` attribute.
+A disabled button or link renders `aria-disabled="true"` instead of the native
+`disabled` attribute. It stays focusable, so keyboard and screen reader users
+reach it and its `disabled_reason`, and the focus is not lost when a button
+becomes disabled, e.g. "Next" on the last page. It renders no `href`,
+`onclick`, `htmx_attributes` or `hx_*`. The base JavaScript blocks its click,
+also by Enter and Space, so a disabled submit or reset button does nothing.
+v1.15.1 omitted `href` on links and still wrote `disabled` plus the HTMX
+attributes; buttons used `disabled`.
 
 Before:
 
 ```html
 <a disabled hx-get="/save/" hx-target="#main">Save</a>
+<button type="submit" onclick="save()" disabled>Save</button>
 ```
 
 After:
 
 ```html
 <a aria-disabled="true">Save</a>
+<button type="submit" aria-disabled="true">Save</button>
 ```
 
-Search: `a[disabled]`, and tests that expect `hx-` on a disabled link.
+A script that enables a disabled button removes `aria-disabled` instead of
+setting `button.disabled = false`. A script may still set the native `disabled`
+while a request runs; such a button looks disabled as well.
+
+Search: `a[disabled]`, `button[disabled]` and `:disabled` in host CSS, scripts
+and tests, `.disabled = false` on package buttons, and tests that expect `hx-`
+on a disabled link.
 
 ### Form error container and indicator
 
@@ -1246,6 +1461,139 @@ parameter of the selector is still `PaginationIppConfig.name` (default `ipp`).
 Search: `get_page`, `surrounding_pages`, `ipp_config`, `#ipp` and
 `#list-container`.
 
+## Query builder
+
+The `query_builder` component was rebuilt. Its markup, its submitted parameters and
+its Python helpers changed, so treat it as a new component.
+
+| v1.15.1 | 2.0 |
+| --- | --- |
+| `QueryBuilderConfig(model_fields=[...])` | `QueryBuilderConfig(fields=[...])`, plus `tag_id`, `filters`, `request_url`, `param_name`, `max_filters`, `htmx` and `show_summary` |
+| `QueryBuilderFieldConfig` without `operations` | `operations` is required; a `choice` field also needs `values` |
+| A host view named `get_allowed_operators`, reversed by the template | Not needed. The field definitions are rendered into the page. |
+| A JSON `custom_filters` parameter, the page is reloaded by a script | A plain GET form with `filters-<n>-field`, `-operator`, `-value` and `-logic`, or HTMX with `htmx=HtmxConfig(...)` |
+| `insight_ui.utils.query_builder_utils` | `insight_ui.utils.query_builder` |
+| `get_filter_settings_for_field()` | Removed |
+| `build_dynamic_query(filters)` returning `(Q, {}, {})` | `build_query(parse_filters(request.GET, config))` returning a `Q` |
+
+`parse_filters` takes the config, so it reads the same `param_name` and stops at
+the same `max_filters` (default 20) as the form. It keeps only filters whose
+field, operator and value the field configs allow, and converts values to the
+field type. `build_query` keeps the
+submitted order and binds AND tighter than OR: "A AND B OR C" is
+"(A AND B) OR C". v1.15.1 grouped the filters by field first.
+
+Field, condition and value are required in the browser, so an incomplete
+filter is not sent. With active filters a Reset link loads `request_url`
+without them. `describe_filters(filters, fields)` returns the active
+filters as a sentence with the labels, e.g. for a page title or an HTMX
+response; `show_summary=True` renders it below the form.
+
+Before:
+
+```python
+from insight_ui.utils.query_builder_utils import build_dynamic_query
+
+filters = json.loads(request.GET.get("custom_filters", "[]"))
+query, _, _ = build_dynamic_query(filters)
+context["query_builder"] = QueryBuilderConfig(model_fields=FIELDS)
+```
+
+After:
+
+```python
+from insight_ui.utils.query_builder import build_query, parse_filters
+
+config = QueryBuilderConfig(tag_id="book-filter", fields=FIELDS)
+config.filters = parse_filters(request.GET, config)
+books = Book.objects.filter(build_query(config.filters))
+context["query_builder"] = config
+```
+
+Remove the `get_allowed_operators` view and its URL pattern.
+
+Search: `model_fields=`, `query_builder_utils`, `get_filter_settings_for_field`,
+`build_dynamic_query`, `get_allowed_operators` and `custom_filters`.
+
+## Carousel
+
+[#770](https://github.com/alpininsight/insight-ui/pull/770).
+
+### One carousel for any content
+
+The carousel only provides the browsing now. Each item is rendered with
+`item_template`, which gets `item` and the page context (`request`, `user`,
+`csrf_token`). Cards and images are shipped item templates; the
+`image_carousel` tag is gone.
+
+| Before | After |
+|--------|-------|
+| `CardCarouselConfig` | `CarouselConfig` |
+| `ImageCarouselConfig` | `CarouselConfig(item_template="insight_ui/components/items/image_item.html")` |
+| `ImageCarouselItemConfig` | `CarouselImageConfig` |
+| `carousel_items=` | `items=` |
+| `ImageCarouselItemConfig.description` | `CarouselImageConfig.caption` |
+| `{% image_carousel %}` | `{% carousel %}` with the image item template |
+
+Before:
+
+```python
+ImageCarouselConfig(
+    carousel_items=[ImageCarouselItemConfig(url="/img/lake.jpg", alt="Lake at dawn", description="Lake Constance")],
+)
+```
+
+After:
+
+```python
+CarouselConfig(
+    items=[CarouselImageConfig(url="/img/lake.jpg", alt="Lake at dawn", caption="Lake Constance")],
+    item_template="insight_ui/components/items/image_item.html",
+)
+```
+
+Own content needs no config per item:
+
+```python
+CarouselConfig(items=Product.objects.filter(featured=True), item_template="shop/product_slide.html")
+```
+
+The caption is a `<figcaption>` below the image instead of text over it. It is
+as wide as the image (at least 12rem) and starts at the text edge, which reads
+better over several lines; `center_caption=True` centers a short caption.
+Every image is shown whole and centered on a stage of the same height (60vh,
+at most 4:3 of the item width), so the captions of a page line up.
+
+### Items per page
+
+`items_per_slide` is the maximum now. With `min_item_width` (a CSS length such
+as `"16rem"`), a narrow carousel shows fewer items per page, down to one.
+Without it, the carousel shows `items_per_slide` items at every width, as
+before.
+
+### Markup
+
+- The script builds the page dots; the server renders an empty
+  `.carousel-dots`. Each dot is a 24px button labelled "Go to page n", and the
+  current one has `aria-current="true"`. When the dots do not fit, the script
+  hides them and shows the page number instead, so `.carousel-index-text` is
+  always rendered and `hidden` without `show_index`.
+- Only the current dot is in the tab order. Arrow keys, Home and End on a dot
+  change the page and move the focus to the new dot; on the arrow buttons they
+  change the page. Inside an item the keys are left to its content.
+- The track sits in a `.carousel-viewport`. From `sm` on, the arrows sit beside
+  it instead of over the items; below `sm` they sit in the row with the dots.
+- Items on other pages are `inert`, so the keyboard focus stays on the visible
+  page.
+- The carousel is a `role="region"` with `aria-roledescription="carousel"`;
+  `label` names it.
+- The templates `carousels/card_carousel.html` and
+  `carousels/image_carousel.html` are removed; `carousel.html` replaces both.
+
+Search: `image_carousel`, `CardCarouselConfig`, `ImageCarouselConfig`,
+`ImageCarouselItemConfig`, `carousel_items`, `card_carousel.html` and
+`.carousel-dot`.
+
 ## Checked, and not a 2.0 break
 
 These showed up in earlier notes. The current tree does not do them.
@@ -1278,7 +1626,8 @@ These showed up in earlier notes. The current tree does not do them.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
 
-Other additions you can adopt without a rename: `heading_level`,
+Other additions you can adopt without a rename: `download` on link buttons
+(`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
 `LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
@@ -1296,8 +1645,7 @@ the tree this guide describes. Do not migrate a host to them yet.
 
 | Pull request | State | What it would change if it merged |
 | --- | --- | --- |
-| [#743](https://github.com/alpininsight/insight-ui/pull/743) | Open, based on merged #733 | A `download` attribute on link buttons. |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-fill token. Host `.btn-outline-<family>` rules would stop applying. |
+| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-action token. Host `.btn-outline-<family>` rules would stop applying. |
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15

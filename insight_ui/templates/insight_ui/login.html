@@ -45,7 +45,7 @@
       {% endif %}
       <h2 class="font-bold text-insight-headline text-center text-3xl leading-9">{% trans "Login" %}</h2>
       <form class="space-y-2" action="{{ app_path }}" method="post">{% csrf_token %}
-        <div class="mb-4 text-insight-danger">
+        <div class="mb-4 text-insight-danger-text">
           {{ form.non_field_errors }}
         </div>
       <!-- Username / Login field (supports both Django auth and allauth) -->

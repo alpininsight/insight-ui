@@ -206,10 +206,8 @@ Grid Examples
 
 from __future__ import annotations
 
-import re
 import uuid
 from typing import TYPE_CHECKING, cast
-from urllib.parse import urlsplit
 
 from django import template
 from django.template.base import Node, NodeList, token_kwargs
@@ -219,6 +217,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from insight_ui.configs import HtmxConfig, ModalConfig, TabsConfig
+from insight_ui.configs.types import LINK_URL_SCHEMES, url_scheme
 from insight_ui.templatetags.insight_tags import build_config
 
 if TYPE_CHECKING:
@@ -317,12 +316,12 @@ SURFACE_VARIANT_CLASSES: dict[str, str] = {
 
 # Surface radius classes
 RADIUS_CLASSES: dict[str, str] = {
-    "xs": "rounded-sm",
-    "s": "rounded",
-    "m": "rounded-lg",
-    "l": "rounded-xl",
-    "xl": "rounded-2xl",
-    "none": "",
+    "xs": "rounded-insight-xs",
+    "s": "rounded-insight-s",
+    "m": "rounded-insight-m",
+    "l": "rounded-insight-l",
+    "xl": "rounded-insight-xl",
+    "none": "rounded-none",
 }
 
 # Link surface hover classes (added to base surface classes)
@@ -427,17 +426,12 @@ def _validate_unknown_params(
     raise ValueError(msg)
 
 
-# Schemes a layout tag may put in href. A relative URL has no scheme.
-_ALLOWED_URL_SCHEMES = frozenset({"http", "https", "mailto"})
-
-
 def _validate_href(href: str, tag_name: str) -> str:
     """
-    Allow relative URLs and the http, https and mailto schemes.
+    Allow relative URLs and the link schemes the component configs allow.
 
     Other schemes are rejected. Escaping an attribute does not change which
-    scheme the browser follows. ASCII whitespace and control characters are
-    ignored when reading the scheme, because browsers ignore them there too.
+    scheme the browser follows.
 
     Args:
         href: Candidate URL from the layout tag.
@@ -450,10 +444,9 @@ def _validate_href(href: str, tag_name: str) -> str:
         ValueError: If the URL uses a scheme outside the allowlist.
 
     """
-    # Browsers ignore ASCII whitespace and control characters inside the scheme.
-    scheme = urlsplit(re.sub(r"[\x00-\x20]", "", href)).scheme.lower()
-    if scheme and scheme not in _ALLOWED_URL_SCHEMES:
-        allowed = ", ".join(sorted(_ALLOWED_URL_SCHEMES))
+    scheme = url_scheme(href)
+    if scheme and scheme not in LINK_URL_SCHEMES:
+        allowed = ", ".join(LINK_URL_SCHEMES)
         msg = (
             f"Invalid href in {{% {tag_name} %}}: the scheme '{scheme}:' is not allowed. "
             f"Use a relative URL or {allowed}."
@@ -923,7 +916,7 @@ class SurfaceNode(LayoutNode):
 
         {# Clickable surface (renders as <a>) #}
         {% surface href="/components" padding="m" %}
-            <span class="group-hover:text-insight-primary">Browse Components</span>
+            <span class="group-hover:text-insight-primary-text">Browse Components</span>
         {% endsurface %}
 
     Note:

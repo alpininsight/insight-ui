@@ -64,15 +64,20 @@ describe('Tabs Component', () => {
       const element = container.querySelector('[data-insight-tabs]');
       const tabs = element.querySelectorAll('[role="tab"]');
 
+      // The classes the template renders for the active tab.
+      tabs[0].classList.add('border-insight-primary-text', 'text-insight-primary-text');
+
       new InsightUI.Tabs(element);
 
       TestUtils.click(tabs[1]);
 
       // Active tab should have primary styling
-      expect(tabs[1].classList.contains('border-insight-primary')).toBe(true);
-      expect(tabs[1].classList.contains('text-insight-primary')).toBe(true);
+      expect(tabs[1].classList.contains('border-insight-primary-text')).toBe(true);
+      expect(tabs[1].classList.contains('text-insight-primary-text')).toBe(true);
 
-      // Inactive tab should have transparent/secondary styling
+      // The tab that was active when the page loaded loses its primary styling
+      expect(tabs[0].classList.contains('border-insight-primary-text')).toBe(false);
+      expect(tabs[0].classList.contains('text-insight-primary-text')).toBe(false);
       expect(tabs[0].classList.contains('border-transparent')).toBe(true);
       expect(tabs[0].classList.contains('text-insight-body')).toBe(true);
     });

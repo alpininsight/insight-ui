@@ -4,11 +4,19 @@
 
 import warnings
 from dataclasses import dataclass, field as dc_field
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
-from insight_ui.configs.types import FilterFieldType, validate_filter_field_type, validate_not_empty
+from insight_ui.configs.types import (
+    FilterFieldType,
+    QueryLogic,
+    validate_filter_field_type,
+    validate_not_empty,
+    validate_query_logic,
+    validate_urls,
+)
 
 
 @dataclass
@@ -17,6 +25,8 @@ class SearchBarConfig:
 
     Attributes:
         request_url: URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.
+        tag_id: Id of the search input and prefix of the results list, unique on the page.
+        name: Name of the request parameter.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
         placeholder: Placeholder text for the search input.
@@ -56,9 +66,17 @@ class SearchBarConfig:
         default="",
         metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
+    # Append new defaults so existing positional callers retain their meanings.
+    tag_id: str = dc_field(
+        default="search",
+        metadata={"doc": _("Id of the search input and prefix of the results list, unique on the page.")},
+    )
+    name: str = dc_field(default="search", metadata={"doc": _("Name of the request parameter.")})
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx.request_url are not both set."""
+        """Validate the id and name, and that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
+        validate_not_empty(self, "tag_id", "name")
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
                 f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
@@ -101,8 +119,8 @@ class FilterConfig:
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
 
     @property
-    def message_id(self) -> str:
-        """Id prefix of the help text, taken from the name."""
+    def field_id(self) -> str:
+        """Id prefix of the help text: the name, as a filter has no tag_id."""
         return self.name
 
     def __post_init__(self) -> None:
@@ -158,6 +176,7 @@ class GenericFilterConfig:
 
     def __post_init__(self) -> None:
         """Validate that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
                 f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
@@ -173,11 +192,11 @@ class QueryBuilderFieldConfig:
     """Configuration for a field in the query builder.
 
     Attributes:
-        field: Database field name.
+        field: Model field or lookup path, e.g. "author__name".
         label: Display name.
-        type: Field type for filtering.
-        operations: Available operations (maps operation→label).
-        values: Predefined values (optional).
+        type: Field type; selects the value input.
+        operations: Allowed lookups, mapped to their labels.
+        values: Allowed values, mapped to their labels; renders a select.
 
     """
 
@@ -187,57 +206,124 @@ class QueryBuilderFieldConfig:
             label="Title",
             type="text",
             operations={
-                "iexact": "is exact",
+                "iexact": "is exactly",
                 "icontains": "contains",
                 "istartswith": "starts with",
             },
         )
         """
 
-    field: str = dc_field(metadata={"doc": _("Database field name.")})
+    field: str = dc_field(metadata={"doc": _('Model field or lookup path, e.g. "author__name".')})
     label: str = dc_field(metadata={"doc": _("Display name.")})
-    type: FilterFieldType = dc_field(default="text", metadata={"doc": _("Field type for filtering.")})
+    type: FilterFieldType = dc_field(default="text", metadata={"doc": _("Field type; selects the value input.")})
     operations: dict[str, str] = dc_field(
-        default_factory=dict, metadata={"doc": _("Available operations (maps operation→label).")}
+        default_factory=dict, metadata={"doc": _("Allowed lookups, mapped to their labels.")}
     )
-    values: dict[str, str] = dc_field(default_factory=dict, metadata={"doc": _("Predefined values (optional).")})
+    values: dict[str, str] = dc_field(
+        default_factory=dict, metadata={"doc": _("Allowed values, mapped to their labels; renders a select.")}
+    )
 
     def __post_init__(self) -> None:
-        """Require a field name and validate type after initialization."""
-        validate_not_empty(self, "field")
+        """Require a field name and operations and validate the type."""
+        validate_not_empty(self, "field", "operations")
         validate_filter_field_type(self.type, "type")
+        if self.type == "choice" and not self.values:
+            msg = f"QueryBuilderFieldConfig {self.field!r} of type 'choice' needs values."
+            raise ValueError(msg)
+
+
+@dataclass
+class QueryBuilderFilterConfig:
+    """An active filter of the query builder.
+
+    Attributes:
+        field: Field name of a QueryBuilderFieldConfig.
+        operator: Lookup of the field, e.g. "icontains".
+        value: Value to compare with.
+        logic: Combination with the previous filter.
+
+    """
+
+    __example__ = """
+        QueryBuilderFilterConfig(field="title", operator="icontains", value="report", logic="AND")
+        """
+
+    field: str = dc_field(metadata={"doc": _("Field name of a QueryBuilderFieldConfig.")})
+    operator: str = dc_field(metadata={"doc": _('Lookup of the field, e.g. "icontains".')})
+    value: Any = dc_field(default="", metadata={"doc": _("Value to compare with.")})
+    logic: QueryLogic = dc_field(default="AND", metadata={"doc": _("Combination with the previous filter.")})
+
+    def __post_init__(self) -> None:
+        """Validate the logic."""
+        validate_query_logic(self.logic, "logic")
 
 
 @dataclass
 class QueryBuilderConfig:
     """Configuration for the query_builder component.
 
-    Renders a filter for constructing custom search queries.
+    Renders a form to combine filters on model fields. Read the submitted filters with
+    insight_ui.utils.query_builder.parse_filters and turn them into a Q object with build_query.
 
     Attributes:
-        model_fields: List of model fields with possible operators.
+        tag_id: Unique ID; prefixes the IDs of the filter controls.
+        fields: Fields that can be filtered.
+        filters: Active filters, rendered as filter rows.
+        request_url: URL the form is sent to; empty sends it to the current page.
+        param_name: Prefix of the submitted query parameters.
+        max_filters: Maximum number of filters; parse_filters ignores further ones.
+        htmx: HTMX configuration for sending the form without a page load.
+        show_summary: If True, show the active filters as a sentence below the form.
 
     """
 
     __example__ = """
         QueryBuilderConfig(
-            model_fields=[
+            tag_id="book-filter",
+            fields=[
                 QueryBuilderFieldConfig(
                     field="title",
                     label="Title",
                     type="text",
-                    operations={"iexact": "is exact", "icontains": "contains"},
+                    operations={"iexact": "is exactly", "icontains": "contains"},
                 ),
                 QueryBuilderFieldConfig(
-                    field="created_at",
-                    label="Created At",
+                    field="published",
+                    label="Published",
                     type="date",
-                    operations={"gte": "after", "lte": "before"},
+                    operations={"gte": "on or after", "lte": "on or before"},
                 ),
             ],
         )
         """
 
-    model_fields: list[QueryBuilderFieldConfig] = dc_field(
-        default_factory=list, metadata={"doc": _("List of model fields with possible operators.")}
+    tag_id: str = dc_field(
+        default="query-builder", metadata={"doc": _("Unique ID; prefixes the IDs of the filter controls.")}
     )
+    fields: list[QueryBuilderFieldConfig] = dc_field(
+        default_factory=list, metadata={"doc": _("Fields that can be filtered.")}
+    )
+    filters: list[QueryBuilderFilterConfig] = dc_field(
+        default_factory=list, metadata={"doc": _("Active filters, rendered as filter rows.")}
+    )
+    request_url: str = dc_field(
+        default="", metadata={"doc": _("URL the form is sent to; empty sends it to the current page.")}
+    )
+    param_name: str = dc_field(default="filters", metadata={"doc": _("Prefix of the submitted query parameters.")})
+    max_filters: int = dc_field(
+        default=20, metadata={"doc": _("Maximum number of filters; parse_filters ignores further ones.")}
+    )
+    htmx: HtmxConfig | None = dc_field(
+        default=None, metadata={"doc": _("HTMX configuration for sending the form without a page load.")}
+    )
+    show_summary: bool = dc_field(
+        default=False, metadata={"doc": _("If True, show the active filters as a sentence below the form.")}
+    )
+
+    def __post_init__(self) -> None:
+        """Require an ID and a parameter name; reject a request_url with a scheme that is not allowed."""
+        validate_urls(self)
+        validate_not_empty(self, "tag_id", "param_name")
+        if self.max_filters < 1:
+            msg = f"QueryBuilderConfig {self.tag_id!r} needs max_filters of at least 1."
+            raise ValueError(msg)

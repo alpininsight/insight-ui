@@ -20,6 +20,7 @@ from insight_ui.configs.types import (
     validate_icon_name,
     validate_not_empty,
     validate_size,
+    validate_urls,
 )
 
 # Lowercase words joined by single hyphens; anything else could break out of the attribute name.
@@ -118,6 +119,15 @@ class IconConfig:
         """Whether the icon is mirrored in right-to-left layouts."""
         return self.name in DIRECTIONAL_ICON_NAMES if self.mirror_rtl is None else self.mirror_rtl
 
+    @property
+    def color_class(self) -> str:
+        """The text color class of the icon; color families use their -text token, readable in both themes."""
+        if not self.color:
+            return ""
+        if self.color.startswith("text-"):
+            return f"text-insight-{self.color}"
+        return f"text-insight-{self.color}-text"
+
     def __post_init__(self) -> None:
         """Validate name, size and color after initialization."""
         validate_icon_name(self.name)
@@ -154,6 +164,7 @@ class ImageConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "url")
 
 
@@ -210,6 +221,7 @@ class HtmxConfig:
 
     def __post_init__(self) -> None:
         """Validate swap_method and method after initialization."""
+        validate_urls(self)
         validate_htmx_swap_method(self.swap_method, "swap_method")
         validate_http_method(self.method, "method")
 
@@ -259,8 +271,8 @@ class BaseFormFieldConfig:
     )
 
     @property
-    def message_id(self) -> str:
-        """Id prefix of the help and error texts: the tag_id, otherwise the name."""
+    def field_id(self) -> str:
+        """Id of the field: the tag_id, otherwise the name. Label, help and error texts build their ids on it."""
         return self.tag_id or self.name
 
     def __post_init__(self) -> None:

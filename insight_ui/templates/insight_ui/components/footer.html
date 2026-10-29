@@ -41,17 +41,17 @@
                 <div class="flex-1 space-y-2">
                     <h2 class="font-normal text-lg text-insight-headline md:text-xl">{% trans 'Contact' %}</h2>
                     <div class="space-x-4">
-                        {% if footer_config.contact.imprint %}
-                            <a href="{{ footer_config.contact.imprint }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Imprint" %}</a>
+                        {% if footer_config.contact.imprint_url %}
+                            <a href="{{ footer_config.contact.imprint_url }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Imprint" %}</a>
                         {% endif %}
-                        {% if footer_config.contact.privacy %}
-                            <a href="{{ footer_config.contact.privacy }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Privacy" %}</a>
+                        {% if footer_config.contact.privacy_url %}
+                            <a href="{{ footer_config.contact.privacy_url }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Privacy" %}</a>
                         {% endif %}
                     </div>
-                    {% if footer_config.contact.mail_url %}
+                    {% if footer_config.contact.email %}
                         <p class="mt-2 text-insight-body text-sm">
                             {% trans 'Do you have any questions or feedback?' %}<br>
-                            <a href="mailto:{{ footer_config.contact.mail_url }}" class="text-insight-primary hover:underline">{{ footer_config.contact.mail_url }}</a>
+                            <a href="mailto:{{ footer_config.contact.email }}" class="text-insight-primary-text hover:underline">{{ footer_config.contact.email }}</a>
                         </p>
                     {% endif %}
                 </div>

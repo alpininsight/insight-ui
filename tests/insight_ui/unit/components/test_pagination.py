@@ -52,7 +52,7 @@ def test_disabled_page_button_keeps_its_id(page_number: int, direction: str, dis
     button = soup.find(attrs={"aria-label": disabled_label})
     assert button is not None
     assert button["id"] == f"pagination-{direction}"
-    assert button.has_attr("disabled")
+    assert button["aria-disabled"] == "true"
     assert button["data-insight-tooltip"] == disabled_label
 
 

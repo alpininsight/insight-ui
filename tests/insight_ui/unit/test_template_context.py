@@ -30,18 +30,6 @@ BUILTINS = {"True", "False", "None", "forloop", "block", "csrf_token"}
 KNOWN_GAPS = {
     # The threshold is passed nowhere and htmx's revealed trigger has no threshold; dropped in the rebuild.
     "insight_ui/components/infinite_scroll.html": {"threshold"},
-    # Restoring filters, the operator list and the filter partial's values are unfinished; the component is
-    # up for review.
-    "insight_ui/components/search_query_builder/sq_builder.html": {
-        "custom_filters",
-        "ov_list",
-        "index",
-        "selected_field",
-        "selected_logic",
-        "selected_value",
-        "filter_operator",
-        "filter_value",
-    },
 }
 
 # Parameters a shared partial documents as optional; callers that need them pass them, the others leave them out.
@@ -158,10 +146,17 @@ def blocktranslate_names(node: BlockTranslateNode, defined: set[str], _blocks: B
 
 
 def include_names(node: IncludeNode, defined: set[str], _blocks: Blocks) -> Iterator[str]:
-    """An included template sees the context plus its with-names, so it is checked as part of this one."""
-    name = node.template.var
-    optional = OPTIONAL_INCLUDE_PARAMETERS.get(name, set())
+    """An included template sees the context plus its with-names, so it is checked as part of this one.
+
+    A template named by a variable, e.g. an item template the host passes in, is only known at render time:
+    the variable must be provided, the template itself is not followed.
+    """
     yield from read(node.extra_context.values(), defined)
+    name = node.template.var
+    if isinstance(name, Variable):
+        yield from read([node.template], defined)
+        return
+    optional = OPTIONAL_INCLUDE_PARAMETERS.get(name, set())
     yield from undefined_names(template_nodes(name), defined | set(node.extra_context) | optional, {})
 
 
@@ -219,3 +214,11 @@ def test_known_gaps_are_still_gaps(template_name: str) -> None:
     assert KNOWN_GAPS[template_name] <= missing_names(template_name), (
         f"{template_name} is fixed; remove it from KNOWN_GAPS"
     )
+
+
+def test_include_by_variable_reads_the_variable_only() -> None:
+    """A template named by a variable is chosen at render time; only the variable has to be provided."""
+    nodes = engines["django"].from_string("{% include config.item_template %}").template.nodelist
+
+    assert set(undefined_names(nodes, {"config"}, {})) == set()
+    assert set(undefined_names(nodes, set(), {})) == {"config"}
