@@ -5,11 +5,14 @@
 
 This script detects direct Tailwind utilities that should be replaced with
 design tokens from input.css:
-- Colors: bg-gray-300 -> bg-insight-bg-base
+- Colors: bg-gray-300 -> bg-insight-raised, text-white -> text-insight-primary-on-action
 - Radii: rounded-lg -> rounded-insight-surface
 - Shadows: shadow-md -> shadow-insight-surface
-- Verbose tokens: text-insight-text-body -> text-body
+- Verbose tokens: text-insight-text-body -> text-insight-body
 - Text color: text-insight-primary -> text-insight-primary-text (accent vs. readable text)
+
+Templates are checked inside class attributes. Package JavaScript and input.css are checked line by
+line (comment lines skipped) for colors only: they build class lists in strings and @apply rules.
 
 Exceptions can be marked with a Django template comment on the same line:
     <div class="rounded-lg {# tw-token-ok: special case #}">
@@ -159,8 +162,10 @@ COLOR_PREFIXES: list[str] = [
     "stroke",
 ]
 
-# Colors that are universally acceptable without tokens
-WHITELISTED_COLORS: set[str] = {"white", "black", "transparent", "current"}
+# White and black follow no theme: text on a fill uses its -on-action token. Only a translucent
+# black or white background (a backdrop or scrim, e.g. bg-black/50) stays allowed.
+# transparent and current are never matched.
+NEUTRAL_COLORS: list[str] = ["white", "black"]
 
 
 def build_color_config() -> TokenConfig:
@@ -174,33 +179,39 @@ def build_color_config() -> TokenConfig:
     color_pattern = "(?:" + "|".join(TAILWIND_COLORS) + ")"
     shade_pattern = "(?:" + "|".join(TAILWIND_SHADES) + ")"
 
-    # Match: [state:]prefix-color-shade[/opacity]
-    utility = rf"{prefix_pattern}-{color_pattern}-{shade_pattern}(?:/\d+)?"
+    neutral_pattern = "(?:" + "|".join(NEUTRAL_COLORS) + ")"
+
+    # Match: [state:]prefix-color-shade[/opacity] or [state:]prefix-white|black[/opacity]
+    utility = rf"{prefix_pattern}-(?:{color_pattern}-{shade_pattern}|{neutral_pattern})(?:/\d+)?"
     pattern = re.compile(rf"{CLASS_START}({STATE_PATTERN}{utility}){CLASS_END}")
 
-    # Build whitelist pattern for white/black/transparent
-    whitelist_colors = "(?:" + "|".join(WHITELISTED_COLORS) + ")"
-    whitelist_pattern = re.compile(rf"^{STATE_PATTERN}{prefix_pattern}-{whitelist_colors}(?:/\d+)?$")
+    whitelist_pattern = re.compile(rf"^{STATE_PATTERN}bg-{neutral_pattern}/\d+$")
 
     return TokenConfig(
         name="color",
         pattern=pattern,
         suggestions={
-            "bg-gray-": "bg-insight-*-background",
-            "bg-slate-": "bg-insight-*-background",
-            "bg-red-": "bg-insight-danger[-soft]",
-            "bg-green-": "bg-insight-success[-soft]",
-            "bg-yellow-": "bg-insight-warning[-soft]",
-            "bg-blue-": "bg-insight-primary[-soft] or bg-insight-info[-soft]",
-            "text-gray-": "text-insight-text-headline or text-insight-text-body",
-            "text-red-": "text-insight-danger",
-            "text-green-": "text-insight-success",
-            "text-yellow-": "text-insight-warning",
-            "text-blue-": "text-insight-primary or text-insight-info",
-            "border-gray-": "border-insight-*-border",
-            "ring-blue-": "ring-insight-primary",
-            "focus:ring-blue-": "focus:ring-insight-primary",
-            "focus:border-blue-": "focus:border-insight-primary",
+            "text-white": "text-insight-<color>-on-action on a fill, else text-insight-inverse",
+            "text-black": "text-insight-<color>-on-action on a fill, else text-insight-headline",
+            "bg-white": "bg-insight-base or bg-insight-surface",
+            "bg-gray-": "bg-insight-{base,surface,raised,overlay}",
+            "bg-slate-": "bg-insight-{base,surface,raised,overlay}",
+            "bg-neutral-": "bg-insight-{base,surface,raised,overlay}",
+            "bg-red-": "bg-insight-danger[-action|-soft]",
+            "bg-green-": "bg-insight-success[-action|-soft]",
+            "bg-yellow-": "bg-insight-warning[-action|-soft]",
+            "bg-amber-": "bg-insight-warning[-action|-soft]",
+            "bg-blue-": "bg-insight-primary[-action|-soft] or bg-insight-info[-action|-soft]",
+            "text-gray-": "text-insight-{headline,body,muted}",
+            "text-red-": "text-insight-danger-text",
+            "text-green-": "text-insight-success-text",
+            "text-yellow-": "text-insight-warning-text",
+            "text-amber-": "text-insight-warning-text",
+            "text-blue-": "text-insight-primary-text, text-insight-info-text or text-insight-link",
+            "border-gray-": "border-insight-{surface,raised,overlay}",
+            "border-red-": "border-insight-danger",
+            "ring-blue-": "ring-insight-focus",
+            "outline-blue-": "outline-insight-focus",
         },
         whitelist={whitelist_pattern},
     )
@@ -425,9 +436,13 @@ def build_family_text_config() -> TokenConfig:
 # Violation Detection
 # =============================================================================
 
-# Exception markers in Django template comments
+# Exception markers in Django template comments (or JS/CSS comments on the same line)
 EXCEPTION_MARKER = "tw-token-ok"
 FILE_EXCEPTION_MARKER = "tw-token-ok-file"
+
+# Token types checked in JavaScript and input.css, and the comment lines skipped there
+LINE_CHECKED_TOKEN_TYPES: set[str] = {"color", "text-color"}
+COMMENT_STARTS: tuple[str, ...] = ("*", "/*", "//")
 
 
 @dataclass
@@ -531,16 +546,36 @@ def extract_class_attributes(line: str) -> list[tuple[int, int, str]]:
         List of tuples (start_pos, end_pos, class_value) for each class attribute.
 
     """
-    # Match class="..." or class='...'
-    # Also handles Django template syntax like class="foo {{ bar }}"
-    class_pattern = re.compile(r'\bclass\s*=\s*(["\'])([^"\']*)\1')
+    # Match class="..." or class='...'. The value may hold the other quote, as template code does:
+    # class="foo {% if side == 'right' %}end-0{% endif %}"
+    class_pattern = re.compile(r"""\bclass\s*=\s*(?:"([^"]*)"|'([^']*)')""")
     results = []
     for match in class_pattern.finditer(line):
-        start = match.start(2)  # Start of the class value
-        end = match.end(2)  # End of the class value
-        value = match.group(2)
+        group = 1 if match.group(1) is not None else 2
+        start = match.start(group)  # Start of the class value
+        end = match.end(group)  # End of the class value
+        value = match.group(group)
         results.append((start, end, value))
     return results
+
+
+def checked_values(line: str, *, is_template: bool) -> list[str]:
+    """Return the parts of a line that hold classes.
+
+    Args:
+        line: The line content.
+        is_template: True for HTML templates, False for scripts and the stylesheet.
+
+    Returns:
+        The class attribute values of a template line, or the whole line of a script or
+        stylesheet unless it is a comment.
+
+    """
+    if is_template:
+        return [value for _start, _end, value in extract_class_attributes(line)]
+    if line.lstrip().startswith(COMMENT_STARTS):
+        return []
+    return [line]
 
 
 def find_violations(  # noqa: C901
@@ -566,19 +601,18 @@ def find_violations(  # noqa: C901
 
     violations: list[TokenViolation] = []
     lines = content.splitlines()
+    is_template = filepath.suffix == ".html"
+    if not is_template:
+        # Scripts and the stylesheet hold class lists in strings and @apply rules; check colors only.
+        configs = [config for config in configs if config.name in LINE_CHECKED_TOKEN_TYPES]
 
     for line_number, line in enumerate(lines, start=1):
         # Skip lines with exception marker
         if has_exception_marker(line):
             continue
 
-        # Only search within class="..." attributes
-        class_attrs = extract_class_attributes(line)
-        if not class_attrs:
-            continue
-
-        # Check each token type within each class attribute
-        for _start, _end, class_value in class_attrs:
+        # Check each token type within each class attribute or line
+        for class_value in checked_values(line, is_template=is_template):
             for config in configs:
                 for match in config.pattern.finditer(class_value):
                     class_name = match.group(1)
@@ -623,27 +657,48 @@ def find_violations(  # noqa: C901
 # =============================================================================
 
 
+def is_checked_file(path: Path) -> bool:
+    """Check if a path is a template, a package script or input.css.
+
+    Args:
+        path: Path relative to the repository root.
+
+    Returns:
+        True for HTML templates, unminified package JavaScript and insight_ui/utils/input.css.
+
+    """
+    posix = path.as_posix()
+    if path.suffix == ".html":
+        return "templates" in path.parts
+    if path.suffix == ".js":
+        return "insight_ui/static/insight_ui/js/" in posix and not path.name.endswith(".min.js")
+    return posix.endswith("insight_ui/utils/input.css")
+
+
 def find_template_files(base_path: Path) -> list[Path]:
-    """Find all HTML template files in the given directory.
+    """Find all checked files: HTML templates, package JavaScript and input.css.
 
     Args:
         base_path: Base directory to search in.
 
     Returns:
-        List of paths to HTML files in templates directories.
+        List of paths to the checked files.
 
     """
-    templates_dir = base_path / "insight_ui" / "templates"
-    if not templates_dir.exists():
-        return []
-    return sorted(templates_dir.rglob("*.html"))
+    package = base_path / "insight_ui"
+    candidates = [
+        *(package / "templates").rglob("*.html"),
+        *(package / "static" / "insight_ui" / "js").glob("*.js"),
+        package / "utils" / "input.css",
+    ]
+    return sorted(path for path in candidates if path.exists() and is_checked_file(path.relative_to(base_path)))
 
 
 def find_staged_template_files() -> list[Path]:
-    """Find staged HTML template files via git.
+    """Find staged checked files via git.
 
     Returns:
-        List of paths to staged HTML files in templates directories.
+        List of paths to staged templates, package scripts and input.css.
 
     """
     result = subprocess.run(
@@ -658,7 +713,7 @@ def find_staged_template_files() -> list[Path]:
     files = []
     for line in result.stdout.strip().splitlines():
         path = Path(line)
-        if path.suffix == ".html" and "templates" in path.parts:
+        if is_checked_file(path):
             files.append(path)
     return sorted(files)
 
@@ -668,14 +723,14 @@ def print_usage() -> None:
     logger.error(
         "Usage: check_design_tokens.py [--all | --staged] [file1.html ...]\n\n"
         "Checks for hardcoded Tailwind utilities that should use design tokens:\n"
-        "  - Colors: bg-gray-300 -> bg-insight-*\n"
+        "  - Colors: bg-gray-300 -> bg-insight-*, text-white -> text-insight-*-on-action\n"
         "  - Radii: rounded-lg -> rounded-insight-*\n"
         "  - Shadows: shadow-md -> shadow-insight-*\n"
-        "  - Verbose: text-insight-text-body -> text-body\n"
+        "  - Verbose: text-insight-text-body -> text-insight-body\n"
         "  - Text color: text-insight-primary -> text-insight-primary-text\n\n"
         "Options:\n"
-        "  --all     Scan all template files in insight_ui/templates/\n"
-        "  --staged  Scan only staged template files (for pre-commit)\n\n"
+        "  --all     Scan all templates, package JavaScript and input.css\n"
+        "  --staged  Scan only those files when staged (for pre-commit)\n\n"
         "To suppress warnings, add a comment on the same line:\n"
         '  <div class="rounded-lg {# tw-token-ok: reason #}">\n\n'
         "To suppress all warnings in a file, add at the top:\n"

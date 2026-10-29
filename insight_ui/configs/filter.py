@@ -15,6 +15,7 @@ from insight_ui.configs.types import (
     validate_filter_field_type,
     validate_not_empty,
     validate_query_logic,
+    validate_urls,
 )
 
 
@@ -24,6 +25,8 @@ class SearchBarConfig:
 
     Attributes:
         request_url: URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.
+        tag_id: Id of the search input and prefix of the results list, unique on the page.
+        name: Name of the request parameter.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
         placeholder: Placeholder text for the search input.
@@ -63,9 +66,17 @@ class SearchBarConfig:
         default="",
         metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
+    # Append new defaults so existing positional callers retain their meanings.
+    tag_id: str = dc_field(
+        default="search",
+        metadata={"doc": _("Id of the search input and prefix of the results list, unique on the page.")},
+    )
+    name: str = dc_field(default="search", metadata={"doc": _("Name of the request parameter.")})
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx.request_url are not both set."""
+        """Validate the id and name, and that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
+        validate_not_empty(self, "tag_id", "name")
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
                 f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
@@ -108,8 +119,8 @@ class FilterConfig:
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
 
     @property
-    def message_id(self) -> str:
-        """Id prefix of the help text, taken from the name."""
+    def field_id(self) -> str:
+        """Id prefix of the help text: the name, as a filter has no tag_id."""
         return self.name
 
     def __post_init__(self) -> None:
@@ -165,6 +176,7 @@ class GenericFilterConfig:
 
     def __post_init__(self) -> None:
         """Validate that request_url and htmx.request_url are not both set."""
+        validate_urls(self)
         if self.request_url and self.htmx and self.htmx.request_url:
             warnings.warn(
                 f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx.request_url' set. "
@@ -309,7 +321,8 @@ class QueryBuilderConfig:
     )
 
     def __post_init__(self) -> None:
-        """Require an ID and a parameter name."""
+        """Require an ID and a parameter name; reject a request_url with a scheme that is not allowed."""
+        validate_urls(self)
         validate_not_empty(self, "tag_id", "param_name")
         if self.max_filters < 1:
             msg = f"QueryBuilderConfig {self.tag_id!r} needs max_filters of at least 1."

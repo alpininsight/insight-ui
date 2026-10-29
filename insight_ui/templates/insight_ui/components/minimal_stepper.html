@@ -6,7 +6,7 @@
 >
     {% for status in steps %}
         <li
-            class="flex-1 flex justify-center items-center {% if status == 'completed' %}bg-insight-success-action{% elif status == 'failed' %}bg-insight-danger-action{% elif status == 'current' %}bg-insight-primary-action{% else %}bg-insight-text-muted{% endif %} {% if icon_size == 'xl' %}px-4{% elif icon_size == 'l' %}px-3{% elif icon_size == 'm' %}px-2{% elif icon_size == 's' %}px-1.5{% elif icon_size == 'xs' %}px-1.5{% endif %} py-0.5 text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group"
+            class="flex-1 flex justify-center items-center {% if status == 'completed' %}text-insight-success-on-action bg-insight-success-action{% elif status == 'failed' %}text-insight-danger-on-action bg-insight-danger-action{% elif status == 'current' %}text-insight-primary-on-action bg-insight-primary-action{% else %}text-insight-inverse bg-insight-text-muted{% endif %} {% if icon_size == 'xl' %}px-4{% elif icon_size == 'l' %}px-3{% elif icon_size == 'm' %}px-2{% elif icon_size == 's' %}px-1.5{% elif icon_size == 'xs' %}px-1.5{% endif %} py-0.5 {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group"
             aria-label="{% blocktrans with step=forloop.counter %}Step {{ step }}{% endblocktrans %}: {% if status == 'completed' %}{% trans 'Completed' %}{% elif status == 'failed' %}{% trans 'Failed' %}{% elif status == 'current' %}{% trans 'In progress' %}{% else %}{% trans 'Pending' %}{% endif %}"
             {% if status == 'current' %}aria-current="step"{% endif %}
         >

@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
+    WEBSOCKET_URL_SCHEMES,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
@@ -23,6 +24,7 @@ from insight_ui.configs.types import (
     validate_not_empty,
     validate_severity,
     validate_size,
+    validate_urls,
 )
 
 
@@ -101,6 +103,10 @@ class LegalNoticeConfig:
         metadata={"doc": _("Optional logo before the holder's name; use empty alt text when decorative.")},
     )
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
+
 
 @dataclass
 class LogoConfig:
@@ -140,6 +146,10 @@ class LogoConfig:
     height: str = field(default="2rem", metadata={"doc": _("CSS height for image/svg logos.")})
     width: str = field(default="", metadata={"doc": _("Optional CSS width for image/svg logos.")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
+
 
 @dataclass
 class BrandMarkConfig:
@@ -163,7 +173,7 @@ class BrandMarkConfig:
             primary_text="Insight",
             secondary_text="UI",
             primary_text_color="text-insight-headline",
-            secondary_text_color="text-insight-secondary",
+            secondary_text_color="text-insight-secondary-text",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -179,7 +189,7 @@ class BrandMarkConfig:
         default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
     )
     secondary_text_color: str = field(
-        default="text-insight-secondary", metadata={"doc": _("CSS class for secondary text color.")}
+        default="text-insight-secondary-text", metadata={"doc": _("CSS class for secondary text color.")}
     )
     logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
@@ -254,7 +264,7 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
+        foreground_color: Optional semantic text color. Empty uses the text color made for the fill.
         request_url: Optional URL that turns the ribbon into a link.
         aria_label: Optional accessible label for the linked ribbon.
 
@@ -281,7 +291,7 @@ class CornerRibbonConfig:
     )
     foreground_color: ColorType | str = field(
         default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
+        metadata={"doc": _("Optional semantic text color. Empty uses the text color made for the fill.")},
     )
     request_url: str = field(
         default="",
@@ -294,6 +304,7 @@ class CornerRibbonConfig:
 
     def __post_init__(self) -> None:
         """Validate position and color after initialization."""
+        validate_urls(self)
         validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
         if self.foreground_color:
@@ -301,21 +312,21 @@ class CornerRibbonConfig:
 
     @property
     def background_class(self) -> str:
-        """Map neutral to an existing elevation token, not an undefined color."""
+        """Fill the ribbon like a solid button; neutral maps to an existing elevation token."""
         if self.color == "neutral":
             return "bg-insight-bg-raised"
-        return f"bg-insight-{self.color}"
+        return f"bg-insight-{self.color}-action"
 
     @property
     def foreground_class(self) -> str:
-        """Use the neutral body text role and preserve semantic color overrides."""
+        """Use the text color made for the fill; keep semantic color overrides."""
         if self.foreground_color == "neutral":
             return "text-insight-text-body"
         if self.foreground_color:
             return f"text-insight-{self.foreground_color}"
         if self.color == "neutral":
             return "text-insight-text-body"
-        return "text-white"
+        return f"text-insight-{self.color}-on-action"
 
 
 @dataclass
@@ -401,6 +412,7 @@ class ProgressBarConfig:
 
     def __post_init__(self) -> None:
         """Warn if both request_url and sse_url are set, since sse_url silently takes priority."""
+        validate_urls(self)
         if self.request_url and self.sse_url:
             identifier = self.tag_id or self.label or "(unnamed)"
             warnings.warn(
@@ -642,6 +654,7 @@ class LiveContentConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
         validate_not_empty(self, "request_url")
 
 
@@ -681,6 +694,7 @@ class WebSocketConfig:
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self, request_url=WEBSOCKET_URL_SCHEMES)
         validate_not_empty(self, "request_url")
 
 

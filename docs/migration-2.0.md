@@ -27,8 +27,9 @@ pattern for a host project.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
 - [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
+- [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
@@ -40,6 +41,7 @@ pattern for a host project.
 - [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
+- [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
@@ -50,6 +52,7 @@ pattern for a host project.
 - [ ] Move `show_global_loading_indicator=` from `live_content` into its `HtmxConfig`, and give a second `chat` on a page its own `tag_id`.
 - [ ] Replace `hx_target_id=` / `hx_swap_method=` on `radio_block` with `htmx=HtmxConfig(target="#…", swap_method="outerHTML")`.
 - [ ] Replace `explanation=` with `help_text=`, and expect `disabled_reason` as visible text below form fields.
+- [ ] Give form fields that share a `name` on one page their own `tag_id`; fields without one take their id from `name`.
 - [ ] Replace button and badge `type=` / `outline=` / `subtle=` with `color=` and `variant=`, and the old `btn-*` color classes with `btn` plus modifiers.
 - [ ] Replace `get_page` with Django's `Paginator`, drop `surrounding_pages`, rename `ipp_config=` to `items_per_page=`, and pass an `HtmxConfig` where pagination should swap via HTMX.
 - [ ] Replace `image_carousel` and `CardCarouselConfig` / `ImageCarouselConfig` with `{% carousel %}` and `CarouselConfig`; rename `carousel_items=` to `items=` and image `description=` to `caption=`, and stop rendering or styling `.carousel-dot` yourself.
@@ -403,6 +406,12 @@ After, with `name` equal to `intro`, the id is `tab-intro`.
 
 Search: `{% section`, `{% surface`, `{% hbox`, `{% tabs` and `{% tab` with a
 `|` filter on a quoted argument, and `_("` inside those tags.
+
+`{% surface radius=… %}` uses the radius token of the same name
+(`rounded-insight-m` for `"m"`), so a theme can change it. The old classes were
+one Tailwind step larger: `"m"` was 8px and is 6px now, `"xl"` was 16px and is
+12px. `radius="none"` now squares the corners; before, it kept the variant's
+rounding. Search: `{% surface` with `radius=`.
 
 `{% modal %}` accepts `config=ModalConfig(...)`. A single `id`, `title`,
 `width` or `show_close` argument overrides the config.
@@ -931,6 +940,42 @@ Search: `DataAttrConfig(`.
 The required asterisk is `aria-hidden="true"`. v1.15.1 used
 `aria-label="Required"` on the input, select and textarea asterisk.
 
+### URL schemes
+
+[#774](https://github.com/alpininsight/insight-ui/pull/774).
+
+URL fields of the configs accept relative URLs and the schemes of their kind.
+Another scheme raises `ValueError` at construction. Empty fields are not
+checked.
+
+| Field | Schemes besides relative URLs |
+| --- | --- |
+| Links and request endpoints: `request_url`, `href`, every other `*_url` | `http`, `https`, `mailto`, `tel` |
+| Images: `url`, `url_dark`, `avatar_url`, `background_image_url` | `http`, `https`, `data` |
+| `WebSocketConfig.request_url` | `ws`, `wss`, `http`, `https` |
+
+`{% surface href=... %}` follows the link rule and now also accepts `tel`.
+
+`FooterContactConfig.imprint` and `.privacy` are now `imprint_url` and
+`privacy_url`, like every other URL field. `mail_url` is now `email`: it takes
+the address, which is also the link text, and the link adds `mailto:`. An
+email with `mailto:` or text that is no address raises `ValueError`.
+
+Before:
+
+```python
+FooterContactConfig(mail_url="team@example.com", imprint="/imprint/", privacy="/privacy/")
+```
+
+After:
+
+```python
+FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/")
+```
+
+Search: URL fields filled from data, e.g. user profiles, app links with an
+own scheme such as `myapp://`, and `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig`.
+
 ### Help, error and disabled texts
 
 [#746](https://github.com/alpininsight/insight-ui/pull/746).
@@ -976,6 +1021,46 @@ wrap the control and its texts in a `<div>`. The form's error container now has
 Search: `explanation=`, `data-insight-tooltip` on form fields and selectors that
 expect a checkbox or toggle `<input>` as the outermost element.
 
+### Field IDs
+
+[#777](https://github.com/alpininsight/insight-ui/pull/777).
+
+Every form field takes its id from `tag_id`, otherwise from `name`. Input,
+textarea, checkbox and toggle used to render no id without a `tag_id`, so their
+label was not associated with the control; toggle and slider rendered
+`id="None"`. The textarea label pointed at the `name` while the textarea had the
+`tag_id`. The label and the derived ids (slider `_label`, `_min`, `_max`, and
+`-help`, `-error`) now follow the same rule. The multiselect builds its ids
+(`-label`, `-search`, `-listbox`, `-opt-<n>`, `-aria-status`) from the `tag_id`
+too, and its tag accepts `tag_id=`. `name` stays the request parameter.
+
+Before:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input name="email">, label not associated #}
+```
+
+After:
+
+```django
+{% load insight_tags %}
+{% input_field name="email" label="E-Mail" %}      {# <input id="email" name="email"> #}
+{% input_field tag_id="billing-email" name="email" label="E-Mail" %}
+```
+
+Two fields with the same `name` on one page need their own `tag_id`, otherwise
+the ids collide. Groups (checkbox group, radio group, radio block) already used
+the `name` and are unchanged.
+
+The search bar had fixed ids (`search`, `search-results`), which collided when
+the navbar and the page both rendered one. `SearchBarConfig` now has `tag_id`
+and `name`, both defaulting to `search`, so the markup only changes when you set
+them. The results list is `<tag_id>-results`.
+
+Search: two form fields with the same `name` and no `tag_id` on one page, and
+selectors or scripts that look up a multiselect by `#<name>-…`.
+
 ## Markup selectors
 
 [#734](https://github.com/alpininsight/insight-ui/pull/734),
@@ -995,6 +1080,13 @@ scripts should use `[data-sidebar-heading]`.
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
 another level. Allowed values are 2–6.
+
+The skip link ("Jump to main content") is the first element of `<body>` in
+`base.html`. It was rendered by `{% navbar %}`, so a page without the package
+navbar had none, and when focused it was hidden behind the navbar.
+`#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
+to your own base template, or keep yours and expect two. A layout that renders
+`{% navbar %}` without extending `insight_ui/base.html` now needs its own.
 
 The icon wrapper is `<span class="inline-flex">`. It was a `<div>`.
 Tooltip wrappers on input, select and textarea are `<span>`. They were
@@ -1029,6 +1121,57 @@ button .inline-flex { }
 
 Search: `footer h4`, `button > div`, `aria-label="Required"`,
 `data-accordion-chevron`.
+
+### Toggle, switch, radio block and slider
+
+[#778](https://github.com/alpininsight/insight-ui/pull/778).
+
+Toggle buttons and radio blocks take a `variant`, like buttons. The default
+`neutral` puts radio block options on a grey track and shows the selected one
+as a raised light knob; a neutral toggle is faint grey while off and the same
+knob while on. `subtle` uses a tint of `color` while off and fills the selected
+choice with it; `outline` is outlined while off and filled while selected.
+Before, a toggle and its options were filled in both states and only the shade
+changed, so the state relied on color alone. The selected choice is also
+semibold with heavier icon strokes.
+
+Their label is a `.choice` with `.choice-{variant}` instead of `.btn` /
+`.btn-solid` with `btn-primary`; a radio block is a `.choice-group-{variant}`.
+The disabled look comes from the disabled input, so labels no longer carry
+`btn-disabled`. The toggle's checkbox lies transparent on top of its label
+instead of being `sr-only`. In forced colors mode the selected choice and the
+switched-on track use the system highlight color.
+
+The switch is 44×24 px: an outlined track with a small thumb while off, a
+track in the control color with a larger thumb while on. The track is
+`<span class="switch-track" aria-hidden="true">` and replaces the `after:`
+utilities on the old span.
+
+The slider track and thumb use the `-action` color instead of the decorative
+`primary` color, and the focus ring of the single slider uses the focus color.
+
+New: `variant` on toggle and radio block (`neutral`, `subtle`, `outline`;
+`neutral` ignores the color), `color` on toggle, radio block and slider (button
+colors, default `primary`), `color` and `variant` on `DropdownConfig` for its
+button, and `icon_only=True` on the toggle. An icon-only toggle needs `icon` and `label`;
+the label is its accessible name and tooltip.
+
+Before:
+
+```css
+.btn.btn-primary.btn-s { }        /* toggle label */
+label.btn-disabled { }
+```
+
+After:
+
+```css
+.choice.choice-neutral { }        /* or variant="outline" for the outlined look */
+:disabled + .choice { }
+```
+
+Search: selectors or tests for `btn-disabled` or `btn-solid` on toggle and
+radio block labels, `peer-checked` overrides, and the switch's `after:` thumb.
 
 ### Disabled buttons and links
 
