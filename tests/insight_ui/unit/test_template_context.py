@@ -27,10 +27,7 @@ TAGS = Path(insight_ui.__file__).parent / "templatetags" / "insight_tags.py"
 BUILTINS = {"True", "False", "None", "forloop", "block", "csrf_token"}
 
 # Known gaps, each removed with the rebuild that fixes it. Do not add new entries for new components.
-KNOWN_GAPS = {
-    # The threshold is passed nowhere and htmx's revealed trigger has no threshold; dropped in the rebuild.
-    "insight_ui/components/infinite_scroll.html": {"threshold"},
-}
+KNOWN_GAPS: dict[str, set[str]] = {}
 
 # Parameters a shared partial documents as optional; callers that need them pass them, the others leave them out.
 OPTIONAL_INCLUDE_PARAMETERS = {
@@ -41,18 +38,33 @@ OPTIONAL_INCLUDE_PARAMETERS = {
 
 def inclusion_tags() -> dict[str, tuple[str, set[str]]]:
     """Map each component template to its tag and the context keys the tag returns."""
+    functions = {
+        node.name: node
+        for node in ast.parse(TAGS.read_text(encoding="utf-8")).body
+        if isinstance(node, ast.FunctionDef)
+    }
     result: dict[str, tuple[str, set[str]]] = {}
-    for function in ast.parse(TAGS.read_text(encoding="utf-8")).body:
-        if not isinstance(function, ast.FunctionDef):
-            continue
+    for function in functions.values():
         for decorator in function.decorator_list:
             if isinstance(decorator, ast.Call) and getattr(decorator.func, "attr", "") == "inclusion_tag":
-                keys: set[str] = set()
-                for node in own_returns(function):
-                    assert isinstance(node.value, ast.Dict), f"{function.name} must return a dict literal"
-                    keys |= {key.value for key in node.value.keys if isinstance(key, ast.Constant)}
-                result[decorator.args[0].value] = (function.name, keys)
+                result[decorator.args[0].value] = (function.name, returned_keys(function, functions))
     return result
+
+
+def returned_keys(function: ast.FunctionDef, functions: dict[str, ast.FunctionDef]) -> set[str]:
+    """Return the keys of the dict literals a function returns.
+
+    A returned helper call, e.g. a context shared by two tags, is followed into the helper.
+    """
+    keys: set[str] = set()
+    for node in own_returns(function):
+        value = node.value
+        if isinstance(value, ast.Call) and isinstance(value.func, ast.Name) and value.func.id in functions:
+            keys |= returned_keys(functions[value.func.id], functions)
+            continue
+        assert isinstance(value, ast.Dict), f"{function.name} must return a dict literal or a helper that does"
+        keys |= {key.value for key in value.keys if isinstance(key, ast.Constant)}
+    return keys
 
 
 def own_returns(function: ast.FunctionDef) -> Iterator[ast.Return]:
@@ -222,3 +234,18 @@ def test_include_by_variable_reads_the_variable_only() -> None:
 
     assert set(undefined_names(nodes, {"config"}, {})) == set()
     assert set(undefined_names(nodes, set(), {})) == {"config"}
+
+
+def test_returned_helper_is_followed() -> None:
+    """Two tags sharing a context helper provide the helper's keys."""
+    source = (
+        "def tag(config):\n"
+        "    return _context(config)\n"
+        "def _context(config):\n"
+        "    if config.empty:\n"
+        "        return {'config': config}\n"
+        "    return {'config': config, 'items': config.items}\n"
+    )
+    functions = {node.name: node for node in ast.parse(source).body if isinstance(node, ast.FunctionDef)}
+
+    assert returned_keys(functions["tag"], functions) == {"config", "items"}

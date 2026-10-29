@@ -1,0 +1,11 @@
+{% for entry in items %}
+    <article
+        aria-posinset="{{ entry.position }}"
+        aria-setsize="{{ set_size }}"
+        tabindex="-1"
+        {% if focus_first and forloop.first %}autofocus{% endif %}
+        class="p-4 bg-insight-surface border border-insight-surface rounded-insight-surface"
+    >
+        {% include infinite_scroll_config.item_template with item=entry.item heading_level=infinite_scroll_config.heading_level %}
+    </article>
+{% endfor %}
