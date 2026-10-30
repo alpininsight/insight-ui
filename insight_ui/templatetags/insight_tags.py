@@ -1210,9 +1210,15 @@ def brand_mark(
     logo_position: str | _Unset = UNSET,
     css_class: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a public logo plus a two-tone wordmark."""
+    """Render a public logo plus a two-tone wordmark.
+
+    Next to a wordmark the logo is decorative, so a link around the mark is named by its text only.
+    """
     config = build_config(BrandMarkConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"brand_mark_config": config}
+    mark_logo = config.logo
+    if mark_logo is not None and (config.primary_text or config.secondary_text):
+        mark_logo = replace(mark_logo, alt="")
+    return {"brand_mark_config": config, "mark_logo": mark_logo}
 
 
 @register.inclusion_tag("insight_ui/components/corner_ribbon.html")
@@ -1223,7 +1229,6 @@ def corner_ribbon(
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})

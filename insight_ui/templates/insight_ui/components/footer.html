@@ -26,11 +26,13 @@
                                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                                     {% endif %}
                                     class="inline-flex gap-1 text-insight-body text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover"
+                                    {% if link.external %}target="_blank" rel="noopener"{% endif %}
                                 >
                                     {% if link.icon %}
                                         {% icon link.icon %}
                                     {% endif %}
                                     {{ link.text }}
+                                    {% if link.external %}<span class="sr-only"> {% translate "(opens in a new tab)" %}</span>{% endif %}
                                 </a>
                             </li>
                         {% endfor %}
