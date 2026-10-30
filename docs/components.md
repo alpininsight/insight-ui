@@ -51,9 +51,9 @@ Pass `save_button` in the host view's template context. `color` and `variant`
 (solid, outline, subtle, link, plain) select the look; `button_type` selects the HTML button type.
 
 With an existing Config, `build_config()` returns a copy with supplied overrides.
-Generated tags forward only supplied `**kwargs`; they do not declare `UNSET`
-defaults. When adding explicit optional arguments, follow `button()`'s `UNSET`
-pattern so omission does not overwrite a Config value. `False` is an override;
+Tags declare their arguments with an `UNSET` default (the `create_component`
+scaffold does this for `tag_id`), so omission does not overwrite a Config value.
+Follow that pattern for every argument you add. `False` is an override;
 `None` is also an override, valid only where the field allows it. Keep field
 types, metadata, examples and rendering tests aligned.
 

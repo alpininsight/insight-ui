@@ -180,7 +180,9 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 
 | Key | Default | Purpose |
 | --- | --- | --- |
-| `navbar_fixed` | `True` | Stick the navbar to the top of the window. |
+| `navbar_fixed` | `False` | Stick the navbar to the top of the window; sidebars adjust their offset. |
+| `stylesheet` | `"insight_ui/css/tailwind.css"` | Static path of the stylesheet; point it at your own Tailwind build. |
+| `tooltip_show_delay` | `400` | Milliseconds before a tooltip appears on hover; keyboard focus shows it at once. |
 | `register_url` | `""` | URL or URL name for a register button; empty hides it. |
 | `content_max_width` | `""` | CSS width of the content box, e.g. `"64rem"`; empty keeps `80rem`. A page can pass `content_max_width` in its context. |
 | `align_navbar_footer_to_content` | `False` | `True` puts the navbar and footer content into the content box instead of spanning the window. |

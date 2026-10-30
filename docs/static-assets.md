@@ -141,12 +141,14 @@ must still inspect the CSS that the package will actually ship.
 
 ### Reproducible Tailwind CLI builds
 
-The source build intentionally pins `django-tailwind-cli==4.6.2` in
-`pyproject.toml` and Tailwind CLI `4.3.3` in
-`tests/tailwind_settings.py`. Keep both pins exact: the installed
-`django-tailwind-cli` 4.6.2 code uses `TAILWIND_CLI_VERSION="latest"` to follow
-the GitHub release redirect and falls back to `4.1.3` when that lookup fails.
-See the [official 4.6.2 resolver code](https://github.com/django-commons/django-tailwind-cli/blob/v4.6.2/src/django_tailwind_cli/config.py#L412-L455).
+The source build pins `django-tailwind-cli` exactly in `pyproject.toml` and the
+Tailwind CLI version as `TAILWIND_CLI_VERSION` in
+[tests/tailwind_settings.py](../tests/tailwind_settings.py). Keep both pins exact:
+without an explicit `TAILWIND_CLI_VERSION`, `django-tailwind-cli` uses `"latest"`,
+follows the GitHub release redirect and falls back to an older built-in version
+when that lookup fails. The current values live only in those two files and in
+[the reproducibility test](../tests/insight_ui/unit/test_tailwind_reproducibility.py),
+which fails when they drift apart.
 
 `npm run build:tailwind` is the only package entry point that compiles Tailwind;
 `npm run build:static-all` includes it. `build:static`, `build:js` and

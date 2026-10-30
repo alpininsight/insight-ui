@@ -1372,9 +1372,6 @@
   .bg-insight-bg-base-dark {
     background-color: var(--color-insight-bg-base-dark);
   }
-  .bg-insight-bg-raised {
-    background-color: var(--color-insight-bg-raised);
-  }
   .bg-insight-danger {
     background-color: var(--color-insight-danger);
   }
@@ -1389,9 +1386,6 @@
   }
   .bg-insight-info {
     background-color: var(--color-insight-info);
-  }
-  .bg-insight-info-action {
-    background-color: var(--color-insight-info-action);
   }
   .bg-insight-info-soft {
     background-color: var(--color-insight-info-soft);
@@ -1420,9 +1414,6 @@
   .bg-insight-secondary {
     background-color: var(--color-insight-secondary);
   }
-  .bg-insight-secondary-action {
-    background-color: var(--color-insight-secondary-action);
-  }
   .bg-insight-success {
     background-color: var(--color-insight-success);
   }
@@ -1443,9 +1434,6 @@
   }
   .bg-insight-warning {
     background-color: var(--color-insight-warning);
-  }
-  .bg-insight-warning-action {
-    background-color: var(--color-insight-warning-action);
   }
   .bg-insight-warning-soft {
     background-color: var(--color-insight-warning-soft);
@@ -1749,6 +1737,9 @@
   .whitespace-pre-line {
     white-space: pre-line;
   }
+  .text-\(--tone-on-action\) {
+    color: var(--tone-on-action);
+  }
   .text-insight-body {
     color: var(--color-insight-text-body);
   }
@@ -1770,9 +1761,6 @@
   .text-insight-info {
     color: var(--color-insight-info);
   }
-  .text-insight-info-on-action {
-    color: var(--color-insight-info-on-action);
-  }
   .text-insight-info-text {
     color: var(--color-insight-info-text);
   }
@@ -1793,9 +1781,6 @@
   }
   .text-insight-secondary {
     color: var(--color-insight-secondary);
-  }
-  .text-insight-secondary-on-action {
-    color: var(--color-insight-secondary-on-action);
   }
   .text-insight-secondary-text {
     color: var(--color-insight-secondary-text);
@@ -1826,9 +1811,6 @@
   }
   .text-insight-warning {
     color: var(--color-insight-warning);
-  }
-  .text-insight-warning-on-action {
-    color: var(--color-insight-warning-on-action);
   }
   .text-insight-warning-text {
     color: var(--color-insight-warning-text);
@@ -2016,6 +1998,9 @@
     }
     .hover\:border-insight-text-muted:hover {
       border-color: var(--color-insight-text-muted);
+    }
+    .hover\:bg-\(--tone-fill-hover\):hover {
+      background-color: var(--tone-fill-hover);
     }
     .hover\:bg-insight-base:hover {
       background-color: var(--color-insight-bg-base);
@@ -2937,6 +2922,13 @@
     --tone-fill-active: var(--color-insight-light-active);
     --tone-on-action: var(--color-insight-on-light);
     --tone-ink: var(--color-insight-light);
+  }
+  .control-neutral {
+    --tone-fill: var(--color-insight-bg-raised);
+    --tone-fill-hover: var(--color-insight-bg-overlay);
+    --tone-fill-active: var(--color-insight-bg-overlay);
+    --tone-on-action: var(--color-insight-text-body);
+    --tone-ink: var(--color-insight-text-body);
   }
   .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain), .btn-solid {
     background-color: var(--tone-fill);

@@ -117,7 +117,7 @@ function validateCssOutput(sourceFile, source, output) {
 
     const semanticColors = ["primary", "secondary", "success", "warning", "danger", "info"];
     const colorFamilies = [
-        ["bg", "background-color", [...semanticColors, "bg-raised"]],
+        ["bg", "background-color", semanticColors],
         ["fill", "fill", semanticColors],
         ["text", "color", [...semanticColors, "text-headline", "text-body", "text-muted", "text-link"]],
     ];
@@ -126,9 +126,6 @@ function validateCssOutput(sourceFile, source, output) {
             `.${prefix}-insight-${color}`,
             new RegExp(`\\.${prefix}-insight-${color}\\{[^}]*${property}:\\s*var\\(--color-insight-${color}\\)`),
         ])),
-        // Corner ribbon fill and its text, built in Python and kept by @source inline.
-        [".bg-insight-primary-action", /\.bg-insight-primary-action\{[^}]*background-color:\s*var\(--color-insight-primary-action\)/],
-        [".text-insight-primary-on-action", /\.text-insight-primary-on-action\{[^}]*color:\s*var\(--color-insight-primary-on-action\)/],
         [".btn-primary", /\.btn-primary[,{]/],
         [".btn-light", /\.btn-light[,{]/],
         [".btn-outline", /\.btn-outline\{/],
