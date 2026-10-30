@@ -92,3 +92,52 @@ def test_page_font_reads_the_font_token(built_css: str) -> None:
     """The page font comes from --font-sans, so a theme stylesheet can switch it."""
     assert "--default-font-family: var(--font-sans);" in built_css
     assert "font-family: var(--default-font-family" in built_css
+
+
+PACKAGE = Path(insight_ui.__file__).parent
+CLASS_ATTRIBUTE = re.compile(r"""\bclass\s*=\s*(?:"([^"]*)"|'([^']*)')""")
+SHADOW_CLASS = re.compile(r"(?<![\w-])(?:[\w-]+:)*shadow-insight-")
+RING_CLASS = re.compile(r"(?<![\w-])(?:[\w-]+:)*ring-[\w-]+")
+
+
+def shadowed_class_lists() -> list[tuple[str, str]]:
+    """Class lists of templates and @apply rules that use a shadow-insight-* class."""
+    found = []
+    for template in (PACKAGE / "templates").rglob("*.html"):
+        for match in CLASS_ATTRIBUTE.finditer(template.read_text(encoding="utf-8")):
+            value = match.group(1) or match.group(2) or ""
+            if SHADOW_CLASS.search(value):
+                found.append((template.name, value))
+    css_lines = (PACKAGE / "utils" / "input.css").read_text(encoding="utf-8").splitlines()
+    found.extend(("input.css", line) for line in css_lines if "@apply" in line and SHADOW_CLASS.search(line))
+    return found
+
+
+def test_shadowed_elements_show_focus_with_an_outline() -> None:
+    """A theme may set a shadow token to none; a ring on the same element would share its box-shadow."""
+    combined = [
+        f"{source}: {RING_CLASS.findall(value)}" for source, value in shadowed_class_lists() if RING_CLASS.search(value)
+    ]
+
+    assert shadowed_class_lists(), "the scan found no shadow-insight-* classes"
+    assert combined == []
+
+
+@pytest.mark.parametrize("shadow", ["subtle", "surface", "raised", "overlay", "focus"])
+def test_shadow_classes_set_box_shadow_alone(shadow: str, built_css: str) -> None:
+    """The class reads only its token, so none is a valid value and removes just the shadow."""
+    rule = re.search(rf"^\s*\.shadow-insight-{shadow} {{([^}}]*)}}", built_css, re.MULTILINE)
+
+    assert rule is not None
+    assert rule.group(1).split() == ["box-shadow:", f"var(--shadow-insight-{shadow});"]
+
+
+@pytest.mark.parametrize("shadow", ["subtle", "surface", "raised", "overlay"])
+def test_tailwind_shadow_form_combines_with_rings(shadow: str, built_css: str) -> None:
+    """shadow-(--shadow-insight-*) is in the package stylesheet and shares the box-shadow list with ring-*."""
+    selector = re.escape(rf".shadow-\(--shadow-insight-{shadow}\)")
+    rule = re.search(rf"^\s*{selector} {{([^}}]*)}}", built_css, re.MULTILINE)
+
+    assert rule is not None
+    assert f"--tw-shadow: var(--shadow-insight-{shadow});" in rule.group(1)
+    assert "var(--tw-ring-shadow)" in rule.group(1)

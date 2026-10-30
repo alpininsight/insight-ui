@@ -38,6 +38,8 @@
 @source inline("border-insight-{surface,raised,overlay}");
 @source inline("text-insight-{headline,body,muted,disabled,inverse}");
 @source inline("shadow-insight-{subtle,surface,raised,overlay,focus}");
+/* Tailwind's form of the shadows shares one box-shadow list with ring-*, for a shadow and a ring on one element. */
+@source inline("shadow-(--shadow-insight-{subtle,surface,raised,overlay})");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
@@ -329,8 +331,8 @@
     *   The tokens are defined in "@layer theme" below this block, not here: Tailwind writes
     *   theme shadows into its shadow-* classes as fixed values, so a theme stylesheet could
     *   not change them. The shadow-insight-* utilities read the variables instead.
-    *   They combine a token with ring-* in one box-shadow list, so a token must stay a shadow:
-    *   "0 0 #0000" removes one; "none" would invalidate the whole list, ring included.
+    *   They set box-shadow on their own, so "none" is a valid token value. Elements with one of
+    *   them show focus with an outline, not a ring: a ring is a box-shadow too and would replace it.
     *
     */
 
@@ -696,28 +698,24 @@
 }
 
 /*
-* Elevation shadows. They read the shadow tokens at runtime and combine with ring-* like
-* Tailwind's own shadow utilities (both feed the same box-shadow list).
+* Elevation shadows. They read the shadow tokens at runtime and set box-shadow alone, unlike Tailwind's
+* shadow-* that share one list with ring-*: a theme may set a token to "none" without breaking anything else.
+* Do not combine them with ring-* on one element; show focus with an outline instead.
 */
 @utility shadow-insight-subtle {
-    --tw-shadow: var(--shadow-insight-subtle);
-    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--shadow-insight-subtle);
 }
 @utility shadow-insight-surface {
-    --tw-shadow: var(--shadow-insight-surface);
-    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--shadow-insight-surface);
 }
 @utility shadow-insight-raised {
-    --tw-shadow: var(--shadow-insight-raised);
-    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--shadow-insight-raised);
 }
 @utility shadow-insight-overlay {
-    --tw-shadow: var(--shadow-insight-overlay);
-    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--shadow-insight-overlay);
 }
 @utility shadow-insight-focus {
-    --tw-shadow: var(--shadow-insight-focus);
-    box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--shadow-insight-focus);
 }
 
 /*
@@ -1223,7 +1221,7 @@
     * Includes focus ring, placeholder styling, disabled state.
     */
     .input {
-        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:outline-2 focus:outline-offset-0 focus:outline-insight-primary focus:border-insight-primary transition-colors duration-200;
 
         &:disabled {
             @apply bg-insight-raised text-insight-text-disabled cursor-not-allowed;

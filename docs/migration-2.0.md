@@ -1905,8 +1905,11 @@ These showed up in earlier notes. The current tree does not do them.
   `INSIGHT_UI["stylesheet"]`. Delete the key; a leftover one is ignored.
 - `shadow-insight-*` classes render the same shadows. They now read the
   `--shadow-insight-*` variables at runtime, so a theme stylesheet can change
-  them; the shadow color modifier (`shadow-insight-raised/50`,
-  `shadow-red-500` on the same element) no longer applies to them.
+  them, and they set `box-shadow` on their own: the shadow color modifier
+  (`shadow-insight-raised/50`, `shadow-red-500` on the same element) no longer
+  applies, and a `ring-*` on the same element replaces the shadow while it
+  shows. Inputs and the linked corner ribbon show focus with an outline
+  instead of a ring, which also stays visible in forced colors mode.
 
 Other additions you can adopt without a rename: `INSIGHT_UI["theme_stylesheet"]`
 for brand tokens without a Tailwind build (see

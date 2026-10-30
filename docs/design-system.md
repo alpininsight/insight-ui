@@ -141,10 +141,15 @@ staticfiles, also with the package CDN enabled.
   `--radius-insight-*`, `--spacing-insight-*`, `--shadow-insight-*`,
   `--font-sans` and Tailwind's `--text-*` sizes. Breakpoints cannot: media
   queries do not read variables, so Tailwind writes their values into the CSS.
-- To remove a shadow, set its token to `0 0 #0000`, not `none`. The
-  `shadow-insight-*` classes combine the token with focus rings in one
-  `box-shadow` list, and `none` makes that whole list invalid, ring included.
-  Tailwind's own `shadow-none` uses the same value.
+- A shadow token may be `none` to remove the shadow. The `shadow-insight-*`
+  classes set `box-shadow` on their own, so on one element they and a `ring-*`
+  replace each other; package elements with a shadow show focus with an
+  outline. Do the same in your own markup.
+- For a shadow and a ring on one element, e.g. a menu with a hairline ring or a
+  selected card, use Tailwind's form `shadow-(--shadow-insight-raised)` (also
+  `-subtle`, `-surface`, `-overlay`; all in the package stylesheet). It shares
+  one `box-shadow` list with `ring-*`, so its token must stay a shadow: remove
+  it with `0 0 #0000`, not `none`, which would drop the ring too.
 
 **Your own build.** Compile a stylesheet that imports the package's `input.css`
 and also scans your templates, then point `INSIGHT_UI["stylesheet"]` at its
