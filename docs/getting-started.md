@@ -190,6 +190,7 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 | `safari_mask_icon`, `safari_mask_icon_color`, `msapplication_TileColor`, `theme_color` | packaged values | Pinned-tab, tile and mobile browser-chrome colors. |
 | `meta.seo.{description,keywords,author}` | placeholder text | `<meta>` tags rendered by the base template. |
 | `load_prism`, `load_leaflet`, `load_echarts` | `False` | Opt-in third-party libraries (syntax highlighting, maps, charts). |
+| `map_tiles.{url,attribution,max_zoom}` | OpenStreetMap | Tile service of `{% geo_map %}`. The OpenStreetMap tiles are for light use under their [tile usage policy](https://operations.osmfoundation.org/policies/tiles/); point `url` at your own or a commercial tile service otherwise and keep the attribution its terms require. |
 | `JS_DEBUG` | `False` | Enable the package's browser console logging. |
 | `use_tailwind_cli` | `False` | `True` serves the output of a project-run `django-tailwind-cli` build instead of the packaged CSS. |
 | `assets.{use_minified,cdn_enabled,cdn_base_url,cdn_prefix,cdn_version}` | local, unminified | Static delivery mode; see [Static assets](static-assets.md). |

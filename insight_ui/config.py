@@ -47,6 +47,14 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     # HTMX and its WebSocket extension, loaded by insight_ui/base.html. Point these at
     # self-hosted copies (and update or clear the SRI hashes) for offline or strict-CSP
     # hosts; an empty src omits the script tag, e.g. when the host loads HTMX itself.
+    # Raster tiles of the geo_map component. The default follows the OpenStreetMap tile usage policy:
+    # the canonical URL without a/b/c subdomains and a visible attribution. Use your own or a commercial
+    # tile service for heavy use; attribution is HTML and must name the map data source.
+    "map_tiles": {
+        "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attribution": '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        "max_zoom": 19,
+    },
     "htmx": {
         "src": "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js",
         "integrity": "sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz",

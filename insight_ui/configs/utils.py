@@ -470,6 +470,7 @@ class GeoMapConfig:
         map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
         aria_label: Accessible label describing the map's purpose.
+        tag_id: Unique ID of the map; give each map on a page its own.
 
     """
 
@@ -501,6 +502,11 @@ class GeoMapConfig:
     aria_label: str = field(
         default=_("Interactive map"), metadata={"doc": _("Accessible label describing the map's purpose.")}
     )
+    tag_id: str = field(default="map", metadata={"doc": _("Unique ID of the map; give each map on a page its own.")})
+
+    def __post_init__(self) -> None:
+        """Require an ID for the map element."""
+        validate_not_empty(self, "tag_id")
 
 
 @dataclass

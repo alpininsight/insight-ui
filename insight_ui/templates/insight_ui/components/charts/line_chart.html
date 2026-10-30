@@ -10,13 +10,16 @@
     aria-describedby="{{ chart_config.tag_id }}-table"
 ></div>
 
+{{ chart_data|json_script:chart_data_id }}
+
 <script type="module">
-    var chartDom = document.getElementById("{{ chart_config.tag_id }}");
+    const data = JSON.parse(document.getElementById("{{ chart_data_id|escapejs }}").textContent);
+    var chartDom = document.getElementById("{{ chart_config.tag_id|escapejs }}");
     var myChart = echarts.init(chartDom);
     var option;
 
-    const rawData = {{ chart_config.dataset.data }};
-    const series = {{ chart_config.dataset.series|safe }}.map((name, sid) => {
+    const rawData = data.data;
+    const series = data.series.map((name, sid) => {
         return {
             name,
             type: 'line',
@@ -33,13 +36,13 @@
             }
         },
         title: {
-            text: "{{ chart_config.dataset.title }}"
+            text: data.title
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: {{ chart_config.dataset.series|safe }}
+            data: data.series
         },
         grid: {
             left: '3%',
@@ -50,7 +53,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: {{ chart_config.dataset.x_axis_legend|safe }}
+            data: data.x_axis_legend
         },
         yAxis: {
             type: 'value'
