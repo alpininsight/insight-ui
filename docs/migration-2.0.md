@@ -43,6 +43,7 @@ pattern for a host project.
 - [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
+- [ ] Give every breadcrumb item except the last a `request_url`, and select breadcrumbs as `nav ol`.
 - [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
 - [ ] Remove `trigger=` from `HtmxConfig`.
@@ -933,6 +934,9 @@ accessible name.
 - `request_url` on `LiveContentConfig`, `WebSocketConfig`, `ChatConfig`, `InfiniteScrollConfig`, `PaginationConfig`
 - `FilterConfig.name`, `QueryBuilderFieldConfig.field`
 - `BadgeListConfig.tag_id` and `BadgeListConfig.label`
+- `BreadcrumbItemConfig.text`, and `request_url` on every breadcrumb item except the last one, which is the
+  current page. `BreadcrumbsConfig` names the item without a URL. Link a level without a page of its own to the
+  nearest page, or leave it out.
 
 Before:
 
@@ -1119,6 +1123,10 @@ navbar had none, and when focused it was hidden behind the navbar.
 `#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
 to your own base template, or keep yours and expect two. A layout that renders
 `{% navbar %}` without extending `insight_ui/base.html` now needs its own.
+
+Breadcrumbs are an `<ol>` in a `<nav aria-label="Breadcrumb">`. They were a `<ul>`, the label was
+"Breadcrumb-Navigation" and the `nav` had a redundant `role="navigation"`. Update `nav ul` selectors and tests
+that look for the old name; translate "Breadcrumb" if your locale needs it.
 
 The icon wrapper is `<span class="inline-flex">`. It was a `<div>`.
 Tooltip wrappers on input, select and textarea are `<span>`. They were

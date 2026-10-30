@@ -622,7 +622,8 @@ class BreadcrumbItemConfig:
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
     def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
+        """Require a label and reject URL schemes the fields do not allow."""
+        validate_not_empty(self, "text")
         validate_urls(self)
 
 
@@ -654,6 +655,13 @@ class BreadcrumbsConfig:
     htmx: HtmxConfig | None = field(
         default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
     )
+
+    def __post_init__(self) -> None:
+        """Require a URL on every item before the last one; the last item is the current page."""
+        for item in self.items[:-1]:
+            if not item.request_url:
+                msg = f"BreadcrumbsConfig item {item.text!r} needs a request_url; only the last item may omit it."
+                raise ValueError(msg)
 
 
 @dataclass
