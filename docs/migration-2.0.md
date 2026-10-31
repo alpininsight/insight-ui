@@ -366,8 +366,8 @@ write those attributes. Pass the raw value. An already escaped string is
 escaped again.
 
 `{% surface href=... %}` allows a relative URL (no scheme, including
-`//host`, `?query` and `#fragment`) and the schemes `http`, `https` and
-`mailto`. Any other scheme raises `ValueError` while rendering. `javascript:`
+`//host`, `?query` and `#fragment`) and the schemes `http`, `https`,
+`mailto` and `tel`. Any other scheme raises `ValueError` while rendering. `javascript:`
 and `data:` are rejected. `ImageConfig.url` still accepts a `data:` URL. That
 allowlist is only the surface href.
 
@@ -1154,8 +1154,9 @@ another level. Allowed values are 2–6.
 The skip link ("Jump to main content") is the first element of `<body>` in
 `base.html`. It was rendered by `{% navbar %}`, so a page without the package
 navbar had none, and when focused it was hidden behind the navbar.
-`#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
-to your own base template, or keep yours and expect two. A layout that renders
+`#main-content`, its target, has `tabindex="-1"`. When extending the package
+base template, remove a duplicate host skip link to that destination. Retain
+links to other host destinations. A layout that renders
 `{% navbar %}` without extending `insight_ui/base.html` now needs its own.
 
 Breadcrumbs are an `<ol>` in a `<nav aria-label="Breadcrumb">`. They were a `<ul>`, the label was
