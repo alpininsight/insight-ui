@@ -261,11 +261,10 @@ class CornerRibbonConfig:
     Renders a decorative diagonal ribbon in a browser corner.
 
     Attributes:
-        text: The text displayed in the ribbon.
+        text: The text displayed in the ribbon; also the name screen readers announce.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Fill of the ribbon; the text takes the color made for it.
         request_url: Optional URL that turns the ribbon into a link.
-        aria_label: Optional accessible label for the linked ribbon.
 
     """
 
@@ -278,7 +277,7 @@ class CornerRibbonConfig:
         )
         """
 
-    text: str = field(metadata={"doc": _("The text displayed in the ribbon.")})
+    text: str = field(metadata={"doc": _("The text displayed in the ribbon; also the name screen readers announce.")})
     position: CornerPosition = field(
         default="top-right",
         metadata={"doc": _("Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.")},
@@ -290,10 +289,6 @@ class CornerRibbonConfig:
     request_url: str = field(
         default="",
         metadata={"doc": _("Optional URL that turns the ribbon into a link.")},
-    )
-    aria_label: str = field(
-        default="",
-        metadata={"doc": _("Optional accessible label for the linked ribbon.")},
     )
 
     def __post_init__(self) -> None:

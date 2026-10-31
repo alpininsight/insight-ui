@@ -20,12 +20,12 @@ class TestCornerRibbon(TemplateTagsTestCase):
         """Render a regular accessible link for an actionable ribbon."""
         rendered = self.render_template(
             "{% load insight_tags %}"
-            "{% corner_ribbon text='Beta test' color='primary' "
-            "request_url='mailto:contact@example.com' aria_label='Request a beta test by email' %}"
+            "{% corner_ribbon text='Request a beta test' color='primary' request_url='mailto:contact@example.com' %}"
         )
 
         assert 'href="mailto:contact@example.com"' in rendered
-        assert 'aria-label="Request a beta test by email"' in rendered
+        assert "aria-label" not in rendered
+        assert ">Request a beta test</a>" in rendered
         assert "pointer-events-none" not in rendered
 
     def test_does_not_lower_ribbon_text_contrast_with_opacity(self) -> None:

@@ -19,7 +19,8 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
-    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
+    "stylesheet": "insight_ui/css/tailwind.css",  # Static path of your own Tailwind build, if you compile one
+    "theme_stylesheet": "",  # Static path of a stylesheet that overrides theme tokens in @layer theme (no build needed)
     "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "content_max_width": "",  # CSS width of the content box, e.g. "64rem"; empty keeps the default of 80rem
     "align_navbar_footer_to_content": False,  # True puts navbar and footer content into the content box
@@ -27,7 +28,6 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
-    "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "register_url": "",  # URL or URL name for registration page (empty = no register button)
     "tooltip_show_delay": 400,  # Milliseconds before a tooltip appears on hover; keyboard focus shows it at once
     "brand": {

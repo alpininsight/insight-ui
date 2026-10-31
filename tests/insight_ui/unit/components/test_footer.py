@@ -113,3 +113,22 @@ def test_contact_email_is_an_address() -> None:
         FooterContactConfig(email="mailto:team@example.com")
     with pytest.raises(ValueError, match="is not an email address"):
         FooterContactConfig(email="team at example")
+
+
+def test_external_footer_link_opens_a_new_tab_and_says_so() -> None:
+    """Footer links share NavbarLinkConfig, so external opens a new tab here too, with the hidden hint."""
+    footer = FooterConfig(
+        links=[
+            NavbarLinkConfig(text="Docs", request_url="https://docs.example.com/", external=True),
+            NavbarLinkConfig(text="Home", request_url="/"),
+        ]
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    soup = BeautifulSoup(html, "html.parser")
+
+    docs = soup.find("a", href="https://docs.example.com/")
+    home = soup.find("footer").find("a", href="/")
+    assert docs["target"] == "_blank"
+    assert docs.get_text(" ", strip=True) == "Docs (opens in a new tab)"
+    assert not home.has_attr("target")
+    assert home.get_text(" ", strip=True) == "Home"

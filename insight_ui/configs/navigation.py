@@ -33,7 +33,6 @@ class NavbarBrandConfig:
 
     Attributes:
         request_url: URL to navigate to when clicking on the brand.
-        aria_label: Optional accessible label for the brand link.
         mark: Brand mark with logo and wordmark.
 
     """
@@ -49,7 +48,6 @@ class NavbarBrandConfig:
         """
 
     request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
-    aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
     mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
 
     def __post_init__(self) -> None:
@@ -70,6 +68,7 @@ class NavbarLinkConfig:
         staff_only: The link is only displayed for administrators.
         modal_id: ID of a modal dialog to open. The modal must be defined elsewhere in the template.
         dropdown: Configuration of a dropdown menu.
+        external: **True** to open the link in a new tab.
 
     """
 
@@ -99,10 +98,14 @@ class NavbarLinkConfig:
         metadata={"doc": _("ID of a modal dialog to open. The modal must be defined elsewhere in the template.")},
     )
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
+    external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
         validate_urls(self)
+        if self.external and not self.request_url:
+            msg = f"NavbarLinkConfig '{self.text}': external only applies together with request_url."
+            raise ValueError(msg)
         if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "

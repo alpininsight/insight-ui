@@ -1,8 +1,7 @@
 {% if corner_ribbon_config.request_url %}
   <a
     href="{{ corner_ribbon_config.request_url }}"
-    class="control-{{ corner_ribbon_config.color }} block py-4 text-center text-(--tone-on-action) bg-(--tone-fill) {{ rotation }} font-bold shadow-insight-raised hover:bg-(--tone-fill-hover) focus:outline-hidden focus:ring-2 focus:ring-insight-focus focus:ring-offset-2"
-    aria-label="{{ corner_ribbon_config.aria_label|default:corner_ribbon_config.text }}"
+    class="control-{{ corner_ribbon_config.color }} block py-4 text-center text-(--tone-on-action) bg-(--tone-fill) {{ rotation }} font-bold shadow-insight-raised hover:bg-(--tone-fill-hover) focus:outline-2 focus:outline-offset-2 focus:outline-insight-focus"
   >{{ corner_ribbon_config.text }}</a>
 {% else %}
   <div class="control-{{ corner_ribbon_config.color }} py-4 text-center text-(--tone-on-action) bg-(--tone-fill) {{ rotation }} font-bold shadow-insight-raised">
