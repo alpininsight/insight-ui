@@ -24,14 +24,14 @@ pattern for a host project.
 - [ ] Replace the family `-hover` / `-active` tokens with `-action-hover` / `-action-active`, and use `-text` for colored text.
 - [ ] Replace `#loading-indicator` and stop relying on an `hx-indicator` inherited from `<body>`.
 - [ ] Check first paint when the visitor has not saved a theme, including a dark operating system.
-- [ ] Remove host wrappers that add their own page padding or max-width, and review `{% page padding %}`, which is vertical only now.
+- [ ] When extending the package base, remove outer wrappers that duplicate its page padding or max-width; keep wrappers that arrange content within a page. Review `{% page padding %}`, which is vertical only now.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers, the required asterisk and the removed `#<side>-sidebar-mobile` copy. Drop a skip link of your own: `base.html` renders one.
-- [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers, the required asterisk and the removed `#<side>-sidebar-mobile` copy. When extending `base.html`, remove a duplicate skip link to its main content; retain links to other host destinations.
+- [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; re-render with `disabled=False` to restore the configured actions.
 - [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
-- [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
+- [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto` / `tel`, and pass layout-tag attributes unescaped.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
 - [ ] In a right-to-left container, ArrowLeft moves to the next tab.
@@ -366,8 +366,8 @@ write those attributes. Pass the raw value. An already escaped string is
 escaped again.
 
 `{% surface href=... %}` allows a relative URL (no scheme, including
-`//host`, `?query` and `#fragment`) and the schemes `http`, `https` and
-`mailto`. Any other scheme raises `ValueError` while rendering. `javascript:`
+`//host`, `?query` and `#fragment`) and the schemes `http`, `https`,
+`mailto` and `tel`. Any other scheme raises `ValueError` while rendering. `javascript:`
 and `data:` are rejected. `ImageConfig.url` still accepts a `data:` URL. That
 allowlist is only the surface href.
 
@@ -1002,8 +1002,12 @@ The required asterisk is `aria-hidden="true"`. v1.15.1 used
 [#774](https://github.com/alpininsight/insight-ui/pull/774).
 
 URL fields of the configs accept relative URLs and the schemes of their kind.
-Another scheme raises `ValueError` at construction. Empty fields are not
-checked.
+Another scheme raises `ValueError` at construction for ordinary strings.
+Lazy URLs, such as `reverse_lazy()`, are checked when they resolve, so a
+module-level config can be imported before the URL configuration is ready.
+Breadcrumb labels and non-final URLs are checked again on every render,
+including lazy values; an empty ancestor URL or label raises `ValueError`.
+Optional empty URL fields on other configs remain allowed.
 
 | Field | Schemes besides relative URLs |
 | --- | --- |
@@ -1150,8 +1154,9 @@ another level. Allowed values are 2–6.
 The skip link ("Jump to main content") is the first element of `<body>` in
 `base.html`. It was rendered by `{% navbar %}`, so a page without the package
 navbar had none, and when focused it was hidden behind the navbar.
-`#main-content`, its target, has `tabindex="-1"`. Remove a skip link you added
-to your own base template, or keep yours and expect two. A layout that renders
+`#main-content`, its target, has `tabindex="-1"`. When extending the package
+base template, remove a duplicate host skip link to that destination. Retain
+links to other host destinations. A layout that renders
 `{% navbar %}` without extending `insight_ui/base.html` now needs its own.
 
 Breadcrumbs are an `<ol>` in a `<nav aria-label="Breadcrumb">`. They were a `<ul>`, the label was
@@ -1273,9 +1278,11 @@ After:
 <button type="submit" aria-disabled="true">Save</button>
 ```
 
-A script that enables a disabled button removes `aria-disabled` instead of
-setting `button.disabled = false`. A script may still set the native `disabled`
-while a request runs; such a button looks disabled as well.
+Re-render the component with `disabled=False` to enable it again and restore
+its configured `href`, `onclick` or HTMX attributes. Removing `aria-disabled`
+alone cannot restore attributes omitted from the disabled markup. A script
+may still set the native `disabled` while a request runs; such a button looks
+disabled as well.
 
 Search: `a[disabled]`, `button[disabled]` and `:disabled` in host CSS, scripts
 and tests, `.disabled = false` on package buttons, and tests that expect `hx-`
@@ -1979,14 +1986,16 @@ markup that fixes those values itself, and
 column now fills the sidebar height, so `mt-auto` moves an element to the
 bottom.
 
-## Pending before 2.0.0
+## Release scope
 
-These pull requests are open. They are not merged, and they are not part of
-the tree this guide describes. Do not migrate a host to them yet.
+[#744](https://github.com/alpininsight/insight-ui/pull/744) is merged into this
+development line. Outline hover and active ink use the shared on-action token;
+the removed host `.btn-outline-<family>` rules no longer apply. Review custom
+outline styles against `docs/outline-ink-contract.md`.
 
-| Pull request | State | What it would change if it merged |
-| --- | --- | --- |
-| [#744](https://github.com/alpininsight/insight-ui/pull/744) | Open, stacked on #743 | Outline hover and active ink would use the shared on-action token. Host `.btn-outline-<family>` rules would stop applying. |
+This guide describes the source snapshot that contains it. Open pull requests
+are not part of that snapshot. Freeze an exact reviewed commit for RC1; changes
+merged later can be evaluated for RC2 without changing the published RC1.
 
 [#739](https://github.com/alpininsight/insight-ui/pull/739) and
 [#740](https://github.com/alpininsight/insight-ui/pull/740) are a 1.15
