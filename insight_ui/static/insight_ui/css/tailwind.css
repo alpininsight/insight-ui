@@ -2016,9 +2016,6 @@
     .hover\:bg-insight-base:hover {
       background-color: var(--color-insight-bg-base);
     }
-    .hover\:bg-insight-primary-action-hover:hover {
-      background-color: var(--color-insight-primary-action-hover);
-    }
     .hover\:bg-insight-raised:hover {
       background-color: var(--color-insight-bg-raised);
     }
@@ -2133,9 +2130,6 @@
   .focus-visible\:outline-insight-primary-action:focus-visible {
     outline-color: var(--color-insight-primary-action);
   }
-  .active\:bg-insight-primary-action-active:active {
-    background-color: var(--color-insight-primary-action-active);
-  }
   .disabled\:cursor-not-allowed:disabled {
     cursor: not-allowed;
   }
@@ -2155,6 +2149,23 @@
   @media (prefers-reduced-motion: reduce) {
     .motion-reduce\:transition-none {
       transition-property: none;
+    }
+  }
+  @media (width < 64rem) {
+    .max-lg\:fixed {
+      position: fixed;
+    }
+    .max-lg\:inset-0 {
+      inset: 0px;
+    }
+    .max-lg\:z-50 {
+      z-index: 50;
+    }
+    .max-lg\:hidden {
+      display: none;
+    }
+    .max-lg\:h-dvh {
+      height: 100dvh;
     }
   }
   @media (width < 48rem) {
@@ -2283,11 +2294,26 @@
     }
   }
   @media (width >= 64rem) {
+    .lg\:sticky {
+      position: sticky;
+    }
+    .lg\:top-\(--insight-navbar-height\) {
+      top: var(--insight-navbar-height);
+    }
+    .lg\:top-0 {
+      top: 0px;
+    }
     .lg\:block {
       display: block;
     }
     .lg\:hidden {
       display: none;
+    }
+    .lg\:h-\[calc\(100dvh-var\(--insight-navbar-height\)\)\] {
+      height: calc(100dvh - var(--insight-navbar-height));
+    }
+    .lg\:h-dvh {
+      height: 100dvh;
     }
     .lg\:h-full {
       height: 100%;
@@ -2325,6 +2351,9 @@
     }
     .lg\:py-3 {
       padding-block: calc(var(--spacing) * 3);
+    }
+    .lg\:pt-8 {
+      padding-top: calc(var(--spacing) * 8);
     }
     .lg\:text-6xl {
       font-size: var(--text-6xl);

@@ -28,7 +28,7 @@ pattern for a host project.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers, the required asterisk and the removed `#<side>-sidebar-mobile` copy. Drop a skip link of your own: `base.html` renders one.
 - [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
@@ -1108,6 +1108,15 @@ categories title, or the same level as the section when that title is omitted.
 v1.15.1 always used `h2`, then `h3`, then `h4`. A category heading is `h4`
 only when both the title and the categories title are rendered. Style and
 scripts should use `[data-sidebar-heading]`.
+
+`{% sidebar mobile_behavior="drawer" %}` renders its content once. v1.15.1
+rendered it twice: in the static sidebar and in a hidden copy for the mobile
+drawer, so every id in it existed twice and the table of contents stayed empty
+on small screens. The same element is now in the layout from the `lg`
+breakpoint and a drawer below it. `#<side>-sidebar-mobile` and
+`[data-mobile-drawer]` are gone; the open button's `aria-controls` names
+`#<side>-sidebar`. Search: `sidebar-mobile` and `data-mobile-drawer` in host
+CSS, scripts and tests.
 
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
