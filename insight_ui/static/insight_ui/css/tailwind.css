@@ -1724,6 +1724,9 @@
   .break-words {
     overflow-wrap: break-word;
   }
+  .wrap-anywhere {
+    overflow-wrap: anywhere;
+  }
   .text-ellipsis {
     text-overflow: ellipsis;
   }

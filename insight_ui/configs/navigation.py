@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
@@ -625,7 +626,9 @@ class BreadcrumbItemConfig:
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
     def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
+        """Require a label and reject URL schemes the fields do not allow."""
+        if not isinstance(self.text, Promise):
+            validate_not_empty(self, "text")
         validate_urls(self)
 
 
@@ -657,6 +660,22 @@ class BreadcrumbsConfig:
     htmx: HtmxConfig | None = field(
         default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
     )
+
+    def __post_init__(self) -> None:
+        """Require a URL on every item before the last one; the last item is the current page."""
+        self.validate_items()
+
+    def validate_items(self, *, resolve_lazy: bool = False) -> None:
+        """Keep lazy labels and URLs unresolved during setup, and validate them before rendering."""
+        for item in self.items:
+            if resolve_lazy or not isinstance(item.text, Promise):
+                validate_not_empty(item, "text")
+        for item in self.items[:-1]:
+            if not resolve_lazy and isinstance(item.request_url, Promise):
+                continue
+            if not item.request_url:
+                msg = f"BreadcrumbsConfig item {item.text!r} needs a request_url; only the last item may omit it."
+                raise ValueError(msg)
 
 
 @dataclass

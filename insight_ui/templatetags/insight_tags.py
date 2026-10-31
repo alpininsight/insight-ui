@@ -569,6 +569,7 @@ def breadcrumbs(
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
     config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    config.validate_items(resolve_lazy=True)
     return {"items": config.items, "htmx": config.htmx}
 
 

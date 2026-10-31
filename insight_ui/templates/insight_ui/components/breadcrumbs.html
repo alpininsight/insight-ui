@@ -1,14 +1,14 @@
 {% load i18n insight_tags %}
 
-<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
-    <ul class="flex gap-1">
+<nav aria-label="{% trans 'Breadcrumb' %}">
+    <ol class="flex flex-wrap gap-1">
         {% for item in items %}
-            <li class="flex items-center">
+            <li class="flex items-center min-w-0">
                 {% if not forloop.last %}
                     <a
-                        href="{{ item.request_url|default:'#' }}"
+                        href="{{ item.request_url }}"
                         {% htmx_attributes htmx request_url=item.request_url %}
-                        class="inline-flex gap-1 text-insight-link"
+                        class="wrap-anywhere inline-flex gap-1 text-insight-link"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
@@ -20,7 +20,7 @@
                         {% icon name="chevron-right" size="xs" %}
                     </span>
                 {% else %}
-                    <span aria-current="page" class="inline-flex gap-1 text-insight-secondary-text">
+                    <span aria-current="page" class="wrap-anywhere inline-flex gap-1 text-insight-secondary-text">
                         {% if item.icon %}
                             {% icon item.icon %}
                         {% endif %}
@@ -29,5 +29,5 @@
                 {% endif %}
             </li>
         {% endfor %}
-    </ul>
+    </ol>
 </nav>
