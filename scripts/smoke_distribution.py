@@ -147,7 +147,7 @@ def probe(environment: Path) -> None:
             "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
             "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
         },
-        INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}, "use_tailwind_cli": False},
+        INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}},
         DEFAULT_AUTO_FIELD="django.db.models.BigAutoField",
     )
     django.setup()

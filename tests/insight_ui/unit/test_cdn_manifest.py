@@ -27,9 +27,10 @@ MANIFEST_PATH = ROOT / "insight_ui/cdn_manifest.json"
 TEMPLATE_ROOT = ROOT / "insight_ui/templates"
 STATIC_ROOT = ROOT / "insight_ui/static/insight_ui"
 PACKAGE_STATIC_PREFIX = "insight_ui/"
-# Matches a quoted literal or a dotted context variable: {% insight_asset 'a/b.js' %}
+# Matches a quoted literal or a dotted context variable: {% insight_asset 'a/b.js' %}, and the main stylesheet's
+# {% insight_stylesheet %}, which loads the package default (INSIGHT_UI.stylesheet) from the CDN the same way.
 INSIGHT_ASSET_TAG = re.compile(
-    r"{%\s*insight_asset\s+(?P<argument>'[^']*'|\"[^\"]*\"|[A-Za-z_][\w.]*)",
+    r"{%\s*insight_(?:asset\s+(?P<argument>'[^']*'|\"[^\"]*\"|[A-Za-z_][\w.]*)|stylesheet\s*%})",
 )
 # Context variables the base template resolves from the package defaults.
 CONTEXT_VARIABLES = {"INSIGHT_UI.stylesheet": CONFIG_DEFAULTS["stylesheet"]}
@@ -71,7 +72,7 @@ def _template_asset_paths() -> set[str]:
     paths: set[str] = set()
     for template in sorted(TEMPLATE_ROOT.rglob("*.html")):
         for match in INSIGHT_ASSET_TAG.finditer(template.read_text()):
-            argument = match.group("argument")
+            argument = match.group("argument") or "INSIGHT_UI.stylesheet"
             if argument[0] in {"'", '"'}:
                 paths.add(argument[1:-1])
                 continue
@@ -89,7 +90,7 @@ def _template_asset_sources() -> dict[str, set[str]]:
     sources: dict[str, set[str]] = {}
     for template in sorted(TEMPLATE_ROOT.rglob("*.html")):
         for match in INSIGHT_ASSET_TAG.finditer(template.read_text()):
-            argument = match.group("argument")
+            argument = match.group("argument") or "INSIGHT_UI.stylesheet"
             if argument[0] in {"'", '"'}:
                 asset_path = argument[1:-1]
             else:
