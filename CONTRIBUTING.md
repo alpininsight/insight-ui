@@ -257,6 +257,9 @@ uv run pytest tests/insight_ui/unit/test_devtools.py \
   tests/insight_ui/unit/configs/test_docstring_integrity.py
 ```
 
+On Windows without developer mode or admin rights, the tests that redirect
+files through symlinks are skipped; CI runs them.
+
 These checks do not replace rendering tests for your completed component and its
 examples, or prove that a separate reference application already supports it.
 
