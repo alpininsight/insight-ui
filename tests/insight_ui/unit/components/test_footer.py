@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the footer component."""
 
+import pytest
 from bs4 import BeautifulSoup
+from django.template import Context, Template
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import FooterConfig, FooterContactConfig, FooterDescriptionConfig, NavbarLinkConfig
 from insight_ui.configs.utils import LegalNoticeConfig, LogoConfig
@@ -41,7 +43,7 @@ class TestFooter(TemplateTagsTestCase):
         soup = BeautifulSoup(rendered, "html.parser")
 
         # --- Assert: description ---
-        desc_title = soup.find("h4")
+        desc_title = soup.find("h2")
         assert desc_title.get_text() == "Insight UI"
 
         desc_text = soup.find("p")
@@ -77,3 +79,56 @@ class TestFooter(TemplateTagsTestCase):
         license_el = copyright_p.find("a", href="/license/")
         assert license_el is not None
         assert license_el.get_text(strip=True) == "AGPL-3.0"
+
+
+def test_footer_section_headings_are_h2() -> None:
+    """Footer sections are top-level sections of the page, so they must not jump from h1/h2 to h4."""
+    footer = FooterConfig(
+        FooterDescriptionConfig("Insight UI", "Summary"),
+        [NavbarLinkConfig("Startpage", "/")],
+        FooterContactConfig("support@example.com"),
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    soup = BeautifulSoup(html, "html.parser")
+
+    headings = soup.find("footer").find_all(["h2", "h3", "h4"])
+    assert [h.name for h in headings] == ["h2", "h2", "h2"]
+    assert [h.get_text(strip=True) for h in headings] == ["Insight UI", "Links", "Contact"]
+
+
+def test_contact_email_is_shown_and_linked_with_mailto() -> None:
+    """The address is the link text; the link adds mailto: itself."""
+    footer = FooterConfig(
+        FooterDescriptionConfig("Insight UI", "Summary"), [], FooterContactConfig(email="team@example.com")
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    link = BeautifulSoup(html, "html.parser").find("a", href="mailto:team@example.com")
+
+    assert link.get_text(strip=True) == "team@example.com"
+
+
+def test_contact_email_is_an_address() -> None:
+    """A mailto: URL or text that is no address is rejected instead of rendering a broken link."""
+    with pytest.raises(ValueError, match="without mailto:"):
+        FooterContactConfig(email="mailto:team@example.com")
+    with pytest.raises(ValueError, match="is not an email address"):
+        FooterContactConfig(email="team at example")
+
+
+def test_external_footer_link_opens_a_new_tab_and_says_so() -> None:
+    """Footer links share NavbarLinkConfig, so external opens a new tab here too, with the hidden hint."""
+    footer = FooterConfig(
+        links=[
+            NavbarLinkConfig(text="Docs", request_url="https://docs.example.com/", external=True),
+            NavbarLinkConfig(text="Home", request_url="/"),
+        ]
+    )
+    html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
+    soup = BeautifulSoup(html, "html.parser")
+
+    docs = soup.find("a", href="https://docs.example.com/")
+    home = soup.find("footer").find("a", href="/")
+    assert docs["target"] == "_blank"
+    assert docs.get_text(" ", strip=True) == "Docs (opens in a new tab)"
+    assert not home.has_attr("target")
+    assert home.get_text(" ", strip=True) == "Home"

@@ -42,6 +42,7 @@ export class Multiselect {
         this.disabled = element.dataset.disabled === "true";
         if (!element.dataset.selected || !element.dataset.selected.trim()) this.selectedValues = [];
         else this.selectedValues = JSON.parse(element.dataset.selected.replace(/'/g, '"'));
+        this.initialValues = [...this.selectedValues];
         this.focusedIndex = -1;
 
         this.combobox = this.element.querySelector('[role="combobox"]');
@@ -51,18 +52,11 @@ export class Multiselect {
         this.options = this.element.querySelector('.options');
         this.optionItems = Array.from(this.element.querySelectorAll('.option'));
         this.info = this.element.querySelector('.info');
-        this.ariaStatus = this.element.querySelector(`#${this.name}-aria-status`);
+        this.ariaStatus = this.element.querySelector("[data-multiselect-status]");
         this.selectAllBtn = this.element.querySelector('.select-all');
         this.deselectAllBtn = this.element.querySelector('.deselect-all');
 
-        // Hide already selected options
-        this.optionItems.forEach(opt => {
-            const value = opt.dataset.value ?? opt.textContent.trim();
-            if (this.selectedValues.includes(value)) {
-                opt.setAttribute('aria-selected', 'true');
-                opt.hidden = true;
-            }
-        });
+        this.syncOptions();
 
         // Only bind interactive events if not disabled
         if (!this.disabled) {
@@ -70,13 +64,36 @@ export class Multiselect {
         }
         this.renderSelected();
 
-        this.updateInfo();
-        this.updateAriaStatus();
+        // Form reset does not touch the generated hidden inputs, so restore the initial selection manually.
+        this.boundFormReset = this.resetSelection.bind(this);
+        this.form = this.element.closest('form');
+        this.form?.addEventListener('reset', this.boundFormReset);
 
         this.element.__insightInstance = this;
         Multiselect.instances.set(element, this);
 
         debugLog("New multiselect created: ", this.element, this.name);
+    }
+
+    /**
+     * Mark selected options and hide them from the list of available options.
+     */
+    syncOptions() {
+        this.optionItems.forEach(opt => {
+            const value = opt.dataset.value ?? opt.textContent.trim();
+            const selected = this.selectedValues.includes(value);
+            opt.setAttribute('aria-selected', String(selected));
+            opt.hidden = selected;
+        });
+    }
+
+    /**
+     * Restore the selection the component was rendered with, e.g. after a form reset.
+     */
+    resetSelection() {
+        this.selectedValues = [...this.initialValues];
+        this.syncOptions();
+        this.renderSelected();
     }
 
     /**
@@ -199,10 +216,10 @@ export class Multiselect {
      * @returns null If the option ist empty.
      */
     focusOption(opt) {
-        this.optionItems.forEach(o => o.classList.remove('bg-blue-50'));
+        this.optionItems.forEach(o => delete o.dataset.active);
         if (!opt) return;
 
-        opt.classList.add('bg-blue-50');
+        opt.dataset.active = '';
         this.combobox.setAttribute('aria-activedescendant', opt.id);
     }
 
@@ -218,8 +235,8 @@ export class Multiselect {
             this.deselectValue(value);
         else {
             if (this.selectedValues.length >= this.max) {
-                this.selected.classList.add('animate-shake', 'border-red-500');
-                setTimeout(() => this.selected.classList.remove('animate-shake', 'border-red-500'), 300);
+                this.selected.classList.add('animate-shake', 'border-insight-danger');
+                setTimeout(() => this.selected.classList.remove('animate-shake', 'border-insight-danger'), 300);
                 return;
             }
             this.selectedValues.push(value);
@@ -277,8 +294,9 @@ export class Multiselect {
             // Only add remove button if not disabled
             if (!this.disabled) {
                 const remove = document.createElement('button');
+                remove.type = 'button';
                 remove.innerHTML = '&times;';
-                remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
+                remove.className = 'text-insight-text-link hover:text-insight-text-link-hover ml-1';
                 remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
                 tag.appendChild(remove);
             }
@@ -425,6 +443,8 @@ export class Multiselect {
             if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
             if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
         }
+
+        this.form?.removeEventListener('reset', this.boundFormReset);
 
         Multiselect.instances.delete(this.element);
         delete this.element.__insightInstance;

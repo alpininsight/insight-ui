@@ -29,38 +29,29 @@ def assert_color_rule(css: str, class_name: str, property_name: str, token: str)
 def test_icon_colors_have_built_css(color: str, built_css: str) -> None:
     """Cover every public icon color, including inheritance and text roles."""
     rendered = Template("{% load insight_tags %}{% icon name='check' color=color %}").render(Context({"color": color}))
-    classes = BeautifulSoup(rendered, "html.parser").div["class"]
+    classes = BeautifulSoup(rendered, "html.parser").span["class"]
     if not color:
         assert not any(name.startswith("text-insight-") for name in classes)
         return
-    class_name = f"text-insight-{color}"
+    # Text roles keep their token; color families use their -text token, which is readable in both themes.
+    token = f"insight-{color}" if color.startswith("text-") else f"insight-{color}-text"
+    class_name = f"text-{token}"
     assert class_name in classes
-    assert_color_rule(built_css, class_name, "color", f"insight-{color}")
+    assert_color_rule(built_css, class_name, "color", token)
 
 
 @pytest.mark.parametrize("color", COLOR_TYPE_VALUES)
-@pytest.mark.parametrize("foreground_color", ["", *COLOR_TYPE_VALUES])
 @pytest.mark.parametrize("request_url", ["", "/beta/"])
-def test_corner_ribbon_colors_have_built_css(
-    color: str, foreground_color: str, request_url: str, built_css: str
-) -> None:
-    """Cover all background/foreground pairs in passive and linked ribbons."""
+def test_corner_ribbon_colors_have_built_css(color: str, request_url: str, built_css: str) -> None:
+    """Every ribbon color fills like a solid button and takes the text color made for that fill."""
     rendered = Template(
-        "{% load insight_tags %}"
-        "{% corner_ribbon text='Beta' color=color foreground_color=foreground_color request_url=request_url %}"
-    ).render(Context({"color": color, "foreground_color": foreground_color, "request_url": request_url}))
+        "{% load insight_tags %}{% corner_ribbon text='Beta' color=color request_url=request_url %}"
+    ).render(Context({"color": color, "request_url": request_url}))
     soup = BeautifulSoup(rendered, "html.parser")
     ribbon = soup.find("a") if request_url else soup.select_one("[role='status'] div")
-    classes = ribbon["class"]
-    background_variable = "insight-bg-raised" if color == "neutral" else f"insight-{color}"
-    if foreground_color == "neutral" or (not foreground_color and color == "neutral"):
-        foreground_variable = "insight-text-body"
-    else:
-        foreground_variable = f"insight-{foreground_color}" if foreground_color else "white"
 
-    assert f"bg-{background_variable}" in classes
-    assert f"text-{foreground_variable}" in classes
-    assert "bg-insight-neutral" not in classes
-    assert "text-insight-neutral" not in classes
-    assert_color_rule(built_css, f"bg-{background_variable}", "background-color", background_variable)
-    assert_color_rule(built_css, f"text-{foreground_variable}", "color", foreground_variable)
+    assert f"control-{color}" in ribbon["class"]
+    tone = re.search(rf"\.control-{color}\b[^{{]*{{([^}}]*)}}", built_css)
+    assert tone, f"Missing built CSS rule for .control-{color}"
+    assert "--tone-fill:" in tone.group(1)
+    assert "--tone-on-action:" in tone.group(1)

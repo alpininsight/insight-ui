@@ -228,11 +228,22 @@ def test_changes_during_apply_are_preserved(
     assert source_snapshot(public) == before
 
 
+def require_symlinks(directory: Path) -> None:
+    """Skip when this system may not create symlinks (Windows without developer mode or admin rights)."""
+    probe = directory / "symlink-probe"
+    try:
+        probe.symlink_to(directory)
+    except OSError:
+        pytest.skip("creating symlinks needs extra rights on this system")
+    probe.unlink()
+
+
 @pytest.mark.parametrize("kind", ["file", "parent", "dangling"])
 def test_redirected_targets_never_write_outside_checkout(
     scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, kind: str
 ) -> None:
     """Protect both existing files and new targets redirected through symlinks."""
+    require_symlinks(tmp_path)
     command, public, _ = scaffold
     outside = tmp_path / "outside"
     outside.mkdir()
@@ -261,6 +272,7 @@ def test_redirect_after_planning_is_rejected(
     scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Check path ownership again before applying an already validated plan."""
+    require_symlinks(tmp_path)
     command, public, _ = scaffold
     target = public / "insight_ui/configs/utils.py"
     outside = tmp_path / "outside.py"
@@ -320,6 +332,11 @@ def test_optional_js_selector_matches_template(scaffold: tuple[Command, Path, io
     script = (package / "static/insight_ui/js/insight-ui-example-panel.js").read_text()
     assert "data-insight-example-panel" in template
     assert 'querySelectorAll("[data-insight-example-panel]")' in script
+    # The license test requires the SPDX header in every package script.
+    # REUSE-IgnoreStart
+    assert script.startswith("// SPDX-FileCopyrightText: ")
+    assert "// SPDX-License-Identifier: AGPL-3.0-only" in script.splitlines()[1]
+    # REUSE-IgnoreEnd
     assert "Register the class in insight-ui-init.js" in output.getvalue()
     assert "Add component render/behavior tests" in output.getvalue()
 

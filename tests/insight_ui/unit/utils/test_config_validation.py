@@ -4,13 +4,11 @@
 
 import pytest
 from insight_ui.configs import (
-    ALERT_TYPE_VALUES,
-    BADGE_TYPE_VALUES,
-    BUTTON_TYPE_VALUES,
+    BUTTON_COLOR_VALUES,
+    BUTTON_VARIANT_VALUES,
     COLOR_TYPE_VALUES,
     CORNER_POSITION_VALUES,
     FILTER_FIELD_TYPE_VALUES,
-    FORM_FIELD_TYPE_VALUES,
     GEO_MAP_MARKER_TYPE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
@@ -18,6 +16,7 @@ from insight_ui.configs import (
     HTTP_METHOD_VALUES,
     ICON_COLOR_VALUES,
     INLINE_POSITION_VALUES,
+    SEVERITY_VALUES,
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
@@ -27,7 +26,6 @@ from insight_ui.configs import (
     BrandMarkConfig,
     ButtonConfig,
     CornerRibbonConfig,
-    FormFieldConfig,
     GeoMapDatasetConfig,
     HtmxConfig,
     IconConfig,
@@ -35,17 +33,14 @@ from insight_ui.configs import (
     InputFieldConfig,
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
-    RadioBlockConfig,
     SliderConfig,
     StatusScreenConfig,
-    ToggleViewConfig,
-    validate_alert_type,
-    validate_badge_type,
-    validate_button_type,
+    StepperItemConfig,
+    validate_button_color,
+    validate_button_variant,
     validate_color_type,
     validate_corner_position,
     validate_filter_field_type,
-    validate_form_field_type,
     validate_geo_map_marker_type,
     validate_html_button_type,
     validate_html_input_type,
@@ -53,6 +48,7 @@ from insight_ui.configs import (
     validate_http_method,
     validate_icon_color,
     validate_inline_position,
+    validate_severity,
     validate_size,
     validate_slider_legend_mode,
     validate_step_status,
@@ -319,25 +315,21 @@ def test_color_type_values_contains_expected_values() -> None:
     )
 
 
-def test_badge_type_values_extends_color_types() -> None:
-    """Test that BADGE_TYPE_VALUES includes all color types plus 'disabled'."""
-    for color in COLOR_TYPE_VALUES:
-        assert color in BADGE_TYPE_VALUES
-    assert "disabled" in BADGE_TYPE_VALUES
+def test_button_colors_have_light_but_no_grey() -> None:
+    """Buttons offer light for dark surfaces instead of a grey neutral button."""
+    assert BUTTON_COLOR_VALUES == ("primary", "secondary", "light", "info", "success", "warning", "danger")
 
 
-def test_button_type_values_extends_color_types() -> None:
-    """Test that BUTTON_TYPE_VALUES includes all color types plus 'link'."""
-    for color in COLOR_TYPE_VALUES:
-        assert color in BUTTON_TYPE_VALUES
-    assert "link" in BUTTON_TYPE_VALUES
+def test_button_variants() -> None:
+    """The visual style is a variant of its own, independent of the color."""
+    assert BUTTON_VARIANT_VALUES == ("solid", "outline", "subtle", "link", "plain")
 
 
 def test_type_values_are_tuples() -> None:
     """Test that all type value constants are immutable (tuples)."""
     assert isinstance(COLOR_TYPE_VALUES, tuple)
-    assert isinstance(BADGE_TYPE_VALUES, tuple)
-    assert isinstance(BUTTON_TYPE_VALUES, tuple)
+    assert isinstance(BUTTON_COLOR_VALUES, tuple)
+    assert isinstance(BUTTON_VARIANT_VALUES, tuple)
 
 
 # --- validate_color_type function ------------------------------------------
@@ -350,101 +342,113 @@ def test_validate_color_type_accepts_valid_values() -> None:
 
 
 def test_validate_color_type_rejects_invalid_value() -> None:
-    """Test that validate_color_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+    """Test that validate_color_type raises ValueError for invalid colors."""
+    with pytest.raises(ValueError, match="Invalid color 'invalid'"):
         validate_color_type("invalid")
 
 
 def test_validate_color_type_rejects_disabled() -> None:
-    """Test that validate_color_type rejects 'disabled' (not a color)."""
-    with pytest.raises(ValueError, match="Invalid type 'disabled'"):
+    """Disabled is a state, not a color."""
+    with pytest.raises(ValueError, match="Invalid color 'disabled'"):
         validate_color_type("disabled")
 
 
-# --- validate_badge_type function ------------------------------------------
+# --- validate_button_color / validate_button_variant -----------------------
 
 
-def test_validate_badge_type_accepts_valid_values() -> None:
-    """Test that validate_badge_type accepts all valid badge type values."""
-    for badge_type in BADGE_TYPE_VALUES:
-        validate_badge_type(badge_type)  # Should not raise
+def test_validate_button_color_accepts_valid_values() -> None:
+    """Every button color is accepted."""
+    for color in BUTTON_COLOR_VALUES:
+        validate_button_color(color)
 
 
-def test_validate_badge_type_rejects_invalid_value() -> None:
-    """Test that validate_badge_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_badge_type("invalid")
+@pytest.mark.parametrize("color", ["invalid", "link", "disabled"])
+def test_validate_button_color_rejects_invalid_values(color: str) -> None:
+    """Link is a variant and disabled a state, neither is a color."""
+    with pytest.raises(ValueError, match=f"Invalid color '{color}'"):
+        validate_button_color(color)
 
 
-def test_validate_badge_type_rejects_link() -> None:
-    """Test that validate_badge_type rejects 'link' (button-only type)."""
-    with pytest.raises(ValueError, match="Invalid type 'link'"):
-        validate_badge_type("link")
+def test_validate_button_color_points_from_neutral_to_light_and_plain() -> None:
+    """The former neutral button splits into light (dark surfaces) and the plain variant."""
+    with pytest.raises(ValueError, match=r"color='light'.*variant='plain'"):
+        validate_button_color("neutral")
 
 
-# --- validate_button_type function -----------------------------------------
+def test_validate_button_variant_accepts_valid_values() -> None:
+    """Every button variant is accepted."""
+    for variant in BUTTON_VARIANT_VALUES:
+        validate_button_variant(variant)
 
 
-def test_validate_button_type_accepts_valid_values() -> None:
-    """Test that validate_button_type accepts all valid button type values."""
-    for button_type in BUTTON_TYPE_VALUES:
-        validate_button_type(button_type)  # Should not raise
+def test_validate_button_variant_rejects_invalid_value() -> None:
+    """Unknown variants name the field and the allowed values."""
+    with pytest.raises(ValueError, match="Invalid variant 'ghost'"):
+        validate_button_variant("ghost")
 
 
-def test_validate_button_type_rejects_invalid_value() -> None:
-    """Test that validate_button_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_button_type("invalid")
+# --- ButtonConfig ----------------------------------------------------------
 
 
-# --- Config type validation via __post_init__ ------------------------------
-
-
-def test_button_config_accepts_valid_type() -> None:
-    """Test ButtonConfig accepts valid type values."""
-    for button_type in BUTTON_TYPE_VALUES:
-        config = ButtonConfig(label="Test", type=button_type)
-        assert config.type == button_type
-
-
-def test_button_config_rejects_invalid_type() -> None:
-    """Test ButtonConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        ButtonConfig(label="Test", type="invalid")
-
-
-def test_badge_config_accepts_valid_type() -> None:
-    """Test BadgeConfig accepts valid type values."""
-    for badge_type in BADGE_TYPE_VALUES:
-        config = BadgeConfig(label="Test", type=badge_type)
-        assert config.type == badge_type
-
-
-def test_badge_config_rejects_invalid_type() -> None:
-    """Test BadgeConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        BadgeConfig(label="Test", type="invalid")
-
-
-def test_badge_config_rejects_link_type() -> None:
-    """Test BadgeConfig raises ValueError for 'link' type (button-only)."""
-    with pytest.raises(ValueError, match="Invalid type 'link'"):
-        BadgeConfig(label="Test", type="link")
-
-
-# --- Default type values ---------------------------------------------------
-
-
-def test_button_config_default_type() -> None:
-    """Test ButtonConfig has correct default type."""
+def test_button_config_defaults_to_solid_primary() -> None:
+    """Without options a button is a filled primary button."""
     config = ButtonConfig(label="Test")
-    assert config.type == "primary"
+    assert (config.color, config.variant) == ("primary", "solid")
 
 
-def test_badge_config_default_type() -> None:
-    """Test BadgeConfig has correct default type."""
+@pytest.mark.parametrize("color", BUTTON_COLOR_VALUES)
+@pytest.mark.parametrize("variant", BUTTON_VARIANT_VALUES)
+def test_button_config_combines_every_color_and_variant(color: str, variant: str) -> None:
+    """Color and variant are independent."""
+    config = ButtonConfig(label="Test", color=color, variant=variant)
+    assert (config.color, config.variant) == (color, variant)
+
+
+def test_button_config_keeps_its_color_when_disabled() -> None:
+    """Disabled is a state; re-enabling the button in the browser restores its color."""
+    config = ButtonConfig(label="Test", color="danger", disabled=True, disabled_reason="")
+    assert (config.color, config.disabled) == ("danger", True)
+
+
+def test_button_config_rejects_external_without_link() -> None:
+    """External only affects links; without request_url it would be ignored silently."""
+    with pytest.raises(ValueError, match="external only applies together with request_url"):
+        ButtonConfig(label="Docs", external=True)
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        pytest.param({"on_click": "save()"}, id="on_click"),
+        pytest.param({"button_type": "submit"}, id="button_type"),
+    ],
+)
+def test_button_config_rejects_button_options_on_links(options: dict) -> None:
+    """A request_url renders an <a>, which has neither onclick handler of the config nor a button type."""
+    with pytest.raises(ValueError, match="only apply to buttons without request_url"):
+        ButtonConfig(label="Docs", request_url="/docs/", **options)
+
+
+# --- BadgeConfig -----------------------------------------------------------
+
+
+def test_badge_config_defaults() -> None:
+    """A badge is primary and enabled by default."""
     config = BadgeConfig(label="Test")
-    assert config.type == "primary"
+    assert (config.color, config.disabled) == ("primary", False)
+
+
+def test_badge_config_accepts_every_color_including_neutral() -> None:
+    """Badges keep the grey neutral color."""
+    for color in COLOR_TYPE_VALUES:
+        assert BadgeConfig(label="Test", color=color).color == color
+
+
+@pytest.mark.parametrize("color", ["invalid", "link", "disabled", "light"])
+def test_badge_config_rejects_invalid_colors(color: str) -> None:
+    """Link and light are button-only, disabled is the separate disabled field."""
+    with pytest.raises(ValueError, match=f"Invalid color '{color}'"):
+        BadgeConfig(label="Test", color=color)
 
 
 def test_corner_ribbon_config_default_color() -> None:
@@ -475,18 +479,6 @@ def test_corner_ribbon_config_rejects_disabled_color() -> None:
         CornerRibbonConfig(text="Test", color="disabled")
 
 
-def test_corner_ribbon_config_accepts_an_optional_foreground_color() -> None:
-    """Test CornerRibbonConfig accepts an optional semantic text color."""
-    config = CornerRibbonConfig(text="Test", foreground_color="secondary")
-    assert config.foreground_color == "secondary"
-
-
-def test_corner_ribbon_config_rejects_an_invalid_foreground_color() -> None:
-    """Test CornerRibbonConfig rejects an invalid semantic text color."""
-    with pytest.raises(ValueError, match="Invalid foreground_color"):
-        CornerRibbonConfig(text="Test", foreground_color="invalid")
-
-
 # =============================================================================
 # Step Status Validation
 # =============================================================================
@@ -497,7 +489,7 @@ def test_corner_ribbon_config_rejects_an_invalid_foreground_color() -> None:
 
 def test_step_status_values_contains_expected_values() -> None:
     """Test that STEP_STATUS_VALUES contains all expected values."""
-    assert STEP_STATUS_VALUES == ("active", "success", "failed", "")
+    assert STEP_STATUS_VALUES == ("pending", "current", "completed", "failed")
 
 
 def test_step_status_values_is_tuple() -> None:
@@ -531,7 +523,7 @@ def test_validate_step_status_custom_field_name() -> None:
 
 def test_minimal_stepper_config_accepts_valid_current_step_status() -> None:
     """Test MinimalStepperConfig accepts valid current_step_status values."""
-    for status in ("active", "success", "failed", ""):
+    for status in STEP_STATUS_VALUES:
         config = MinimalStepperConfig(current_step_status=status)
         assert config.current_step_status == status
 
@@ -539,155 +531,95 @@ def test_minimal_stepper_config_accepts_valid_current_step_status() -> None:
 def test_minimal_stepper_config_rejects_invalid_current_step_status() -> None:
     """Test MinimalStepperConfig raises ValueError for invalid current_step_status."""
     with pytest.raises(ValueError, match="Invalid current_step_status"):
-        MinimalStepperConfig(current_step_status="pending")
+        MinimalStepperConfig(current_step_status="active")
 
 
-def test_minimal_stepper_config_accepts_valid_items() -> None:
-    """Test MinimalStepperConfig accepts valid items list."""
-    items = ["success", "success", "active", "", ""]
-    config = MinimalStepperConfig(items=items)
-    assert config.items == items
+def test_minimal_stepper_config_accepts_valid_steps() -> None:
+    """Test MinimalStepperConfig accepts valid steps list."""
+    steps = ["completed", "completed", "current", "pending", "pending"]
+    config = MinimalStepperConfig(steps=steps)
+    assert config.steps == steps
 
 
-def test_minimal_stepper_config_rejects_invalid_items() -> None:
-    """Test MinimalStepperConfig raises ValueError for invalid items."""
-    with pytest.raises(ValueError, match=r"Invalid items\[2\]"):
-        MinimalStepperConfig(items=["success", "active", "invalid", ""])
+def test_minimal_stepper_config_rejects_invalid_steps() -> None:
+    """Test MinimalStepperConfig raises ValueError for invalid steps."""
+    with pytest.raises(ValueError, match=r"Invalid steps\[2\]"):
+        MinimalStepperConfig(steps=["completed", "current", "invalid", "pending"])
 
 
 def test_minimal_stepper_config_default_current_step_status() -> None:
     """Test MinimalStepperConfig has correct default current_step_status."""
     config = MinimalStepperConfig()
-    assert config.current_step_status == "active"
+    assert config.current_step_status == "current"
+
+
+# --- StepperItemConfig status validation -----------------------------------
+
+
+def test_stepper_item_config_defaults_to_pending() -> None:
+    """A step without status has not been reached yet."""
+    assert StepperItemConfig(title="Review").status == "pending"
+
+
+def test_stepper_item_config_rejects_invalid_status() -> None:
+    """Unknown step states fail with the field name."""
+    with pytest.raises(ValueError, match="Invalid status 'error'"):
+        StepperItemConfig(title="Review", status="error")
 
 
 # =============================================================================
-# Alert Type Validation
+# Severity Validation (alert, infobox, status screen)
 # =============================================================================
 
 
-# --- ALERT_TYPE_VALUES constant ---------------------------------------------
+SEVERITY_CONFIGS = [
+    pytest.param(lambda severity: AlertConfig(severity=severity), id="alert"),
+    pytest.param(lambda severity: InfoboxConfig(message="Test", severity=severity), id="infobox"),
+    pytest.param(lambda severity: StatusScreenConfig(title="Test", severity=severity), id="status-screen"),
+]
 
 
-def test_alert_type_values_contains_expected_values() -> None:
-    """Test that ALERT_TYPE_VALUES contains all expected values."""
-    assert ALERT_TYPE_VALUES == ("info", "success", "warning", "error")
+def test_severity_values_use_error_not_danger() -> None:
+    """Severity says what happened ('error'); 'danger' is the color role."""
+    assert SEVERITY_VALUES == ("info", "success", "warning", "error")
 
 
-def test_alert_type_values_is_tuple() -> None:
-    """Test that ALERT_TYPE_VALUES is immutable (tuple)."""
-    assert isinstance(ALERT_TYPE_VALUES, tuple)
+def test_validate_severity_accepts_valid_values() -> None:
+    """Every severity value is accepted."""
+    for severity in SEVERITY_VALUES:
+        validate_severity(severity)  # Should not raise
 
 
-def test_alert_type_values_uses_error_not_danger() -> None:
-    """Test that ALERT_TYPE_VALUES uses 'error' (semantic) not 'danger' (color token)."""
-    assert "error" in ALERT_TYPE_VALUES
-    assert "danger" not in ALERT_TYPE_VALUES
+def test_validate_severity_rejects_invalid_value() -> None:
+    """Unknown values name the field and the allowed values."""
+    with pytest.raises(ValueError, match="Invalid severity 'invalid'"):
+        validate_severity("invalid")
 
 
-# --- validate_alert_type function -------------------------------------------
+def test_validate_severity_points_from_danger_to_error() -> None:
+    """The color name 'danger' gets a hint to use 'error'."""
+    with pytest.raises(ValueError, match=r"Invalid severity 'danger'.*Use 'error'"):
+        validate_severity("danger")
 
 
-def test_validate_alert_type_accepts_valid_values() -> None:
-    """Test that validate_alert_type accepts all valid alert type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        validate_alert_type(alert_type)  # Should not raise
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_accept_every_severity(build) -> None:  # noqa: ANN001
+    """Alert, infobox and status screen share one severity vocabulary."""
+    for severity in SEVERITY_VALUES:
+        assert build(severity).severity == severity
 
 
-def test_validate_alert_type_rejects_invalid_value() -> None:
-    """Test that validate_alert_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_alert_type("invalid")
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_default_to_info(build) -> None:  # noqa: ANN001
+    """Without a severity, the message is informational."""
+    assert build("info").severity == "info"
 
 
-def test_validate_alert_type_rejects_danger() -> None:
-    """Test that validate_alert_type rejects 'danger' (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid type 'danger'"):
-        validate_alert_type("danger")
-
-
-def test_validate_alert_type_custom_field_name() -> None:
-    """Test that validate_alert_type uses the custom field name in error messages."""
-    with pytest.raises(ValueError, match="Invalid status 'bad'"):
-        validate_alert_type("bad", field_name="status")
-
-
-# --- AlertConfig type validation --------------------------------------------
-
-
-def test_alert_config_accepts_valid_type() -> None:
-    """Test AlertConfig accepts valid type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = AlertConfig(type=alert_type)
-        assert config.type == alert_type
-
-
-def test_alert_config_rejects_invalid_type() -> None:
-    """Test AlertConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        AlertConfig(type="invalid")
-
-
-def test_alert_config_rejects_danger_type() -> None:
-    """Test AlertConfig rejects 'danger' type (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid type 'danger'"):
-        AlertConfig(type="danger")
-
-
-def test_alert_config_default_type() -> None:
-    """Test AlertConfig has correct default type."""
-    config = AlertConfig()
-    assert config.type == "info"
-
-
-# --- InfoboxConfig info_type validation -------------------------------------
-
-
-def test_infobox_config_accepts_valid_info_type() -> None:
-    """Test InfoboxConfig accepts valid info_type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = InfoboxConfig(message="Test", info_type=alert_type)
-        assert config.info_type == alert_type
-
-
-def test_infobox_config_rejects_invalid_info_type() -> None:
-    """Test InfoboxConfig raises ValueError for invalid info_type."""
-    with pytest.raises(ValueError, match="Invalid info_type"):
-        InfoboxConfig(message="Test", info_type="invalid")
-
-
-def test_infobox_config_default_info_type() -> None:
-    """Test InfoboxConfig has correct default info_type."""
-    config = InfoboxConfig(message="Test")
-    assert config.info_type == "info"
-
-
-# --- StatusScreenConfig status validation -----------------------------------
-
-
-def test_status_screen_config_accepts_valid_status() -> None:
-    """Test StatusScreenConfig accepts valid status values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = StatusScreenConfig(title="Test", status=alert_type)
-        assert config.status == alert_type
-
-
-def test_status_screen_config_rejects_invalid_status() -> None:
-    """Test StatusScreenConfig raises ValueError for invalid status."""
-    with pytest.raises(ValueError, match="Invalid status"):
-        StatusScreenConfig(title="Test", status="invalid")
-
-
-def test_status_screen_config_rejects_danger_status() -> None:
-    """Test StatusScreenConfig rejects 'danger' status (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid status 'danger'"):
-        StatusScreenConfig(title="Test", status="danger")
-
-
-def test_status_screen_config_default_status() -> None:
-    """Test StatusScreenConfig has correct default status."""
-    config = StatusScreenConfig(title="Test")
-    assert config.status == "info"
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_reject_danger_with_hint(build) -> None:  # noqa: ANN001
+    """Passing the color name fails with a pointer to 'error'."""
+    with pytest.raises(ValueError, match=r"Invalid severity 'danger'.*Use 'error'"):
+        build("danger")
 
 
 # =============================================================================
@@ -918,20 +850,28 @@ def test_validate_filter_field_type_custom_field_name() -> None:
 def test_query_builder_field_config_accepts_valid_type() -> None:
     """Test QueryBuilderFieldConfig accepts valid type values."""
     for field_type in FILTER_FIELD_TYPE_VALUES:
-        config = QueryBuilderFieldConfig(field="test", label="Test", type=field_type)
+        config = QueryBuilderFieldConfig(
+            field="test", label="Test", type=field_type, operations={"exact": "is"}, values={"a": "A"}
+        )
         assert config.type == field_type
 
 
 def test_query_builder_field_config_rejects_invalid_type() -> None:
     """Test QueryBuilderFieldConfig raises ValueError for invalid type."""
     with pytest.raises(ValueError, match="Invalid type"):
-        QueryBuilderFieldConfig(field="test", label="Test", type="invalid")
+        QueryBuilderFieldConfig(field="test", label="Test", type="invalid", operations={"exact": "is"})
 
 
 def test_query_builder_field_config_default_type() -> None:
     """Test QueryBuilderFieldConfig has correct default type."""
-    config = QueryBuilderFieldConfig(field="test", label="Test")
+    config = QueryBuilderFieldConfig(field="test", label="Test", operations={"exact": "is"})
     assert config.type == "text"
+
+
+def test_query_builder_choice_field_requires_values() -> None:
+    """A choice field without values could never be filtered."""
+    with pytest.raises(ValueError, match="needs values"):
+        QueryBuilderFieldConfig(field="status", label="Status", type="choice", operations={"exact": "is"})
 
 
 # =============================================================================
@@ -997,81 +937,19 @@ def test_validate_html_input_type_custom_field_name() -> None:
 def test_input_field_config_accepts_valid_input_type() -> None:
     """Test InputFieldConfig accepts valid input_type values."""
     for input_type in HTML_INPUT_TYPE_VALUES:
-        config = InputFieldConfig(input_type=input_type)
+        config = InputFieldConfig(name="test_field", input_type=input_type)
         assert config.input_type == input_type
 
 
 def test_input_field_config_rejects_invalid_input_type() -> None:
     """Test InputFieldConfig raises ValueError for invalid input_type."""
     with pytest.raises(ValueError, match="Invalid input_type"):
-        InputFieldConfig(input_type="invalid")
+        InputFieldConfig(name="test_field", input_type="invalid")
 
 
 def test_input_field_config_default_input_type() -> None:
     """Test InputFieldConfig has correct default input_type."""
-    config = InputFieldConfig()
-    assert config.input_type == "text"
-
-
-# =============================================================================
-# Form Field Type Validation
-# =============================================================================
-
-
-# --- FORM_FIELD_TYPE_VALUES constant ----------------------------------------
-
-
-def test_form_field_type_values_contains_expected_values() -> None:
-    """Test that FORM_FIELD_TYPE_VALUES contains all expected values."""
-    expected = ("text", "password", "email", "number", "tel", "url", "date", "textarea", "select")
-    assert expected == FORM_FIELD_TYPE_VALUES
-
-
-def test_form_field_type_values_is_tuple() -> None:
-    """Test that FORM_FIELD_TYPE_VALUES is immutable (tuple)."""
-    assert isinstance(FORM_FIELD_TYPE_VALUES, tuple)
-
-
-# --- validate_form_field_type function --------------------------------------
-
-
-def test_validate_form_field_type_accepts_valid_values() -> None:
-    """Test that validate_form_field_type accepts all valid values."""
-    for field_type in FORM_FIELD_TYPE_VALUES:
-        validate_form_field_type(field_type)  # Should not raise
-
-
-def test_validate_form_field_type_rejects_invalid_value() -> None:
-    """Test that validate_form_field_type raises ValueError for invalid values."""
-    with pytest.raises(ValueError, match="Invalid input_type 'invalid'"):
-        validate_form_field_type("invalid")
-
-
-def test_validate_form_field_type_custom_field_name() -> None:
-    """Test that validate_form_field_type uses the custom field name in error messages."""
-    with pytest.raises(ValueError, match="Invalid type 'bad'"):
-        validate_form_field_type("bad", field_name="type")
-
-
-# --- FormFieldConfig input_type validation ----------------------------------
-
-
-def test_form_field_config_accepts_valid_input_type() -> None:
-    """Test FormFieldConfig accepts valid input_type values."""
-    for field_type in FORM_FIELD_TYPE_VALUES:
-        config = FormFieldConfig(input_type=field_type)
-        assert config.input_type == field_type
-
-
-def test_form_field_config_rejects_invalid_input_type() -> None:
-    """Test FormFieldConfig raises ValueError for invalid input_type."""
-    with pytest.raises(ValueError, match="Invalid input_type"):
-        FormFieldConfig(input_type="invalid")
-
-
-def test_form_field_config_default_input_type() -> None:
-    """Test FormFieldConfig has correct default input_type."""
-    config = FormFieldConfig()
+    config = InputFieldConfig(name="test_field")
     assert config.input_type == "text"
 
 
@@ -1144,28 +1022,6 @@ def test_htmx_config_default_swap_method() -> None:
     """Test HtmxConfig has correct default swap_method."""
     config = HtmxConfig()
     assert config.swap_method == "innerHTML"
-
-
-# --- RadioBlockConfig hx_swap_method validation ------------------------------
-
-
-def test_radio_block_config_accepts_valid_hx_swap_method() -> None:
-    """Test RadioBlockConfig accepts valid hx_swap_method values."""
-    for swap_method in HTMX_SWAP_METHOD_VALUES:
-        config = RadioBlockConfig(name="test", hx_swap_method=swap_method)
-        assert config.hx_swap_method == swap_method
-
-
-def test_radio_block_config_rejects_invalid_hx_swap_method() -> None:
-    """Test RadioBlockConfig raises ValueError for invalid hx_swap_method."""
-    with pytest.raises(ValueError, match="Invalid hx_swap_method"):
-        RadioBlockConfig(name="test", hx_swap_method="invalid")
-
-
-def test_radio_block_config_default_hx_swap_method() -> None:
-    """Test RadioBlockConfig has correct default hx_swap_method."""
-    config = RadioBlockConfig(name="test")
-    assert config.hx_swap_method == "outerHTML"
 
 
 # =============================================================================
@@ -1335,19 +1191,19 @@ def test_validate_slider_legend_mode_custom_field_name() -> None:
 def test_slider_config_accepts_valid_legend_mode() -> None:
     """Test SliderConfig accepts valid legend_mode values."""
     for mode in SLIDER_LEGEND_MODE_VALUES:
-        config = SliderConfig(legend_mode=mode)
+        config = SliderConfig(name="test_slider", legend_mode=mode)
         assert config.legend_mode == mode
 
 
 def test_slider_config_rejects_invalid_legend_mode() -> None:
     """Test SliderConfig raises ValueError for invalid legend_mode."""
     with pytest.raises(ValueError, match="Invalid legend_mode"):
-        SliderConfig(legend_mode="hide")
+        SliderConfig(name="test_slider", legend_mode="hide")
 
 
 def test_slider_config_default_legend_mode() -> None:
     """Test SliderConfig has correct default legend_mode."""
-    config = SliderConfig()
+    config = SliderConfig(name="test_slider")
     assert config.legend_mode == "static"
 
 
@@ -1361,7 +1217,7 @@ def test_slider_config_default_legend_mode() -> None:
 
 def test_toggle_view_type_values_contains_expected_values() -> None:
     """Test that TOGGLE_VIEW_TYPE_VALUES contains all expected values."""
-    assert TOGGLE_VIEW_TYPE_VALUES == ("card", "table", "carousel")
+    assert TOGGLE_VIEW_TYPE_VALUES == ("grid", "table", "carousel")
 
 
 def test_toggle_view_type_values_is_tuple() -> None:
@@ -1380,33 +1236,11 @@ def test_validate_toggle_view_type_accepts_valid_values() -> None:
 
 def test_validate_toggle_view_type_rejects_invalid_value() -> None:
     """Test that validate_toggle_view_type raises ValueError for invalid values."""
-    with pytest.raises(ValueError, match="Invalid current_view 'grid'"):
-        validate_toggle_view_type("grid")
+    with pytest.raises(ValueError, match="Invalid view 'card'"):
+        validate_toggle_view_type("card")
 
 
 def test_validate_toggle_view_type_custom_field_name() -> None:
     """Test that validate_toggle_view_type uses the custom field name in error messages."""
     with pytest.raises(ValueError, match="Invalid view 'bad'"):
         validate_toggle_view_type("bad", field_name="view")
-
-
-# --- ToggleViewConfig current_view validation --------------------------------
-
-
-def test_toggle_view_config_accepts_valid_current_view() -> None:
-    """Test ToggleViewConfig accepts valid current_view values."""
-    for view_type in TOGGLE_VIEW_TYPE_VALUES:
-        config = ToggleViewConfig(tag_id="test", current_view=view_type)
-        assert config.current_view == view_type
-
-
-def test_toggle_view_config_rejects_invalid_current_view() -> None:
-    """Test ToggleViewConfig raises ValueError for invalid current_view."""
-    with pytest.raises(ValueError, match="Invalid current_view"):
-        ToggleViewConfig(tag_id="test", current_view="grid")
-
-
-def test_toggle_view_config_default_current_view() -> None:
-    """Test ToggleViewConfig has correct default current_view."""
-    config = ToggleViewConfig(tag_id="test")
-    assert config.current_view == "card"

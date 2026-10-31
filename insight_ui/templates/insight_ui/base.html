@@ -1,10 +1,6 @@
 {% load static i18n insight_tags insight_assets %}
-{% if INSIGHT_UI.use_tailwind_cli %}
-    {% include "insight_ui/tailwind_cli.html" %}
-{% endif %}
-
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-[calc(var(--insight-navbar-height)+2rem)]" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,11 +21,14 @@
         <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
         <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
-        <!-- Set theme before loading any stylesheets -->
+        <!-- Set theme before loading any stylesheets: saved choice, else the system preference -->
         <script>
             (function() {
-                const theme = localStorage.getItem('insight-ui-theme') || 'light';
+                const saved = localStorage.getItem('insight-ui-theme');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = (saved === 'dark' || saved === 'light') ? saved : (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.classList.toggle('dark', theme === 'dark');
                 document.cookie = "theme=" + theme + "; path=/";
             })();
         </script>
@@ -39,15 +38,15 @@
             <script src="{{ javascript_catalog_url }}"></script>
         {% endif %}
 
-        <!-- HTMX CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- HTMX: INSIGHT_UI["htmx"] (default jsdelivr); an empty src omits the script -->
+        {% insight_htmx_scripts %}
 
         {% if INSIGHT_UI.load_prism %}
             <!-- prism (Syntax-Highlighting) CDN -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js" integrity="sha512-HiD3V4nv8fcjtouznjT9TqDNDm1EXngV331YGbfVGeKUoH+OLkRTCMzA34ecjlgSQZpdHZupdSrqHY+Hz3l6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js" referrerpolicy="no-referrer"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-BttltKXFyWnGZQcRWj6osIg7lbizJchuAMotOkdLxHxwt/Hyo+cl47bZU0QADg+Qt5DJwni3SbYGXeGMB5cBcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/diff-highlight/prism-diff-highlight.min.js" integrity="sha512-gNqZmXmzLWyg/00PDvTnX4q533JiXbxFdTWJC5hfOyHORHXOC6PtDP5Mm2Vpa4faIMONoKQADwhhbst9Ok1/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <link rel="stylesheet" href="{% insight_asset 'insight_ui/css/prism.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
         {% endif %}
@@ -65,12 +64,19 @@
 
         <script src="{% insight_asset 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
-        <!-- Main stylesheet -->
-        <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
+        <!-- Main stylesheet, then the host's theme tokens (always local, never from the CDN) -->
+        <link rel="stylesheet" href="{% insight_stylesheet %}">
+        {% if INSIGHT_UI.theme_stylesheet %}
+            <link rel="stylesheet" href="{% static INSIGHT_UI.theme_stylesheet %}">
+        {% endif %}
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base"{% with max_width=content_max_width|default:INSIGHT_UI.content_max_width %}{% if max_width %} style="--insight-content-max-width: {{ max_width }}"{% endif %}{% endwith %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {# Skip link: the first stop for the Tab key on every page; shown only while focused, above the header. #}
+        <a href="#main-content" class="p-2 text-insight-primary-on-action bg-insight-primary-action rounded-insight-control sr-only focus:not-sr-only focus:absolute focus:top-0 focus:start-0 focus:z-60">
+            {% trans 'Jump to main content' %}
+        </a>
         {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">
@@ -78,24 +84,25 @@
             {% endblock background_image %}
         </div>
 
-        <header id="header">
+        {# A sticky header stays in the flow, so nothing has to reserve its height. #}
+        <header id="header" class="{% if INSIGHT_UI.navbar_fixed %}sticky top-0{% else %}relative{% endif %} z-50">
             {% block navbar %}
             {% endblock navbar %}
         </header>
 
-        <main id="main" class="flex grow {% if INSIGHT_UI.navbar_fixed %}pt-16{% endif %}">
-            <div id="left-aside" class="flex">
+        <main id="main" class="flex grow">
+            <div id="left-aside" class="flex shrink-0">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>
-            <div id="main-content" class="relative w-full min-w-0 {% if content_fill %}flex flex-col{% endif %}">
+            <div id="main-content" tabindex="-1" class="relative w-full min-w-0 outline-hidden{% if content_fill %} flex flex-col{% endif %}">
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full leading-loose {% if content_fill %}flex flex-col grow{% endif %}">
+                <div id="content" class="w-full leading-loose{% if content_fill %} flex flex-col grow{% if not content_full_width %} insight-content-box{% endif %}{% elif not content_full_width %} insight-content-grid{% endif %}">
                     {% block content %}{% endblock content %}
                 </div>
             </div>
-            <div id="right-aside" class="flex">
+            <div id="right-aside" class="flex shrink-0">
                 {% with _sidebar_side="right" %}{% block sidebar_right %}{% endblock sidebar_right %}{% endwith %}
             </div>
         </main>
@@ -105,7 +112,7 @@
 
         {% if INSIGHT_UI.show_current_media_breakpoint %}
             <!-- Helper to visualize media breakpoints -->
-            <div class="flex fixed bottom-2 left-2 z-30 items-center size-10 text-white text-xs bg-insight-base-dark rounded-insight-full">
+            <div class="flex fixed bottom-2 left-2 z-30 items-center size-10 text-insight-text-headline-dark text-xs bg-insight-bg-base-dark rounded-insight-full">
                 <span class="w-full text-center sm:hidden">-</span>
                 <span class="hidden w-full text-center sm:block md:hidden">sm</span>
                 <span class="hidden w-full text-center md:block lg:hidden">md</span>

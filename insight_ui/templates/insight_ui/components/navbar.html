@@ -1,23 +1,17 @@
 {% load i18n insight_tags %}
 
-{# Skip-Link for Accessibility, placed BEFORE nav #}
-<a href="#main-content" class="p-2 text-white bg-insight-primary-action rounded-insight-control sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0">
-  {% trans 'Jump to main content' %}
-</a>
-
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-base border-b border-insight-surface shadow-insight-surface md:px-6"
+  class="relative{% if not align_to_content %} insight-gutter{% endif %} w-full h-(--insight-navbar-height) bg-insight-base border-b border-insight-surface shadow-insight-surface"
 >
   {# Desktop Navigation #}
-  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap">
+  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap{% if align_to_content %} insight-content-box{% endif %}">
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
         href="{{ navbar_config.brand.request_url }}"
         class="flex items-center font-bold text-xl text-insight-headline"
-        {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.mark.primary_text %}aria-label="{{ navbar_config.brand.mark.primary_text }}"{% endif %}
       >
         {% if navbar_config.brand.mark %}
           {% brand_mark config=navbar_config.brand.mark %}
@@ -50,11 +44,8 @@
                   {% if link.request_url %}
                     <a
                       href="{{ link.request_url }}"
-                      {% if link.htmx %}
-                        hx-get="{{ link.htmx.request_url|default:link.request_url }}"
-                        hx-target="{{ link.htmx.target }}"
-                        hx-swap="{{ link.htmx.swap|default:'innerHTML' }} show:window:top"
-                        hx-push-url="true"
+                      {% if link.htmx and not link.external %}
+                        {% htmx_attributes link.htmx request_url=link.htmx.request_url|default:link.request_url push_url=True swap_modifiers="show:window:top" %}
                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                       {% endif %}
                       class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
@@ -65,6 +56,7 @@
                         {% icon link.icon %}
                       {% endif %}
                       {{ link.text }}
+                      {% if link.external %}<span class="sr-only"> {% translate "(opens in a new tab)" %}</span>{% endif %}
                     </a>
                   {% elif link.dropdown %}
                     <div class="relative">
@@ -82,10 +74,7 @@
                           {% for item in link.dropdown.items %}
                             <a
                               {% if item.htmx %}
-                                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                                hx-target="{{ item.htmx.target }}"
-                                hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
-                                hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                                {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url swap_modifiers="show:window:top" %}
                                 hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
@@ -118,7 +107,7 @@
           {% endif%}
           <div class="flex gap-2 h-10">
             {% if login_url or user.is_authenticated %}
-              {% include "insight_ui/components/user_dropdown.html" with usermenu=navbar_config.usermenu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
+              {% include "insight_ui/components/user_dropdown.html" with user_menu=navbar_config.user_menu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}

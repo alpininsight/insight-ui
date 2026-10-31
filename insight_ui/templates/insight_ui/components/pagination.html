@@ -1,64 +1,64 @@
 {% load i18n insight_tags %}
 
-<!-- Pagination -->
-<nav role="navigation" aria-label="{% trans 'Pagination' %}" class="pagination" hx-indicator="#loading-indicator">
+{% comment %}
+    hx-include is inherited by the links and the page size form, so filters travel with every request.
+    The ids of the links stay the same across pages, so HTMX restores the keyboard focus after swapping.
+{% endcomment %}
+<nav
+    id="{{ pagination_config.tag_id }}"
+    aria-label="{% trans 'Pagination' %}"
+    class="pagination"
+    {% if pagination_config.htmx and include %}hx-include="{{ include }}"{% endif %}
+>
     <div class="flex gap-4 items-end w-full">
         <div class="flex flex-1 gap-1 justify-between w-full h-fit">
-            <!-- Previous and first -->
-            {% if pagination_config.current_page.has_previous %}
-                {% with page_num=pagination_config.current_page.previous_page_number|stringformat:"s" %}
-                    {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                        {% button request_url=url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
-                    {% endwith %}
-                {% endwith %}
+            {% if previous_url %}
+                {% button tag_id=pagination_config.tag_id|add:'-previous' request_url=previous_url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
-                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-previous' label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
 
-            <!-- Neighbor Pages -->
             <div class="hidden gap-1 justify-center md:flex">
-                {% for num in pagination_config.surrounding_pages %}
-                    {% if num == pagination_config.current_page.number %}
-                        <span class="btn btn-s bg-insight-primary-action-active" aria-current="page">{{ num }}</span>
-                    {% elif num == -1 %}
-                        <span class="px-4 py-1 text-insight-body">...</span>
+                {% for page in pages %}
+                    {% if page.ellipsis %}
+                        <span class="px-4 py-1 text-insight-body" aria-hidden="true">…</span>
+                    {% elif page.current %}
+                        <span id="{{ page.id }}" tabindex="-1" class="btn btn-primary btn-s bg-insight-primary-action-active border-insight-primary-action-active" aria-current="page">
+                            <span class="sr-only">{{ page.label }}</span><span aria-hidden="true">{{ page.number }}</span>
+                        </span>
                     {% else %}
-                        {% with page_num=num|stringformat:"s" %}
-                            {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                                {% button request_url=url label=num size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
-                            {% endwith %}
-                        {% endwith %}
+                        {% button tag_id=page.id request_url=page.url label=page.number size='s' aria_label=page.label htmx=pagination_config.htmx %}
                     {% endif %}
                 {% endfor %}
             </div>
 
-            <!-- Next and last -->
-            {% if pagination_config.current_page.has_next %}
-                {% with page_num=pagination_config.current_page.next_page_number|stringformat:'s' %}
-                    {% with url=pagination_config.request_url|add:'?page='|add:page_num %}
-                        {% button request_url=url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
-                    {% endwith %}
-                {% endwith %}
+            {% if next_url %}
+                {% button tag_id=pagination_config.tag_id|add:'-next' request_url=next_url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
-                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-next' label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
         </div>
 
-        {% if pagination_config.ipp_config %}
-            <!-- Items per page -->
+        {% if ipp_select %}
+            {# Without HTMX the form submits normally; a new page size starts at page 1. #}
             <form
-                id="ipp"
-                hx-get="{{ pagination_config.request_url }}"
-                hx-target="#list-container"
-                hx-trigger="change"
-                class="w-32"
+                id="{{ pagination_config.tag_id }}-ipp"
+                method="get"
+                action="{{ ipp_action }}"
+                {% if pagination_config.htmx %}{% htmx_attributes pagination_config.htmx request_url=ipp_action trigger="change" %}{% endif %}
+                class="flex gap-2 items-end"
             >
-                {% select config=pagination_config.ipp_config %}
+                {% for key, value in ipp_hidden_params %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endfor %}
+                <div class="w-32">{% select config=ipp_select %}</div>
+                {% if not pagination_config.htmx %}
+                    {% button label=_("Apply") button_type="submit" size="s" color="secondary" %}
+                {% endif %}
             </form>
         {% endif %}
     </div>
 
-    <!-- Current Page -->
     <span class="block mt-2 text-insight-body md:hidden">
         {% trans "Page" %} {{ pagination_config.current_page.number }} {% trans "of" %} {{ pagination_config.current_page.paginator.num_pages }}.
     </span>

@@ -73,7 +73,7 @@ def check_component() -> None:
     from insight_ui.config import get_config  # noqa: PLC0415
 
     rendered = Template(
-        '{% load insight_tags %}{% button label="Distribution smoke" type="primary" tag_id="distribution-smoke" %}'
+        '{% load insight_tags %}{% button label="Distribution smoke" color="primary" tag_id="distribution-smoke" %}'
     ).render(Context(get_config()))
     expected = ("<button", 'id="distribution-smoke"', "btn-primary", "Distribution smoke", "</button>")
     if not all(fragment in rendered for fragment in expected):
@@ -147,7 +147,7 @@ def probe(environment: Path) -> None:
             "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
             "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
         },
-        INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}, "use_tailwind_cli": False},
+        INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}},
         DEFAULT_AUTO_FIELD="django.db.models.BigAutoField",
     )
     django.setup()

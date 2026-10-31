@@ -39,7 +39,7 @@ Check source and rendered output rather than relying on descriptive comments:
 
 - The [modal template](../insight_ui/templates/insight_ui/components/layout/modal.html)
   declares a dialog with `aria-modal` and a title reference. Supply a unique
-  `tag_id` and meaningful title; these attributes do not prove background isolation.
+  `id` and meaningful title; these attributes do not prove background isolation.
 - The [modal](../insight_ui/static/insight_ui/js/insight-ui-modal.js) and
   [sidebar](../insight_ui/static/insight_ui/js/insight-ui-sidebar.js) implement
   Escape handling and attempt focus restoration. A paired Sidebar's mobile
@@ -55,18 +55,19 @@ Check source and rendered output rather than relying on descriptive comments:
 For `input_field`, provide a visible `label` and non-empty unique `tag_id`.
 The [input template](../insight_ui/templates/insight_ui/components/input.html)
 uses that ID for label association; `name` is not an automatic ID fallback.
-At this revision, [base fields](../insight_ui/configs/base.py) and
-[InputFieldConfig](../insight_ui/configs/input.py) have no `help_text` or `error`
-parameters. The template does not emit linked help/error paragraphs,
-`aria-invalid` or `aria-errormessage`. The
-[form template](../insight_ui/templates/insight_ui/components/form.html)'s
-`#form-error` is a plain container, not an implemented alert region.
-
-Do not document automatic error announcements or pass unsupported Config fields.
-When adding reusable error support, link instructions/errors to the control,
-explain the correction in text, and test focus and announcement behavior without
-announcing every invalid field at once. Follow the
+Form fields take `help_text` and `error_text` from
+[base fields](../insight_ui/configs/base.py). The shared partials render them as
+plain paragraphs below the control and link them with `aria-describedby` (help,
+disabled reason, error); an error also sets `aria-invalid` and
+`aria-errormessage`. A disabled field or option shows its `disabled_reason` as
+visible linked text, because a disabled control can neither take focus nor show
+a tooltip. Field texts are not live regions: only the
+[form template](../insight_ui/templates/insight_ui/components/form.html)'s error
+container (`#<tag_id>-error`, or `#form-error` without a `tag_id`) has
+`role="alert"`, so a swapped-in summary is announced once instead of every
+invalid field at the same time. This follows the
 [W3C form notification guidance](https://www.w3.org/WAI/tutorials/forms/notifications/).
+Required fields use the native `required` attribute, not `aria-required`.
 Generic fixes and their regression tests belong here; app-specific validation
 and page composition remain with the consumer.
 
@@ -74,7 +75,7 @@ and page composition remain with the consumer.
 
 Use semantic roles from [input.css](../insight_ui/utils/input.css), such as
 `text-insight-headline`, `text-insight-body`, `*-action` for filled controls and
-`*-foreground` on matching `*-soft` surfaces. Do not substitute a brand/accent
+`*-text` on matching `*-soft` surfaces. Do not substitute a brand/accent
 color for readable text just because it shares the same hue.
 
 Recheck both default light/dark themes and every new theme or override against
@@ -90,25 +91,26 @@ Never communicate an error or selection through color alone.
   [SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 
 [Token tests](../tests/insight_ui/unit/test_design_tokens.py) check selected
-action/text and foreground/soft pairs in source CSS for both themes. They do
-not measure every rendered state or prove a new theme accessible.
+pairs in source CSS for both themes: the text on each `*-action` fill and
+`*-text` on `*-soft`. They do not measure every rendered state or prove a new
+theme accessible.
 
 ## Verification And Ownership
 
 After [contributor setup](../CONTRIBUTING.md), run focused package checks:
 
 ```bash
-uv run pytest tests/insight_ui/unit/components/test_input_field.py tests/insight_ui/unit/test_design_tokens.py
-npm test -- tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
+uv run pytest tests/insight_ui/unit/components/test_form_field_messages.py tests/insight_ui/unit/test_design_tokens.py
+npx --no-install vitest run tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
 ```
 
 [Vitest is configured for jsdom](../vitest.config.js), not a real browser.
 [Utility tests](../tests/js/utils.test.js) exercise initial focus, Tab wrapping
 and cleanup in that environment. The [modal](../tests/js/modal.test.js) and
 [sidebar](../tests/js/sidebar.test.js) trap-focus checks spy on helper calls;
-they do not demonstrate a complete browser focus trap. Current
-[input-field tests](../tests/insight_ui/unit/components/test_input_field.py)
-cover Config bounds, not accessible error rendering. Add regressions for fixes.
+they do not demonstrate a complete browser focus trap. The
+[form field message tests](../tests/insight_ui/unit/components/test_form_field_messages.py)
+cover help, error and disabled-reason linking. Add regressions for fixes.
 
 Keep reusable keyboard, ARIA, focus and lifecycle tests in this package's
 [Python](../tests/insight_ui/unit/) and [JavaScript](../tests/js/) suites.

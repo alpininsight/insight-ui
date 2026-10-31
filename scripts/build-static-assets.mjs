@@ -117,7 +117,7 @@ function validateCssOutput(sourceFile, source, output) {
 
     const semanticColors = ["primary", "secondary", "success", "warning", "danger", "info"];
     const colorFamilies = [
-        ["bg", "background-color", [...semanticColors, "bg-raised"]],
+        ["bg", "background-color", semanticColors],
         ["fill", "fill", semanticColors],
         ["text", "color", [...semanticColors, "text-headline", "text-body", "text-muted", "text-link"]],
     ];
@@ -126,9 +126,9 @@ function validateCssOutput(sourceFile, source, output) {
             `.${prefix}-insight-${color}`,
             new RegExp(`\\.${prefix}-insight-${color}\\{[^}]*${property}:\\s*var\\(--color-insight-${color}\\)`),
         ])),
-        [".text-white", /\.text-white\{[^}]*color:\s*var\(--color-white\)/],
-        [".btn-primary", /\.btn-primary\{/],
-        [".btn-neutral", /\.btn-neutral\{/],
+        [".btn-primary", /\.btn-primary[,{]/],
+        [".btn-light", /\.btn-light[,{]/],
+        [".btn-outline", /\.btn-outline\{/],
         [".lg:flex-row", /\.lg\\:flex-row\{/],
         [".lg:hidden", /\.lg\\:hidden\{/],
         [".xl:block", /\.xl\\:block\{/],
