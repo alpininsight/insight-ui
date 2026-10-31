@@ -2,7 +2,6 @@
   <a
     href="{{ corner_ribbon_config.request_url }}"
     class="control-{{ corner_ribbon_config.color }} block py-4 text-center text-(--tone-on-action) bg-(--tone-fill) {{ rotation }} font-bold shadow-insight-raised hover:bg-(--tone-fill-hover) focus:outline-2 focus:outline-offset-2 focus:outline-insight-focus"
-    aria-label="{{ corner_ribbon_config.aria_label|default:corner_ribbon_config.text }}"
   >{{ corner_ribbon_config.text }}</a>
 {% else %}
   <div class="control-{{ corner_ribbon_config.color }} py-4 text-center text-(--tone-on-action) bg-(--tone-fill) {{ rotation }} font-bold shadow-insight-raised">

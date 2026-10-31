@@ -222,11 +222,10 @@ class TestNavbar(TemplateTagsTestCase):
         assert menu_link.find("svg") is not None
 
     def test_navbar_renders_brand_mark_when_configured(self) -> None:
-        """Navbar can render a controlled brand mark."""
+        """The brand link is named by the wordmark it shows; the logo beside it is decorative."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 request_url="/",
-                aria_label="Insight UI Indexpage",
                 mark=BrandMarkConfig(
                     primary_text="Insight",
                     secondary_text="UI",
@@ -245,11 +244,10 @@ class TestNavbar(TemplateTagsTestCase):
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        brand_link = soup.find("a", attrs={"aria-label": "Insight UI Indexpage"})
-        assert brand_link is not None
-        assert "Insight" in brand_link.get_text(" ", strip=True)
-        assert "UI" in brand_link.get_text(" ", strip=True)
-        assert brand_link.find("img") is not None
+        brand_link = soup.find("a", href="/")
+        assert not brand_link.has_attr("aria-label")
+        assert brand_link.get_text(" ", strip=True) == "Insight UI"
+        assert brand_link.find("img")["alt"] == ""
         assert brand_link.find("svg") is None
 
     def test_navbar_link_config_warns_without_request_url_modal_id_or_dropdown(self) -> None:
@@ -280,3 +278,40 @@ class TestNavbar(TemplateTagsTestCase):
             {"navbar_config": NavbarConfig(show_theme_toggle=True)},
         )
         assert "data-insight-theme-toggle" in rendered
+
+
+def render_navbar(config: NavbarConfig) -> BeautifulSoup:
+    """Render a navbar with the given config."""
+    from django.template import Context, Template  # noqa: PLC0415
+
+    html = Template("{% load insight_tags %}{% navbar config=config %}").render(Context({"config": config}))
+    return BeautifulSoup(html, "html.parser")
+
+
+def test_external_navbar_link_tells_screen_readers_about_the_new_tab() -> None:
+    """A navbar link that opens a new tab says so after its text; an internal one does not."""
+    soup = render_navbar(
+        NavbarConfig(
+            links=[
+                NavbarLinkConfig(text="Docs", request_url="https://example.com/", external=True),
+                NavbarLinkConfig(text="Home", request_url="/"),
+            ]
+        )
+    )
+
+    assert soup.find("a", href="https://example.com/").get_text(" ", strip=True) == "Docs (opens in a new tab)"
+    assert "Home" in [link.get_text(" ", strip=True) for link in soup.find_all("a", href="/")]
+
+
+def test_external_navbar_link_needs_a_url() -> None:
+    """A modal or dropdown entry has no URL to open in a new tab."""
+    with pytest.raises(ValueError, match="external only applies together with request_url"):
+        NavbarLinkConfig(text="About", modal_id="about", external=True)
+
+
+def test_brand_logo_without_wordmark_keeps_its_name() -> None:
+    """Without a wordmark the logo is the only content, so its alt text names the brand link."""
+    mark = BrandMarkConfig(logo=LogoConfig(url="insight_ui/svg/insight-ui-logo.svg", alt="Insight UI"))
+    soup = render_navbar(NavbarConfig(NavbarBrandConfig(request_url="/home/", mark=mark)))
+
+    assert soup.find("a", href="/home/").find("img")["alt"] == "Insight UI"

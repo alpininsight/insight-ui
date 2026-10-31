@@ -37,7 +37,8 @@ pattern for a host project.
 - [ ] In a right-to-left container, ArrowLeft moves to the next tab.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
-- [ ] Drop `foreground_color=` on `corner_ribbon`; the text follows the fill color.
+- [ ] Drop `foreground_color=` and `aria_label=` on `corner_ribbon`; the text follows the fill color and is the link name.
+- [ ] Drop `aria_label=` on `NavbarBrandConfig`; the brand link is named by its wordmark.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
@@ -820,6 +821,11 @@ colored band could fail contrast. v1.15.1 put white text on the decorative
 family color, which was not readable on every color. `neutral` fills with the
 raised surface and body text. A linked ribbon darkens on hover like a button.
 
+`aria_label` is gone as well: the ribbon's `text` is its accessible name, so
+what people see is what screen readers announce and speech control can find.
+Write the purpose into the text, e.g. "Request a beta test" instead of a short
+"Beta" with a longer label.
+
 Before:
 
 ```text
@@ -833,8 +839,23 @@ After:
 {% corner_ribbon text="Beta" color="warning" %}
 ```
 
-Search: `foreground_color` and selectors on the ribbon's `bg-insight-*` or
-`text-white` classes.
+Search: `foreground_color` and `aria_label` on `corner_ribbon`, and selectors on
+the ribbon's `bg-insight-*` or `text-white` classes.
+
+### Navbar brand link name
+
+[#786](https://github.com/alpininsight/insight-ui/pull/786).
+
+The brand link in the navbar has no `aria-label` anymore, and
+`NavbarBrandConfig.aria_label` is removed. Its name is what it shows: the
+wordmark of its `BrandMarkConfig`. v1.15.1 named it with `aria_label` or only
+`primary_text`, so "Django Insight UI" was announced as "Django", and speech
+control could not find it by the visible words. Next to a wordmark the logo is
+decorative (`alt=""`), so it is not read twice; a mark without text keeps the
+logo's `alt` as the link name.
+
+Search: `NavbarBrandConfig(` with `aria_label=`, and tests that look up the
+brand link by `aria-label`.
 
 ## Forms
 
@@ -1883,6 +1904,13 @@ These showed up in earlier notes. The current tree does not do them.
 - `login.html` is unchanged since v1.15.1, including its `flex flex-1`
   content child. `content_fill` is still only read by `base.html`. The login
   template does not take that variable.
+- Links that open a new tab add a hidden "(opens in a new tab)" after their
+  text: buttons with `external=True` (an icon-only one in its `aria-label`),
+  navbar and footer links and `{% surface href=… external=True %}`. The
+  visible text is unchanged; tests that compare the full text content of such
+  a link see the extra words. `NavbarLinkConfig.external` is new: the navbar
+  template read it before, but the config had no such field; footer links,
+  which use the same config, now honor it too.
 - Disabled previous/next pagination buttons pass `disabled_reason=""`; their
   label already states the reason, so they do not warn.
 - `{% navbar %}` without a config renders the brand from `INSIGHT_UI["brand"]`

@@ -1012,9 +1012,12 @@ class SurfaceNode(LayoutNode):
             # Render as anchor element
             external = resolved.get("external", False)
             attrs = f'href="{escape(href)}"{id_attr} class="{escape(class_str)}"'
+            new_tab_hint = ""
             if external:
                 attrs += ' target="_blank" rel="noopener noreferrer"'
-            return f"<a {attrs}>{content}</a>"
+                # A new tab is a change of context; say so to screen readers.
+                new_tab_hint = f'<span class="sr-only"> {escape(gettext("(opens in a new tab)"))}</span>'
+            return f"<a {attrs}>{content}{new_tab_hint}</a>"
 
         # Render as div element
         return f'<div{id_attr} class="{escape(class_str)}">{content}</div>'
