@@ -19,7 +19,8 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
-    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
+    "stylesheet": "insight_ui/css/tailwind.css",  # Static path of your own Tailwind build, if you compile one
+    "theme_stylesheet": "",  # Static path of a stylesheet that overrides theme tokens in @layer theme (no build needed)
     "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "content_max_width": "",  # CSS width of the content box, e.g. "64rem"; empty keeps the default of 80rem
     "align_navbar_footer_to_content": False,  # True puts navbar and footer content into the content box
@@ -27,7 +28,6 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
-    "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "register_url": "",  # URL or URL name for registration page (empty = no register button)
     "tooltip_show_delay": 400,  # Milliseconds before a tooltip appears on hover; keyboard focus shows it at once
     "brand": {
@@ -47,6 +47,14 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     # HTMX and its WebSocket extension, loaded by insight_ui/base.html. Point these at
     # self-hosted copies (and update or clear the SRI hashes) for offline or strict-CSP
     # hosts; an empty src omits the script tag, e.g. when the host loads HTMX itself.
+    # Raster tiles of the geo_map component. The default follows the OpenStreetMap tile usage policy:
+    # the canonical URL without a/b/c subdomains and a visible attribution. Use your own or a commercial
+    # tile service for heavy use; attribution is HTML and must name the map data source.
+    "map_tiles": {
+        "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attribution": '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        "max_zoom": 19,
+    },
     "htmx": {
         "src": "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js",
         "integrity": "sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz",

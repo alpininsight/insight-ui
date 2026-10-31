@@ -7,6 +7,7 @@ import warnings
 
 import pytest
 from bs4 import BeautifulSoup, Tag
+from django.template import Context, Template
 from insight_ui.configs import ButtonConfig, HtmxConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -138,3 +139,32 @@ class TestButton(TemplateTagsTestCase):
         assert button.get("data-foo") == "bar"
         assert button.get("aria-label") == "Test"
         assert button.get("hx-get") == "/api"
+
+
+def render_button(arguments: str) -> Tag:
+    """Render a button with the given tag arguments and return its element."""
+    html = Template("{% load insight_tags %}{% button " + arguments + " %}").render(Context())
+    return BeautifulSoup(html, "html.parser").find(["a", "button"])
+
+
+def test_external_link_tells_screen_readers_about_the_new_tab() -> None:
+    """A new tab is a change of context; the hint is hidden text after the visible label."""
+    link = render_button('label="Docs" request_url="https://example.com/" external=True')
+
+    assert link["target"] == "_blank"
+    assert link.get_text(" ", strip=True) == "Docs (opens in a new tab)"
+    assert link.find("span", class_="sr-only").get_text(strip=True) == "(opens in a new tab)"
+
+
+def test_external_icon_link_names_the_new_tab() -> None:
+    """An icon-only link has its name in aria-label, so the hint goes there."""
+    link = render_button('label="Docs" icon_name="arrow-right" icon_only=True request_url="/x/" external=True')
+
+    assert link["aria-label"] == "Docs (opens in a new tab)"
+
+
+def test_internal_link_has_no_new_tab_hint() -> None:
+    """Links that stay in the tab announce only their label."""
+    link = render_button('label="Docs" request_url="/docs/"')
+
+    assert link.get_text(" ", strip=True) == "Docs"

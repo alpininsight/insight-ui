@@ -215,8 +215,9 @@ from django.template.exceptions import TemplateSyntaxError
 from django.template.loader import get_template
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext
 
-from insight_ui.configs import HtmxConfig, ModalConfig, TabsConfig
+from insight_ui.configs import ButtonConfig, DataAttrConfig, HtmxConfig, IconConfig, ModalConfig, TabsConfig
 from insight_ui.configs.types import LINK_URL_SCHEMES, url_scheme
 from insight_ui.templatetags.insight_tags import build_config
 
@@ -359,6 +360,38 @@ SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
 SIDEBAR_WIDTH_ORDER: tuple[str, ...] = ("narrow", "normal", "wide")
 SIDEBAR_MIN_WIDTH_CLASSES: dict[str, str] = {"narrow": "min-w-56", "normal": "min-w-72", "wide": "min-w-96"}
 SIDEBAR_MAX_WIDTH_CLASSES: dict[str, str] = {"narrow": "max-w-56", "normal": "max-w-72", "wide": "max-w-96"}
+# Position of the button that opens a drawer or mobile drawer, below the navbar at the sidebar's edge
+SIDEBAR_OPEN_BUTTON_CLASSES: dict[str, str] = {
+    "left": "fixed top-[calc(var(--insight-navbar-height)+1rem)] start-(--insight-gutter) z-40 shadow-insight-subtle",
+    "right": "fixed top-[calc(var(--insight-navbar-height)+1rem)] end-(--insight-gutter) z-40 shadow-insight-subtle",
+}
+
+
+def _sidebar_open_button(side: str, *, static: bool) -> ButtonConfig:
+    """Build the round icon button that opens a drawer, or a static sidebar's mobile drawer.
+
+    Args:
+        side: "left" or "right".
+        static: True for the mobile toggle of a static sidebar, which only shows below lg.
+
+    Returns:
+        The button config; the sidebar script finds it by data-sidebar-toggle or data-sidebar-target.
+
+    """
+    # A static sidebar opens with the menu icon; a drawer points into the page and mirrors in RTL.
+    icon_name = "bars-3" if static and side == "left" else ("chevron-right" if side == "left" else "chevron-left")
+    return ButtonConfig(
+        label=gettext("Open sidebar"),
+        icon=IconConfig(name=icon_name, size="s"),
+        icon_only=True,
+        round=True,
+        extra_classes=SIDEBAR_OPEN_BUTTON_CLASSES[side] + (" lg:hidden" if static else ""),
+        data_attrs=[DataAttrConfig(name="sidebar-toggle" if static else "sidebar-target", value=side)],
+        aria_attrs=[
+            DataAttrConfig(name="expanded", value="false"),
+            DataAttrConfig(name="controls", value=f"{side}-sidebar"),
+        ],
+    )
 
 
 # =============================================================================
@@ -979,9 +1012,12 @@ class SurfaceNode(LayoutNode):
             # Render as anchor element
             external = resolved.get("external", False)
             attrs = f'href="{escape(href)}"{id_attr} class="{escape(class_str)}"'
+            new_tab_hint = ""
             if external:
                 attrs += ' target="_blank" rel="noopener noreferrer"'
-            return f"<a {attrs}>{content}</a>"
+                # A new tab is a change of context; say so to screen readers.
+                new_tab_hint = f'<span class="sr-only"> {escape(gettext("(opens in a new tab)"))}</span>'
+            return f"<a {attrs}>{content}{new_tab_hint}</a>"
 
         # Render as div element
         return f'<div{id_attr} class="{escape(class_str)}">{content}</div>'
@@ -1139,6 +1175,11 @@ class SidebarNode(LayoutNode):
             "width": width,
             "width_class": width_class,
             "mobile_behavior": mobile_behavior,
+            # A static sidebar with the mobile drawer is one element: in the layout from lg, a drawer below.
+            "mobile_drawer": static and mobile_behavior == "drawer",
+            "open_button": _sidebar_open_button(side, static=bool(static))
+            if not static or mobile_behavior == "drawer"
+            else None,
             "navbar_fixed": navbar_fixed,
             "wrapper_class": str(resolved.get("class", "")),
             "content": self.nodelist.render(context),

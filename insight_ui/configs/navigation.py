@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
@@ -33,7 +34,6 @@ class NavbarBrandConfig:
 
     Attributes:
         request_url: URL to navigate to when clicking on the brand.
-        aria_label: Optional accessible label for the brand link.
         mark: Brand mark with logo and wordmark.
 
     """
@@ -49,7 +49,6 @@ class NavbarBrandConfig:
         """
 
     request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
-    aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
     mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
 
     def __post_init__(self) -> None:
@@ -70,6 +69,7 @@ class NavbarLinkConfig:
         staff_only: The link is only displayed for administrators.
         modal_id: ID of a modal dialog to open. The modal must be defined elsewhere in the template.
         dropdown: Configuration of a dropdown menu.
+        external: **True** to open the link in a new tab.
 
     """
 
@@ -99,10 +99,14 @@ class NavbarLinkConfig:
         metadata={"doc": _("ID of a modal dialog to open. The modal must be defined elsewhere in the template.")},
     )
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
+    external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
         validate_urls(self)
+        if self.external and not self.request_url:
+            msg = f"NavbarLinkConfig '{self.text}': external only applies together with request_url."
+            raise ValueError(msg)
         if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "
@@ -622,7 +626,9 @@ class BreadcrumbItemConfig:
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
     def __post_init__(self) -> None:
-        """Reject URL schemes the fields do not allow."""
+        """Require a label and reject URL schemes the fields do not allow."""
+        if not isinstance(self.text, Promise):
+            validate_not_empty(self, "text")
         validate_urls(self)
 
 
@@ -654,6 +660,22 @@ class BreadcrumbsConfig:
     htmx: HtmxConfig | None = field(
         default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
     )
+
+    def __post_init__(self) -> None:
+        """Require a URL on every item before the last one; the last item is the current page."""
+        self.validate_items()
+
+    def validate_items(self, *, resolve_lazy: bool = False) -> None:
+        """Keep lazy labels and URLs unresolved during setup, and validate them before rendering."""
+        for item in self.items:
+            if resolve_lazy or not isinstance(item.text, Promise):
+                validate_not_empty(item, "text")
+        for item in self.items[:-1]:
+            if not resolve_lazy and isinstance(item.request_url, Promise):
+                continue
+            if not item.request_url:
+                msg = f"BreadcrumbsConfig item {item.text!r} needs a request_url; only the last item may omit it."
+                raise ValueError(msg)
 
 
 @dataclass
