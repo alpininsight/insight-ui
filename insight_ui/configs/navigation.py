@@ -624,7 +624,8 @@ class BreadcrumbItemConfig:
 
     def __post_init__(self) -> None:
         """Require a label and reject URL schemes the fields do not allow."""
-        validate_not_empty(self, "text")
+        if not isinstance(self.text, Promise):
+            validate_not_empty(self, "text")
         validate_urls(self)
 
 
@@ -659,10 +660,13 @@ class BreadcrumbsConfig:
 
     def __post_init__(self) -> None:
         """Require a URL on every item before the last one; the last item is the current page."""
-        self.validate_link_urls()
+        self.validate_items()
 
-    def validate_link_urls(self, *, resolve_lazy: bool = False) -> None:
-        """Keep lazy URLs unresolved during setup, but require their value before rendering."""
+    def validate_items(self, *, resolve_lazy: bool = False) -> None:
+        """Keep lazy labels and URLs unresolved during setup, and validate them before rendering."""
+        for item in self.items:
+            if resolve_lazy or not isinstance(item.text, Promise):
+                validate_not_empty(item, "text")
         for item in self.items[:-1]:
             if not resolve_lazy and isinstance(item.request_url, Promise):
                 continue

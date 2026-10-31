@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the breadcrumbs component."""
 
+import subprocess
+import sys
 from types import ModuleType
 
 import pytest
@@ -106,4 +108,32 @@ def test_lazy_link_url_is_validated_before_rendering(url: str) -> None:
         ]
     )
     with pytest.raises(ValueError, match=r"needs a request_url|is not allowed"):
+        Template("{% load insight_tags %}{% breadcrumbs config=config %}").render(Context({"config": config}))
+
+
+def test_translated_labels_can_be_configured_before_django_setup() -> None:
+    """A fresh process can declare translated navigation before the app registry is populated."""
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "from django.utils.translation import gettext_lazy; "
+            "from insight_ui.configs import BreadcrumbItemConfig, BreadcrumbsConfig; "
+            "trail = BreadcrumbsConfig(items=[BreadcrumbItemConfig(text=gettext_lazy('Home'))]); "
+            "import django; django.setup(); "
+            "from django.template import Context, Template; "
+            "template = Template('{% load insight_tags %}{% breadcrumbs config=trail %}'); "
+            "html = template.render(Context({'trail': trail})); "
+            "assert 'Home' in html",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def test_lazy_current_page_label_must_resolve_nonempty() -> None:
+    """The current page needs an accessible label even though it has no link URL."""
+    config = BreadcrumbsConfig(items=[BreadcrumbItemConfig(text=lazy(lambda: "", str)())])
+    with pytest.raises(ValueError, match="non-empty text"):
         Template("{% load insight_tags %}{% breadcrumbs config=config %}").render(Context({"config": config}))
