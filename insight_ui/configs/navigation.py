@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
@@ -658,7 +659,13 @@ class BreadcrumbsConfig:
 
     def __post_init__(self) -> None:
         """Require a URL on every item before the last one; the last item is the current page."""
+        self.validate_link_urls()
+
+    def validate_link_urls(self, *, resolve_lazy: bool = False) -> None:
+        """Keep lazy URLs unresolved during setup, but require their value before rendering."""
         for item in self.items[:-1]:
+            if not resolve_lazy and isinstance(item.request_url, Promise):
+                continue
             if not item.request_url:
                 msg = f"BreadcrumbsConfig item {item.text!r} needs a request_url; only the last item may omit it."
                 raise ValueError(msg)

@@ -2,8 +2,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the breadcrumbs component."""
 
+from types import ModuleType
+
 import pytest
 from bs4 import BeautifulSoup
+from django.http import HttpResponse
+from django.template import Context, Template
+from django.test import override_settings
+from django.urls import clear_url_caches, path, reverse_lazy
+from django.utils.functional import lazy
 from insight_ui.configs import BreadcrumbItemConfig, BreadcrumbsConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -67,3 +74,36 @@ def test_items_need_a_label() -> None:
     """An item without text would be an unnamed link."""
     with pytest.raises(ValueError, match="text"):
         BreadcrumbItemConfig(text="", request_url="/")
+
+
+def test_trail_can_be_configured_before_urlconf_population() -> None:
+    """A class-level trail may use reverse_lazy before the application URLs are loaded."""
+    urlconf = ModuleType("breadcrumb_lazy_urls")
+    urlconf.urlpatterns = []
+    with override_settings(ROOT_URLCONF=urlconf):
+        config = BreadcrumbsConfig(
+            items=[
+                BreadcrumbItemConfig(text="Home", request_url=reverse_lazy("home")),
+                BreadcrumbItemConfig(text="Now"),
+            ]
+        )
+        urlconf.urlpatterns = [path("home/", lambda _request: HttpResponse("home"), name="home")]
+        clear_url_caches()
+        rendered = Template("{% load insight_tags %}{% breadcrumbs config=config %}").render(
+            Context({"config": config})
+        )
+        assert BeautifulSoup(rendered, "html.parser").find("a")["href"] == "/home/"
+    clear_url_caches()
+
+
+@pytest.mark.parametrize("url", ["", "javascript:alert(1)"])
+def test_lazy_link_url_is_validated_before_rendering(url: str) -> None:
+    """Deferring a URL does not permit an empty or unsafe link in the rendered trail."""
+    config = BreadcrumbsConfig(
+        items=[
+            BreadcrumbItemConfig(text="Home", request_url=lazy(lambda: url, str)()),
+            BreadcrumbItemConfig(text="Now"),
+        ]
+    )
+    with pytest.raises(ValueError, match=r"needs a request_url|is not allowed"):
+        Template("{% load insight_tags %}{% breadcrumbs config=config %}").render(Context({"config": config}))
