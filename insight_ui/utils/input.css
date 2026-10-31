@@ -10,7 +10,8 @@
 *
 *   Structure:
 *   1. Tailwind Import & Configuration
-*   2. @theme - Design Tokens (colors, spacing, radii, shadows, animations)
+*   2. @theme - Design Tokens (colors, spacing, radii, animations); shadow tokens follow in
+*      a plain @layer theme block, so Tailwind does not inline them into its shadow classes
 *   3. @layer base - Browser resets, dark mode switching, default typography
 *   4. @utility - Shorthand utility classes
 *   5. @layer components - Reusable component classes (buttons, badges, inputs)
@@ -36,6 +37,9 @@
 @source inline("bg-insight-{base,surface,raised,overlay}");
 @source inline("border-insight-{surface,raised,overlay}");
 @source inline("text-insight-{headline,body,muted,disabled,inverse}");
+@source inline("shadow-insight-{subtle,surface,raised,overlay,focus}");
+/* Tailwind's form of the shadows shares one box-shadow list with ring-*, for a shadow and a ring on one element. */
+@source inline("shadow-(--shadow-insight-{subtle,surface,raised,overlay})");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
@@ -324,13 +328,13 @@
     *   - overlay: Maximum shadow for floating elements (modals)
     *   - focus:   Ring for focus states (accessibility)
     *
+    *   The tokens are defined in "@layer theme" below this block, not here: Tailwind writes
+    *   theme shadows into its shadow-* classes as fixed values, so a theme stylesheet could
+    *   not change them. The shadow-insight-* utilities read the variables instead.
+    *   They set box-shadow on their own, so "none" is a valid token value. Elements with one of
+    *   them show focus with an outline, not a ring: a ring is a box-shadow too and would replace it.
+    *
     */
-
-    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
     /*
     * ========================================================
@@ -402,6 +406,17 @@
         75% {
             transform: translate(-20px, -40px) scale(0.95);
         }
+    }
+}
+
+/* Shadow tokens, outside @theme on purpose (see "Shadows" above); used by the shadow-insight-* utilities. */
+@layer theme {
+    :root {
+        --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
     }
 }
 
@@ -683,6 +698,27 @@
 }
 
 /*
+* Elevation shadows. They read the shadow tokens at runtime and set box-shadow alone, unlike Tailwind's
+* shadow-* that share one list with ring-*: a theme may set a token to "none" without breaking anything else.
+* Do not combine them with ring-* on one element; show focus with an outline instead.
+*/
+@utility shadow-insight-subtle {
+    box-shadow: var(--shadow-insight-subtle);
+}
+@utility shadow-insight-surface {
+    box-shadow: var(--shadow-insight-surface);
+}
+@utility shadow-insight-raised {
+    box-shadow: var(--shadow-insight-raised);
+}
+@utility shadow-insight-overlay {
+    box-shadow: var(--shadow-insight-overlay);
+}
+@utility shadow-insight-focus {
+    box-shadow: var(--shadow-insight-focus);
+}
+
+/*
 * ============================================================================
 *   @layer components - Reusable Component Classes
 * ============================================================================
@@ -762,8 +798,10 @@
         align-content: start;
     }
 
+    /* min-width: 0 lets wide content (code blocks, tables) scroll inside the column instead of widening it. */
     .insight-content-grid > * {
         grid-column: content;
+        min-width: 0;
     }
 
     .insight-content-grid > .insight-full-bleed {
@@ -1183,7 +1221,7 @@
     * Includes focus ring, placeholder styling, disabled state.
     */
     .input {
-        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:outline-2 focus:outline-offset-0 focus:outline-insight-primary focus:border-insight-primary transition-colors duration-200;
 
         &:disabled {
             @apply bg-insight-raised text-insight-text-disabled cursor-not-allowed;
