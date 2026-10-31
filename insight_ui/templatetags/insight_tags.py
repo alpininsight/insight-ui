@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import MISSING, fields, is_dataclass, replace
+from dataclasses import MISSING, asdict, fields, is_dataclass, replace
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -1211,9 +1211,15 @@ def brand_mark(
     logo_position: str | _Unset = UNSET,
     css_class: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a public logo plus a two-tone wordmark."""
+    """Render a public logo plus a two-tone wordmark.
+
+    Next to a wordmark the logo is decorative, so a link around the mark is named by its text only.
+    """
     config = build_config(BrandMarkConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"brand_mark_config": config}
+    mark_logo = config.logo
+    if mark_logo is not None and (config.primary_text or config.secondary_text):
+        mark_logo = replace(mark_logo, alt="")
+    return {"brand_mark_config": config, "mark_logo": mark_logo}
 
 
 @register.inclusion_tag("insight_ui/components/corner_ribbon.html")
@@ -1224,7 +1230,6 @@ def corner_ribbon(
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1267,10 +1272,33 @@ def geo_map(
     map_height: int | _Unset = UNSET,
     datasets: list[GeoMapDatasetConfig] | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render an integrated geographic map."""
+    """Render an integrated geographic map.
+
+    Everything the script needs goes through json_script, so marker texts can never end the script, and the
+    datasets may be GeoMapDatasetConfig objects or plain dicts.
+    """
     config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"map_config": config}
+    map_data = {
+        "center": config.initial_coords,
+        "zoom": config.initial_zoom,
+        "datasets": _plain_data(config.datasets),
+        "tiles": get_config("map_tiles"),
+        "labels": {"zoom_in": _("Zoom in"), "zoom_out": _("Zoom out"), "layers": _("Map layers")},
+    }
+    return {"map_config": config, "map_data": map_data, "map_data_id": f"{config.tag_id}-data"}
+
+
+def _plain_data(value: object) -> object:
+    """Turn config objects inside lists and dicts into dicts, so json_script can serialize them."""
+    if is_dataclass(value) and not isinstance(value, type):
+        return asdict(value)
+    if isinstance(value, dict):
+        return {key: _plain_data(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_plain_data(item) for item in value]
+    return value
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
@@ -1285,7 +1313,7 @@ def bar_chart(
 ) -> dict[str, Any]:
     """Render a bar chart with Apache ECharts."""
     config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"chart_config": config}
+    return _chart_context(config)
 
 
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
@@ -1300,7 +1328,12 @@ def line_chart(
 ) -> dict[str, Any]:
     """Render a line chart with Apache ECharts."""
     config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"chart_config": config}
+    return _chart_context(config)
+
+
+def _chart_context(config: ChartConfig) -> dict[str, Any]:
+    """Hand the chart data to the script through json_script, so titles and names can never end the script."""
+    return {"chart_config": config, "chart_data": asdict(config.dataset), "chart_data_id": f"{config.tag_id}-data"}
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")

@@ -125,3 +125,12 @@ def test_surface_radius_none_removes_the_rounding() -> None:
     surface = render('{% surface radius="none" %}x{% endsurface %}').find("div")
 
     assert "rounded-none" in surface["class"]
+
+
+def test_external_surface_link_tells_screen_readers_about_the_new_tab() -> None:
+    """A linked surface that opens a new tab says so after its content; an internal one does not."""
+    external = render('{% surface href="https://example.com/" external=True %}Report{% endsurface %}').find("a")
+    internal = render('{% surface href="/report/" %}Report{% endsurface %}').find("a")
+
+    assert external.get_text(" ", strip=True) == "Report (opens in a new tab)"
+    assert internal.get_text(" ", strip=True) == "Report"

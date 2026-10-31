@@ -1,4 +1,4 @@
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
 {# Shared class list: solid is the default of .btn, so only other variants get a class; link and plain ignore the color. #}
 {% with classes="btn"|add:variant_class %}
@@ -17,7 +17,7 @@
                 {% htmx_attributes button_config.htmx request_url=button_config.htmx.request_url|default:button_config.request_url %}
             {% endif %}
             {% if button_config.external %}target="_blank" rel="noopener"{% endif %}
-            {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
+            {% if button_config.icon_only %}aria-label="{{ button_config.label }}{% if button_config.external %} {% translate '(opens in a new tab)' %}{% endif %}"{% endif %}
             {% if button_config.disabled and button_config.disabled_reason %}data-insight-tooltip="{{ button_config.disabled_reason }}"{% elif button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% elif button_config.icon_only %}data-insight-tooltip="{{ button_config.label }}"{% endif %}
             {% data_attributes button_config.data_attrs %}
             {% data_attributes button_config.aria_attrs prefix="aria" %}
@@ -55,6 +55,8 @@
         {% icon config=button_config.icon %}
     {% endif %}
     {{ button_config.label }}
+    {# A new tab is a change of context; say so to screen readers, visible text stays unchanged. #}
+    {% if button_config.external and button_config.request_url %}<span class="sr-only"> {% translate "(opens in a new tab)" %}</span>{% endif %}
     {% if button_config.icon and button_config.icon_end %}
         {% icon config=button_config.icon %}
     {% endif %}

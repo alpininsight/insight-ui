@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Template tags for Insight UI asset URLs."""
 
-from typing import TYPE_CHECKING, cast
+from collections.abc import Mapping
+from typing import cast
 
 from django import template
+from django.conf import settings
+from django.templatetags.static import static
 from django.utils.html import format_html
 from django.utils.safestring import SafeString
 
 from insight_ui.asset_urls import insight_asset_url
 from insight_ui.config import get_config
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
 
 register = template.Library()
 
@@ -32,6 +32,25 @@ def insight_asset(asset_path: str) -> str:
         The resolved URL for the asset, ready for use in templates.
 
     """
+    return insight_asset_url(asset_path)
+
+
+@register.simple_tag
+def insight_stylesheet() -> str:
+    """Resolve a configured host stylesheet locally, including package-namespaced paths.
+
+    Only the implicit package default follows the package CDN configuration.
+    An explicit stylesheet setting declares a host build even when it shares
+    the package's default static path.
+
+    Returns:
+        The host staticfiles URL or the package stylesheet URL.
+
+    """
+    asset_path = cast("str", get_config("stylesheet"))
+    user_config = getattr(settings, "INSIGHT_UI", {})
+    if isinstance(user_config, Mapping) and "stylesheet" in user_config:
+        return static(asset_path)
     return insight_asset_url(asset_path)
 
 

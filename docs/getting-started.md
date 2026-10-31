@@ -190,8 +190,10 @@ All `INSIGHT_UI` keys are optional; your mapping is deep-merged over the package
 | `safari_mask_icon`, `safari_mask_icon_color`, `msapplication_TileColor`, `theme_color` | packaged values | Pinned-tab, tile and mobile browser-chrome colors. |
 | `meta.seo.{description,keywords,author}` | placeholder text | `<meta>` tags rendered by the base template. |
 | `load_prism`, `load_leaflet`, `load_echarts` | `False` | Opt-in third-party libraries (syntax highlighting, maps, charts). |
+| `map_tiles.{url,attribution,max_zoom}` | OpenStreetMap | Tile service of `{% geo_map %}`. The OpenStreetMap tiles are for light use under their [tile usage policy](https://operations.osmfoundation.org/policies/tiles/); point `url` at your own or a commercial tile service otherwise and keep the attribution its terms require. |
 | `JS_DEBUG` | `False` | Enable the package's browser console logging. |
-| `use_tailwind_cli` | `False` | `True` serves the output of a project-run `django-tailwind-cli` build instead of the packaged CSS. |
+| `stylesheet` | `"insight_ui/css/tailwind.css"` | Static path of the main stylesheet; point it at your own Tailwind build. |
+| `theme_stylesheet` | `""` | Static path of a stylesheet that sets theme tokens anew, loaded after the main one; see [theming a host](design-system.md#theming-a-host). |
 | `assets.{use_minified,cdn_enabled,cdn_base_url,cdn_prefix,cdn_version}` | local, unminified | Static delivery mode; see [Static assets](static-assets.md). |
 | `htmx.{src,integrity,ws_src,ws_integrity}` | jsdelivr URLs with SRI | HTMX and its WebSocket extension loaded by the base template, independent of `assets`; see [self-hosted HTMX](static-assets.md#self-hosted-htmx). |
 

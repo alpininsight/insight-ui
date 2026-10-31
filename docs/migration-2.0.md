@@ -28,7 +28,7 @@ pattern for a host project.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers, the required asterisk and the removed `#<side>-sidebar-mobile` copy. Drop a skip link of your own: `base.html` renders one.
 - [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
@@ -37,7 +37,8 @@ pattern for a host project.
 - [ ] In a right-to-left container, ArrowLeft moves to the next tab.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
-- [ ] Drop `foreground_color=` on `corner_ribbon`; the text follows the fill color.
+- [ ] Drop `foreground_color=` and `aria_label=` on `corner_ribbon`; the text follows the fill color and is the link name.
+- [ ] Drop `aria_label=` on `NavbarBrandConfig`; the brand link is named by its wordmark.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
@@ -821,6 +822,11 @@ colored band could fail contrast. v1.15.1 put white text on the decorative
 family color, which was not readable on every color. `neutral` fills with the
 raised surface and body text. A linked ribbon darkens on hover like a button.
 
+`aria_label` is gone as well: the ribbon's `text` is its accessible name, so
+what people see is what screen readers announce and speech control can find.
+Write the purpose into the text, e.g. "Request a beta test" instead of a short
+"Beta" with a longer label.
+
 Before:
 
 ```text
@@ -834,8 +840,23 @@ After:
 {% corner_ribbon text="Beta" color="warning" %}
 ```
 
-Search: `foreground_color` and selectors on the ribbon's `bg-insight-*` or
-`text-white` classes.
+Search: `foreground_color` and `aria_label` on `corner_ribbon`, and selectors on
+the ribbon's `bg-insight-*` or `text-white` classes.
+
+### Navbar brand link name
+
+[#786](https://github.com/alpininsight/insight-ui/pull/786).
+
+The brand link in the navbar has no `aria-label` anymore, and
+`NavbarBrandConfig.aria_label` is removed. Its name is what it shows: the
+wordmark of its `BrandMarkConfig`. v1.15.1 named it with `aria_label` or only
+`primary_text`, so "Django Insight UI" was announced as "Django", and speech
+control could not find it by the visible words. Next to a wordmark the logo is
+decorative (`alt=""`), so it is not read twice; a mark without text keeps the
+logo's `alt` as the link name.
+
+Search: `NavbarBrandConfig(` with `aria_label=`, and tests that look up the
+brand link by `aria-label`.
 
 ## Forms
 
@@ -1112,6 +1133,15 @@ categories title, or the same level as the section when that title is omitted.
 v1.15.1 always used `h2`, then `h3`, then `h4`. A category heading is `h4`
 only when both the title and the categories title are rendered. Style and
 scripts should use `[data-sidebar-heading]`.
+
+`{% sidebar mobile_behavior="drawer" %}` renders its content once. v1.15.1
+rendered it twice: in the static sidebar and in a hidden copy for the mobile
+drawer, so every id in it existed twice and the table of contents stayed empty
+on small screens. The same element is now in the layout from the `lg`
+breakpoint and a drawer below it. `#<side>-sidebar-mobile` and
+`[data-mobile-drawer]` are gone; the open button's `aria-controls` names
+`#<side>-sidebar`. Search: `sidebar-mobile` and `data-mobile-drawer` in host
+CSS, scripts and tests.
 
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
@@ -1882,6 +1912,13 @@ These showed up in earlier notes. The current tree does not do them.
 - `login.html` is unchanged since v1.15.1, including its `flex flex-1`
   content child. `content_fill` is still only read by `base.html`. The login
   template does not take that variable.
+- Links that open a new tab add a hidden "(opens in a new tab)" after their
+  text: buttons with `external=True` (an icon-only one in its `aria-label`),
+  navbar and footer links and `{% surface href=… external=True %}`. The
+  visible text is unchanged; tests that compare the full text content of such
+  a link see the extra words. `NavbarLinkConfig.external` is new: the navbar
+  template read it before, but the config had no such field; footer links,
+  which use the same config, now honor it too.
 - Disabled previous/next pagination buttons pass `disabled_reason=""`; their
   label already states the reason, so they do not warn.
 - `{% navbar %}` without a config renders the brand from `INSIGHT_UI["brand"]`
@@ -1900,12 +1937,39 @@ These showed up in earlier notes. The current tree does not do them.
 - Tailwind utilities are generated from the package sources. A class that
   appears only in a host template is not in `tailwind.css`. That was already
   the case. Host utilities belong in the host build.
+- `{% geo_map %}` keeps the element id `map` and the screen-reader list id
+  `map-locations-list` when `tag_id` is not set. Tiles now come from
+  `tile.openstreetmap.org` without the a/b/c subdomains and go up to zoom
+  level 19. Marker titles, descriptions and layer names are shown as text, so
+  HTML in them is no longer rendered. Datasets as `GeoMapDatasetConfig` or as
+  dicts both work.
+- Bar and line charts render titles, series names and axis labels as given;
+  quotes in them no longer break the chart.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
+  With `assets.cdn_enabled`, a stylesheet set in `INSIGHT_UI["stylesheet"]`
+  is now served from the host's staticfiles, whatever its path; only the
+  unset default comes from the CDN. Before, it pointed at the package CDN,
+  where it never existed.
+- `INSIGHT_UI["use_tailwind_cli"]` is gone. It never took effect: the template
+  it included only loaded the `tailwind_cli` tag library, which does not reach
+  `base.html`. Running `manage.py tailwind runserver` needs only
+  `django_tailwind_cli` in `INSTALLED_APPS`; load its output through
+  `INSIGHT_UI["stylesheet"]`. Delete the key; a leftover one is ignored.
+- `shadow-insight-*` classes render the same shadows. They now read the
+  `--shadow-insight-*` variables at runtime, so a theme stylesheet can change
+  them, and they set `box-shadow` on their own: the shadow color modifier
+  (`shadow-insight-raised/50`, `shadow-red-500` on the same element) no longer
+  applies, and a `ring-*` on the same element replaces the shadow while it
+  shows. Inputs and the linked corner ribbon show focus with an outline
+  instead of a ring, which also stays visible in forced colors mode.
 
-Other additions you can adopt without a rename: `download` on link buttons
+Other additions you can adopt without a rename: `INSIGHT_UI["theme_stylesheet"]`
+for brand tokens without a Tailwind build (see
+[theming a host](design-system.md#theming-a-host)), `download` on link buttons
 (`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
-`BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
+`BadgeListConfig`, `MessageDialogConfig`, `GeoMapMarkerConfig`, `tag_id` on
+`geo_map` for several maps on one page, `INSIGHT_UI["map_tiles"]`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
 `LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
 `swap` and `global_indicator` overrides of `{% htmx_attributes %}` for host
