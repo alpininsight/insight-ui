@@ -44,7 +44,7 @@
                   {% if link.request_url %}
                     <a
                       href="{{ link.request_url }}"
-                      {% if link.htmx %}
+                      {% if link.htmx and not link.external %}
                         {% htmx_attributes link.htmx request_url=link.htmx.request_url|default:link.request_url push_url=True swap_modifiers="show:window:top" %}
                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                       {% endif %}
