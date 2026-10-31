@@ -1929,6 +1929,14 @@ These showed up in earlier notes. The current tree does not do them.
 - Tailwind utilities are generated from the package sources. A class that
   appears only in a host template is not in `tailwind.css`. That was already
   the case. Host utilities belong in the host build.
+- `{% geo_map %}` keeps the element id `map` and the screen-reader list id
+  `map-locations-list` when `tag_id` is not set. Tiles now come from
+  `tile.openstreetmap.org` without the a/b/c subdomains and go up to zoom
+  level 19. Marker titles, descriptions and layer names are shown as text, so
+  HTML in them is no longer rendered. Datasets as `GeoMapDatasetConfig` or as
+  dicts both work.
+- Bar and line charts render titles, series names and axis labels as given;
+  quotes in them no longer break the chart.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
   With `assets.cdn_enabled`, a stylesheet set in `INSIGHT_UI["stylesheet"]`
@@ -1952,7 +1960,8 @@ Other additions you can adopt without a rename: `INSIGHT_UI["theme_stylesheet"]`
 for brand tokens without a Tailwind build (see
 [theming a host](design-system.md#theming-a-host)), `download` on link buttons
 (`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
-`BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
+`BadgeListConfig`, `MessageDialogConfig`, `GeoMapMarkerConfig`, `tag_id` on
+`geo_map` for several maps on one page, `INSIGHT_UI["map_tiles"]`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,
 `LegalNoticeConfig.holder_url` / `holder_logo`, the `method`, `target`,
 `swap` and `global_indicator` overrides of `{% htmx_attributes %}` for host
