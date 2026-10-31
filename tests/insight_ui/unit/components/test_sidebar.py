@@ -184,3 +184,24 @@ def test_base_aside_columns_do_not_shrink_fit_width_sidebars() -> None:
 
     assert "shrink-0" in soup.find(id="left-aside")["class"]
     assert "shrink-0" in soup.find(id="right-aside")["class"]
+
+
+@pytest.mark.parametrize(
+    "arguments", ['side="left" mobile_behavior="drawer"', 'side="left"', 'side="left" static=False']
+)
+def test_sidebar_content_is_rendered_once(arguments: str) -> None:
+    """Ids in the content stay unique and a script finds its target, also with the mobile drawer."""
+    template = Template("{% load layout_tags %}{% sidebar " + arguments + ' %}<div id="toc"></div>{% endsidebar %}')
+    soup = BeautifulSoup(template.render(Context()), "html.parser")
+
+    assert len(soup.find_all(id="toc")) == 1
+    assert len(soup.find_all("aside")) == 1
+
+
+@pytest.mark.parametrize("arguments", ['side="left" mobile_behavior="drawer"', 'side="right" static=False'])
+def test_sidebar_button_controls_the_rendered_sidebar(arguments: str) -> None:
+    """The open button names the element it opens."""
+    soup = BeautifulSoup(render_sidebar(arguments), "html.parser")
+    button = soup.find("button", attrs={"aria-controls": True})
+
+    assert soup.find(id=button["aria-controls"]).find("aside") is not None

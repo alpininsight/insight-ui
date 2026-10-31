@@ -28,7 +28,7 @@ pattern for a host project.
 - [ ] Drop host offsets for the fixed navbar (`pt-16`, `top-16`); set `--insight-navbar-height` for a taller navbar.
 - [ ] Wait for tooltips in browser tests, or set `INSIGHT_UI["tooltip_show_delay"]` to `0`.
 - [ ] Point form error targets at `#<tag_id>-error` when the form has a `tag_id`.
-- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers and the required asterisk. Drop a skip link of your own: `base.html` renders one.
+- [ ] Update selectors and DOM tests for footer headings, icon wrappers, tooltip wrappers, the required asterisk and the removed `#<side>-sidebar-mobile` copy. Drop a skip link of your own: `base.html` renders one.
 - [ ] Expect `aria-disabled="true"` instead of `disabled` on disabled buttons and links, with no `href`, `onclick` or `hx-*`; enable them again by removing `aria-disabled`.
 - [ ] Update selectors for toggle and radio block labels (`.choice`, neutral by default; `variant="outline"` is closest to the old look) and the switch track (`.switch-track`).
 - [ ] Keep `{% surface %}` hrefs relative or `http` / `https` / `mailto`, and pass layout-tag attributes unescaped.
@@ -1130,6 +1130,15 @@ v1.15.1 always used `h2`, then `h3`, then `h4`. A category heading is `h4`
 only when both the title and the categories title are rendered. Style and
 scripts should use `[data-sidebar-heading]`.
 
+`{% sidebar mobile_behavior="drawer" %}` renders its content once. v1.15.1
+rendered it twice: in the static sidebar and in a hidden copy for the mobile
+drawer, so every id in it existed twice and the table of contents stayed empty
+on small screens. The same element is now in the layout from the `lg`
+breakpoint and a drawer below it. `#<side>-sidebar-mobile` and
+`[data-mobile-drawer]` are gone; the open button's `aria-controls` names
+`#<side>-sidebar`. Search: `sidebar-mobile` and `data-mobile-drawer` in host
+CSS, scripts and tests.
+
 `heading_level` on card, app card, flip card, accordion and infinite scroll
 defaults to `3`, so an existing `h3` selector still matches until a host sets
 another level. Allowed values are 2–6.
@@ -1922,8 +1931,26 @@ These showed up in earlier notes. The current tree does not do them.
   the case. Host utilities belong in the host build.
 - Context processors, `get_config()` and the public asset URL helper are
   unchanged apart from the new `INSIGHT_UI` keys above and `tooltip_show_delay`.
+  With `assets.cdn_enabled`, a stylesheet set in `INSIGHT_UI["stylesheet"]`
+  is now served from the host's staticfiles, whatever its path; only the
+  unset default comes from the CDN. Before, it pointed at the package CDN,
+  where it never existed.
+- `INSIGHT_UI["use_tailwind_cli"]` is gone. It never took effect: the template
+  it included only loaded the `tailwind_cli` tag library, which does not reach
+  `base.html`. Running `manage.py tailwind runserver` needs only
+  `django_tailwind_cli` in `INSTALLED_APPS`; load its output through
+  `INSIGHT_UI["stylesheet"]`. Delete the key; a leftover one is ignored.
+- `shadow-insight-*` classes render the same shadows. They now read the
+  `--shadow-insight-*` variables at runtime, so a theme stylesheet can change
+  them, and they set `box-shadow` on their own: the shadow color modifier
+  (`shadow-insight-raised/50`, `shadow-red-500` on the same element) no longer
+  applies, and a `ring-*` on the same element replaces the shadow while it
+  shows. Inputs and the linked corner ribbon show focus with an outline
+  instead of a ring, which also stays visible in forced colors mode.
 
-Other additions you can adopt without a rename: `download` on link buttons
+Other additions you can adopt without a rename: `INSIGHT_UI["theme_stylesheet"]`
+for brand tokens without a Tailwind build (see
+[theming a host](design-system.md#theming-a-host)), `download` on link buttons
 (`True` or an empty string uses the default filename; a string suggests one), `heading_level`,
 `BadgeListConfig`, `MessageDialogConfig`, `data_attrs` on form fields,
 `required` on checkbox and toggle, removable badges,

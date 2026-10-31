@@ -99,7 +99,6 @@ INSIGHT_UI = {
     "load_leaflet": False,  # Enable only when previewing maps.
     "load_echarts": False,  # Enable only when previewing charts.
     "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
-    "use_tailwind_cli": False,  # Use npm run build:static-all after changing styles.
     "navbar_fixed": False,
     "assets": {"cdn_enabled": False, "use_minified": False},
 }
