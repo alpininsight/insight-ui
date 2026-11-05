@@ -1857,10 +1857,6 @@ msgstr "Schweregrad der Meldung."
 msgid "Severity of the status."
 msgstr "Schweregrad des Status."
 
-#: configs/list.py:55
-msgid "Shared HTMX options for the requests, e.g. indicator or vals."
-msgstr "Gemeinsame HTMX-Optionen für die Anfragen, z. B. „indicator“ oder „vals“."
-
 #: configs/navigation.py:941
 msgid "Shared request options such as push_url or a loading indicator."
 msgstr "Gemeinsam genutzte Anforderungsoptionen wie „push_url“ oder eine Ladeanzeige."
@@ -2545,3 +2541,7 @@ msgstr "Folie"
 #, python-format
 msgid "“%(value)s”"
 msgstr "„%(value)s“"
+
+#: configs/list.py:55
+msgid "Shared HTMX options for the requests, e.g. loading_indicator_id or vals."
+msgstr "Gemeinsam genutzte HTMX-Optionen für die Anfragen, z. B. `loading_indicator_id` oder `vals`."

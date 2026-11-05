@@ -25,7 +25,9 @@ from insight_ui.configs import (
     CarouselConfig,
     FooterConfig,
     FooterContactConfig,
+    HtmxConfig,
     IconConfig,
+    InfiniteScrollConfig,
     LegalNoticeConfig,
     ListConfig,
     LiveContentConfig,
@@ -310,6 +312,19 @@ def test_live_content_description_preserves_htmx_constructor_fields() -> None:
         description = str(field.metadata["doc"])
     assert "Gemeinsame Anfrageoptionen" in description
     assert all(f"`{name}`" in description for name in ("target", "swap_method", "vals"))
+
+
+def test_infinite_scroll_description_uses_actual_loading_indicator_option() -> None:
+    """Both source and German docs must name the real HtmxConfig constructor field."""
+    field = next(field for field in fields(InfiniteScrollConfig) if field.name == "htmx")
+    for language in ("en", "de"):
+        with override(language):
+            description = str(field.metadata["doc"])
+        assert "loading_indicator_id" in description
+        assert "vals" in description
+    config = HtmxConfig(loading_indicator_id="#spinner", vals={"page": 2})
+    assert config.loading_indicator_id == "#spinner"
+    assert config.vals == {"page": 2}
 
 
 @pytest.mark.parametrize("config", [CarouselConfig, RingCarouselConfig, ToggleViewConfig])
