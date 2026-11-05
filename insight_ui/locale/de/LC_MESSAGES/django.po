@@ -629,7 +629,7 @@ msgstr "Beschreibende Meldung."
 
 #: templates/insight_ui/components/multiselect.html:8
 msgid "Deselect all"
-msgstr "Alle Auswahl aufheben"
+msgstr "Alle Optionen abwählen"
 
 #: configs/input.py:289
 msgid "Determines the number of characters in a line."
@@ -1867,7 +1867,7 @@ msgstr "Gemeinsam genutzte Anforderungsoptionen wie „push_url“ oder eine Lad
 
 #: configs/utils.py:627
 msgid "Shared request options such as target, swap method or vals."
-msgstr "Gemeinsame Anfrageoptionen wie Ziel, Austauschmethode oder Werte."
+msgstr "Gemeinsame Anfrageoptionen wie `target`, `swap_method` oder `vals`."
 
 #: configs/input.py:1032
 msgid "Shared request options such as vals or a loading indicator."
@@ -2041,7 +2041,7 @@ msgstr "Ziel-URL für die Formularübermittlung."
 
 #: configs/card.py:190 configs/card.py:274 configs/card.py:337
 msgid "Template that renders one item; gets item and the page context."
-msgstr "Vorlage, die ein Element rendert; ruft das Element und den Seitenkontext ab."
+msgstr "Die Vorlage rendert ein Element; sie erhält die Kontextvariable `item` und den Seitenkontext."
 
 #: configs/list.py:48
 msgid "Template that renders the content of one item; gets item and heading_level."

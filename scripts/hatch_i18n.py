@@ -9,11 +9,46 @@ from pathlib import Path
 from typing import Any
 
 from babel.messages.catalog import Message
+from babel.messages.extract import DEFAULT_KEYWORDS, extract
 from babel.messages.mofile import write_mo
 from babel.messages.pofile import read_po
+from django.utils.translation import templatize
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
 NAMED_FORMAT = re.compile(r"%(?:%|\(([^)]+)\)[#0 +\-]*(?:\d+|\*)?(?:\.(?:\d+|\*))?[hlL]?[diouxXeEfFgGcrsa])")
+KEYWORDS = {
+    **DEFAULT_KEYWORDS,
+    "gettext_lazy": None,
+    "gettext_noop": None,
+    "ngettext_lazy": (1, 2),
+    "pgettext_lazy": ((1, "c"), 2),
+    "npgettext_lazy": ((1, "c"), 2, 3),
+}
+type MessageKey = tuple[str | tuple[str, ...], str | None]
+
+
+def extract_source_messages(root: Path) -> dict[str, set[MessageKey]]:
+    """Read package sources without importing them, retaining context and plural IDs."""
+    messages: dict[str, set[MessageKey]] = {"django": set(), "djangojs": set()}
+    for source in sorted((root / "insight_ui").rglob("*")):
+        if not source.is_file() or "locale" in source.relative_to(root / "insight_ui").parts:
+            continue
+        if source.suffix in {".py", ".html", ".txt"}:
+            domain, method = "django", "python"
+            if source.suffix == ".py":
+                data = source.read_bytes()
+            else:
+                converted = templatize(source.read_text(encoding="utf-8"), origin=source.as_posix())
+                # Django emits quoted gettext calls between dummy template text.
+                # Dedent each line so Python's tokenizer accepts HTML indentation.
+                data = "\n".join(line.lstrip() for line in converted.splitlines()).encode()
+        elif source.suffix == ".js" and not source.name.endswith(".min.js"):
+            domain, method, data = "djangojs", "javascript", source.read_bytes()
+        else:
+            continue
+        for _line, message, _comments, context in extract(method, BytesIO(data), keywords=KEYWORDS):
+            messages[domain].add((message, context))
+    return messages
 
 
 def _named_placeholders(value: str) -> Counter[str]:
@@ -39,7 +74,8 @@ def compile_catalogs(root: Path) -> list[str]:
     if not required.issubset(sources):
         message = "The package must include both German gettext source catalogs."
         raise ValueError(message)
-    artifacts = []
+    extracted = extract_source_messages(root)
+    validated = []
     for source in sources:
         with source.open("rb") as stream:
             catalog = read_po(stream, locale=source.parent.parent.name, domain=source.stem, abort_invalid=True)
@@ -57,6 +93,13 @@ def compile_catalogs(root: Path) -> list[str]:
         if str(catalog.locale) != source.parent.parent.name or catalog.fuzzy or untranslated or list(catalog.check()):
             message = f"Catalog must be complete, non-fuzzy and preserve placeholders: {source.relative_to(root)}"
             raise ValueError(message)
+        present = {(entry.id, entry.context) for entry in catalog if entry.id}
+        if missing := extracted.get(source.stem, set()) - present:
+            message = f"Catalog omits source messages in {source.relative_to(root)}: {sorted(missing, key=repr)!r}"
+            raise ValueError(message)
+        validated.append((source, catalog))
+    artifacts = []
+    for source, catalog in validated:
         output = BytesIO()
         write_mo(output, catalog, use_fuzzy=False)
         destination = source.with_suffix(".mo")

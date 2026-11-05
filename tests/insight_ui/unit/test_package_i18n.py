@@ -22,16 +22,21 @@ from django.views.i18n import JavaScriptCatalog
 from insight_ui.config import get_config
 from insight_ui.configs import (
     ButtonConfig,
+    CarouselConfig,
     FooterConfig,
     FooterContactConfig,
     IconConfig,
     LegalNoticeConfig,
     ListConfig,
+    LiveContentConfig,
+    MultiselectConfig,
     NavbarConfig,
     NavbarLinkConfig,
+    RingCarouselConfig,
     SearchBarConfig,
+    ToggleViewConfig,
 )
-from scripts.hatch_i18n import CustomBuildHook, compile_catalogs
+from scripts.hatch_i18n import CustomBuildHook, compile_catalogs, extract_source_messages
 
 ROOT = Path(__file__).resolve().parents[3]
 MESSAGES = {
@@ -61,6 +66,8 @@ def _fixture_catalogs(root: Path) -> None:
         catalog.add("Hello %(name)s", "Hallo %(name)s", flags=["python-format"])
         with path.open("wb") as stream:
             write_po(stream, catalog)
+    (root / "insight_ui/messages.py").write_text('gettext_lazy("Hello %(name)s")', encoding="utf-8")
+    (root / "insight_ui/messages.js").write_text('gettext("Hello %(name)s");', encoding="utf-8")
 
 
 @pytest.mark.parametrize("target", ["wheel", "sdist"])
@@ -127,6 +134,61 @@ def test_build_checks_every_plural_form_and_handles_escaped_percent(tmp_path: Pa
     catalog.add("Literal %%(ignored)s: %%%(name)s", "Literal %%(ignored)s: %%%(name)s")
     with source.open("wb") as stream:
         write_po(stream, catalog)
+    assert compile_catalogs(tmp_path)
+
+
+@pytest.mark.parametrize(
+    ("filename", "content", "message_id", "context"),
+    [
+        ("added.py", 'gettext_lazy("New label")', "New label", None),
+        ("added.py", 'pgettext_lazy("menu", "New label")', "New label", "menu"),
+        ("added.py", 'ngettext_lazy("one new", "many new", count)', ("one new", "many new"), None),
+        ("added.html", '  {% translate "New label" %}', "New label", None),
+        ("added.txt", '{% trans "New label" context "menu" %}', "New label", "menu"),
+        (
+            "added.html",
+            "  <div>\n    {% blocktranslate trimmed count n=items|length %}\n      {{ n }} new item\n"
+            "    {% plural %}\n      {{ n }} new items\n    {% endblocktranslate %}\n  </div>",
+            ("%(n)s new item", "%(n)s new items"),
+            None,
+        ),
+        ("added.js", 'gettext("New label");', "New label", None),
+        ("added.js", 'pgettext("menu", "New label");', "New label", "menu"),
+        ("added.js", 'ngettext("one new", "many new", count);', ("one new", "many new"), None),
+    ],
+)
+def test_build_rejects_new_source_messages_until_catalog_is_updated(
+    tmp_path: Path, filename: str, content: str, message_id: str | tuple[str, str], context: str | None
+) -> None:
+    """Real source additions cannot pass by validating only existing PO entries."""
+    _fixture_catalogs(tmp_path)
+    domain = "djangojs" if filename.endswith(".js") else "django"
+    (tmp_path / "insight_ui" / filename).write_text(content, encoding="utf-8")
+    path = tmp_path / f"insight_ui/locale/de/LC_MESSAGES/{domain}.po"
+    with path.open("rb") as stream:
+        catalog = read_po(stream)
+    # A wrong context or stale plural is not a match for the new source message.
+    if context:
+        catalog.add(message_id, "Andere Bedeutung", context="other")
+    elif isinstance(message_id, tuple):
+        catalog.add((message_id[0], message_id[1] + " stale"), message_id)
+    with path.open("wb") as stream:
+        write_po(stream, catalog)
+    with pytest.raises(ValueError, match="omits source messages"):
+        compile_catalogs(tmp_path)
+    assert not list(tmp_path.rglob("*.mo"))
+    catalog.delete(message_id, context=context)
+    catalog.add(message_id, message_id, context=context)
+    with path.open("wb") as stream:
+        write_po(stream, catalog)
+    assert compile_catalogs(tmp_path)
+
+
+def test_source_extraction_excludes_hosts_and_generated_minified_javascript(tmp_path: Path) -> None:
+    """Only reusable package sources belong to the package catalog gate."""
+    _fixture_catalogs(tmp_path)
+    (tmp_path / "host.py").write_text('_("Host-only message")', encoding="utf-8")
+    (tmp_path / "insight_ui/generated.min.js").write_text('gettext("Generated duplicate");', encoding="utf-8")
     assert compile_catalogs(tmp_path)
 
 
@@ -241,6 +303,36 @@ def test_ordered_list_description_translates_prose_around_double_backtick_code()
     assert "instead of" not in description
 
 
+def test_live_content_description_preserves_htmx_constructor_fields() -> None:
+    """Readers must be able to copy documented option names into HtmxConfig."""
+    field = next(field for field in fields(LiveContentConfig) if field.name == "htmx")
+    with override("de"):
+        description = str(field.metadata["doc"])
+    assert "Gemeinsame Anfrageoptionen" in description
+    assert all(f"`{name}`" in description for name in ("target", "swap_method", "vals"))
+
+
+@pytest.mark.parametrize("config", [CarouselConfig, RingCarouselConfig, ToggleViewConfig])
+def test_custom_item_template_description_preserves_context_variable(config: type) -> None:
+    """Custom template authors need the literal item context key in every carousel."""
+    field = next(field for field in fields(config) if field.name == "item_template")
+    with override("de"):
+        description = str(field.metadata["doc"])
+    assert "Kontextvariable `item`" in description
+
+
+def test_multiselect_bulk_actions_render_grammatical_german_labels() -> None:
+    """Both visible controls clearly communicate their opposite bulk actions."""
+    config = MultiselectConfig(name="tags", options=["Python", "Django"], show_buttons=True)
+    with override("de"):
+        rendered = Template("{% load insight_tags %}{% multiselect config=config %}").render(
+            Context({"config": config})
+        )
+    soup = BeautifulSoup(rendered, "html.parser")
+    assert soup.select_one("button.select-all").get_text(strip=True) == "Alle auswählen"
+    assert soup.select_one("button.deselect-all").get_text(strip=True) == "Alle Optionen abwählen"
+
+
 @pytest.mark.parametrize("domain", ["django", "djangojs"])
 def test_all_package_messages_compile_without_fuzzy_or_missing_forms(domain: str) -> None:
     """Every marked message has a translated form with valid gettext placeholders."""
@@ -250,6 +342,7 @@ def test_all_package_messages_compile_without_fuzzy_or_missing_forms(domain: str
     assert str(catalog.locale) == "de"
     assert not catalog.fuzzy
     assert list(catalog.check()) == []
+    assert extract_source_messages(ROOT)[domain] <= {(message.id, message.context) for message in catalog if message.id}
     for message in catalog:
         if message.id:
             assert "fuzzy" not in message.flags

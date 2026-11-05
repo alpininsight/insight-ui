@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs", "babel==2.18.0"]
+requires = ["hatchling", "hatch-vcs", "babel==2.18.0", "django==5.2.17"]
 build-backend = "hatchling.build"
 
 [project]
