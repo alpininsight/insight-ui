@@ -3,6 +3,7 @@
 """Verify compiled app-local catalogs, rendered shell text and build failures."""
 
 import gettext
+import re
 from http import HTTPStatus
 from io import BytesIO
 from pathlib import Path
@@ -15,7 +16,7 @@ from bs4 import BeautifulSoup
 from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.test import RequestFactory, override_settings
-from django.utils.translation import override
+from django.utils.translation import gettext as translate, override
 from django.views.i18n import JavaScriptCatalog
 from insight_ui.config import get_config
 from insight_ui.configs import FooterConfig, FooterContactConfig, LegalNoticeConfig, NavbarConfig, SearchBarConfig
@@ -66,7 +67,7 @@ def test_build_hook_compiles_ignored_catalogs_deterministically(tmp_path: Path, 
     assert gettext.GNUTranslations(BytesIO(before[0])).gettext("Hello %(name)s") == "Hallo %(name)s"
 
 
-@pytest.mark.parametrize("defect", ["missing", "empty", "fuzzy", "placeholder", "locale"])
+@pytest.mark.parametrize("defect", ["missing", "empty", "fuzzy", "placeholder", "omitted", "duplicate", "locale"])
 def test_build_refuses_incomplete_or_invalid_catalogs(tmp_path: Path, defect: str) -> None:
     """Build failure prevents a superficially successful English-only wheel."""
     _fixture_catalogs(tmp_path)
@@ -83,12 +84,108 @@ def test_build_refuses_incomplete_or_invalid_catalogs(tmp_path: Path, defect: st
             message.flags.add("fuzzy")
         elif defect == "placeholder":
             message.string = "Hallo %(other)s"
+        elif defect == "omitted":
+            message.string = "Hallo"
+        elif defect == "duplicate":
+            message.string = "Hallo %(name)s %(name)s"
         else:
             catalog.locale = "fr"
         with source.open("wb") as stream:
             write_po(stream, catalog)
     with pytest.raises(ValueError, match=r"catalog|Catalog"):
         compile_catalogs(tmp_path)
+
+
+def test_build_checks_every_plural_form_and_handles_escaped_percent(tmp_path: Path) -> None:
+    """Babel allows omitted named fields, so the package must reject them explicitly."""
+    _fixture_catalogs(tmp_path)
+    source = tmp_path / "insight_ui/locale/de/LC_MESSAGES/django.po"
+    with source.open("rb") as stream:
+        catalog = read_po(stream, locale="de", abort_invalid=True)
+    message = catalog.add(
+        ("%(count)s item for %(name)s", "%(count)s items for %(name)s"),
+        ("%(count)s Eintrag für %(name)s", "%(count)s Einträge"),
+        flags=["python-format"],
+    )
+    assert list(catalog.check()) == []
+    with source.open("wb") as stream:
+        write_po(stream, catalog)
+    with pytest.raises(ValueError, match="preserve placeholders"):
+        compile_catalogs(tmp_path)
+    message.string = ("%(count)s Eintrag für %(name)s", "%(count)s Einträge für %(name)s")
+    catalog.add("Literal %%(ignored)s: %%%(name)s", "Literal %%(ignored)s: %%%(name)s")
+    with source.open("wb") as stream:
+        write_po(stream, catalog)
+    assert compile_catalogs(tmp_path)
+
+
+@pytest.mark.parametrize(
+    ("source", "literals"),
+    [
+        ('Behavior on mobile viewports ("hidden", "drawer").', ("hidden", "drawer")),
+        ("Border radius (xs|s|m|l|xl|none).", ("xs", "s", "m", "l", "xl", "none")),
+        (
+            "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.",
+            ("top-right", "top-left", "bottom-right", "bottom-left"),
+        ),
+        (
+            "Horizontal alignment (start|center|end|between|around|evenly).",
+            ("start", "center", "end", "between", "around", "evenly"),
+        ),
+        (
+            "Horizontal alignment (start|center|end|stretch|baseline).",
+            ("start", "center", "end", "stretch", "baseline"),
+        ),
+        (
+            "Vertical alignment (start|center|end|between|around|evenly).",
+            ("start", "center", "end", "between", "around", "evenly"),
+        ),
+        ("Vertical alignment (start|center|end|stretch|baseline).", ("start", "center", "end", "stretch", "baseline")),
+        ("Line style (solid|dashed|dotted).", ("solid", "dashed", "dotted")),
+        ("Line thickness (thin|medium|thick).", ("thin", "medium", "thick")),
+        (
+            "List marker style (none|disc|circle|square|decimal|decimal-leading-zero).",
+            ("none", "disc", "circle", "square", "decimal", "decimal-leading-zero"),
+        ),
+        ("Marker position (inside|outside).", ("inside", "outside")),
+        ("Orientation (horizontal|vertical).", ("horizontal", "vertical")),
+        ('Position of the sidebar ("left" or "right"). Auto-detected from block context.', ("left", "right")),
+        ("Spacing size (none|xs|s|m|l|xl).", ("none", "xs", "s", "m", "l", "xl")),
+        ("Widget size: normal, flexible, or compact.", ("normal", "flexible", "compact")),
+        ('Width of the sidebar ("narrow", "normal", "wide").', ("narrow", "normal", "wide")),
+        ("Language for the syntax highlighting, e.g. python.", ("python",)),
+        (
+            "Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.",
+            ("hx-swap", "300ms", "CSS"),
+        ),
+        (
+            "URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.",
+            ("htmx.request_url",),
+        ),
+        (
+            "**True** if `input_type='checkbox'` and the checkbox should be selected.",
+            ("True", "input_type", "checkbox"),
+        ),
+    ],
+)
+def test_german_config_docs_preserve_literal_api_values(source: str, literals: tuple[str, ...]) -> None:
+    """A German description must still give working configuration values and examples."""
+    with override("de"):
+        translated = translate(source)
+    assert translated != source
+    for literal in literals:
+        assert re.search(r"(?<![\w-])" + re.escape(literal) + r"(?![\w-])", translated), literal
+
+
+def test_flip_back_accessible_name_identifies_card_front_not_home_navigation() -> None:
+    """The local flip action must not announce a navigation to a home page."""
+    source = '{% load insight_tags %}{% flip_card title="Example" content="Front" back_content="Back" %}'
+    with override("de"):
+        rendered = Template(source).render(Context(get_config()))
+    soup = BeautifulSoup(rendered, "html.parser")
+    control = soup.select_one("[data-flip-back] button[data-flip-trigger]")
+    assert control["aria-label"] == "Zurück zur Vorderseite dieser Karte"
+    assert "Startseite" not in control["aria-label"]
 
 
 @pytest.mark.parametrize("domain", ["django", "djangojs"])

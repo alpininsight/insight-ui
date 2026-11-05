@@ -48,19 +48,19 @@ msgstr "**True** zeigt einen Pfeil hinter dem Titel an."
 
 #: configs/input.py:236
 msgid "**True** if `input_type='checkbox'` and the checkbox should be selected."
-msgstr "**Wahr**, wenn `input_type='checkbox'` gilt und das Kontrollkästchen markiert sein soll."
+msgstr "**True**, wenn `input_type='checkbox'` ist und das Kontrollkästchen markiert sein soll."
 
 #: configs/input.py:413
 msgid "**True** if the checkbox elements should be displayed side by side."
-msgstr "**True**, wenn die Kontrollkästchen nebeneinander angezeigt werden sollen."
+msgstr "**True**, wenn die Kontrollkästchenelemente nebeneinander angezeigt werden sollen."
 
 #: configs/input.py:350
 msgid "**True** if the checkbox should be disabled."
-msgstr "**True**, wenn das Kontrollkästchen deaktiviert sein soll."
+msgstr "**True**, wenn das Kontrollkästchen deaktiviert werden soll."
 
 #: configs/input.py:325 configs/input.py:359
 msgid "**True** if the checkbox should be selected."
-msgstr "**True** wenn das Kontrollkästchen aktiviert sein soll."
+msgstr "**True**, wenn das Kontrollkästchen markiert sein soll."
 
 #: configs/base.py:264
 msgid "**True** if the field must be filled in."
@@ -73,7 +73,7 @@ msgstr "**True**, wenn das Feld deaktiviert werden soll."
 #: configs/input.py:666
 msgid "**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."
 msgstr ""
-"**„True“**, wenn sich die Gruppe innerhalb eines `<form>` befindet. Bei **„False“** erhält die Gruppe ein eigenes "
+"**True**, wenn sich die Gruppe innerhalb eines `<form>` befindet. Bei **False** erhält die Gruppe ein eigenes "
 "`<form>`."
 
 #: configs/input.py:544
@@ -86,11 +86,11 @@ msgstr "**True**, wenn die Optionsfelder nebeneinander angezeigt werden sollen."
 
 #: configs/input.py:866
 msgid "**True** if the toggle button should be selected."
-msgstr "**True**, wenn die Umschalt-Schaltfläche ausgewählt sein soll."
+msgstr "**True**, wenn die Umschaltfläche ausgewählt sein soll."
 
 #: configs/input.py:868
 msgid "**True** if the toggle button should look like a typical switch select."
-msgstr "**True**, wenn die Umschalt-Schaltfläche wie ein typischer Auswahlschalter aussehen soll."
+msgstr "**True**, wenn die Umschaltfläche wie ein typischer Schalter aussehen soll."
 
 #: configs/input.py:864
 msgid "**True** shows only the icon; the label becomes the accessible name and tooltip."
@@ -98,13 +98,13 @@ msgstr "**True** zeigt nur das Symbol an; die Beschriftung wird zum barrierefrei
 
 #: configs/input.py:790
 msgid "**True** to enable dual-thumb mode for selecting a range with min and max values."
-msgstr "**True**, um den Dual-Thumb-Modus zur Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
+msgstr "**True**, um den Zwei-Daumen-Modus für die Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
 
 #: configs/base.py:112
 msgid "**True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows."
 msgstr ""
-"**True**, um das Symbol in Layouts von rechts nach links zu spiegeln, **False** – niemals; bei fehlender Angabe "
-"werden die integrierten Pfeile gespiegelt."
+"**True**, um das Symbol in Layouts mit Schreibrichtung von rechts nach links zu spiegeln; **False**: niemals; bei "
+"deaktivierter Einstellung werden die integrierten Pfeile gespiegelt."
 
 #: configs/input.py:91 configs/navigation.py:102
 msgid "**True** to open the link in a new tab."
@@ -112,7 +112,7 @@ msgstr "**True**, um den Link in einem neuen Tab zu öffnen."
 
 #: configs/utils.py:711
 msgid "**True** to show the badge as disabled; also disables its remove button."
-msgstr "**True**, um das Abzeichen als deaktiviert anzuzeigen; deaktiviert zudem dessen Schaltfläche zum Entfernen."
+msgstr "**True**, um das Badge als deaktiviert anzuzeigen; deaktiviert zudem dessen Schaltfläche zum Entfernen."
 
 #: configs/layout.py:446
 msgid "A badge with icon and text."
@@ -326,7 +326,7 @@ msgstr "Titel der Rückseite."
 
 #: templates/insight_ui/components/cards/flip_card.html:75
 msgid "Back to front"
-msgstr "Zurück zur Startseite"
+msgstr "Zurück zur Vorderseite dieser Karte"
 
 #: configs/utils.py:699
 msgid "Badge label."
@@ -343,11 +343,11 @@ msgstr "Balkendiagramm: %(title)s"
 
 #: configs/navigation.py:479
 msgid "Behavior on mobile viewports (\"hidden\", \"drawer\")."
-msgstr "Verhalten auf mobilen Bildschirmen („ausgeblendet“, „Schublade“)."
+msgstr "Verhalten auf mobilen Bildschirmen (\"hidden\", \"drawer\")."
 
 #: configs/layout.py:346
 msgid "Border radius (xs|s|m|l|xl|none)."
-msgstr "Eckradius (xs|s|m|l|xl|keine)."
+msgstr "Eckenradius (xs|s|m|l|xl|none)."
 
 #: configs/navigation.py:52
 msgid "Brand mark with logo and wordmark."
@@ -580,7 +580,7 @@ msgstr ""
 
 #: configs/utils.py:283
 msgid "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
-msgstr "Eckposition: „oben rechts“, „oben links“, „unten rechts“, „unten links“."
+msgstr "Eckenposition: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
 
 #: configs/utils.py:371
 msgid "Current progress in percent."
@@ -878,11 +878,11 @@ msgstr "Hinweis, der unterhalb des Feldes angezeigt wird."
 
 #: configs/layout.py:164
 msgid "Horizontal alignment (start|center|end|between|around|evenly)."
-msgstr "Horizontale Ausrichtung (Start|Mitte|Ende|zwischen|um|gleichmäßig)."
+msgstr "Horizontale Ausrichtung: (start|center|end|between|around|evenly)."
 
 #: configs/layout.py:212
 msgid "Horizontal alignment (start|center|end|stretch|baseline)."
-msgstr "Horizontale Ausrichtung (Anfang | Mitte | Ende | Ausdehnen | Grundlinie)."
+msgstr "Horizontale Ausrichtung (start|center|end|stretch|baseline)."
 
 #: configs/navigation.py:99
 msgid "ID of a modal dialog to open. The modal must be defined elsewhere in the template."
@@ -914,7 +914,7 @@ msgstr "ID des Sucheingabefelds und Präfix der Ergebnisliste, eindeutig auf der
 
 #: configs/navigation.py:873
 msgid "If **True** only one section can be open at a time."
-msgstr "Wenn **True**, kann jeweils nur ein Abschnitt geöffnet sein."
+msgstr "Wenn **True** gesetzt ist, kann jeweils nur ein Abschnitt geöffnet sein."
 
 #: configs/navigation.py:475
 msgid "If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible)."
@@ -1058,7 +1058,7 @@ msgstr "Beschriftungen für die Kategorien der X-Achse."
 
 #: configs/utils.py:854
 msgid "Language for the syntax highlighting, e.g. python."
-msgstr "Sprache für die Syntaxhervorhebung, z. B. Python."
+msgstr "Sprache für die Syntaxhervorhebung, z. B. python."
 
 #: configs/input.py:773
 msgid "Largest configurable value of the range slider."
@@ -1083,11 +1083,11 @@ msgstr "Liniendiagramm: %(title)s"
 
 #: configs/layout.py:264
 msgid "Line style (solid|dashed|dotted)."
-msgstr "Linienstil (durchgehend|gestrichelt|gepunktet)."
+msgstr "Linienstil: (solid|dashed|dotted)."
 
 #: configs/layout.py:263
 msgid "Line thickness (thin|medium|thick)."
-msgstr "Linienstärke (dünn|mittel|dick)."
+msgstr "Linienstärke: (thin|medium|thick)."
 
 #: configs/navigation.py:537
 msgid "Link to a privacy policy."
@@ -1103,7 +1103,7 @@ msgstr "Links"
 
 #: configs/layout.py:556
 msgid "List marker style (none|disc|circle|square|decimal|decimal-leading-zero)."
-msgstr "Stil der Listenmarkierung (keine|Scheibe|Kreis|Quadrat|Dezimalzahl|Dezimalzahl mit führender Null)."
+msgstr "Stil der Listenmarkierung (none|disc|circle|square|decimal|decimal-leading-zero)."
 
 #: configs/card.py:54 configs/card.py:95
 msgid "List of action buttons."
@@ -1236,7 +1236,7 @@ msgstr "Standorte auf der Karte"
 
 #: configs/layout.py:558
 msgid "Marker position (inside|outside)."
-msgstr "Position der Markierung (innen|außen)."
+msgstr "Markierungsposition (inside|outside)."
 
 #: configs/utils.py:412
 msgid "Marker title/label."
@@ -1528,7 +1528,7 @@ msgstr "Optionale Beschreibung unterhalb des Titels."
 
 #: configs/utils.py:100
 msgid "Optional destination for the copyright holder's name."
-msgstr "Optionaler Platzhalter für den Namen des Urheberrechtsinhabers."
+msgstr "Optionales Linkziel für den Namen des Urheberrechtsinhabers."
 
 #: configs/utils.py:855
 msgid "Optional file name shown in the toolbar."
@@ -1646,7 +1646,7 @@ msgstr "Oder"
 
 #: configs/layout.py:261
 msgid "Orientation (horizontal|vertical)."
-msgstr "Ausrichtung (horizontal|vertikal)."
+msgstr "Ausrichtung (horizontal|vertical)."
 
 #: configs/utils.py:852
 msgid "Original code."
@@ -1691,7 +1691,7 @@ msgstr "Abfrageintervall in Millisekunden."
 
 #: configs/navigation.py:471
 msgid "Position of the sidebar (\"left\" or \"right\"). Auto-detected from block context."
-msgstr "Position der Seitenleiste („links“ oder „rechts“). Wird automatisch aus dem Blockkontext ermittelt."
+msgstr "Position der Seitenleiste (\"left\" oder \"right\"). Wird automatisch aus dem Blockkontext ermittelt."
 
 #: configs/input.py:1030
 msgid "Prefix of the element IDs, unique on the page."
@@ -1843,7 +1843,7 @@ msgstr "URL für „Server-Sent Events“ zur Abfrage von Fortschrittsaktualisie
 
 #: configs/base.py:206
 msgid "Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run."
-msgstr "An hx-swap angehängte Wartezeit, z. B. „300 ms“, damit CSS-Übergänge Zeit zum Ausführen haben."
+msgstr "An hx-swap angehängte Abtastverzögerung, z. B. '300ms', damit Übergänge von CSS Zeit zum Ausführen haben."
 
 #: configs/popup.py:40
 msgid "Severity of the alert."
@@ -1968,7 +1968,7 @@ msgstr "Abstand zwischen den Elementen (xs|s|m|l|xl)."
 
 #: configs/layout.py:262
 msgid "Spacing size (none|xs|s|m|l|xl)."
-msgstr "Abstandsgröße (keine|xs|s|m|l|xl)."
+msgstr "Abstandsgröße (none|xs|s|m|l|xl)."
 
 #: configs/utils.py:490
 msgid "Starting map center [lat, lon]."
@@ -2258,8 +2258,8 @@ msgstr "URL für Inhaltsaktualisierungen."
 #: configs/filter.py:53 configs/filter.py:170
 msgid "URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests."
 msgstr ""
-"URL für die Formularaktion. Nicht zusammen mit htmx verwenden; verwenden Sie stattdessen htmx.Verwenden Sie "
-"stattdessen „request_url“ für HTMX-Anfragen."
+"URL für die Formularaktion. Nicht zusammen mit htmx verwenden; verwenden Sie stattdessen htmx.request_url für HTMX-"
+"Anfragen."
 
 #: configs/navigation.py:232
 msgid "URL for password reset. Empty hides the link."
@@ -2404,11 +2404,11 @@ msgstr "Die Überprüfung ist derzeit nicht verfügbar. Bitte laden Sie die Seit
 
 #: configs/layout.py:215
 msgid "Vertical alignment (start|center|end|between|around|evenly)."
-msgstr "Vertikale Ausrichtung (Anfang | Mitte | Ende | zwischen | um | gleichmäßig)."
+msgstr "Vertikale Ausrichtung (start|center|end|between|around|evenly)."
 
 #: configs/layout.py:167
 msgid "Vertical alignment (start|center|end|stretch|baseline)."
-msgstr "Vertikale Ausrichtung (Anfang | Mitte | Ende | Dehnen | Grundlinie)."
+msgstr "Vertikale Ausrichtung (start|center|end|stretch|baseline)."
 
 #: configs/layout.py:344
 msgid "Visual style (surface|raised|outline)."
@@ -2474,7 +2474,7 @@ msgstr "Angabe, ob die Ladeanzeige des Formulars während HTMX-Anfragen angezeig
 
 #: configs/forms.py:63
 msgid "Widget size: normal, flexible, or compact."
-msgstr "Widget-Größe: „normal“, „flexibel“ oder „kompakt“."
+msgstr "Widget-Größe: normal, flexible oder compact."
 
 #: configs/forms.py:60
 msgid "Widget theme: auto, light, or dark."
@@ -2482,7 +2482,7 @@ msgstr "Widget-Design: „auto“, „light“ oder „dark“."
 
 #: configs/navigation.py:477
 msgid "Width of the sidebar (\"narrow\", \"normal\", \"wide\")."
-msgstr "Breite der Seitenleiste („schmal“, „normal“, „breit“)."
+msgstr "Breite der Seitenleiste (\"narrow\", \"normal\", \"wide\")."
 
 #: templates/insight_ui/components/chat.html:18
 msgid "Write something..."
