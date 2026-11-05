@@ -4,6 +4,7 @@
 
 import gettext
 import re
+from dataclasses import fields
 from http import HTTPStatus
 from io import BytesIO
 from pathlib import Path
@@ -19,7 +20,14 @@ from django.test import RequestFactory, override_settings
 from django.utils.translation import gettext as translate, override
 from django.views.i18n import JavaScriptCatalog
 from insight_ui.config import get_config
-from insight_ui.configs import FooterConfig, FooterContactConfig, LegalNoticeConfig, NavbarConfig, SearchBarConfig
+from insight_ui.configs import (
+    FooterConfig,
+    FooterContactConfig,
+    IconConfig,
+    LegalNoticeConfig,
+    NavbarConfig,
+    SearchBarConfig,
+)
 from scripts.hatch_i18n import CustomBuildHook, compile_catalogs
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -186,6 +194,18 @@ def test_flip_back_accessible_name_identifies_card_front_not_home_navigation() -
     control = soup.select_one("[data-flip-back] button[data-flip-trigger]")
     assert control["aria-label"] == "Zurück zur Vorderseite dieser Karte"
     assert "Startseite" not in control["aria-label"]
+
+
+def test_icon_rtl_docs_distinguish_default_none_from_false() -> None:
+    """Not supplying a setting must not be described as disabling automatic mirroring."""
+    field = next(field for field in fields(IconConfig) if field.name == "mirror_rtl")
+    with override("de"):
+        description = str(field.metadata["doc"])
+    assert "None" in description
+    assert "deaktiviert" not in description
+    assert IconConfig(name="arrow-left", mirror_rtl=None).mirrors_in_rtl is True
+    assert IconConfig(name="arrow-left", mirror_rtl=False).mirrors_in_rtl is False
+    assert IconConfig(name="arrow-left", mirror_rtl=True).mirrors_in_rtl is True
 
 
 @pytest.mark.parametrize("domain", ["django", "djangojs"])

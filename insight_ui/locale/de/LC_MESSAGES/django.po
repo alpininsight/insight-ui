@@ -103,8 +103,8 @@ msgstr "**True**, um den Zwei-Daumen-Modus für die Auswahl eines Bereichs mit M
 #: configs/base.py:112
 msgid "**True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows."
 msgstr ""
-"**True**, um das Symbol in Layouts mit Schreibrichtung von rechts nach links zu spiegeln; **False**: niemals; bei "
-"deaktivierter Einstellung werden die integrierten Pfeile gespiegelt."
+"**True** spiegelt das Symbol in Layouts mit Schreibrichtung von rechts nach links. **False** spiegelt es niemals. "
+"Wird keine Einstellung angegeben (`None`), werden integrierte Pfeilsymbole automatisch gespiegelt."
 
 #: configs/input.py:91 configs/navigation.py:102
 msgid "**True** to open the link in a new tab."
