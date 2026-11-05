@@ -27,7 +27,7 @@ class InfiniteScrollConfig:
         item_template: Template that renders the content of one item; gets item and heading_level.
         auto_fetch: If True, load the next page on scroll. If False, show a button.
         heading_level: Heading level of the item titles.
-        htmx: Shared HTMX options for the requests, e.g. indicator or vals.
+        htmx: Shared HTMX options for the requests, e.g. loading_indicator_id or vals.
 
     """
 
@@ -52,7 +52,7 @@ class InfiniteScrollConfig:
     )
     heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the item titles.")})
     htmx: HtmxConfig | None = field(
-        default=None, metadata={"doc": _("Shared HTMX options for the requests, e.g. indicator or vals.")}
+        default=None, metadata={"doc": _("Shared HTMX options for the requests, e.g. loading_indicator_id or vals.")}
     )
 
     def __post_init__(self) -> None:

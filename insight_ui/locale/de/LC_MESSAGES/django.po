@@ -1,0 +1,2547 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
+# German package translations generated with DeepL and validated for gettext.
+msgid ""
+msgstr ""
+"Project-Id-Version: Insight UI \n"
+"Report-Msgid-Bugs-To: https://github.com/alpininsight/insight-ui/issues\n"
+"POT-Creation-Date: 2026-11-05 00:00+0000\n"
+"PO-Revision-Date: 2026-11-05 00:00+0000\n"
+"Last-Translator: Insight UI contributors\n"
+"Language: de\n"
+"Language-Team: German\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: utils/query_builder.py:247
+#, python-format
+msgid "%(field)s %(operator)s %(value)s"
+msgstr "%(field)s %(operator)s %(value)s"
+
+#: templates/insight_ui/components/range_slider.html:40
+#, python-format
+msgid "%(label)s - Maximum"
+msgstr "%(label)s – Maximum"
+
+#: templates/insight_ui/components/range_slider.html:23
+#, python-format
+msgid "%(label)s - Minimum"
+msgstr "%(label)s – Minimum"
+
+#: templates/insight_ui/components/carousel.html:27 templates/insight_ui/components/carousels/ring_carousel.html:22
+#, python-format
+msgid "%(number)s of %(total)s"
+msgstr "%(number)s von %(total)s"
+
+#: templates/insight_ui/components/button.html:20 templates/insight_ui/components/button.html:60
+#: templates/insight_ui/components/footer.html:35 templates/insight_ui/components/navbar.html:59
+#: templatetags/layout_tags.py:1019
+msgid "(opens in a new tab)"
+msgstr "(wird in einem neuen Tab geöffnet)"
+
+#: configs/input.py:507
+msgid "**True** displays an arrow behind the title."
+msgstr "**True** zeigt einen Pfeil hinter dem Titel an."
+
+#: configs/input.py:236
+msgid "**True** if `input_type='checkbox'` and the checkbox should be selected."
+msgstr "**True**, wenn `input_type='checkbox'` ist und das Kontrollkästchen markiert sein soll."
+
+#: configs/input.py:413
+msgid "**True** if the checkbox elements should be displayed side by side."
+msgstr "**True**, wenn die Kontrollkästchenelemente nebeneinander angezeigt werden sollen."
+
+#: configs/input.py:350
+msgid "**True** if the checkbox should be disabled."
+msgstr "**True**, wenn das Kontrollkästchen deaktiviert werden soll."
+
+#: configs/input.py:325 configs/input.py:359
+msgid "**True** if the checkbox should be selected."
+msgstr "**True**, wenn das Kontrollkästchen markiert sein soll."
+
+#: configs/base.py:264
+msgid "**True** if the field must be filled in."
+msgstr "**True**, wenn das Feld ausgefüllt werden muss."
+
+#: configs/base.py:255
+msgid "**True** if the field should be disabled."
+msgstr "**True**, wenn das Feld deaktiviert werden soll."
+
+#: configs/input.py:666
+msgid "**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."
+msgstr ""
+"**True**, wenn sich die Gruppe innerhalb eines `<form>` befindet. Bei **False** erhält die Gruppe ein eigenes "
+"`<form>`."
+
+#: configs/input.py:544
+msgid "**True** if the radio button should be disabled."
+msgstr "**True**, wenn das Optionsfeld deaktiviert werden soll."
+
+#: configs/input.py:603 configs/input.py:670
+msgid "**True** if the radio elements should be displayed side by side."
+msgstr "**True**, wenn die Optionsfelder nebeneinander angezeigt werden sollen."
+
+#: configs/input.py:866
+msgid "**True** if the toggle button should be selected."
+msgstr "**True**, wenn die Umschaltfläche ausgewählt sein soll."
+
+#: configs/input.py:868
+msgid "**True** if the toggle button should look like a typical switch select."
+msgstr "**True**, wenn die Umschaltfläche wie ein typischer Schalter aussehen soll."
+
+#: configs/input.py:864
+msgid "**True** shows only the icon; the label becomes the accessible name and tooltip."
+msgstr "**True** zeigt nur das Symbol an; die Beschriftung wird zum barrierefreien Namen und zum Tooltip."
+
+#: configs/input.py:790
+msgid "**True** to enable dual-thumb mode for selecting a range with min and max values."
+msgstr "**True**, um den Zwei-Daumen-Modus für die Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
+
+#: configs/base.py:112
+msgid "**True** to mirror the icon in right-to-left layouts, **False** never; unset mirrors built-in arrows."
+msgstr ""
+"**True** spiegelt das Symbol in Layouts mit Schreibrichtung von rechts nach links. **False** spiegelt es niemals. "
+"Wird keine Einstellung angegeben (`None`), werden integrierte Pfeilsymbole automatisch gespiegelt."
+
+#: configs/input.py:91 configs/navigation.py:102
+msgid "**True** to open the link in a new tab."
+msgstr "**True**, um den Link in einem neuen Tab zu öffnen."
+
+#: configs/utils.py:711
+msgid "**True** to show the badge as disabled; also disables its remove button."
+msgstr "**True**, um das Badge als deaktiviert anzuzeigen; deaktiviert zudem dessen Schaltfläche zum Entfernen."
+
+#: configs/layout.py:446
+msgid "A badge with icon and text."
+msgstr "Ein Badge mit Symbol und Text."
+
+#: configs/input.py:778
+msgid "A list of texts displayed as a legend below the slider."
+msgstr "Eine Liste von Texten, die als Legende unterhalb des Schiebereglers angezeigt werden."
+
+#: configs/input.py:508
+msgid "A list of the menu elements."
+msgstr "Eine Liste der Menüelemente."
+
+#: configs/input.py:601 configs/input.py:662
+msgid "A list of the radio elements."
+msgstr "Eine Liste der Radio-Elemente."
+
+#: configs/base.py:254
+msgid "A text label displayed above the field."
+msgstr "Eine Textbeschriftung, die über dem Feld angezeigt wird."
+
+#: configs/input.py:600 configs/input.py:661
+msgid "A text label displayed above the radio elements."
+msgstr "Eine Textbeschriftung, die über den Radio-Elementen angezeigt wird."
+
+#: templates/insight_ui/components/query_builder_filter.html:21
+msgctxt "query builder"
+msgid "AND"
+msgstr "UND"
+
+#: templates/insight_ui/components/query_builder.html:22
+msgid "AND binds tighter than OR: \"A AND B OR C\" finds entries that match both A and B, or C."
+msgstr ""
+"„UND“ ist strenger als „ODER“: „A UND B ODER C“ findet Einträge, die sowohl mit A als auch mit B übereinstimmen oder "
+"mit C."
+
+#: configs/utils.py:589
+msgid "Accessible label describing the chart's purpose."
+msgstr "Barrierefreie Beschriftung, die den Zweck des Diagramms beschreibt."
+
+#: configs/utils.py:498
+msgid "Accessible label describing the map's purpose."
+msgstr "Barrierefreie Beschriftung, die den Zweck der Karte beschreibt."
+
+#: configs/layout.py:559
+msgid "Accessible label for the list."
+msgstr "Barrierefreie Bezeichnung für die Liste."
+
+#: configs/layout.py:302
+msgid "Accessible label for the section."
+msgstr "Barrierefreie Beschriftung für den Abschnitt."
+
+#: configs/card.py:193 configs/card.py:276
+msgid "Accessible name of the carousel."
+msgstr "Barrierefreier Name des Karussells."
+
+#: configs/utils.py:787
+msgid "Accessible name of the list, e.g. \"Active filters\"."
+msgstr "Barrierefreier Name der Liste, z. B. „Aktive Filter“."
+
+#: configs/utils.py:722
+msgid "Accessible name of the remove button, followed by the badge label. Defaults to \"Remove\"."
+msgstr ""
+"Barrierefreier Name der Schaltfläche „Entfernen“, gefolgt von der Beschriftung des Badges. Standardwert ist "
+"„Entfernen“."
+
+#: configs/utils.py:142
+msgid "Accessible text. Empty values make image/svg logos decorative."
+msgstr "Barrierefreier Text. Leere Werte lassen Bild- oder SVG-Logos als reines Dekor erscheinen."
+
+#: configs/base.py:160
+msgid "Accessible text. Empty values make the image decorative."
+msgstr "Barrierefreier Text. Leere Werte machen das Bild zu einem dekorativen Element."
+
+#: configs/filter.py:307
+msgid "Active filters, rendered as filter rows."
+msgstr "Aktive Filter, die als Filterzeilen dargestellt werden."
+
+#: templates/insight_ui/components/query_builder.html:48
+#, python-format
+msgid "Active filters: %(summary)s"
+msgstr "Aktive Filter: %(summary)s"
+
+#: templates/insight_ui/components/query_builder.html:36
+msgid "Add filter"
+msgstr "Filter hinzufügen"
+
+#: templates/insight_ui/components/text_diff.html:19
+msgid "Added:"
+msgstr "Hinzugefügt:"
+
+#: configs/layout.py:583
+msgid "Additional CSS classes for the list item."
+msgstr "Zusätzliche CSS-Klassen für das Listenelement."
+
+#: configs/input.py:129
+msgid "Additional CSS classes to append to the button element."
+msgstr "Zusätzliche CSS-Klassen, die dem Schaltflächenelement angehängt werden sollen."
+
+#: configs/base.py:215
+msgid "Additional JSON values to include in the request (hx-vals)."
+msgstr "Zusätzliche JSON-Werte, die in die Anfrage aufgenommen werden sollen (hx-vals)."
+
+#: configs/utils.py:248
+msgid "Additional button actions."
+msgstr "Zusätzliche Schaltflächenaktionen."
+
+#: configs/navigation.py:788
+msgid "Additional description of the item below the title."
+msgstr "Zusätzliche Beschreibung des Elements unterhalb des Titels."
+
+#: configs/navigation.py:698
+msgid "Additional description of the step below the title."
+msgstr "Zusätzliche Beschreibung des Schritts unterhalb des Titels."
+
+#: configs/navigation.py:180
+msgid "Additional links to display above the logout button."
+msgstr "Zusätzliche Links, die über der Abmelde-Schaltfläche angezeigt werden sollen."
+
+#: templates/insight_ui/components/_infinite_scroll_more.html:18
+msgid "All content loaded."
+msgstr "Alle Inhalte wurden geladen."
+
+#: templatetags/insight_tags.py:1123
+msgid "All rights reserved."
+msgstr "Alle Rechte vorbehalten."
+
+#: configs/layout.py:169
+msgid "Allow flex items to wrap."
+msgstr "Flex-Elemente dürfen umbrechen."
+
+#: configs/filter.py:220
+msgid "Allowed lookups, mapped to their labels."
+msgstr "Zulässige Lookups, zugeordneten Bezeichnungen zugeordnet."
+
+#: configs/filter.py:223
+msgid "Allowed values, mapped to their labels; renders a select."
+msgstr "Zulässige Werte, zugeordneten Bezeichnungen zugeordnet; rendert ein Auswahlfeld."
+
+#: configs/navigation.py:183
+msgid "Alt text for the avatar image."
+msgstr "Alternativtext für das Avatar-Bild."
+
+#: configs/card.py:231
+msgid "Alternative text; empty for a decorative image."
+msgstr "Alternativtext; leer lassen bei einem dekorativen Bild."
+
+#: configs/navigation.py:347
+msgid "An optional badge displayed after the text."
+msgstr "Ein optionales Abzeichen, das hinter dem Text angezeigt wird."
+
+#: configs/layout.py:41
+msgid "An optional description below the title."
+msgstr "Eine optionale Beschreibung unterhalb des Titels."
+
+#: configs/input.py:461
+msgid "An optional icon displayed before the label."
+msgstr "Ein optionales Symbol, das vor der Bezeichnung angezeigt wird."
+
+#: configs/navigation.py:91 configs/navigation.py:145 configs/navigation.py:345 configs/utils.py:700
+msgid "An optional icon displayed before the text."
+msgstr "Ein optionales Symbol, das vor dem Text angezeigt wird."
+
+#: configs/layout.py:80
+msgid "An optional title above the article."
+msgstr "Ein optionaler Titel über dem Artikel."
+
+#: configs/layout.py:299
+msgid "Anchor ID for navigation (adds scroll-mt-24 for fixed navbar offset)."
+msgstr "Anker-ID für die Navigation (fügt „scroll-mt-24“ für den festen Versatz der Navigationsleiste hinzu)."
+
+#: templates/insight_ui/components/pagination.html:56 templates/insight_ui/components/query_builder.html:37
+msgid "Apply"
+msgstr "Übernehmen"
+
+#: configs/base.py:45
+msgid "Attribute name without 'data-' prefix."
+msgstr "Attributname ohne das Präfix „data-“."
+
+#: configs/base.py:46
+msgid "Attribute value. Empty string for marker attributes."
+msgstr "Attributwert. Leere Zeichenfolge für Marker-Attribute."
+
+#: configs/card.py:194
+msgid "Auto-advance pages every 5 seconds."
+msgstr "Seiten alle 5 Sekunden automatisch weiterblättern."
+
+#: configs/filter.py:115
+msgid "Available filter options (dict maps value→label)."
+msgstr "Verfügbare Filteroptionen (Wörterbuch, das Werte auf Bezeichnungen abbildet)."
+
+#: configs/list.py:89
+msgid "Available page size options."
+msgstr "Verfügbare Optionen für die Seitengröße."
+
+#: templates/insight_ui/components/cards/flip_card.html:79
+msgid "Back"
+msgstr "Zurück"
+
+#: configs/card.py:141
+msgid "Back side action buttons."
+msgstr "Aktionsschaltflächen auf der Rückseite."
+
+#: configs/card.py:140
+msgid "Back side content."
+msgstr "Inhalt auf der Rückseite."
+
+#: configs/card.py:139
+msgid "Back side title."
+msgstr "Titel der Rückseite."
+
+#: templates/insight_ui/components/cards/flip_card.html:75
+msgid "Back to front"
+msgstr "Zurück zur Vorderseite dieser Karte"
+
+#: configs/utils.py:699
+msgid "Badge label."
+msgstr "Bezeichnung des Badges."
+
+#: configs/utils.py:788
+msgid "Badges shown in the list."
+msgstr "In der Liste angezeigte Badges."
+
+#: templates/insight_ui/components/charts/bar_chart.html:9
+#, python-format
+msgid "Bar chart: %(title)s"
+msgstr "Balkendiagramm: %(title)s"
+
+#: configs/navigation.py:479
+msgid "Behavior on mobile viewports (\"hidden\", \"drawer\")."
+msgstr "Verhalten auf mobilen Bildschirmen (\"hidden\", \"drawer\")."
+
+#: configs/layout.py:346
+msgid "Border radius (xs|s|m|l|xl|none)."
+msgstr "Eckenradius (xs|s|m|l|xl|none)."
+
+#: configs/navigation.py:52
+msgid "Brand mark with logo and wordmark."
+msgstr "Markenzeichen mit Logo und Wortmarke."
+
+#: templates/insight_ui/components/breadcrumbs.html:3
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
+#: configs/navigation.py:593
+msgid "Brief description of the application with optional image."
+msgstr "Kurzbeschreibung der Anwendung mit optionalem Bild."
+
+#: configs/navigation.py:508
+msgid "Brief summary of the application."
+msgstr "Kurze Zusammenfassung der Anwendung."
+
+#: configs/popup.py:84
+msgid "Buttons at the bottom of the dialog."
+msgstr "Schaltflächen am unteren Rand des Dialogfelds."
+
+#: configs/utils.py:189
+msgid "CSS class for primary text color."
+msgstr "CSS-Klasse für die primäre Textfarbe."
+
+#: configs/utils.py:192
+msgid "CSS class for secondary text color."
+msgstr "CSS-Klasse für die sekundäre Textfarbe."
+
+#: configs/utils.py:146
+msgid "CSS height for image/svg logos."
+msgstr "CSS-Höhe für Bild-/SVG-Logos."
+
+#: configs/base.py:162
+msgid "CSS height value (e.g., '2rem', '100px')."
+msgstr "CSS-Höhenwert (z. B. „2rem“, „100px“)."
+
+#: configs/base.py:210
+msgid "CSS selector for loading indicator (hx-indicator)."
+msgstr "CSS-Selektor für die Ladeanzeige (hx-indicator)."
+
+#: configs/base.py:200
+msgid "CSS selector for the target element (hx-target)."
+msgstr "CSS-Selektor für das Zielelement (hx-target)."
+
+#: configs/list.py:141
+msgid "CSS selector of further fields sent with HTMX requests, e.g. a filter form."
+msgstr "CSS-Selektor für weitere Felder, die mit HTMX-Anfragen gesendet werden, z. B. ein Filterformular."
+
+#: configs/card.py:278
+msgid "Camera tilt in degrees; the ring is seen from above."
+msgstr "Kameraneigung in Grad; der Ring wird von oben betrachtet."
+
+#: templates/insight_ui/components/progress_bar.html:93
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: configs/card.py:91
+msgid "Card description."
+msgstr "Kartenbeschreibung."
+
+#: configs/card.py:93
+msgid "Card image (displayed as square at top)."
+msgstr "Kartenbild (wird oben als Quadrat angezeigt)."
+
+#: configs/card.py:50 configs/card.py:90 configs/card.py:137
+msgid "Card title."
+msgstr "Kartentitel."
+
+#: templates/insight_ui/components/charts/_data_table.html:8
+#: templates/insight_ui/components/search_bar_result_templates.html:40
+msgid "Category"
+msgstr "Kategorie"
+
+#: configs/navigation.py:389
+msgid "Category header text."
+msgstr "Kategorie-Überschrift."
+
+#: configs/card.py:233
+msgid "Center the caption; suits short captions."
+msgstr "Die Bildunterschrift zentrieren; eignet sich für kurze Bildunterschriften."
+
+#: configs/utils.py:853
+msgid "Changed code."
+msgstr "Geänderter Code."
+
+#: configs/utils.py:824
+msgid "Changed text."
+msgstr "Geänderter Text."
+
+#: configs/utils.py:586
+msgid "Chart data and configuration."
+msgstr "Diagrammdaten und Konfiguration."
+
+#: configs/utils.py:547
+msgid "Chart title."
+msgstr "Diagrammtitel."
+
+#: templates/insight_ui/components/query_builder_filter.html:32
+msgid "Choose a field"
+msgstr "Wählen Sie ein Feld aus"
+
+#: templates/insight_ui/components/query_builder_filter.html:45
+#: templates/insight_ui/components/query_builder_filter.html:61
+msgid "Choose a field first"
+msgstr "Wählen Sie zunächst ein Feld aus"
+
+#: templates/insight_ui/components/alert.html:22 templates/insight_ui/components/layout/modal.html:29
+#: templates/insight_ui/components/message_dialog.html:17
+msgid "Close"
+msgstr "Schließen"
+
+#: templates/insight_ui/components/layout/sidebar.html:36
+msgid "Close sidebar"
+msgstr "Seitenleiste schließen"
+
+#: configs/utils.py:707
+msgid "Color of the badge."
+msgstr "Farbe des Badges."
+
+#: configs/input.py:108
+msgid "Color of the button."
+msgstr "Farbe der Schaltfläche."
+
+#: configs/input.py:509
+msgid "Color of the dropdown button."
+msgstr "Farbe der Dropdown-Schaltfläche."
+
+#: configs/input.py:799
+msgid "Color of the filled track and the thumb border."
+msgstr "Farbe der gefüllten Spur und des Thumb-Rahmens."
+
+#: configs/input.py:689
+msgid "Color of the options; ignored by the neutral variant."
+msgstr "Farbe der Optionen; wird bei der neutralen Variante ignoriert."
+
+#: configs/input.py:875
+msgid "Color of the toggle button or the switched-on track; ignored by the neutral variant."
+msgstr "Farbe der Umschalt-Schaltfläche oder der aktivierten Spur; wird von der neutralen Variante ignoriert."
+
+#: configs/base.py:106
+msgid "Color token for the icon (e.g., 'primary', 'danger', 'text-body')."
+msgstr "Farb-Token für das Symbol (z. B. „primary“, „danger“, „text-body“)."
+
+#: configs/filter.py:254
+msgid "Combination with the previous filter."
+msgstr "Kombination mit dem vorherigen Filter."
+
+#: templates/insight_ui/components/query_builder_filter.html:18
+msgid "Combine with the previous filter"
+msgstr "Mit dem vorherigen Filter kombinieren"
+
+#: templates/insight_ui/components/bullet_point_list.html:32 templates/insight_ui/components/minimal_stepper.html:10
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+#: templates/insight_ui/components/search_bar_result_templates.html:38
+msgid "Component"
+msgstr "Komponente"
+
+#: templates/insight_ui/components/query_builder_filter.html:40
+msgid "Condition"
+msgstr "Bedingung"
+
+#: configs/navigation.py:308
+msgid "Configuration for the search bar. If None, no search bar is displayed."
+msgstr "Konfiguration für die Suchleiste. Bei „None“ wird keine Suchleiste angezeigt."
+
+#: configs/navigation.py:312
+msgid "Configuration for the user dropdown menu. None uses defaults (logout only)."
+msgstr "Konfiguration für das Benutzer-Dropdown-Menü. Bei „None“ werden die Standardwerte verwendet (nur Abmeldung)."
+
+#: configs/navigation.py:101
+msgid "Configuration of a dropdown menu."
+msgstr "Konfiguration eines Dropdown-Menüs."
+
+#: configs/card.py:340
+msgid "Configuration of the table view; required when the view switch offers it."
+msgstr "Konfiguration der Tabellenansicht; erforderlich, wenn der Ansichtswechsel diese Option anbietet."
+
+#: configs/base.py:213
+msgid "Confirmation message before request (hx-confirm)."
+msgstr "Bestätigungsmeldung vor der Anfrage (hx-confirm)."
+
+#: templates/insight_ui/components/footer.html:44
+msgid "Contact"
+msgstr "Kontakt"
+
+#: configs/navigation.py:535
+msgid "Contact email address; the link adds mailto:."
+msgstr "E-Mail-Adresse für die Kontaktaufnahme; der Link fügt „mailto:“ hinzu."
+
+#: configs/navigation.py:600
+msgid "Contact information, link to the imprint, privacy policy and a contact email address."
+msgstr "Kontaktdaten, Link zum Impressum, zur Datenschutzerklärung und zu einer Kontakt-E-Mail-Adresse."
+
+#: configs/utils.py:662
+msgid ""
+"Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band swaps). Optional; without it the connection "
+"still works but the server cannot target specific sub-elements by ID."
+msgstr ""
+"Container-ID zur Adressierung von Unterelementen anhand ihrer ID (z. B. über HTMX-Out-of-Band-Swaps). Optional; ohne "
+"diese Angabe funktioniert die Verbindung zwar weiterhin, der Server kann jedoch keine bestimmten Unterelemente anhand"
+" ihrer ID adressieren."
+
+#: configs/navigation.py:304
+msgid "Contains and describes the navigation items of the navbar."
+msgstr "Enthält und beschreibt die Navigationselemente der Navigationsleiste."
+
+#: templates/insight_ui/components/carousel.html:20
+msgid "Content carousel"
+msgstr "Inhaltskarussell"
+
+#: configs/navigation.py:483
+msgid "Content for the navigation variant (only used with ``sidebar_nav.html``)."
+msgstr "Inhalt für die Navigationsvariante (wird nur mit ``sidebar_nav.html`` verwendet)."
+
+#: templates/insight_ui/components/live_content.html:23
+msgid "Content is loading..."
+msgstr "Inhalt wird geladen..."
+
+#: configs/input.py:784
+msgid ""
+"Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively "
+"hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited."
+msgstr ""
+"Steuert das reaktionsfähige Verhalten der Legende. Optionen: **„static“** (Standard) – keine Anpassung; **„skip“** – "
+"blendet Legendenelemente schrittweise aus, wenn der Platz begrenzt ist; **„rotate“** – dreht den Legendentext "
+"vertikal, wenn der Platz begrenzt ist."
+
+#: configs/utils.py:283
+msgid "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
+msgstr "Eckenposition: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
+
+#: configs/utils.py:371
+msgid "Current progress in percent."
+msgstr "Aktueller Fortschritt in Prozent."
+
+#: configs/navigation.py:756
+msgid "Current step of the process. (Only if 'steps' is not set!)"
+msgstr "Aktueller Schritt des Prozesses. (Nur wenn „steps“ nicht festgelegt ist!)"
+
+#: configs/filter.py:119 configs/list.py:91
+msgid "Currently selected value."
+msgstr "Derzeit ausgewählter Wert."
+
+#: configs/base.py:266 configs/input.py:361 configs/input.py:422 configs/input.py:554 configs/input.py:607
+#: configs/input.py:692
+msgid "Custom data attributes for JavaScript hooks or tests."
+msgstr "Benutzerdefinierte Datenattribute für JavaScript-Hooks oder Tests."
+
+#: configs/utils.py:551
+msgid "Data for each series (list of lists)."
+msgstr "Daten für jede Reihe (Liste von Listen)."
+
+#: configs/utils.py:520
+msgid "Data points for this series."
+msgstr "Datenpunkte für diese Reihe."
+
+#: configs/utils.py:445
+msgid "Dataset name."
+msgstr "Name des Datensatzes."
+
+#: configs/utils.py:374
+msgid "Delay in ms before hiding after completion."
+msgstr "Verzögerung in ms vor dem Ausblenden nach Abschluss."
+
+#: configs/navigation.py:301
+msgid "Describes the brand mark of the application in the navbar."
+msgstr "Beschreibt das Markenzeichen der Anwendung in der Navigationsleiste."
+
+#: configs/layout.py:441
+msgid "Description of the Hero section, displayed below the title and subtitle."
+msgstr "Beschreibung des „Hero“-Bereichs, die unterhalb des Titels und des Untertitels angezeigt wird."
+
+#: configs/utils.py:50
+msgid "Descriptive message."
+msgstr "Beschreibende Meldung."
+
+#: templates/insight_ui/components/multiselect.html:8
+msgid "Deselect all"
+msgstr "Alle Optionen abwählen"
+
+#: configs/input.py:289
+msgid "Determines the number of characters in a line."
+msgstr "Legt die Anzahl der Zeichen pro Zeile fest."
+
+#: configs/input.py:288
+msgid "Determines the number of lines."
+msgstr "Legt die Anzahl der Zeilen fest."
+
+#: configs/layout.py:81
+msgid "Disable responsive behavior and always use max_columns."
+msgstr "Deaktivieren Sie das responsive Verhalten und verwenden Sie stets „max_columns“."
+
+#: configs/layout.py:406
+msgid "Disable responsive breakpoints (always use exact column count)."
+msgstr "Responsive-Breakpoints deaktivieren (immer die genaue Spaltenanzahl verwenden)."
+
+#: configs/filter.py:217
+msgid "Display name."
+msgstr "Anzeigename."
+
+#: configs/navigation.py:322
+msgid "Displays a button to switch between the light and dark theme of the page."
+msgstr "Zeigt eine Schaltfläche zum Wechseln zwischen dem hellen und dem dunklen Design der Seite an."
+
+#: configs/navigation.py:319
+msgid "Displays a dropdown menu for selecting the display language (if defined)."
+msgstr "Zeigt ein Dropdown-Menü zur Auswahl der Anzeigesprache an (sofern definiert)."
+
+#: configs/list.py:134
+msgid "Django Page object of the current page."
+msgstr "Django-Page-Objekt der aktuellen Seite."
+
+#: configs/list.py:44
+msgid "Django Page object of the page to render."
+msgstr "Django-Page-Objekt der darzustellenden Seite."
+
+#: templates/insight_ui/components/footer.html:55
+msgid "Do you have any questions or feedback?"
+msgstr "Haben Sie Fragen oder Anregungen?"
+
+#: configs/card.py:277
+msgid "Duration of a turn in milliseconds."
+msgstr "Dauer einer Umdrehung in Millisekunden."
+
+#: templates/insight_ui/components/turnstile.html:11
+msgid "Enable JavaScript to complete verification."
+msgstr "Aktivieren Sie JavaScript, um die Verifizierung abzuschließen."
+
+#: templates/insight_ui/login.html:81
+msgid "Enter password"
+msgstr "Passwort eingeben"
+
+#: templates/insight_ui/login.html:63
+msgid "Enter username"
+msgstr "Geben Sie den Benutzernamen ein"
+
+#: templates/insight_ui/login.html:63
+msgid "Enter username or email"
+msgstr "Bitte geben Sie Ihren Benutzernamen oder Ihre E-Mail-Adresse ein"
+
+#: configs/base.py:270 configs/input.py:426 configs/input.py:611 configs/input.py:696
+msgid "Error message shown below the field; marks the field as invalid."
+msgstr "Fehlermeldung, die unterhalb des Feldes angezeigt wird; kennzeichnet das Feld als ungültig."
+
+#: templates/insight_ui/components/websocket.html:32
+msgid "Establishing connection..."
+msgstr "Verbindung wird hergestellt..."
+
+#: configs/utils.py:825
+msgid "Explain the markings below the text."
+msgstr "Erläuterung der Markierungen unterhalb des Textes."
+
+#: configs/input.py:355
+msgid ""
+"Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to "
+"explicitly skip."
+msgstr ""
+"Erläuterung, warum das Kontrollkästchen deaktiviert ist; wird als sichtbarer, verlinkter Text unterhalb der Option "
+"angezeigt. Setzen Sie den Wert auf eine leere Zeichenkette, um dies explizit zu überspringen."
+
+#: configs/base.py:260
+msgid ""
+"Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to "
+"explicitly skip."
+msgstr ""
+"Erläuterung, warum das Feld deaktiviert ist; wird als sichtbarer, verlinkter Text unterhalb des Feldes angezeigt. "
+"Setzen Sie den Wert auf eine leere Zeichenkette, um dies explizit zu überspringen."
+
+#: configs/input.py:549
+msgid ""
+"Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to "
+"explicitly skip."
+msgstr ""
+"Erläuterung, warum das Optionsfeld deaktiviert ist; wird als sichtbarer, verlinkter Text unterhalb der Option "
+"angezeigt. Setzen Sie den Wert auf eine leere Zeichenfolge, um dies ausdrücklich zu überspringen."
+
+#: templates/insight_ui/components/bullet_point_list.html:32 templates/insight_ui/components/minimal_stepper.html:10
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: templates/insight_ui/components/query_builder_filter.html:30
+msgid "Field"
+msgstr "Feld"
+
+#: configs/forms.py:130
+msgid "Field configs rendered in order."
+msgstr "Feldkonfigurationen, die der Reihe nach dargestellt werden."
+
+#: configs/filter.py:251
+msgid "Field name of a QueryBuilderFieldConfig."
+msgstr "Feldname eines „QueryBuilderFieldConfig“."
+
+#: configs/filter.py:218
+msgid "Field type; selects the value input."
+msgstr "Feldtyp; legt die Art der Werteingabe fest."
+
+#: configs/filter.py:304
+msgid "Fields that can be filtered."
+msgstr "Felder, nach denen gefiltert werden kann."
+
+#: configs/layout.py:162 configs/layout.py:210
+msgid "Fill available height in parent container."
+msgstr "Verfügbare Höhe im übergeordneten Container ausfüllen."
+
+#: configs/utils.py:287
+msgid "Fill of the ribbon; the text takes the color made for it."
+msgstr "Füllfarbe der Multifunktionsleiste; der Text nimmt die dafür festgelegte Farbe an."
+
+#: templates/insight_ui/components/query_builder.html:7
+msgid "Filter"
+msgstr "Filtern"
+
+#: templates/insight_ui/components/query_builder_filter.html:9
+#, python-format
+msgid "Filter %(number)s"
+msgstr "Filter %(number)s"
+
+#: configs/filter.py:112
+msgid "Filter field name."
+msgstr "Name des Filterfeldes."
+
+#: configs/filter.py:113
+msgid "Filter label."
+msgstr "Filterbezeichnung."
+
+#: configs/utils.py:186
+msgid "First wordmark run."
+msgstr "Erste Wortmarken-Reihe."
+
+#: templates/insight_ui/login.html:88
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
+
+#: configs/list.py:86
+msgid "Form field name."
+msgstr "Name des Formularfelds."
+
+#: configs/forms.py:128
+msgid "Form title displayed at the top."
+msgstr "Oben angezeigter Formulartitel."
+
+#: configs/card.py:145
+msgid "Front side action buttons."
+msgstr "Aktionsschaltflächen auf der Vorderseite."
+
+#: configs/card.py:138
+msgid "Front side content."
+msgstr "Inhalt der Vorderseite."
+
+#: configs/card.py:143
+msgid "Front side image."
+msgstr "Bild auf der Vorderseite."
+
+#: configs/layout.py:347
+msgid "HTML id attribute for anchor links and JavaScript targeting."
+msgstr "HTML-ID-Attribut für Ankerlinks und JavaScript-Targeting."
+
+#: configs/input.py:126
+msgid "HTML type attribute: 'button', 'submit', or 'reset'."
+msgstr "HTML-Typ-Attribut: „button“, „submit“ oder „reset“."
+
+#: configs/navigation.py:346
+msgid "HTMX configuration for AJAX page changes."
+msgstr "HTMX-Konfiguration für AJAX-Seitenwechsel."
+
+#: configs/filter.py:61 configs/filter.py:175
+msgid "HTMX configuration for AJAX requests."
+msgstr "HTMX-Konfiguration für AJAX-Anfragen."
+
+#: configs/forms.py:136
+msgid "HTMX configuration for AJAX submission."
+msgstr "HTMX-Konfiguration für die AJAX-Übermittlung."
+
+#: configs/filter.py:317
+msgid "HTMX configuration for sending the form without a page load."
+msgstr "HTMX-Konfiguration zum Senden des Formulars ohne Seitenneuladung."
+
+#: configs/input.py:679
+msgid "HTMX configuration; the radio buttons send their value to request_url and swap htmx.target."
+msgstr "HTMX-Konfiguration; die Optionsfelder senden ihren Wert an „request_url“ und ändern „htmx.target“."
+
+#: configs/base.py:208
+msgid "HTTP method ('get' or 'post')."
+msgstr "HTTP-Methode („get“ oder „post“)."
+
+#: configs/forms.py:135
+msgid "HTTP method for form submission (get or post)."
+msgstr "HTTP-Methode für die Formularübermittlung (GET oder POST)."
+
+#: configs/card.py:146
+msgid "Heading level of the front and back titles."
+msgstr "Überschriftenebene der Titel auf der Vorder- und Rückseite."
+
+#: configs/list.py:53
+msgid "Heading level of the item titles."
+msgstr "Überschriftenebene der Elementtitel."
+
+#: configs/navigation.py:874
+msgid "Heading level of the section titles."
+msgstr "Überschriftenebene der Abschnittstitel."
+
+#: configs/card.py:55 configs/card.py:96
+msgid "Heading level of the title."
+msgstr "Überschriftenebene des Titels."
+
+#: configs/navigation.py:507
+msgid "Heading of the description."
+msgstr "Überschrift der Beschreibung."
+
+#: configs/layout.py:119
+msgid "Height behavior (auto|full|peek)."
+msgstr "Verhalten der Höhe (auto|full|peek)."
+
+#: configs/utils.py:588
+msgid "Height of the chart in 'rem'."
+msgstr "Höhe des Diagramms in „rem“."
+
+#: configs/utils.py:373
+msgid "Hide progress bar when reaching max_value."
+msgstr "Fortschrittsbalken ausblenden, wenn max_value erreicht ist."
+
+#: configs/base.py:268 configs/filter.py:117 configs/input.py:424 configs/input.py:609 configs/input.py:694
+msgid "Hint shown below the field."
+msgstr "Hinweis, der unterhalb des Feldes angezeigt wird."
+
+#: configs/layout.py:164
+msgid "Horizontal alignment (start|center|end|between|around|evenly)."
+msgstr "Horizontale Ausrichtung: (start|center|end|between|around|evenly)."
+
+#: configs/layout.py:212
+msgid "Horizontal alignment (start|center|end|stretch|baseline)."
+msgstr "Horizontale Ausrichtung (start|center|end|stretch|baseline)."
+
+#: configs/navigation.py:99
+msgid "ID of a modal dialog to open. The modal must be defined elsewhere in the template."
+msgstr "ID eines zu öffnenden modalen Dialogfelds. Das modale Dialogfeld muss an anderer Stelle in der Vorlage definiert sein."
+
+#: configs/layout.py:303
+msgid "ID of element that labels this section."
+msgstr "ID des Elements, das diesen Abschnitt kennzeichnet."
+
+#: configs/utils.py:143
+msgid "Icon configuration used when type is 'icon'."
+msgstr "Symbolkonfiguration, die verwendet wird, wenn der Typ „icon‘ ist."
+
+#: configs/utils.py:144
+msgid "Icon name (alternative to icon config)."
+msgstr "Symbolname (Alternative zur Symbolkonfiguration)."
+
+#: configs/utils.py:145
+msgid "Icon size (alternative to icon config)."
+msgstr "Symbolgröße (Alternative zur Symbolkonfiguration)."
+
+#: configs/base.py:104
+msgid "Icon size: 'xl', 'l', 'm', 's', or 'xs'."
+msgstr "Symbolgröße: „xl“, „l“, „m“, „s“ oder „xs“."
+
+#: configs/filter.py:72
+msgid "Id of the search input and prefix of the results list, unique on the page."
+msgstr "ID des Sucheingabefelds und Präfix der Ergebnisliste, eindeutig auf der Seite."
+
+#: configs/navigation.py:873
+msgid "If **True** only one section can be open at a time."
+msgstr "Wenn **True** gesetzt ist, kann jeweils nur ein Abschnitt geöffnet sein."
+
+#: configs/navigation.py:475
+msgid "If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible)."
+msgstr "Bei **True** ist die Seitenleiste fixiert; bei **False** handelt es sich um eine ausklappbare Seitenleiste (Drawer)."
+
+#: configs/filter.py:174
+msgid "If True, arrange filters vertically."
+msgstr "Falls „True“, werden die Filter vertikal angeordnet."
+
+#: configs/filter.py:63
+msgid "If True, enable client-side documentation search with Fuse.js."
+msgstr "Wenn „True“, wird die clientseitige Dokumentationssuche mit Fuse.js aktiviert."
+
+#: configs/navigation.py:316
+msgid "If True, hide the login button for unauthenticated users."
+msgstr "Wenn „True“, wird die Anmeldeschaltfläche für nicht authentifizierte Benutzer ausgeblendet."
+
+#: configs/list.py:51
+msgid "If True, load the next page on scroll. If False, show a button."
+msgstr "Wenn „True“, wird beim Scrollen die nächste Seite geladen. Wenn „False“, wird eine Schaltfläche angezeigt."
+
+#: configs/filter.py:57
+msgid "If True, render compact/minimal style."
+msgstr "Wenn „True“, wird der kompakte/minimale Stil gerendert."
+
+#: configs/filter.py:320
+msgid "If True, show the active filters as a sentence below the form."
+msgstr "Wenn „True“, werden die aktiven Filter als Satz unterhalb des Formulars angezeigt."
+
+#: configs/card.py:230
+msgid "Image URL."
+msgstr "Bild-URL."
+
+#: templates/insight_ui/components/footer.html:47
+msgid "Imprint"
+msgstr "Impressum"
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "In progress"
+msgstr "Wird ausgeführt"
+
+#: configs/navigation.py:606
+msgid "Information about the current version."
+msgstr "Informationen zur aktuellen Version."
+
+#: configs/utils.py:625
+msgid "Initial content before first update."
+msgstr "Anfänglicher Inhalt vor der ersten Aktualisierung."
+
+#: configs/utils.py:668
+msgid "Initial content."
+msgstr "Anfänglicher Inhalt."
+
+#: configs/filter.py:58
+msgid "Initial search query value."
+msgstr "Anfänglicher Wert der Suchanfrage."
+
+#: configs/layout.py:345
+msgid "Inner padding (xs|s|m|l|xl)."
+msgstr "Innenabstand (xs|s|m|l|xl)."
+
+#: configs/layout.py:160 configs/layout.py:208
+msgid "Inner padding (xs|s|m|l|xl). Optional."
+msgstr "Innerer Abstand (xs|s|m|l|xl). Optional."
+
+#: configs/layout.py:118
+msgid "Inner padding size (xs|s|m|l|xl)."
+msgstr "Größe des inneren Abstandsgröße (xs|s|m|l|xl)."
+
+#: configs/utils.py:498
+msgid "Interactive map"
+msgstr "Interaktive Karte"
+
+#: configs/card.py:333
+msgid "Items of the grid and carousel views, e.g. CardConfig."
+msgstr "Elemente der Raster- und Karussellansichten, z. B. „CardConfig“."
+
+#: configs/card.py:270
+msgid "Items to display, e.g. CardConfig or model instances."
+msgstr "Anzuzeigende Elemente, z. B. „CardConfig“- oder Modellinstanzen."
+
+#: configs/card.py:186
+msgid "Items to display, e.g. CardConfig, CarouselImageConfig or model instances."
+msgstr "Anzuzeigende Elemente, z. B. „CardConfig“, CarouselImageConfig oder Modellinstanzen."
+
+#: templates/insight_ui/base.html:78
+msgid "Jump to main content"
+msgstr "Zum Hauptinhalt springen"
+
+#: configs/utils.py:377
+msgid "Label for the cancel button."
+msgstr "Bezeichnung für die Schaltfläche „Abbrechen“."
+
+#: configs/forms.py:133
+msgid "Label for the reset button."
+msgstr "Bezeichnung für die Schaltfläche „Zurücksetzen“."
+
+#: configs/utils.py:380
+msgid "Label for the retry button."
+msgstr "Bezeichnung für die Schaltfläche „Erneut versuchen“."
+
+#: configs/filter.py:60
+msgid "Label for the search button."
+msgstr "Bezeichnung für die Suchschaltfläche."
+
+#: configs/forms.py:132
+msgid "Label for the submit button."
+msgstr "Bezeichnung für die Schaltfläche „Absenden“."
+
+#: configs/input.py:506
+msgid "Label of the dropdown button."
+msgstr "Bezeichnung der Dropdown-Schaltfläche."
+
+#: configs/input.py:459
+msgid "Label of the dropdown element."
+msgstr "Bezeichnung des Dropdown-Elements."
+
+#: configs/navigation.py:343
+msgid "Label of the item."
+msgstr "Bezeichnung des Elements."
+
+#: configs/navigation.py:86 configs/navigation.py:143 configs/navigation.py:624
+msgid "Label of the link."
+msgstr "Bezeichnung des Links."
+
+#: configs/input.py:542
+msgid "Label of the respective radio button."
+msgstr "Bezeichnung des jeweiligen Optionsfelds."
+
+#: configs/navigation.py:899
+msgid "Label of the tab button."
+msgstr "Bezeichnung der Registerkarte."
+
+#: configs/input.py:348
+msgid "Label text."
+msgstr "Beschriftungstext."
+
+#: configs/utils.py:548
+msgid "Labels for X-axis categories."
+msgstr "Beschriftungen für die Kategorien der X-Achse."
+
+#: configs/utils.py:854
+msgid "Language for the syntax highlighting, e.g. python."
+msgstr "Sprache für die Syntaxhervorhebung, z. B. python."
+
+#: configs/input.py:773
+msgid "Largest configurable value of the range slider."
+msgstr "Größter konfigurierbarer Wert des Bereichsreglers."
+
+#: configs/input.py:232
+msgid "Largest numeric value (for `input_type='number'`)."
+msgstr "Größter numerischer Wert (für `input_type='number'`)."
+
+#: configs/utils.py:413
+msgid "Latitude coordinate."
+msgstr "Breitengradkoordinate."
+
+#: configs/navigation.py:604
+msgid "Legal notice with copyright, license, and version information."
+msgstr "Rechtlicher Hinweis mit Angaben zu Urheberrecht, Lizenz und Version."
+
+#: templates/insight_ui/components/charts/line_chart.html:9
+#, python-format
+msgid "Line chart: %(title)s"
+msgstr "Liniendiagramm: %(title)s"
+
+#: configs/layout.py:264
+msgid "Line style (solid|dashed|dotted)."
+msgstr "Linienstil: (solid|dashed|dotted)."
+
+#: configs/layout.py:263
+msgid "Line thickness (thin|medium|thick)."
+msgstr "Linienstärke: (thin|medium|thick)."
+
+#: configs/navigation.py:537
+msgid "Link to a privacy policy."
+msgstr "Link zur Datenschutzerklärung."
+
+#: configs/navigation.py:536
+msgid "Link to an imprint."
+msgstr "Link zum Impressum."
+
+#: templates/insight_ui/components/footer.html:18
+msgid "Links"
+msgstr "Links"
+
+#: configs/layout.py:556
+msgid "List marker style (none|disc|circle|square|decimal|decimal-leading-zero)."
+msgstr "Stil der Listenmarkierung (none|disc|circle|square|decimal|decimal-leading-zero)."
+
+#: configs/card.py:54 configs/card.py:95
+msgid "List of action buttons."
+msgstr "Liste der Aktionsschaltflächen."
+
+#: configs/card.py:94 configs/card.py:144
+msgid "List of badge configurations for tags."
+msgstr "Liste der Badge-Konfigurationen für Tags."
+
+#: configs/navigation.py:658
+msgid "List of breadcrumb navigation items."
+msgstr "Liste der Elemente der Breadcrumb-Navigation."
+
+#: configs/navigation.py:820
+msgid "List of bullet point items."
+msgstr "Liste der Aufzählungspunkte."
+
+#: configs/list.py:186
+msgid "List of column header texts."
+msgstr "Liste der Spaltenüberschriften."
+
+#: configs/input.py:993
+msgid "List of currently selected options."
+msgstr "Liste der aktuell ausgewählten Optionen."
+
+#: configs/utils.py:495
+msgid "List of data layers to display."
+msgstr "Liste der anzuzeigenden Datenebenen."
+
+#: configs/filter.py:165
+msgid "List of filter configurations."
+msgstr "Liste der Filterkonfigurationen."
+
+#: configs/navigation.py:872
+msgid "List of individual sections."
+msgstr "Liste der einzelnen Abschnitte."
+
+#: configs/navigation.py:391
+msgid "List of items in this category."
+msgstr "Liste der Elemente in dieser Kategorie."
+
+#: configs/utils.py:447
+msgid "List of marker configurations."
+msgstr "Liste der Markierungskonfigurationen."
+
+#: configs/navigation.py:434
+msgid "List of navigation categories."
+msgstr "Liste der Navigationskategorien."
+
+#: configs/list.py:188
+msgid "List of row data (each row is a list of cell values)."
+msgstr "Liste der Zeilendaten (jede Zeile ist eine Liste von Zellenwerten)."
+
+#: configs/navigation.py:731
+msgid "List of step configurations."
+msgstr "Liste der Schrittkonfigurationen."
+
+#: configs/navigation.py:936
+msgid "List of tab buttons."
+msgstr "Liste der Registerkarten-Schaltflächen."
+
+#: configs/input.py:411
+msgid "List of the checkbox elements."
+msgstr "Liste der Kontrollkästchen-Elemente."
+
+#: configs/navigation.py:596
+msgid "List of the main navigation items of the application."
+msgstr "Liste der wichtigsten Navigationselemente der Anwendung."
+
+#: configs/input.py:930 configs/input.py:990
+msgid "List of values that can be selected."
+msgstr "Liste der auswählbaren Werte."
+
+#: templates/insight_ui/components/_infinite_scroll_more.html:14
+msgid "Load more"
+msgstr "Weitere Inhalte laden"
+
+#: templates/insight_ui/components/form.html:55 templates/insight_ui/components/htmx_loading_indicator.html:31
+#: templates/insight_ui/components/live_content.html:15
+msgid "Loading..."
+msgstr "Wird geladen..."
+
+#: templates/insight_ui/components/user_dropdown.html:15
+msgid "Logged in as"
+msgstr "Angemeldet als"
+
+#: templates/insight_ui/components/user_dropdown.html:49 templates/insight_ui/login.html:46
+msgid "Login"
+msgstr "Anmelden"
+
+#: configs/navigation.py:220
+msgid "Logo configuration for branding at the top of the login form."
+msgstr "Logo-Konfiguration für das Branding oben im Anmeldeformular."
+
+#: configs/utils.py:196
+msgid "Logo position, either 'start' or 'end'."
+msgstr "Logo-Position, entweder „start“ oder „end“."
+
+#: templates/insight_ui/components/user_dropdown.html:37
+msgid "Logout"
+msgstr "Abmelden"
+
+#: configs/utils.py:414
+msgid "Longitude coordinate."
+msgstr "Längenkoordinate."
+
+#: configs/filter.py:252
+msgid "Lookup of the field, e.g. \"icontains\"."
+msgstr "Nachschlagebezeichnung des Feldes, z. B. „icontains“."
+
+#: configs/card.py:51
+msgid "Main card content."
+msgstr "Hauptinhalt der Karte."
+
+#: templates/insight_ui/components/navbar.html:5
+msgid "Main navigation"
+msgstr "Hauptnavigation"
+
+#: configs/utils.py:238
+msgid "Main status title."
+msgstr "Titel des Hauptstatus."
+
+#: templatetags/insight_tags.py:1288
+msgid "Map layers"
+msgstr "Kartenebenen"
+
+#: templates/insight_ui/components/geo_map.html:5
+msgid "Map locations"
+msgstr "Standorte auf der Karte"
+
+#: configs/layout.py:558
+msgid "Marker position (inside|outside)."
+msgstr "Markierungsposition (inside|outside)."
+
+#: configs/utils.py:412
+msgid "Marker title/label."
+msgstr "Titel/Bezeichnung des Markers."
+
+#: configs/utils.py:446
+msgid "Marker type ('marker' or 'circle')."
+msgstr "Markierungstyp („marker“ oder „circle“)."
+
+#: configs/input.py:234
+msgid "Maximum number of characters in a text field."
+msgstr "Maximale Anzahl an Zeichen in einem Textfeld."
+
+#: configs/layout.py:77
+msgid "Maximum number of columns (1-4). Fewer columns are shown on narrow containers."
+msgstr "Maximale Anzahl von Spalten (1–4). Bei schmalen Containern werden weniger Spalten angezeigt."
+
+#: configs/filter.py:314
+msgid "Maximum number of filters; parse_filters ignores further ones."
+msgstr "Maximale Anzahl von Filtern; „parse_filters“ ignoriert weitere."
+
+#: configs/card.py:197
+msgid "Maximum number of items visible per page."
+msgstr "Maximale Anzahl der pro Seite sichtbaren Elemente."
+
+#: configs/input.py:985
+msgid "Maximum number of selectable options."
+msgstr "Maximale Anzahl auswählbarer Optionen."
+
+#: templates/insight_ui/components/checkbox_group.html:10
+msgid "Maximum selection reached. Deselect an option first."
+msgstr "Die Höchstanzahl an Auswahlen wurde erreicht. Bitte deaktivieren Sie zunächst eine Option."
+
+#: configs/utils.py:449
+msgid "Maximum value for circle scaling."
+msgstr "Maximalwert für die Kreisskalierung."
+
+#: configs/utils.py:370
+msgid "Maximum value."
+msgstr "Maximalwert."
+
+#: configs/layout.py:161 configs/layout.py:209
+msgid "Maximum width (xs|s|m|l|xl|fit|full)."
+msgstr "Maximale Breite (xs|s|m|l|xl|fit|full)."
+
+#: configs/layout.py:496
+msgid "Maximum width in rem units."
+msgstr "Maximale Breite in rem-Einheiten."
+
+#: templates/insight_ui/components/chat.html:15
+msgid "Message"
+msgstr "Nachricht"
+
+#: configs/popup.py:39
+msgid "Message displayed in the alert."
+msgstr "In der Warnmeldung angezeigte Meldung."
+
+#: configs/list.py:192
+msgid "Message shown when no data available."
+msgstr "Meldung, die angezeigt wird, wenn keine Daten verfügbar sind."
+
+#: configs/layout.py:403
+msgid "Minimum item width for auto-fit mode (any CSS unit: px, rem, em, etc.)."
+msgstr "Mindestbreite der Elemente für den Auto-Fit-Modus (beliebige CSS-Einheit: px, rem, em usw.)."
+
+#: configs/input.py:233
+msgid "Minimum number of characters in a text field."
+msgstr "Mindestanzahl an Zeichen in einem Textfeld."
+
+#: templates/insight_ui/components/checkbox_group.html:9
+msgid "Minimum selection reached. At least one option must remain selected."
+msgstr "Die Mindestanzahl an Auswahlen wurde erreicht. Es muss mindestens eine Option ausgewählt bleiben."
+
+#: configs/utils.py:448
+msgid "Minimum value for circle scaling."
+msgstr "Mindestwert für die Skalierung von Kreisen."
+
+#: configs/utils.py:369
+msgid "Minimum value."
+msgstr "Mindestwert."
+
+#: configs/card.py:343
+msgid "Minimum width of an item in the grid and carousel, e.g. \"16rem\"."
+msgstr "Mindestbreite eines Elements im Raster und Karussell, z. B. „16rem“."
+
+#: configs/card.py:200
+msgid "Minimum width of an item, e.g. \"16rem\"; narrow screens then show fewer items per page."
+msgstr ""
+"Mindestbreite eines Elements, z. B. „16rem“; auf schmalen Bildschirmen werden dann weniger Elemente pro Seite "
+"angezeigt."
+
+#: templates/insight_ui/components/websocket.html:39
+msgid "Mode: HTMX WebSocket Extension (expects HTML)"
+msgstr "Modus: HTMX WebSocket-Erweiterung (erwartet HTML)"
+
+#: configs/filter.py:216
+msgid "Model field or lookup path, e.g. \"author__name\"."
+msgstr "Modellfeld oder Lookup-Pfad, z. B. „author__name“."
+
+#: templates/insight_ui/components/_infinite_scroll_more.html:16
+msgid "More content is loading..."
+msgstr "Weitere Inhalte werden geladen..."
+
+#: templates/insight_ui/components/cards/flip_card.html:46
+msgid "More information"
+msgstr "Weitere Informationen"
+
+#: configs/base.py:103
+msgid "Name of the Insight UI icon."
+msgstr "Name des Insight-UI-Symbols."
+
+#: configs/input.py:684
+msgid "Name of the JavaScript method to be executed when clicking one of the radio buttons."
+msgstr "Name der JavaScript-Methode, die beim Klicken auf eines der Optionsfelder ausgeführt werden soll."
+
+#: configs/input.py:879
+msgid "Name of the JavaScript method to be executed when the toggle button is clicked."
+msgstr "Name der JavaScript-Methode, die beim Klicken auf die Umschalt-Schaltfläche ausgeführt werden soll."
+
+#: configs/list.py:45 configs/list.py:143
+msgid "Name of the query parameter for the page number."
+msgstr "Name des Abfrageparameters für die Seitenzahl."
+
+#: configs/filter.py:74
+msgid "Name of the request parameter."
+msgstr "Name des Anfrageparameters."
+
+#: templates/insight_ui/components/carousels/ring_carousel.html:36
+msgid "Next item"
+msgstr "Nächster Eintrag"
+
+#: utils/query_builder.py:48
+msgid "No"
+msgstr "Nein"
+
+#: templates/insight_ui/components/query_builder.html:48
+msgid "No active filters."
+msgstr "Keine aktiven Filter."
+
+#: configs/list.py:192
+msgid "No data available."
+msgstr "Keine Daten verfügbar."
+
+#: templates/insight_ui/components/search_bar_result_templates.html:23
+msgid "No results found"
+msgstr "Keine Ergebnisse gefunden"
+
+#: configs/navigation.py:938
+msgid "Non-visible additional title that is to be read aloud by screen readers."
+msgstr "Nicht sichtbarer zusätzlicher Titel, der von Bildschirmleseprogrammen vorgelesen werden soll."
+
+#: configs/input.py:419
+msgid "Number of checkbox elements that may be selected at the same time."
+msgstr "Anzahl der Kontrollkästchen-Elemente, die gleichzeitig ausgewählt werden dürfen."
+
+#: configs/input.py:416
+msgid "Number of checkbox elements that must be selected at minimum."
+msgstr "Anzahl der Kontrollkästchen, die mindestens ausgewählt werden müssen."
+
+#: configs/layout.py:399
+msgid "Number of columns (1-6). If not set, uses auto-fit mode."
+msgstr "Anzahl der Spalten (1–6). Falls nicht festgelegt, wird der Auto-Fit-Modus verwendet."
+
+#: configs/list.py:145
+msgid "Number of pages shown at the start and end."
+msgstr "Anzahl der Seiten, die am Anfang und am Ende angezeigt werden."
+
+#: configs/list.py:144
+msgid "Number of pages shown on each side of the current page."
+msgstr "Anzahl der Seiten, die auf jeder Seite der aktuellen Seite angezeigt werden."
+
+#: configs/navigation.py:754
+msgid "Number of process steps. (Only if 'steps' is not set!)"
+msgstr "Anzahl der Prozessschritte. (Nur wenn „steps“ nicht gesetzt ist!)"
+
+#: templates/insight_ui/components/query_builder_filter.html:12
+#: templates/insight_ui/components/query_builder_filter.html:25
+msgctxt "query builder"
+msgid "OR"
+msgstr "ODER"
+
+#: configs/layout.py:349
+msgid "Open link in new tab (only when href is set)."
+msgstr "Link in neuem Tab öffnen (nur wenn „href“ festgelegt ist)."
+
+#: templates/insight_ui/components/navbar.html:29
+msgid "Open menu"
+msgstr "Menü öffnen"
+
+#: templatetags/layout_tags.py:384
+msgid "Open sidebar"
+msgstr "Seitenleiste öffnen"
+
+#: configs/utils.py:249
+msgid "Optional CSS classes for the outer section."
+msgstr "Optionale CSS-Klassen für den äußeren Bereich."
+
+#: configs/utils.py:198
+msgid "Optional CSS classes for the root element."
+msgstr "Optionale CSS-Klassen für das Stammelement."
+
+#: configs/utils.py:250
+msgid "Optional CSS classes for the status card."
+msgstr "Optionale CSS-Klassen für die Statuskarte."
+
+#: configs/utils.py:147
+msgid "Optional CSS width for image/svg logos."
+msgstr "Optionale CSS-Breite für Bild-/SVG-Logos."
+
+#: configs/base.py:163
+msgid "Optional CSS width value."
+msgstr "Optionaler CSS-Breitenwert."
+
+#: configs/navigation.py:661 configs/navigation.py:822
+msgid "Optional HTMX configuration for AJAX navigation."
+msgstr "Optionale HTMX-Konfiguration für die AJAX-Navigation."
+
+#: configs/input.py:463 configs/navigation.py:93
+msgid "Optional HTMX configuration for dynamic content loading."
+msgstr "Optionale HTMX-Konfiguration zum dynamischen Laden von Inhalten."
+
+#: configs/list.py:137
+msgid "Optional HTMX request for the page links and the page size selector."
+msgstr "Optionale HTMX-Anfrage für die Seitenlinks und die Seitengrößenauswahl."
+
+#: configs/utils.py:856
+msgid "Optional ID of the code block."
+msgstr "Optionale ID des Codeblocks."
+
+#: configs/forms.py:143
+msgid "Optional Turnstile widget; the host must verify its token."
+msgstr "Optionales Turnstile-Widget; der Host muss sein Token überprüfen."
+
+#: configs/filter.py:67
+msgid "Optional URL for the client-side documentation search index."
+msgstr "Optionale URL für den Index der clientseitigen Dokumentationssuche."
+
+#: configs/utils.py:94
+msgid "Optional URL for the license label."
+msgstr "Optionale URL für die Lizenzbezeichnung."
+
+#: configs/utils.py:291
+msgid "Optional URL that turns the ribbon into a link."
+msgstr "Optionale URL, die die Multifunktionsleiste in einen Link verwandelt."
+
+#: configs/utils.py:378
+msgid "Optional URL to call when cancelling (POST request)."
+msgstr "Optionale URL, die beim Abbrechen aufgerufen werden soll (POST-Anfrage)."
+
+#: configs/forms.py:65
+msgid "Optional action identifier verified by the host view."
+msgstr "Optionaler Aktionsbezeichner, der von der Host-Ansicht überprüft wird."
+
+#: configs/utils.py:242
+msgid "Optional brand mark shown above the card."
+msgstr "Optionales Markenzeichen, das über der Karte angezeigt wird."
+
+#: configs/card.py:232
+msgid "Optional caption below the image."
+msgstr "Optionale Bildunterschrift unterhalb des Bildes."
+
+#: configs/card.py:53
+msgid "Optional card image."
+msgstr "Optionales Kartenbild."
+
+#: configs/navigation.py:390
+msgid "Optional category icon."
+msgstr "Optionales Kategorie-Symbol."
+
+#: configs/layout.py:40
+msgid "Optional chapter displayed before the title in muted style."
+msgstr "Optionales Kapitel, das vor dem Titel in dezenter Darstellung angezeigt wird."
+
+#: configs/list.py:147
+msgid "Optional configuration for the items-per-page selector."
+msgstr "Optionale Konfiguration für den Selektor „Elemente pro Seite“."
+
+#: configs/utils.py:141
+msgid "Optional dark-theme URL for image/svg logos."
+msgstr "Optionale URL für das dunkle Design bei Bild-/SVG-Logos."
+
+#: configs/base.py:161
+msgid "Optional dark-theme URL."
+msgstr "Optionale URL für das dunkle Design."
+
+#: configs/forms.py:129
+msgid "Optional description below the title."
+msgstr "Optionale Beschreibung unterhalb des Titels."
+
+#: configs/utils.py:100
+msgid "Optional destination for the copyright holder's name."
+msgstr "Optionales Linkziel für den Namen des Urheberrechtsinhabers."
+
+#: configs/utils.py:855
+msgid "Optional file name shown in the toolbar."
+msgstr "Optionaler Dateiname, der in der Symbolleiste angezeigt wird."
+
+#: configs/filter.py:118
+msgid "Optional filter icon."
+msgstr "Optionales Filtersymbol."
+
+#: configs/navigation.py:432
+msgid "Optional heading above the categories section."
+msgstr "Optionale Überschrift über dem Kategoriebereich."
+
+#: configs/layout.py:495
+msgid "Optional heading displayed in the modal header."
+msgstr "Optionale Überschrift, die in der Kopfzeile des Modals angezeigt wird."
+
+#: configs/utils.py:363
+msgid "Optional heading/title for the progress bar."
+msgstr "Optionale Überschrift/Titel für den Fortschrittsbalken."
+
+#: configs/navigation.py:626
+msgid "Optional icon (typically for home item)."
+msgstr "Optionales Symbol (in der Regel für das Startseite-Element)."
+
+#: configs/input.py:861
+msgid "Optional icon configuration."
+msgstr "Optionale Symbolkonfiguration."
+
+#: configs/input.py:543
+msgid "Optional icon displayed before the label."
+msgstr "Optionales Symbol, das vor der Beschriftung angezeigt wird."
+
+#: configs/navigation.py:510
+msgid "Optional image displayed below the description text."
+msgstr "Optionales Bild, das unterhalb des Beschreibungstextes angezeigt wird."
+
+#: configs/utils.py:93
+msgid "Optional license label, for example AGPL-3.0."
+msgstr "Optionale Lizenzbezeichnung, zum Beispiel AGPL-3.0."
+
+#: configs/layout.py:46
+msgid "Optional list of action buttons displayed below the badges."
+msgstr "Optionale Liste von Aktionsschaltflächen, die unterhalb der Abzeichen angezeigt wird."
+
+#: configs/layout.py:43
+msgid "Optional list of badges displayed below the description."
+msgstr "Optionale Liste von Badges, die unterhalb der Beschreibung angezeigt wird."
+
+#: configs/utils.py:103
+msgid "Optional logo before the holder's name; use empty alt text when decorative."
+msgstr ""
+"Optionales Logo vor dem Namen des Inhabers; verwenden Sie einen leeren Alt-Text, wenn es sich um ein dekoratives "
+"Element handelt."
+
+#: configs/utils.py:244
+msgid "Optional notice heading."
+msgstr "Optionale Überschrift des Hinweises."
+
+#: configs/utils.py:245
+msgid "Optional notice text."
+msgstr "Optionaler Text des Hinweises."
+
+#: configs/utils.py:416
+msgid "Optional numeric value (for circle markers)."
+msgstr "Optionaler numerischer Wert (für Kreismarkierungen)."
+
+#: configs/utils.py:415
+msgid "Optional popup description."
+msgstr "Optionale Popup-Beschreibung."
+
+#: configs/utils.py:98
+msgid "Optional rights statement."
+msgstr "Optionale Rechteerklärung."
+
+#: configs/utils.py:92
+msgid "Optional source model label, for example Open Source."
+msgstr "Optionale Bezeichnung des Quellmodells, zum Beispiel „Open Source“."
+
+#: configs/card.py:52
+msgid "Optional subtitle."
+msgstr "Optionaler Untertitel."
+
+#: configs/list.py:190
+msgid "Optional table caption."
+msgstr "Optionale Tabellenbeschriftung."
+
+#: configs/layout.py:265
+msgid "Optional text label displayed in the center."
+msgstr "Optionale Textbeschriftung, die in der Mitte angezeigt wird."
+
+#: configs/navigation.py:428
+msgid "Optional title icon."
+msgstr "Optionales Titelsymbol."
+
+#: configs/utils.py:713
+msgid "Optional tooltip text displayed on hover."
+msgstr "Optionaler Tooltip-Text, der beim Darüberfahren mit der Maus angezeigt wird."
+
+#: configs/card.py:192
+msgid "Optional unique ID of the carousel."
+msgstr "Optionale eindeutige ID des Karussells."
+
+#: configs/utils.py:99
+msgid "Optional version string, for example v1.2.3."
+msgstr "Optionale Versionsangabe, zum Beispiel v1.2.3."
+
+#: configs/base.py:252 configs/input.py:540 configs/popup.py:37
+msgid "Optional, unique tag ID for identifying the element in JavaScript."
+msgstr "Optionale, eindeutige Tag-ID zur Identifizierung des Elements in JavaScript."
+
+#: templates/insight_ui/login.html:101
+msgid "Or"
+msgstr "Oder"
+
+#: configs/layout.py:261
+msgid "Orientation (horizontal|vertical)."
+msgstr "Ausrichtung (horizontal|vertical)."
+
+#: configs/utils.py:852
+msgid "Original code."
+msgstr "Ursprünglicher Code."
+
+#: configs/utils.py:823
+msgid "Original text."
+msgstr "Originaltext."
+
+#: templates/insight_ui/components/pagination.html:63
+msgid "Page"
+msgstr "Seite"
+
+#: templatetags/insight_tags.py:1591
+#, python-format
+msgid "Page %(number)s"
+msgstr "Seite %(number)s"
+
+#: templates/insight_ui/components/pagination.html:9
+msgid "Pagination"
+msgstr "Paginierung"
+
+#: templates/insight_ui/login.html:74
+msgid "Password"
+msgstr "Passwort"
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: configs/filter.py:59
+msgid "Placeholder text for the search input."
+msgstr "Platzhaltertext für das Sucheingabefeld."
+
+#: configs/input.py:226 configs/input.py:285
+msgid "Placeholder text, displayed in the field as long as it has not been selected."
+msgstr "Platzhaltertext, der im Feld angezeigt wird, solange noch keine Auswahl getroffen wurde."
+
+#: configs/utils.py:367
+msgid "Polling interval in milliseconds."
+msgstr "Abfrageintervall in Millisekunden."
+
+#: configs/navigation.py:471
+msgid "Position of the sidebar (\"left\" or \"right\"). Auto-detected from block context."
+msgstr "Position der Seitenleiste (\"left\" oder \"right\"). Wird automatisch aus dem Blockkontext ermittelt."
+
+#: configs/input.py:1030
+msgid "Prefix of the element IDs, unique on the page."
+msgstr "Präfix der Element-IDs, das auf der Seite eindeutig ist."
+
+#: configs/filter.py:312
+msgid "Prefix of the submitted query parameters."
+msgstr "Präfix der übermittelten Abfrageparameter."
+
+#: templates/insight_ui/components/carousels/ring_carousel.html:34
+msgid "Previous item"
+msgstr "Vorheriger Eintrag"
+
+#: configs/layout.py:443
+msgid "Primary 'Call-to-Action' button."
+msgstr "Primäre „Call-to-Action“-Schaltfläche."
+
+#: configs/utils.py:246
+msgid "Primary button action."
+msgstr "Primäre Schaltflächenaktion."
+
+#: templates/insight_ui/components/footer.html:50
+msgid "Privacy"
+msgstr "Datenschutz"
+
+#: templates/insight_ui/components/minimal_stepper.html:5
+msgid "Progress indicator"
+msgstr "Fortschrittsanzeige"
+
+#: configs/forms.py:58
+msgid "Public Turnstile site key. Never use the secret key here."
+msgstr "Öffentlicher Turnstile-Site-Schlüssel. Verwenden Sie hier niemals den geheimen Schlüssel."
+
+#: configs/utils.py:194
+msgid "Public logo configuration."
+msgstr "Konfiguration des öffentlichen Logos."
+
+#: configs/card.py:329
+msgid "Radio block whose item values (\"grid\", \"table\", \"carousel\") pick the view."
+msgstr "Radio-Block, dessen Elementwerte („grid“, „table“, „carousel“) die Ansicht festlegen."
+
+#: templates/insight_ui/components/user_dropdown.html:46
+msgid "Register"
+msgstr "Registrieren"
+
+#: templatetags/insight_tags.py:1416
+msgid "Remove"
+msgstr "Entfernen"
+
+#: templatetags/insight_tags.py:1450
+msgid "Remove all"
+msgstr "Alle entfernen"
+
+#: templates/insight_ui/components/query_builder_filter.html:63
+msgid "Remove filter"
+msgstr "Filter entfernen"
+
+#: templates/insight_ui/components/text_diff.html:19
+msgid "Removed:"
+msgstr "Entfernt:"
+
+#: configs/utils.py:792
+msgid "Request sent by a \"Remove all\" button after the badges. The button is only shown if this is set."
+msgstr ""
+"Anfrage, die von einer Schaltfläche „Alle entfernen“ hinter den Badges gesendet wird. Die Schaltfläche wird nur "
+"angezeigt, wenn dieser Wert festgelegt ist."
+
+#: configs/utils.py:717
+msgid "Request sent by a remove button next to the label. The button is only shown if this is set."
+msgstr ""
+"Anfrage, die über eine Schaltfläche „Entfernen“ neben der Bezeichnung gesendet wird. Die Schaltfläche wird nur "
+"angezeigt, wenn dieser Wert gesetzt ist."
+
+#: configs/base.py:250 configs/input.py:409
+msgid "Required for a `<form>`, as the name of the request parameter."
+msgstr "Erforderlich für einen `<form>` als Name des Anfrageparameters."
+
+#: templates/insight_ui/components/form.html:39 templates/insight_ui/components/query_builder.html:39
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: templates/insight_ui/components/progress_bar.html:96
+msgid "Retry"
+msgstr "Erneut versuchen"
+
+#: templates/insight_ui/components/carousels/ring_carousel.html:15
+msgid "Ring carousel"
+msgstr "Ringkarussell"
+
+#: templates/insight_ui/components/search_bar.html:20 templates/insight_ui/components/search_bar.html:42
+msgid "Search"
+msgstr "Suchen"
+
+#: templates/insight_ui/components/search_bar.html:52
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: templates/insight_ui/components/search_bar.html:29
+msgid "Search..."
+msgstr "Suche..."
+
+#: configs/utils.py:187
+msgid "Second wordmark run."
+msgstr "Zweite Wortmarken-Reihe."
+
+#: configs/layout.py:444
+msgid "Secondary 'Call-to-Action' button."
+msgstr "Sekundäre „Call-to-Action“-Schaltfläche."
+
+#: configs/utils.py:247
+msgid "Secondary button action."
+msgstr "Sekundäre Schaltflächenaktion."
+
+#: configs/navigation.py:842
+msgid "Section content."
+msgstr "Abschnittsinhalt."
+
+#: configs/navigation.py:841
+msgid "Section title."
+msgstr "Abschnittstitel."
+
+#: templates/insight_ui/components/multiselect.html:7
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: configs/list.py:87
+msgid "Selector label."
+msgstr "Bezeichnung des Auswahlfelds."
+
+#: templates/insight_ui/components/chat.html:19
+msgid "Send"
+msgstr "Senden"
+
+#: configs/utils.py:96
+msgid "Separator between legal metadata parts."
+msgstr "Trennzeichen zwischen den Teilen der rechtlichen Metadaten."
+
+#: configs/utils.py:519
+msgid "Series name (shown in legend)."
+msgstr "Name der Reihe (wird in der Legende angezeigt)."
+
+#: configs/utils.py:549
+msgid "Series names (for legend)."
+msgstr "Reihenbezeichnungen (für die Legende)."
+
+#: configs/utils.py:368
+msgid "Server-Sent Events URL for real-time progress updates."
+msgstr "URL für „Server-Sent Events“ zur Abfrage von Fortschrittsaktualisierungen in Echtzeit."
+
+#: configs/base.py:206
+msgid "Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run."
+msgstr "An hx-swap angehängte Abtastverzögerung, z. B. '300ms', damit Übergänge von CSS Zeit zum Ausführen haben."
+
+#: configs/popup.py:40
+msgid "Severity of the alert."
+msgstr "Schweregrad der Warnmeldung."
+
+#: configs/utils.py:51
+msgid "Severity of the message."
+msgstr "Schweregrad der Meldung."
+
+#: configs/utils.py:240
+msgid "Severity of the status."
+msgstr "Schweregrad des Status."
+
+#: configs/navigation.py:941
+msgid "Shared request options such as push_url or a loading indicator."
+msgstr "Gemeinsam genutzte Anforderungsoptionen wie „push_url“ oder eine Ladeanzeige."
+
+#: configs/utils.py:627
+msgid "Shared request options such as target, swap method or vals."
+msgstr "Gemeinsame Anfrageoptionen wie `target`, `swap_method` oder `vals`."
+
+#: configs/input.py:1032
+msgid "Shared request options such as vals or a loading indicator."
+msgstr "Gemeinsam genutzte Anfrageoptionen wie „vals“ oder eine Ladeanzeige."
+
+#: configs/utils.py:376
+msgid "Show a cancel button during progress."
+msgstr "Zeigt während des Vorgangs eine Schaltfläche „Abbrechen“ an."
+
+#: configs/card.py:195
+msgid "Show a dot per page."
+msgstr "Pro Seite einen Punkt anzeigen."
+
+#: configs/utils.py:379
+msgid "Show a retry button when an error occurs."
+msgstr "Zeigen Sie eine Schaltfläche „Erneut versuchen“ an, wenn ein Fehler auftritt."
+
+#: configs/input.py:987
+msgid "Show additional buttons for 'Select All' and 'Deselect All'."
+msgstr "Zeigt zusätzliche Schaltflächen für „Alle auswählen“ und „Alle abwählen“ an."
+
+#: configs/utils.py:590
+msgid "Show decal patterns for colorblind accessibility."
+msgstr "Anzeige von Dekalmustern zur Barrierefreiheit für Menschen mit Farbblindheit."
+
+#: templates/insight_ui/components/cards/flip_card.html:43
+msgid "Show details"
+msgstr "Details anzeigen"
+
+#: configs/navigation.py:228
+msgid "Show labels above input fields instead of just placeholders."
+msgstr "Beschriftungen über den Eingabefeldern anstelle von reinen Platzhaltern anzeigen."
+
+#: configs/layout.py:497
+msgid "Show the close button in the header."
+msgstr "Schaltfläche „Schließen“ im Kopfbereich anzeigen."
+
+#: configs/card.py:196
+msgid "Show the current and total page."
+msgstr "Aktuelle und Gesamtseite anzeigen."
+
+#: configs/navigation.py:224
+msgid "Show theme toggle button in the corner."
+msgstr "Schaltfläche zum Umschalten des Designs in der Ecke anzeigen."
+
+#: configs/popup.py:42
+msgid "Shows a button to close the alert at the end of the alert container."
+msgstr "Zeigt am Ende des Warnmeldungs-Containers eine Schaltfläche zum Schließen der Warnmeldung an."
+
+#: templates/insight_ui/components/layout/sidebar.html:29
+msgid "Side navigation"
+msgstr "Seitennavigation"
+
+#: configs/navigation.py:427
+msgid "Sidebar title."
+msgstr "Titel der Seitenleiste."
+
+#: templates/insight_ui/login.html:94
+msgid "Sign in"
+msgstr "Anmelden"
+
+#: templates/insight_ui/login.html:114
+msgid "Sign up here"
+msgstr "Hier registrieren"
+
+#: templates/insight_ui/components/corner_ribbon.html:4 templates/insight_ui/components/corner_ribbon.html:8
+#: templates/insight_ui/components/corner_ribbon.html:12 templates/insight_ui/components/corner_ribbon.html:16
+msgid "Site status"
+msgstr "Status der Website"
+
+#: configs/navigation.py:761
+msgid "Size of the icons in the progress bar."
+msgstr "Größe der Symbole in der Fortschrittsanzeige."
+
+#: configs/input.py:772
+msgid "Smallest configurable value of the range slider."
+msgstr "Kleinster konfigurierbarer Wert des Bereichsreglers."
+
+#: configs/input.py:230
+msgid "Smallest numeric value (for `input_type='number'`)."
+msgstr "Kleinster numerischer Wert (für `input_type='number'`)."
+
+#: configs/layout.py:159 configs/layout.py:207 configs/layout.py:301
+msgid "Space between children (xs|s|m|l|xl)."
+msgstr "Abstand zwischen untergeordneten Elementen (xs|s|m|l|xl)."
+
+#: configs/layout.py:401
+msgid "Space between grid items (xs|s|m|l|xl)."
+msgstr "Abstand zwischen den Rasterelementen (xs|s|m|l|xl)."
+
+#: configs/layout.py:236
+msgid "Spacer size (xs|s|m|l|xl)."
+msgstr "Abstandsgröße (xs | s | m | l | xl)."
+
+#: configs/layout.py:553
+msgid "Spacing between items (xs|s|m|l|xl)."
+msgstr "Abstand zwischen den Elementen (xs|s|m|l|xl)."
+
+#: configs/layout.py:262
+msgid "Spacing size (none|xs|s|m|l|xl)."
+msgstr "Abstandsgröße (none|xs|s|m|l|xl)."
+
+#: configs/utils.py:490
+msgid "Starting map center [lat, lon]."
+msgstr "Anfangsmittelpunkt der Karte [Breitengrad, Längengrad]."
+
+#: configs/utils.py:492
+msgid "Starting zoom level."
+msgstr "Anfangszoomstufe."
+
+#: configs/utils.py:139
+msgid "Static, absolute, root-relative, or data URL for image/svg logos."
+msgstr "Statische, absolute, root-relative oder Daten-URL für Bild-/SVG-Logos."
+
+#: configs/base.py:159
+msgid "Static, absolute, root-relative, or data URL for the image."
+msgstr "Statische, absolute, root-relative oder Daten-URL für das Bild."
+
+#: templates/insight_ui/components/live_content_partial.html:13
+msgid "Status"
+msgstr "Status"
+
+#: configs/navigation.py:753
+msgid "Status of each process step."
+msgstr "Status der einzelnen Prozessschritte."
+
+#: configs/navigation.py:759
+msgid "Status of the current step. (Only if 'steps' is not set!)"
+msgstr "Status des aktuellen Schritts. (Nur wenn „steps“ nicht festgelegt ist!)"
+
+#: configs/navigation.py:790
+msgid "Status of the item."
+msgstr "Status des Elements."
+
+#: configs/navigation.py:702
+msgid "Status of the step."
+msgstr "Status des Schritts."
+
+#: templates/insight_ui/components/websocket.html:25
+msgid "Status:"
+msgstr "Status:"
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+#, python-format
+msgid "Step %(step)s"
+msgstr "Schritt %(step)s"
+
+#: configs/utils.py:375
+msgid "Stop polling/SSE when an error is received."
+msgstr "Beenden Sie das Polling/SSE, wenn ein Fehler auftritt."
+
+#: templates/insight_ui/components/form.html:41
+msgid "Submit"
+msgstr "Absenden"
+
+#: configs/layout.py:439
+msgid "Subtitle of the Hero section, displayed below the title."
+msgstr "Untertitel des Hero-Bereichs, der unterhalb des Titels angezeigt wird."
+
+#: configs/utils.py:239
+msgid "Supporting status description."
+msgstr "Ergänzende Statusbeschreibung."
+
+#: templates/insight_ui/components/toc_content.html:5
+msgid "Table of Contents"
+msgstr "Inhaltsverzeichnis"
+
+#: configs/forms.py:134
+msgid "Target URL for form submission."
+msgstr "Ziel-URL für die Formularübermittlung."
+
+#: configs/card.py:190 configs/card.py:274 configs/card.py:337
+msgid "Template that renders one item; gets item and the page context."
+msgstr "Die Vorlage rendert ein Element; sie erhält die Kontextvariable `item` und den Seitenkontext."
+
+#: configs/list.py:48
+msgid "Template that renders the content of one item; gets item and heading_level."
+msgstr "Vorlage, die den Inhalt eines Eintrags rendert; erhält „item“ und „heading_level“."
+
+#: configs/input.py:410
+msgid "Text label displayed above the checkbox elements."
+msgstr "Textbeschriftung, die über den Kontrollkästchen-Elementen angezeigt wird."
+
+#: configs/utils.py:796
+msgid "Text of the \"Remove all\" button. Defaults to \"Remove all\"."
+msgstr "Text der Schaltfläche „Alle entfernen“. Standardmäßig „Alle entfernen“."
+
+#: configs/popup.py:81
+msgid "Text of the dialog, or a list of paragraphs."
+msgstr "Text des Dialogfelds, oder eine Liste von Absätzen."
+
+#: configs/base.py:199
+msgid "The URL for the HTMX request (hx-get/hx-post)."
+msgstr "Die URL für die HTMX-Anfrage (hx-get/hx-post)."
+
+#: configs/navigation.py:344
+msgid "The URL to be called when clicking on the item."
+msgstr "Die URL, die beim Klicken auf das Element aufgerufen werden soll."
+
+#: configs/navigation.py:89
+msgid "The URL to be called when clicking on the link, if not opening a modal or dropdown menu."
+msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern kein Modal- oder Dropdown-Menü geöffnet wird."
+
+#: configs/navigation.py:625
+msgid "The URL to be called when clicking on the link."
+msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll."
+
+#: configs/input.py:460
+msgid "The URL to be called when clicking on the respective item."
+msgstr "Die URL, die beim Klicken auf den jeweiligen Eintrag aufgerufen werden soll."
+
+#: configs/navigation.py:900
+msgid "The URL to be called when the tab is clicked."
+msgstr "Die URL, die beim Klicken auf die Registerkarte aufgerufen werden soll."
+
+#: configs/card.py:92 configs/card.py:142
+msgid "The URL to be called when title is clicked."
+msgstr "Die URL, die beim Anklicken des Titels aufgerufen werden soll."
+
+#: configs/navigation.py:144
+msgid "The URL to navigate to when clicking on the link."
+msgstr "Die URL, zu der beim Klicken auf den Link weitergeleitet werden soll."
+
+#: configs/input.py:674
+msgid "The URL to which the request should be sent when clicking one of the radio buttons."
+msgstr "Die URL, an die die Anfrage gesendet werden soll, wenn auf eines der Optionsfelder geklickt wird."
+
+#: configs/utils.py:91
+msgid "The copyright holder."
+msgstr "Der Urheberrechtsinhaber."
+
+#: configs/layout.py:79
+msgid "The gap between the columns (CSS unit)."
+msgstr "Der Abstand zwischen den Spalten (CSS-Einheit)."
+
+#: configs/utils.py:493
+msgid "The height of the map in 'rem'."
+msgstr "Die Höhe der Karte in „rem“."
+
+#: configs/navigation.py:96 configs/navigation.py:146
+msgid "The link is only displayed for administrators."
+msgstr "Der Link wird nur für Administratoren angezeigt."
+
+#: configs/navigation.py:95
+msgid "The link is only displayed for logged-in users."
+msgstr "Der Link wird nur für angemeldete Benutzer angezeigt."
+
+#: configs/layout.py:39
+msgid "The main page title, displayed prominently in primary color."
+msgstr "Der Titel der Hauptseite, der in der Primärfarbe hervorgehoben angezeigt wird."
+
+#: configs/input.py:796
+msgid "The maximum value in dual-thumb mode. Defaults to `maximum`."
+msgstr "Der Maximalwert im Dual-Thumb-Modus. Standardwert ist `maximum`."
+
+#: configs/input.py:793
+msgid "The minimum value in dual-thumb mode. Defaults to `minimum`."
+msgstr "Der Mindestwert im Zwei-Daumen-Modus. Standardwert ist `minimum`."
+
+#: configs/input.py:599 configs/input.py:660
+msgid "The shared HTML `name` attribute for all radio buttons in this group."
+msgstr "Das gemeinsame HTML-Attribut „`name`“ für alle Optionsfelder in dieser Gruppe."
+
+#: configs/input.py:775
+msgid "The size of the steps by which the value changes when moving the range slider."
+msgstr "Die Schrittweite, um die sich der Wert beim Verschieben des Bereichsschiebereglers ändert."
+
+#: configs/layout.py:75
+msgid "The text content of the article (can contain HTML)."
+msgstr "Der Textinhalt des Artikels (kann HTML enthalten)."
+
+#: configs/utils.py:280
+msgid "The text displayed in the ribbon; also the name screen readers announce."
+msgstr "Der im Menüband angezeigte Text; dies ist auch der Name, den Bildschirmleseprogramme ansagen."
+
+#: configs/input.py:223
+msgid "The type of the input field, e.g.: 'text', 'password', 'date', etc."
+msgstr "Der Typ des Eingabefeldes, z. B.: „text“, „password“, „date“ usw."
+
+#: configs/input.py:323
+msgid "The value of the checkbox (this is not the state, see 'checked' for that)."
+msgstr "Der Wert des Kontrollkästchens (dies ist nicht der Status; siehe dazu „checked“)."
+
+#: configs/input.py:605 configs/input.py:686
+msgid "The value of the currently selected radio button."
+msgstr "Der Wert des aktuell ausgewählten Optionsfelds."
+
+#: configs/input.py:228 configs/input.py:287
+msgid "The value of the input field."
+msgstr "Der Wert des Eingabefeldes."
+
+#: configs/input.py:770
+msgid "The value of the range slider (single-thumb mode only)."
+msgstr "Der Wert des Bereichsschiebereglers (nur im Ein-Schieberegler-Modus)."
+
+#: configs/input.py:860
+msgid "The value of the toggle button."
+msgstr "Der Wert der Umschalt-Schaltfläche."
+
+#: configs/base.py:202
+msgid "The way in which the target is to be replaced (hx-swap)."
+msgstr "Die Art und Weise, wie das Zielelement ersetzt werden soll (hx-swap)."
+
+#: templates/insight_ui/components/live_content_partial.html:13
+msgid "Timestamp"
+msgstr "Zeitstempel"
+
+#: configs/navigation.py:240
+msgid "Title for the alternative login button."
+msgstr "Titel für die Schaltfläche zur alternativen Anmeldung."
+
+#: configs/layout.py:438
+msgid "Title of the Hero section."
+msgstr "Titel des Hero-Bereichs."
+
+#: configs/navigation.py:787
+msgid "Title of the item."
+msgstr "Titel des Elements."
+
+#: configs/navigation.py:697
+msgid "Title of the step."
+msgstr "Titel des Schritts."
+
+#: templates/insight_ui/components/carousel.html:40 templates/insight_ui/components/pagination.html:36
+msgid "To next page"
+msgstr "Zur nächsten Seite"
+
+#: templates/insight_ui/components/pagination.html:38
+msgid "To next page (Deactivated because there are no more next pages)"
+msgstr "Zur nächsten Seite (Deaktiviert, da keine weiteren folgenden Seiten vorhanden sind)"
+
+#: templates/insight_ui/components/carousel.html:35 templates/insight_ui/components/pagination.html:16
+msgid "To previous page"
+msgstr "Zur vorherigen Seite"
+
+#: templates/insight_ui/components/pagination.html:18
+msgid "To previous page (Deactivated because there are no more previous pages)"
+msgstr "Zur vorherigen Seite (Deaktiviert, da keine vorherigen Seiten mehr vorhanden sind)"
+
+#: templates/insight_ui/components/toggle_theme.html:4
+msgid "Toggle theme"
+msgstr "Design umschalten"
+
+#: configs/navigation.py:430
+msgid "Top-level navigation links shown before categories."
+msgstr "Navigationslinks der obersten Ebene, die vor den Kategorien angezeigt werden."
+
+#: templates/insight_ui/components/search_bar_result_templates.html:24
+msgid "Try a different search term"
+msgstr "Bitte geben Sie einen anderen Suchbegriff ein"
+
+#: configs/card.py:281
+msgid "Turn every item towards the camera; otherwise items tilt with the ring."
+msgstr "Jedes Element zur Kamera hin drehen; andernfalls neigen sich die Elemente mit dem Ring."
+
+#: templates/insight_ui/components/search_bar_result_templates.html:39
+msgid "Type"
+msgstr "Typ"
+
+#: templates/insight_ui/components/multiselect.html:14
+msgid "Type to search..."
+msgstr "Bitte geben Sie einen Suchbegriff ein..."
+
+#: configs/utils.py:90
+msgid "Typically the current year (not strictly required)."
+msgstr "In der Regel das aktuelle Jahr (nicht zwingend erforderlich)."
+
+#: configs/navigation.py:789
+msgid "URL called when the user clicks on the item."
+msgstr "URL, die aufgerufen wird, wenn der Benutzer auf das Element klickt."
+
+#: configs/navigation.py:700
+msgid "URL called when the user clicks on the title of the step."
+msgstr "URL, die aufgerufen wird, wenn der Benutzer auf den Titel des Schritts klickt."
+
+#: configs/navigation.py:236
+msgid "URL for alternative login (e.g., OIDC/SSO). Empty hides the section."
+msgstr "URL für die alternative Anmeldung (z. B., OIDC/SSO). Wenn das Feld leer bleibt, wird der Abschnitt ausgeblendet."
+
+#: configs/layout.py:348
+msgid "URL for clickable surface (renders as <a> instead of <div>)."
+msgstr "URL für anklickbare Fläche (wird als <a> anstelle von <div> dargestellt)."
+
+#: configs/utils.py:622
+msgid "URL for content updates."
+msgstr "URL für Inhaltsaktualisierungen."
+
+#: configs/filter.py:53 configs/filter.py:170
+msgid "URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests."
+msgstr ""
+"URL für die Formularaktion. Nicht zusammen mit htmx verwenden; verwenden Sie stattdessen htmx.request_url für HTMX-"
+"Anfragen."
+
+#: configs/navigation.py:232
+msgid "URL for password reset. Empty hides the link."
+msgstr "URL für die Passwortzurücksetzung. Wenn das Feld leer ist, wird der Link ausgeblendet."
+
+#: configs/navigation.py:244
+msgid "URL for registration. Empty hides the link."
+msgstr "URL für die Registrierung. Wenn das Feld leer bleibt, wird der Link ausgeblendet."
+
+#: configs/input.py:1029
+msgid "URL for sending chat messages via HTMX POST."
+msgstr "URL zum Senden von Chat-Nachrichten über HTMX-POST."
+
+#: configs/layout.py:445
+msgid "URL of the background image."
+msgstr "URL des Hintergrundbildes."
+
+#: configs/list.py:43
+msgid "URL of the feed; the page number is added as query parameter."
+msgstr "URL des Feeds; die Seitenzahl wird als Abfrageparameter hinzugefügt."
+
+#: configs/list.py:133
+msgid "URL of the list; the page parameter is added to its query string."
+msgstr "URL der Liste; der Parameter „page“ wird dem Abfrage-String hinzugefügt."
+
+#: configs/filter.py:310
+msgid "URL the form is sent to; empty sends it to the current page."
+msgstr "URL, an die das Formular gesendet wird; ist das Feld leer, erfolgt die Übermittlung an die aktuelle Seite."
+
+#: configs/navigation.py:51
+msgid "URL to navigate to when clicking on the brand."
+msgstr "URL, zu der man gelangt, wenn man auf die Marke klickt."
+
+#: configs/utils.py:365
+#, python-brace-format
+msgid "URL to poll for progress updates. Expected JSON: {\"value\": 75}."
+msgstr "URL, die zur Abfrage von Fortschrittsaktualisierungen abgefragt wird. Erwartetes JSON: {\"value\": 75}."
+
+#: configs/navigation.py:182
+msgid "URL to the user's avatar image."
+msgstr "URL zum Avatar-Bild des Benutzers."
+
+#: templates/insight_ui/components/websocket.html:36
+msgid "URL:"
+msgstr "URL:"
+
+#: configs/layout.py:494
+msgid "Unique ID for JavaScript targeting (data-insight-modal)."
+msgstr "Eindeutige ID für das JavaScript-Targeting (data-insight-modal)."
+
+#: configs/input.py:89 configs/utils.py:362 configs/utils.py:623
+msgid "Unique ID for JavaScript/CSS targeting."
+msgstr "Eindeutige ID für JavaScript-/CSS-Targeting."
+
+#: configs/card.py:268
+msgid "Unique ID for the carousel."
+msgstr "Eindeutige ID für das Karussell."
+
+#: configs/utils.py:584
+msgid "Unique ID for the chart element."
+msgstr "Eindeutige ID für das Diagrammelement."
+
+#: configs/card.py:327
+msgid "Unique ID for the component."
+msgstr "Eindeutige ID für die Komponente."
+
+#: configs/forms.py:127
+msgid "Unique ID for the form element."
+msgstr "Eindeutige ID für das Formularelement."
+
+#: configs/input.py:347
+msgid "Unique ID for this checkbox."
+msgstr "Eindeutige ID für dieses Kontrollkästchen."
+
+#: configs/list.py:42
+msgid "Unique ID of the feed; prefixes the IDs inside the component."
+msgstr "Eindeutige ID des Feeds; wird den IDs innerhalb der Komponente vorangestellt."
+
+#: configs/utils.py:786
+msgid "Unique ID of the list, used to restore the focus after an HTMX swap."
+msgstr "Eindeutige ID der Liste, die verwendet wird, um den Fokus nach einem HTMX-Wechsel wiederherzustellen."
+
+#: configs/utils.py:500
+msgid "Unique ID of the map; give each map on a page its own."
+msgstr "Eindeutige ID der Karte; weisen Sie jeder Karte auf einer Seite eine eigene ID zu."
+
+#: configs/list.py:135
+msgid "Unique ID, prefixes the IDs inside the pagination."
+msgstr "Eindeutige ID, die den IDs innerhalb der Paginierung vorangestellt wird."
+
+#: configs/filter.py:301
+msgid "Unique ID; prefixes the IDs of the filter controls."
+msgstr "Eindeutige ID; wird den IDs der Filterelemente vorangestellt."
+
+#: configs/navigation.py:871 configs/navigation.py:898 configs/navigation.py:935
+msgid "Unique tag ID for identifying the element in JavaScript."
+msgstr "Eindeutige Tag-ID zur Identifizierung des Elements in JavaScript."
+
+#: configs/input.py:503
+msgid "Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown."
+msgstr "Eindeutige Tag-ID zur Identifizierung des Elements in JavaScript. Erforderlich zum Öffnen/Schließen des Dropdowns."
+
+#: configs/utils.py:624
+msgid "Update interval in seconds."
+msgstr "Aktualisierungsintervall in Sekunden."
+
+#: configs/layout.py:554
+msgid "Use ``<ol>`` instead of ``<ul>``."
+msgstr "Verwenden Sie „``<ol>``“ anstelle von „``<ul>``“."
+
+#: configs/layout.py:552
+msgid "Use horizontal layout instead of vertical (default)."
+msgstr "Horizontales Layout anstelle des vertikalen verwenden (Standard)."
+
+#: templates/insight_ui/login.html:56
+msgid "Username"
+msgstr "Benutzername"
+
+#: templates/insight_ui/components/query_builder_filter.html:51
+msgid "Value"
+msgstr "Wert"
+
+#: configs/input.py:935
+msgid "Value (the key value, if the options were passed as a dict) of the currently selected option."
+msgstr "Wert (der Schlüsselwert, falls die Optionen als Dict übergeben wurden) der aktuell ausgewählten Option."
+
+#: configs/input.py:538
+msgid "Value of the respective radio button."
+msgstr "Wert des jeweiligen Optionsfelds."
+
+#: configs/input.py:349
+msgid "Value submitted when checked."
+msgstr "Wert, der bei Aktivierung übermittelt wird."
+
+#: configs/filter.py:253
+msgid "Value to compare with."
+msgstr "Wert, mit dem verglichen werden soll."
+
+#: templates/insight_ui/components/turnstile.html:9
+msgid "Verification is unavailable. Please reload and try again."
+msgstr "Die Überprüfung ist derzeit nicht verfügbar. Bitte laden Sie die Seite neu und versuchen Sie es erneut."
+
+#: configs/layout.py:215
+msgid "Vertical alignment (start|center|end|between|around|evenly)."
+msgstr "Vertikale Ausrichtung (start|center|end|between|around|evenly)."
+
+#: configs/layout.py:167
+msgid "Vertical alignment (start|center|end|stretch|baseline)."
+msgstr "Vertikale Ausrichtung (start|center|end|stretch|baseline)."
+
+#: configs/layout.py:344
+msgid "Visual style (surface|raised|outline)."
+msgstr "Optischer Stil (surface|raised|outline)."
+
+#: configs/input.py:109
+msgid "Visual style of the button."
+msgstr "Optischer Stil der Schaltfläche."
+
+#: configs/input.py:510
+msgid "Visual style of the dropdown button."
+msgstr "Optischer Stil der Dropdown-Schaltfläche Schaltfläche."
+
+#: configs/input.py:687
+msgid "Visual style of the options."
+msgstr "Optisches Erscheinungsbild der Optionen."
+
+#: configs/input.py:871
+msgid "Visual style of the toggle button; switches ignore it."
+msgstr "Optischer Stil der Umschalt-Schaltfläche; Schalter ignorieren diese Einstellung."
+
+#: templates/insight_ui/components/websocket.html:21
+msgid "Wait for messages..."
+msgstr "Auf Nachrichten warten..."
+
+#: configs/utils.py:657
+msgid "WebSocket endpoint URL."
+msgstr "URL des WebSocket-Endpunkts."
+
+#: configs/navigation.py:843
+msgid "Whether section is initially open."
+msgstr "Gibt an, ob der Abschnitt anfänglich geöffnet ist."
+
+#: configs/popup.py:88
+msgid "Whether the dialog asks for a decision, e.g. a confirmation (role \"alertdialog\")."
+msgstr "Gibt an, ob der Dialog eine Entscheidung erfordert, z. B. eine Bestätigung (Rolle „alertdialog“)."
+
+#: configs/base.py:219
+msgid "Whether the request shows the global loading bar; None keeps the component default."
+msgstr ""
+"Gibt an, ob bei der Anfrage der globale Ladefortschrittsbalken angezeigt wird; bei „None“ wird die "
+"Standardeinstellung der Komponente beibehalten."
+
+#: configs/navigation.py:901
+msgid "Whether this tab is initially active."
+msgstr "Gibt an, ob diese Registerkarte anfänglich aktiv ist."
+
+#: configs/utils.py:372
+msgid "Whether to display the value as text."
+msgstr "Ob der Wert als Text angezeigt werden soll."
+
+#: configs/base.py:212
+msgid "Whether to push URL to browser history (hx-push-url)."
+msgstr "Angabe, ob die URL in den Browserverlauf übernommen werden soll (hx-push-url)."
+
+#: configs/forms.py:131
+msgid "Whether to show a reset button."
+msgstr "Angabe, ob eine Schaltfläche „Zurücksetzen“ angezeigt werden soll."
+
+#: configs/forms.py:139
+msgid "Whether to show the loading indicator of the form during HTMX requests."
+msgstr "Angabe, ob die Ladeanzeige des Formulars während HTMX-Anfragen angezeigt werden soll."
+
+#: configs/forms.py:63
+msgid "Widget size: normal, flexible, or compact."
+msgstr "Widget-Größe: normal, flexible oder compact."
+
+#: configs/forms.py:60
+msgid "Widget theme: auto, light, or dark."
+msgstr "Widget-Design: „auto“, „light“ oder „dark“."
+
+#: configs/navigation.py:477
+msgid "Width of the sidebar (\"narrow\", \"normal\", \"wide\")."
+msgstr "Breite der Seitenleiste (\"narrow\", \"normal\", \"wide\")."
+
+#: templates/insight_ui/components/chat.html:18
+msgid "Write something..."
+msgstr "Bitte geben Sie etwas ein..."
+
+#: utils/query_builder.py:48
+msgid "Yes"
+msgstr "Ja"
+
+#: templates/insight_ui/components/query_builder.html:42
+#, python-format
+msgid "You can combine up to %(max)s filter."
+msgid_plural "You can combine up to %(max)s filters."
+msgstr[0] "Sie können bis zu %(max)s Filter kombinieren."
+msgstr[1] "Sie können bis zu %(max)s Filter kombinieren."
+
+#: templates/insight_ui/login.html:113
+msgid "You do not have an account yet?"
+msgstr "Sie haben noch kein Konto?"
+
+#: templatetags/insight_tags.py:1288
+msgid "Zoom in"
+msgstr "Vergrößern"
+
+#: templatetags/insight_tags.py:1288
+msgid "Zoom out"
+msgstr "Verkleinern"
+
+#: templates/insight_ui/components/text_diff.html:21
+msgid "added"
+msgstr "hinzugefügt"
+
+#: utils/query_builder.py:256
+msgctxt "query builder"
+msgid "and"
+msgstr "und"
+
+#: templates/insight_ui/components/carousel.html:19 templates/insight_ui/components/carousels/ring_carousel.html:14
+msgid "carousel"
+msgstr "Karussell"
+
+#: templates/insight_ui/components/pagination.html:63
+msgid "of"
+msgstr "von"
+
+#: utils/query_builder.py:257
+msgctxt "query builder"
+msgid "or"
+msgstr "oder"
+
+#: templates/insight_ui/components/text_diff.html:21
+msgid "removed"
+msgstr "entfernt"
+
+#: templates/insight_ui/components/carousel.html:27 templates/insight_ui/components/carousels/ring_carousel.html:22
+msgid "slide"
+msgstr "Folie"
+
+#: utils/query_builder.py:224
+#, python-format
+msgid "“%(value)s”"
+msgstr "„%(value)s“"
+
+#: configs/list.py:55
+msgid "Shared HTMX options for the requests, e.g. loading_indicator_id or vals."
+msgstr "Gemeinsam genutzte HTMX-Optionen für die Anfragen, z. B. `loading_indicator_id` oder `vals`."

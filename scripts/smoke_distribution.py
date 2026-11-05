@@ -118,6 +118,72 @@ def check_base_page() -> None:
         raise RuntimeError(message)
 
 
+def check_translations(package: Path) -> None:
+    """Require app-local DE/EN SSR and the JS catalog in the installed artifact."""
+    import gettext  # noqa: PLC0415
+
+    from django.template import Context, Template  # noqa: PLC0415
+    from django.template.loader import render_to_string  # noqa: PLC0415
+    from django.test import RequestFactory  # noqa: PLC0415
+    from django.utils.translation import override  # noqa: PLC0415
+    from django.views.i18n import JavaScriptCatalog  # noqa: PLC0415
+    from insight_ui.config import get_config  # noqa: PLC0415
+    from insight_ui.configs import (  # noqa: PLC0415
+        FooterConfig,
+        FooterContactConfig,
+        LegalNoticeConfig,
+        NavbarConfig,
+        SearchBarConfig,
+    )
+
+    labels = {
+        "Contact": "Kontakt",
+        "Imprint": "Impressum",
+        "Privacy": "Datenschutz",
+        "Do you have any questions or feedback?": "Haben Sie Fragen oder Anregungen?",
+        "All rights reserved.": "Alle Rechte vorbehalten.",
+        "Main navigation": "Hauptnavigation",
+        "Side navigation": "Seitennavigation",
+        "Search results": "Suchergebnisse",
+        "No results found": "Keine Ergebnisse gefunden",
+        "Toggle theme": "Design umschalten",
+        "Open menu": "Menü öffnen",
+        "Close": "Schließen",
+    }
+    for domain in ("django", "djangojs"):
+        catalog = package / f"locale/de/LC_MESSAGES/{domain}.mo"
+        require_origin(catalog, package)
+        with catalog.open("rb") as stream:
+            gettext.GNUTranslations(stream)
+    context = {
+        **get_config(),
+        "footer": FooterConfig(
+            contact=FooterContactConfig("team@example.com", "/imprint/", "/privacy/"),
+            legal=LegalNoticeConfig(year=2026, holder="Example"),
+        ),
+        "navbar": NavbarConfig(show_theme_toggle=True, hide_login=True),
+        "search": SearchBarConfig(enable_search=True),
+    }
+    template = Template(
+        "{% load insight_tags layout_tags %}{% navbar config=navbar %}{% footer config=footer %}"
+        "{% search_bar config=search %}{% sidebar static=False %}Contents{% endsidebar %}"
+        '{% modal id="i18n-smoke" title="Example" %}Content{% endmodal %}'
+    )
+    for language in ("de", "en"):
+        with override(language):
+            rendered = template.render(Context(context))
+            base = render_to_string("insight_ui/base.html", get_config())
+            catalog = JavaScriptCatalog.as_view(packages=["insight_ui"])(RequestFactory().get("/jsi18n/"))
+        expected = [translated if language == "de" else source for source, translated in labels.items()]
+        skip = "Zum Hauptinhalt springen" if language == "de" else "Jump to main content"
+        if not all(text in rendered for text in expected) or skip not in base:
+            message = f"Installed app-local {language} shell translations are incomplete."
+            raise RuntimeError(message)
+        if language == "de" and '"Copy": "Kopieren"' not in catalog.content.decode():
+            message = "Installed German JavaScript catalog is missing."
+            raise RuntimeError(message)
+
+
 def probe(environment: Path) -> None:
     """Run a minimal, local-only Django host inside the artifact's environment."""
     if not sys.flags.isolated or Path(sys.prefix).resolve() != environment.resolve() or sys.prefix == sys.base_prefix:
@@ -149,12 +215,17 @@ def probe(environment: Path) -> None:
         },
         INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}},
         DEFAULT_AUTO_FIELD="django.db.models.BigAutoField",
+        LANGUAGE_CODE="en",
+        LANGUAGES=[("en", "English"), ("de", "Deutsch")],
+        USE_I18N=True,
+        LOCALE_PATHS=[],
     )
     django.setup()
     call_command("check", verbosity=0, fail_level="WARNING")
     check_component()
     check_assets(package, static_root)
     check_base_page()
+    check_translations(package)
     check_imports(environment)
     sys.stdout.write(f"Imports, Django check, button, strict collectstatic and base-page render passed: {package}\n")
 

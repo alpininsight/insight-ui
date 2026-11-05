@@ -243,6 +243,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
         flags=SimpleNamespace(isolated=1), prefix=str(tmp_path), base_prefix="/base-python", stdout=Mock()
     )
     settings, setup, command, component, assets, page = Mock(), Mock(), Mock(), Mock(), Mock(), Mock()
+    translations = Mock()
     imports = Mock(return_value=tmp_path / "insight_ui")
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(smoke, "sys", runtime)
@@ -253,6 +254,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     monkeypatch.setattr(smoke, "check_component", component)
     monkeypatch.setattr(smoke, "check_assets", assets)
     monkeypatch.setattr(smoke, "check_base_page", page)
+    monkeypatch.setattr(smoke, "check_translations", translations)
     smoke.probe(tmp_path)
     config = settings.configure.call_args.kwargs
     assert config["INSTALLED_APPS"] == ["django.contrib.staticfiles", "insight_ui"]
@@ -260,6 +262,8 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     assert config["INSIGHT_UI"]["assets"] == {"cdn_enabled": False, "use_minified": False}
     assert config["TEMPLATES"][0]["APP_DIRS"] is True
     assert config["DEBUG"] is False
+    assert config["USE_I18N"] is True
+    assert config["LOCALE_PATHS"] == []
     assert config["STORAGES"]["staticfiles"]["BACKEND"] == (
         "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
     )
@@ -270,6 +274,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     component.assert_called_once_with()
     assets.assert_called_once_with(tmp_path / "insight_ui", tmp_path / "collected-static")
     page.assert_called_once_with()
+    translations.assert_called_once_with(tmp_path / "insight_ui")
     assert imports.call_count == 2  # noqa: PLR2004
     imports.assert_called_with(tmp_path)
 

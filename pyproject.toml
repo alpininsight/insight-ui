@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling", "hatch-vcs", "babel==2.18.0", "django==5.2.17"]
 build-backend = "hatchling.build"
 
 [project]
@@ -61,6 +61,8 @@ dev = [
     "django-tailwind-cli==4.8.1",
 ]
 pytest = [
+    "babel==2.18.0",
+    "hatchling",
     "pytest==9.1.1",
     "pytest-django==4.14.0",
     "pytest-cov==7.1.0",
@@ -72,6 +74,8 @@ pytest = [
 # For pip
 [project.optional-dependencies]
 test = [
+    "babel==2.18.0",
+    "hatchling",
     "pytest==9.1.1",
     "pytest-django==4.14.0",
     "pytest-cov==7.1.0",
@@ -94,6 +98,9 @@ source = "vcs"
 # Match tags like "v1.2.3" and write a version file for runtime
 tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
+
+[tool.hatch.build.hooks.custom]
+path = "scripts/hatch_i18n.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
