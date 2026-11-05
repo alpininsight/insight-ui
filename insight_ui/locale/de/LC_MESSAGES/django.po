@@ -40,7 +40,7 @@ msgstr "%(number)s von %(total)s"
 #: templates/insight_ui/components/footer.html:35 templates/insight_ui/components/navbar.html:59
 #: templatetags/layout_tags.py:1019
 msgid "(opens in a new tab)"
-msgstr "(wird in neuem Tab)"
+msgstr "(wird in einem neuen Tab geöffnet)"
 
 #: configs/input.py:507
 msgid "**True** displays an arrow behind the title."
@@ -2368,7 +2368,7 @@ msgstr "Aktualisierungsintervall in Sekunden."
 
 #: configs/layout.py:554
 msgid "Use ``<ol>`` instead of ``<ul>``."
-msgstr "Verwenden Sie ``<ol>`` instead of ``<ul>``."
+msgstr "Verwenden Sie „``<ol>``“ anstelle von „``<ul>``“."
 
 #: configs/layout.py:552
 msgid "Use horizontal layout instead of vertical (default)."

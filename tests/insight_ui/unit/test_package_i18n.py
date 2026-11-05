@@ -21,11 +21,14 @@ from django.utils.translation import gettext as translate, override
 from django.views.i18n import JavaScriptCatalog
 from insight_ui.config import get_config
 from insight_ui.configs import (
+    ButtonConfig,
     FooterConfig,
     FooterContactConfig,
     IconConfig,
     LegalNoticeConfig,
+    ListConfig,
     NavbarConfig,
+    NavbarLinkConfig,
     SearchBarConfig,
 )
 from scripts.hatch_i18n import CustomBuildHook, compile_catalogs
@@ -206,6 +209,36 @@ def test_icon_rtl_docs_distinguish_default_none_from_false() -> None:
     assert IconConfig(name="arrow-left", mirror_rtl=None).mirrors_in_rtl is True
     assert IconConfig(name="arrow-left", mirror_rtl=False).mirrors_in_rtl is False
     assert IconConfig(name="arrow-left", mirror_rtl=True).mirrors_in_rtl is True
+
+
+@pytest.mark.parametrize("component", ["button", "navbar", "footer"])
+def test_external_link_announces_complete_new_tab_context(component: str) -> None:
+    """German accessible names must explain that an external link opens a new tab."""
+    link = NavbarLinkConfig(text="Docs", request_url="https://example.com/", external=True)
+    configs = {
+        "button": ButtonConfig(label="Docs", request_url="https://example.com/", external=True),
+        "navbar": NavbarConfig(links=[link], hide_login=True),
+        "footer": FooterConfig(links=[link]),
+    }
+    with override("de"):
+        rendered = Template("{% load insight_tags %}{% " + component + " config=config %}").render(
+            Context({"config": configs[component]})
+        )
+    external = BeautifulSoup(rendered, "html.parser").select_one('a[href="https://example.com/"]')
+    assert external["target"] == "_blank"
+    assert "(wird in einem neuen Tab geöffnet)" in external.get_text(" ", strip=True)
+
+
+def test_ordered_list_description_translates_prose_around_double_backtick_code() -> None:
+    """Protecting RST code spans must not freeze English prose between them."""
+    field = next(field for field in fields(ListConfig) if field.name == "ordered")
+    with override("de"):
+        description = str(field.metadata["doc"])
+    assert "Verwenden Sie" in description
+    assert "anstelle von" in description
+    assert "``<ol>``" in description
+    assert "``<ul>``" in description
+    assert "instead of" not in description
 
 
 @pytest.mark.parametrize("domain", ["django", "djangojs"])
