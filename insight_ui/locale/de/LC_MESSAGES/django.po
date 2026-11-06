@@ -2545,3 +2545,7 @@ msgstr "„%(value)s“"
 #: configs/list.py:55
 msgid "Shared HTMX options for the requests, e.g. loading_indicator_id or vals."
 msgstr "Gemeinsam genutzte HTMX-Optionen für die Anfragen, z. B. `loading_indicator_id` oder `vals`."
+
+#: templates/insight_ui/components/toggle_language.html:11
+msgid "Select language"
+msgstr "Sprache auswählen"
