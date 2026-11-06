@@ -1,15 +1,25 @@
 # CODEOWNERS for insight-ui
 #
-# Paths in this file map to GitHub users or teams that are
-# responsible for reviewing and maintaining those parts of
-# the codebase.
+# Paths in this file map to GitHub users or teams that are responsible for
+# reviewing and maintaining those parts of the codebase. Code owners are
+# requested automatically on every pull request that touches a matching path.
 #
 # Syntax:
 #   path  @github-username
 #   path  @org/team-name
+#
+# Note: a bare organisation handle (@alpininsight) is not a valid code owner --
+# GitHub only accepts individual users and org teams. Naming the maintainers
+# directly is what makes the review request actually fire.
 
 # Default owners for the entire repository
-*       @alpininsight
+*                       @dkdndes @Matti-Schwartz
 
 # CI/CD and automation
-.github/workflows/   @alpininsight
+/.github/               @dkdndes @Matti-Schwartz
+
+# Licensing and contributor terms -- changes here have legal effect
+/CLA.md                 @dkdndes @Matti-Schwartz
+/COMMERCIAL_LICENSE.md  @dkdndes @Matti-Schwartz
+/CONTRIBUTING.md        @dkdndes @Matti-Schwartz
+/LICENSE                @dkdndes @Matti-Schwartz
