@@ -142,3 +142,66 @@ def test_maintenance_never_bypasses_title_policy() -> None:
     payload = _fixture()
     payload["pr"]["title"] = "release everything"
     assert _failures(payload)
+
+
+def _compatible_fixture() -> dict:
+    """Describe the newly authorized source scope without inventing a review receipt."""
+    payload = _fixture()
+    payload["pr"]["head"]["ref"] = "maintenance/v1-webmcp-i18n-compat"
+    payload["files"] = [
+        {"filename": name, "status": "modified"}
+        for name in [
+            ".github/workflows/pr-branch-guard.yml",
+            "docs/releases.md",
+            "tests/insight_ui/unit/test_maintenance_release_policy.py",
+            "insight_ui/configs/utils.py",
+            "insight_ui/templates/insight_ui/components/legal_notice.html",
+            "insight_ui/templatetags/insight_tags.py",
+            "insight_ui/static/insight_ui/css/tailwind.css",
+            "insight_ui/cdn_manifest.json",
+            "tests/insight_ui/unit/components/test_legal_notice.py",
+            "insight_ui/locale/de/LC_MESSAGES/django.po",
+            "insight_ui/locale/de/LC_MESSAGES/djangojs.po",
+            "scripts/hatch_i18n.py",
+            "pyproject.toml",
+            "uv.lock",
+            "scripts/check_distribution.py",
+            "scripts/smoke_distribution.py",
+            "tests/insight_ui/unit/test_distribution_smoke.py",
+            "tests/insight_ui/unit/test_package_i18n.py",
+            "docs/i18n.md",
+            "insight_ui/templates/insight_ui/components/toggle_language.html",
+            "tests/insight_ui/unit/components/test_navbar_language.py",
+        ]
+    ]
+    return payload
+
+
+def test_compatible_source_stays_blocked_without_shared_exact_head_review() -> None:
+    """Neither green CI nor the existing human fixture bypasses the missing AI gate."""
+    assert _failures(_compatible_fixture()) == [
+        "Compatibility preparation awaits the approved shared exact-head AI-review contract."
+    ]
+
+
+@pytest.mark.parametrize("invalid", ["fork", "branch", "base", "extra", "missing", "duplicate", "renamed", "deleted"])
+def test_compatible_source_rejects_any_unapproved_scope_change(invalid: str) -> None:
+    """The separate stepper exception cannot admit a broader compatibility payload."""
+    payload = _compatible_fixture()
+    if invalid == "fork":
+        payload["pr"]["head"]["repo"]["full_name"] = "outsider/repo"
+    elif invalid == "branch":
+        payload["pr"]["head"]["ref"] += "-other"
+    elif invalid == "base":
+        payload["pr"]["base"]["sha"] = "b" * 40
+    elif invalid == "extra":
+        payload["files"].append({"filename": "insight_ui/configs/card.py", "status": "modified"})
+    elif invalid == "missing":
+        payload["files"] = payload["files"][:-1]
+    elif invalid == "duplicate":
+        payload["files"][-1] = payload["files"][0].copy()
+    else:
+        payload["files"][-1]["status"] = invalid
+    failures = _failures(payload)
+    assert failures
+    assert "Compatibility preparation awaits the approved shared exact-head AI-review contract." not in failures

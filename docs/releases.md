@@ -113,3 +113,33 @@ strict staticfiles collection, browser tests and the container/GitOps rollout.
 Keep unrelated Docs changes in their own PRs.
 
 [Testing](testing.md) | [Guide index](README.md)
+
+## Bounded compatible 1.x source preparation
+
+A separate candidate `maintenance/v1-webmcp-i18n-compat` may be prepared from
+exact released Main `24787fc561d5d60d970c129d6a8eae4f5fd5c1ed` toward Main.
+It is distinct from the existing minimal-stepper maintenance PR #740. The
+metadata-only policy permits no other repository, base, renamed/deleted file or
+path outside the 21 explicitly enumerated source/build/test/documentation paths.
+All 21 are required so catalog delivery, the accepted footer, language control
+and their regressions cannot be omitted. Main movement expires the exception.
+
+This is source preparation only. The new lane remains **fail-closed** until an
+approved shared/public OSS workflow provides the exact-head independent AI-review
+contract. Contributor CI alone, a local bot-comment parser, a fabricated human
+review or an ordinary human approval does not satisfy that missing contract.
+Existing stepper rules and normal Develop contributions remain unchanged.
+
+The candidate preserves legacy ButtonConfig.type, HeroConfig.badge_config and
+the accepted footer's holder_url/holder_logo. Generate catalogs from its actual
+legacy sources; do not copy the 2.0 catalog blindly. Package/asset probes must
+cover both wheel and sdist installations, DE/EN SSR/JS, complete extraction,
+footer rendering and responsive language-control accessible names, escaping,
+CSRF and safe return URLs. Generic components remain in Core.
+
+No merge, tag, package/CDN upload or consumer activation follows from this
+exception. Matti's version/package/artifact approval and Trusted Publishing remain
+separate. The exact compatible release version and sequencing relative to #740
+are unassigned; never reuse a published version or silently absorb the 2.0
+Develop backlog. Prepare the three-file bootstrap on Develop first and carry its
+reviewed bytes into the distinct legacy PR.
