@@ -63,6 +63,42 @@ compatible additions use a minor release and incompatible public API changes
 need a major release with migration guidance. Do not delete and re-upload a
 release to correct its description or classifier.
 
+## Bounded v1.15.2 Maintenance Backport
+
+The failed-state icon in v1.15.1's `minimal_stepper` references the removed
+`danger` icon. Develop already corrects it, but also changes the public step
+status API and other interfaces. Do not publish that integration backlog as a
+patch or copy the reusable template into a consumer.
+
+For this correction only, `hotfix/v1.15.2-minimal-stepper` may target `main`
+from the exact v1.15.1 commit `24787fc561d5d60d970c129d6a8eae4f5fd5c1ed`.
+The metadata-only branch policy limits the diff to the stepper template, its
+render regression, this release guide, the policy workflow and its tests.
+Both the template and render regression are mandatory; renamed/deleted files,
+other source/API changes, forks and other hotfix branch names are rejected.
+The exception expires automatically once Main advances beyond that base.
+
+Review the policy bootstrap separately on Develop, then inspect the bounded
+Main backport. It requires an independent repository reviewer's approval of
+the exact head; self-approval, bot reviews and stale approvals do not count.
+Submitted/dismissed reviews rerun the read-only policy. Do not self-approve,
+use an administrator bypass or merge the full Develop backlog to unblock it.
+This is preparation until that independent review and all normal Contributor
+CI checks pass, not permission to merge or publish automatically.
+
+The maintenance diff must retain the v1.15.1 `items` and status API. Only the
+failed icon changes to `x-mark`; the regression renders every supported old
+state. Keep the existing Develop implementation and its new API unchanged.
+GitVersion still determines the final stable version after reviewed Main
+integration; `v1.15.2` is the intended patch, not a forced override.
+
+All remaining release gates above still apply: supported Python/Django,
+JavaScript/static and isolated distribution checks; exact Main/tag identity;
+central non-publishing build; independent approval of version and both file
+hashes; explicit Trusted Publishing; public-index hash/fresh-install checks;
+and separate consumer PRs and deployment acceptance. No source-repository
+publisher, publication credentials or live application changes are added.
+
 ## Reference Application
 
 `insight-ui` owns generic components and package tests. `insight-ui-docs` owns
@@ -77,3 +113,45 @@ strict staticfiles collection, browser tests and the container/GitOps rollout.
 Keep unrelated Docs changes in their own PRs.
 
 [Testing](testing.md) | [Guide index](README.md)
+
+## Bounded compatible 1.x source preparation
+
+A separate candidate `maintenance/v1-webmcp-i18n-compat` may be prepared from
+exact released Main `24787fc561d5d60d970c129d6a8eae4f5fd5c1ed` toward Main.
+It is distinct from the existing minimal-stepper maintenance PR #740. The
+metadata-only policy permits no other repository, base, renamed/deleted file or
+path outside the 21 explicitly enumerated source/build/test/documentation paths.
+All 21 are required so catalog delivery, the accepted footer, language control
+and their regressions cannot be omitted. Main movement expires the exception.
+
+This is source preparation only. The new lane remains **fail-closed** until an
+approved shared/public OSS workflow provides the exact-head independent AI-review
+contract. Contributor CI alone, a local bot-comment parser, a fabricated human
+review or an ordinary human approval does not satisfy that missing contract.
+Existing stepper rules and normal Develop contributions remain unchanged.
+
+The candidate preserves legacy ButtonConfig.type, HeroConfig.badge_config and
+the accepted footer's holder_url/holder_logo. Generate catalogs from its actual
+legacy sources; do not copy the 2.0 catalog blindly. Package/asset probes must
+cover both wheel and sdist installations, DE/EN SSR/JS, complete extraction,
+footer rendering and responsive language-control accessible names, escaping,
+CSRF and safe return URLs. Generic components remain in Core.
+
+No merge, tag, package/CDN upload or consumer activation follows from this
+exception. Matti's version/package/artifact approval and Trusted Publishing remain
+separate. The exact compatible release version and sequencing relative to #740
+are unassigned; never reuse a published version or silently absorb the 2.0
+Develop backlog. Prepare the three-file bootstrap on Develop first and carry its
+reviewed bytes into the distinct legacy PR.
+
+### Existing legacy security dependency
+
+The compatible source remains **not release-ready** while the legacy layout-tag
+attribute/href fix in PR #761 is absent. The two runtime/regression paths for
+that fix are outside this 21-path allocation; do not silently absorb them or
+mutate the other PR. Develop already contains the corresponding fix from #748.
+Source preparation, translation completeness and green CI are not a security
+clearance for the old package. Resolve the existing security backport and its
+Matti/Peter disposition before an artifact/consumer pin is accepted. A Main
+merge of #761 or #740 changes the fixed base, expires this compatibility
+exception and requires a freshly allocated base, policy and exact-head review.

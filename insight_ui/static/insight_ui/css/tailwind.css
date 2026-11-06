@@ -887,6 +887,9 @@
   .max-w-fit {
     max-width: fit-content;
   }
+  .max-w-full {
+    max-width: 100%;
+  }
   .max-w-lg {
     max-width: var(--container-lg);
   }
@@ -1648,6 +1651,9 @@
   .text-start {
     text-align: start;
   }
+  .align-middle {
+    vertical-align: middle;
+  }
   .text-2xl {
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
@@ -1715,6 +1721,9 @@
   .tracking-wide {
     --tw-tracking: var(--tracking-wide);
     letter-spacing: var(--tracking-wide);
+  }
+  .break-words {
+    overflow-wrap: break-word;
   }
   .text-ellipsis {
     text-overflow: ellipsis;
@@ -2474,6 +2483,9 @@
   }
   .dark\:text-amber-400:where([data-theme=dark], [data-theme=dark] *) {
     color: var(--color-amber-400);
+  }
+  .dark\:text-insight-text-link-hover:where([data-theme=dark], [data-theme=dark] *) {
+    color: var(--color-insight-text-link-hover);
   }
   .dark\:text-red-400:where([data-theme=dark], [data-theme=dark] *) {
     color: var(--color-red-400);

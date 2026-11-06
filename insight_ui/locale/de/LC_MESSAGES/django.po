@@ -1,0 +1,1687 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
+# German package translations. DeepL output checked against source contracts.
+msgid ""
+msgstr ""
+"Project-Id-Version: Insight UI\n"
+"Report-Msgid-Bugs-To: https://github.com/alpininsight/insight-ui/issues\n"
+"POT-Creation-Date: 2026-11-06 00:00+0000\n"
+"PO-Revision-Date: 2026-11-06 00:00+0000\n"
+"Last-Translator: Insight UI contributors\n"
+"Language: de\n"
+"Language-Team: German\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+msgid "**True** if `input_type='checkbox'` and the checkbox should be selected."
+msgstr "**True**, wenn `input_type='checkbox'` ist und das Kontrollkästchen markiert sein soll."
+
+msgid "Accessible label describing the chart's purpose."
+msgstr "Barrierefreie Beschriftung, die den Zweck des Diagramms beschreibt."
+
+msgid "Accessible label describing the map's purpose."
+msgstr "Barrierefreie Beschriftung, die den Zweck der Karte beschreibt."
+
+msgid "Attribute name without 'data-' prefix."
+msgstr "Attributname ohne das Präfix „data-“."
+
+msgid "CSS height value (e.g., '2rem', '100px')."
+msgstr "CSS-Höhenwert (z. B. „2rem“, „100px“)."
+
+msgid "Color token for the icon (e.g., 'primary', 'danger', 'text-body')."
+msgstr "Farb-Token für das Symbol (z. B. „primary“, „danger“, „text-body“)."
+
+msgid ""
+"Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively "
+"hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited."
+msgstr ""
+"Steuert das reaktionsfähige Verhalten der Legende. Optionen: **„static“** (Standard) – keine Anpassung; **„skip“** – "
+"blendet Legendenelemente schrittweise aus, wenn der Platz begrenzt ist; **„rotate“** – dreht den Legendentext "
+"vertikal, wenn der Platz begrenzt ist."
+
+msgid "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
+msgstr "Eckenposition: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
+
+msgid "Current step of the process. (Only if 'items' is not set!)"
+msgstr "Aktueller Schritt des Prozesses. (Nur wenn 'items' nicht gesetzt ist!)"
+
+msgid "Currently active view ('card', 'table', 'carousel')."
+msgstr "Derzeit aktive Ansicht ('card', 'table', 'carousel')."
+
+msgid "HTML type attribute: 'button', 'submit', or 'reset'."
+msgstr "HTML-Typ-Attribut: „button“, „submit“ oder „reset“."
+
+msgid "HTTP method ('get' or 'post')."
+msgstr "HTTP-Methode („get“ oder „post“)."
+
+msgid "Height of the chart in 'rem'."
+msgstr "Höhe des Diagramms in „rem“."
+
+msgid "Icon configuration used when type is 'icon'."
+msgstr "Symbolkonfiguration, die verwendet wird, wenn der Typ „icon‘ ist."
+
+msgid "Icon size: 'xl', 'l', 'm', 's', or 'xs'."
+msgstr "Symbolgröße: „xl“, „l“, „m“, „s“ oder „xs“."
+
+msgid "If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible)."
+msgstr "Bei **True** ist die Seitenleiste fixiert; bei **False** handelt es sich um eine ausklappbare Seitenleiste (Drawer)."
+
+msgid "Largest numeric value (for `input_type='number'`)."
+msgstr "Größter numerischer Wert (für `input_type='number'`)."
+
+msgid "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
+msgstr "Liste der Zustände für die Prozessschritte. Mögliche Werte: 'success', 'failed', 'active' und '' für inaktiv."
+
+msgid "Logo position, either 'start' or 'end'."
+msgstr "Logo-Position, entweder „start“ oder „end“."
+
+msgid "Marker type ('marker' or 'circle')."
+msgstr "Markierungstyp („marker“ oder „circle“)."
+
+msgid "Number of process steps. (Only if 'items' is not set!)"
+msgstr "Anzahl der Prozessschritte. (Nur wenn 'items' nicht gesetzt ist!)"
+
+msgid "Optional destination for the copyright holder's name."
+msgstr "Optionales Linkziel für den Namen des Urheberrechtsinhabers."
+
+msgid "Optional logo before the holder's name; use empty alt text when decorative."
+msgstr ""
+"Optionales Logo vor dem Namen des Inhabers; verwenden Sie einen leeren Alt-Text, wenn es sich um ein dekoratives "
+"Element handelt."
+
+msgid "Primary 'Call-to-Action' button."
+msgstr "Primäre „Call-to-Action“-Schaltfläche."
+
+msgid "Secondary 'Call-to-Action' button."
+msgstr "Sekundäre „Call-to-Action“-Schaltfläche."
+
+msgid "Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run."
+msgstr "An hx-swap angehängte Abtastverzögerung, z. B. '300ms', damit Übergänge von CSS Zeit zum Ausführen haben."
+
+msgid "Show additional buttons for 'Select All' and 'Deselect All'."
+msgstr "Zeigt zusätzliche Schaltflächen für „Alle auswählen“ und „Alle abwählen“ an."
+
+msgid "Smallest numeric value (for `input_type='number'`)."
+msgstr "Kleinster numerischer Wert (für `input_type='number'`)."
+
+msgid "Status of the current step. (Only if 'items' is not set!)"
+msgstr "Status des aktuellen Schritts. (Nur wenn 'items' nicht gesetzt ist!)"
+
+msgid "The height of the map in 'rem'."
+msgstr "Die Höhe der Karte in „rem“."
+
+msgid "The type of the input field, e.g.: 'text', 'password', 'date', etc."
+msgstr "Der Typ des Eingabefeldes, z. B.: „text“, „password“, „date“ usw."
+
+msgid "The value of the checkbox (this is not the state, see 'checked' for that)."
+msgstr "Der Wert des Kontrollkästchens (dies ist nicht der Status; siehe dazu „checked“)."
+
+msgid "URL to the user's avatar image."
+msgstr "URL zum Avatar-Bild des Benutzers."
+
+#, python-format
+msgid "%(label)s - Maximum"
+msgstr "%(label)s – Maximum"
+
+#, python-format
+msgid "%(label)s - Minimum"
+msgstr "%(label)s – Minimum"
+
+msgid "**True** displays an arrow behind the title."
+msgstr "**True** zeigt einen Pfeil hinter dem Titel an."
+
+msgid "**True** if the checkbox elements should be displayed side by side."
+msgstr "**True**, wenn die Kontrollkästchenelemente nebeneinander angezeigt werden sollen."
+
+msgid "**True** if the checkbox should be disabled."
+msgstr "**True**, wenn das Kontrollkästchen deaktiviert werden soll."
+
+msgid "**True** if the checkbox should be selected."
+msgstr "**True**, wenn das Kontrollkästchen markiert sein soll."
+
+msgid "**True** if the field must be filled in."
+msgstr "**True**, wenn das Feld ausgefüllt werden muss."
+
+msgid "**True** if the field should be disabled."
+msgstr "**True**, wenn das Feld deaktiviert werden soll."
+
+msgid "**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."
+msgstr ""
+"**True**, wenn sich die Gruppe innerhalb eines `<form>` befindet. Bei **False** erhält die Gruppe ein eigenes "
+"`<form>`."
+
+msgid "**True** if the radio button should be disabled."
+msgstr "**True**, wenn das Optionsfeld deaktiviert werden soll."
+
+msgid "**True** if the radio elements should be displayed side by side."
+msgstr "**True**, wenn die Optionsfelder nebeneinander angezeigt werden sollen."
+
+msgid "**True** if the toggle button should be selected."
+msgstr "**True**, wenn die Umschaltfläche ausgewählt sein soll."
+
+msgid "**True** if the toggle button should look like a typical switch select."
+msgstr "**True**, wenn die Umschaltfläche wie ein typischer Schalter aussehen soll."
+
+msgid "**True** to enable dual-thumb mode for selecting a range with min and max values."
+msgstr "**True**, um den Zwei-Daumen-Modus für die Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
+
+msgid "-- Attribute --"
+msgstr "-- Attribut --"
+
+msgid "3D carousel"
+msgstr "3D-Karussell"
+
+msgid "A badge with icon and text."
+msgstr "Ein Badge mit Symbol und Text."
+
+msgid "A brief description of the filter that appears in a tooltip."
+msgstr "Eine kurze Beschreibung des Filters, die in einem Tooltip angezeigt wird."
+
+msgid "A list of texts displayed as a legend below the slider."
+msgstr "Eine Liste von Texten, die als Legende unterhalb des Schiebereglers angezeigt werden."
+
+msgid "A list of the menu elements."
+msgstr "Eine Liste der Menüelemente."
+
+msgid "A list of the radio elements."
+msgstr "Eine Liste der Radio-Elemente."
+
+msgid "A text label displayed above the field."
+msgstr "Eine Textbeschriftung, die über dem Feld angezeigt wird."
+
+msgid "A text label displayed above the radio elements."
+msgstr "Eine Textbeschriftung, die über den Radio-Elementen angezeigt wird."
+
+msgid "Accessible label for the list."
+msgstr "Barrierefreie Bezeichnung für die Liste."
+
+msgid "Accessible label for the section."
+msgstr "Barrierefreie Beschriftung für den Abschnitt."
+
+msgid "Accessible text. Empty values make image/svg logos decorative."
+msgstr "Barrierefreier Text. Leere Werte lassen Bild- oder SVG-Logos als reines Dekor erscheinen."
+
+msgid "Accessible text. Empty values make the image decorative."
+msgstr "Barrierefreier Text. Leere Werte machen das Bild zu einem dekorativen Element."
+
+msgid "Add another filter"
+msgstr "Einen weiteren Filter hinzufügen"
+
+msgid "Additional CSS classes for the list item."
+msgstr "Zusätzliche CSS-Klassen für das Listenelement."
+
+msgid "Additional CSS classes to append to the button element."
+msgstr "Zusätzliche CSS-Klassen, die dem Schaltflächenelement angehängt werden sollen."
+
+msgid "Additional JSON values to include in the request (hx-vals)."
+msgstr "Zusätzliche JSON-Werte, die in die Anfrage aufgenommen werden sollen (hx-vals)."
+
+msgid "Additional button actions."
+msgstr "Zusätzliche Schaltflächenaktionen."
+
+msgid "Additional description of the item below the title."
+msgstr "Zusätzliche Beschreibung des Elements unterhalb des Titels."
+
+msgid "Additional description of the step below the title."
+msgstr "Zusätzliche Beschreibung des Schritts unterhalb des Titels."
+
+msgid "Additional links to display above the logout button."
+msgstr "Zusätzliche Links, die über der Abmelde-Schaltfläche angezeigt werden sollen."
+
+msgid "All content loaded."
+msgstr "Alle Inhalte wurden geladen."
+
+msgid "All rights reserved."
+msgstr "Alle Rechte vorbehalten."
+
+msgid "Allow flex items to wrap."
+msgstr "Flex-Elemente dürfen umbrechen."
+
+msgid "Alt text for the avatar image."
+msgstr "Alternativtext für das Avatar-Bild."
+
+msgid "An optional badge displayed after the text."
+msgstr "Ein optionales Abzeichen, das hinter dem Text angezeigt wird."
+
+msgid "An optional description below the title."
+msgstr "Eine optionale Beschreibung unterhalb des Titels."
+
+msgid "An optional icon displayed before the label."
+msgstr "Ein optionales Symbol, das vor der Bezeichnung angezeigt wird."
+
+msgid "An optional icon displayed before the text."
+msgstr "Ein optionales Symbol, das vor dem Text angezeigt wird."
+
+msgid "An optional title above the article."
+msgstr "Ein optionaler Titel über dem Artikel."
+
+msgid "Anchor ID for navigation (adds scroll-mt-24 for fixed navbar offset)."
+msgstr "Anker-ID für die Navigation (fügt „scroll-mt-24“ für den festen Versatz der Navigationsleiste hinzu)."
+
+msgid "Apply"
+msgstr "Übernehmen"
+
+msgid "Attribute value. Empty string for marker attributes."
+msgstr "Attributwert. Leere Zeichenfolge für Marker-Attribute."
+
+msgid "Auto-advance slides every 5 seconds."
+msgstr "Folien alle 5 Sekunden automatisch weiterblättern."
+
+msgid "Auto-advance slides."
+msgstr "Automatischer Folienwechsel."
+
+msgid "Available filter options (dict maps value→label)."
+msgstr "Verfügbare Filteroptionen (Wörterbuch, das Werte auf Bezeichnungen abbildet)."
+
+msgid "Available operations (maps operation→label)."
+msgstr "Verfügbare Operationen (zuordnet Operation → Bezeichnung)."
+
+msgid "Available page size options."
+msgstr "Verfügbare Optionen für die Seitengröße."
+
+msgid "Back side action buttons."
+msgstr "Aktionsschaltflächen auf der Rückseite."
+
+msgid "Back side content."
+msgstr "Inhalt auf der Rückseite."
+
+msgid "Back side title."
+msgstr "Titel der Rückseite."
+
+msgid "Back to front"
+msgstr "Zurück zur Vorderseite dieser Karte"
+
+msgid "Back"
+msgstr "Zurück"
+
+msgid "Badge label."
+msgstr "Bezeichnung des Badges."
+
+#, python-format
+msgid "Bar chart: %(title)s"
+msgstr "Balkendiagramm: %(title)s"
+
+msgid "Behavior on mobile viewports (\"hidden\", \"drawer\")."
+msgstr "Verhalten auf mobilen Bildschirmen (\"hidden\", \"drawer\")."
+
+msgid "Border radius (xs|s|m|l|xl|none)."
+msgstr "Eckenradius (xs|s|m|l|xl|none)."
+
+msgid "Brand mark with logo and wordmark."
+msgstr "Markenzeichen mit Logo und Wortmarke."
+
+msgid "Breadcrumb-Navigation"
+msgstr "Breadcrumb-Navigation"
+
+msgid "Brief description of the application with optional image."
+msgstr "Kurzbeschreibung der Anwendung mit optionalem Bild."
+
+msgid "Brief summary of the application."
+msgstr "Kurze Zusammenfassung der Anwendung."
+
+msgid "CSS class for primary text color."
+msgstr "CSS-Klasse für die primäre Textfarbe."
+
+msgid "CSS class for secondary text color."
+msgstr "CSS-Klasse für die sekundäre Textfarbe."
+
+msgid "CSS height for image/svg logos."
+msgstr "CSS-Höhe für Bild-/SVG-Logos."
+
+msgid "CSS selector for loading indicator (hx-indicator)."
+msgstr "CSS-Selektor für die Ladeanzeige (hx-indicator)."
+
+msgid "CSS selector for the target element (hx-target)."
+msgstr "CSS-Selektor für das Zielelement (hx-target)."
+
+msgid "Camera tilt angle."
+msgstr "Neigungswinkel der Kamera."
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Card description."
+msgstr "Kartenbeschreibung."
+
+msgid "Card image (displayed as square at top)."
+msgstr "Kartenbild (wird oben als Quadrat angezeigt)."
+
+msgid "Card title."
+msgstr "Kartentitel."
+
+msgid "Category header text."
+msgstr "Kategorie-Überschrift."
+
+msgid "Category"
+msgstr "Kategorie"
+
+msgid "Chart data and configuration."
+msgstr "Diagrammdaten und Konfiguration."
+
+msgid "Chart title."
+msgstr "Diagrammtitel."
+
+msgid "Close sidebar"
+msgstr "Seitenleiste schließen"
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Color variant for the ribbon."
+msgstr "Farbvariante für das Eckband."
+
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+msgid "Component"
+msgstr "Komponente"
+
+msgid "Configuration for the search bar. If None, no search bar is displayed."
+msgstr "Konfiguration für die Suchleiste. Bei „None“ wird keine Suchleiste angezeigt."
+
+msgid "Configuration for the user dropdown menu. None uses defaults (logout only)."
+msgstr "Konfiguration für das Benutzer-Dropdown-Menü. Bei „None“ werden die Standardwerte verwendet (nur Abmeldung)."
+
+msgid "Configuration of a dropdown menu."
+msgstr "Konfiguration eines Dropdown-Menüs."
+
+msgid "Configuration of the table view."
+msgstr "Konfiguration der Tabellenansicht."
+
+msgid "Confirmation message before request (hx-confirm)."
+msgstr "Bestätigungsmeldung vor der Anfrage (hx-confirm)."
+
+msgid "Contact information, link to the imprint, privacy policy and a contact email address."
+msgstr "Kontaktdaten, Link zum Impressum, zur Datenschutzerklärung und zu einer Kontakt-E-Mail-Adresse."
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid ""
+"Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band swaps). Optional; without it the connection "
+"still works but the server cannot target specific sub-elements by ID."
+msgstr ""
+"Container-ID zur Adressierung von Unterelementen anhand ihrer ID (z. B. über HTMX-Out-of-Band-Swaps). Optional; ohne "
+"diese Angabe funktioniert die Verbindung zwar weiterhin, der Server kann jedoch keine bestimmten Unterelemente anhand"
+" ihrer ID adressieren."
+
+msgid "Contains and describes the navigation items of the navbar."
+msgstr "Enthält und beschreibt die Navigationselemente der Navigationsleiste."
+
+msgid "Content carousel"
+msgstr "Inhaltskarussell"
+
+msgid "Content for the navigation variant (only used with ``sidebar_nav.html``)."
+msgstr "Inhalt für die Navigationsvariante (wird nur mit ``sidebar_nav.html`` verwendet)."
+
+msgid "Content is loading..."
+msgstr "Inhalt wird geladen..."
+
+msgid "Current page number."
+msgstr "Aktuelle Seitenzahl."
+
+msgid "Current progress in percent."
+msgstr "Aktueller Fortschritt in Prozent."
+
+msgid "Currently selected value."
+msgstr "Derzeit ausgewählter Wert."
+
+msgid "Data for each series (list of lists)."
+msgstr "Daten für jede Reihe (Liste von Listen)."
+
+msgid "Data points for this series."
+msgstr "Datenpunkte für diese Reihe."
+
+msgid "Database field name."
+msgstr "Name des Datenbankfelds."
+
+msgid "Dataset name."
+msgstr "Name des Datensatzes."
+
+msgid "Default value."
+msgstr "Standardwert."
+
+msgid "Delay in ms before hiding after completion."
+msgstr "Verzögerung in ms vor dem Ausblenden nach Abschluss."
+
+msgid "Describes the brand mark of the application in the navbar."
+msgstr "Beschreibt das Markenzeichen der Anwendung in der Navigationsleiste."
+
+msgid "Description of the Hero section, displayed below the title and subtitle."
+msgstr "Beschreibung des „Hero“-Bereichs, die unterhalb des Titels und des Untertitels angezeigt wird."
+
+msgid "Descriptive message."
+msgstr "Beschreibende Meldung."
+
+msgid "Deselect all"
+msgstr "Alle Optionen abwählen"
+
+msgid "Determines the number of characters in a line."
+msgstr "Legt die Anzahl der Zeichen pro Zeile fest."
+
+msgid "Determines the number of lines."
+msgstr "Legt die Anzahl der Zeilen fest."
+
+msgid "Disable responsive behavior and always use max_columns."
+msgstr "Deaktivieren Sie das responsive Verhalten und verwenden Sie stets „max_columns“."
+
+msgid "Disable responsive breakpoints (always use exact column count)."
+msgstr "Responsive-Breakpoints deaktivieren (immer die genaue Spaltenanzahl verwenden)."
+
+msgid "Display name."
+msgstr "Anzeigename."
+
+msgid "Displays a button to switch between the light and dark theme of the page."
+msgstr "Zeigt eine Schaltfläche zum Wechseln zwischen dem hellen und dem dunklen Design der Seite an."
+
+msgid "Displays a checkmark instead of a bullet point."
+msgstr "Zeigt ein Häkchen anstelle eines Aufzählungszeichens an."
+
+msgid "Displays a checkmark instead of the step number."
+msgstr "Zeigt ein Häkchen anstelle der Schrittnummer an."
+
+msgid "Displays a dropdown menu for selecting the display language (if defined)."
+msgstr "Zeigt ein Dropdown-Menü zur Auswahl der Anzeigesprache an (sofern definiert)."
+
+msgid "Displays an X instead of the step number."
+msgstr "Zeigt ein „X“ anstelle der Schrittnummer an."
+
+msgid "Django pagination Page object for the current page."
+msgstr "Django-Paginierungsobjekt der Klasse `Page` für die aktuelle Seite."
+
+msgid "Do you have any questions or feedback?"
+msgstr "Haben Sie Fragen oder Anregungen?"
+
+msgid "Enter password"
+msgstr "Passwort eingeben"
+
+msgid "Enter username or email"
+msgstr "Bitte geben Sie Ihren Benutzernamen oder Ihre E-Mail-Adresse ein"
+
+msgid "Enter username"
+msgstr "Geben Sie den Benutzernamen ein"
+
+msgid "Establishing connection..."
+msgstr "Verbindung wird hergestellt..."
+
+msgid "Event trigger (hx-trigger)."
+msgstr "Ereignisauslöser (hx-trigger)."
+
+msgid "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+msgstr ""
+"Erklärung, warum das Kontrollkästchen deaktiviert ist; wird beim Darüberfahren mit der Maus als Tooltip angezeigt. "
+"Setzen Sie diese Erklärung auf eine leere Zeichenkette, um den Tooltip zu unterdrücken."
+
+msgid "Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+msgstr ""
+"Erklärung, warum das Feld deaktiviert ist; wird beim Darüberfahren mit der Maus als Tooltip angezeigt. Setzen Sie "
+"diese Erklärung auf eine leere Zeichenkette, um den Tooltip zu unterdrücken."
+
+msgid "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+msgstr ""
+"Erklärung, warum das Optionsfeld deaktiviert ist; wird als Tooltip beim Darüberfahren mit der Maus angezeigt. Setzen "
+"Sie diese Erklärung auf eine leere Zeichenkette, um den Tooltip zu unterdrücken."
+
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+msgid "Field type for filtering."
+msgstr "Feldtyp für die Filterung."
+
+msgid "Fill available height in parent container."
+msgstr "Verfügbare Höhe im übergeordneten Container ausfüllen."
+
+#, python-format
+msgid "Filter %(num)s"
+msgstr "Filter %(num)s"
+
+msgid "Filter added"
+msgstr "Filter hinzugefügt"
+
+msgid "Filter field name."
+msgstr "Name des Filterfeldes."
+
+msgid "Filter label."
+msgstr "Filterbezeichnung."
+
+msgid "Filter"
+msgstr "Filtern"
+
+msgid "First wordmark run."
+msgstr "Erste Wortmarken-Reihe."
+
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
+
+msgid "Form field name."
+msgstr "Name des Formularfelds."
+
+msgid "Form title displayed at the top."
+msgstr "Oben angezeigter Formulartitel."
+
+msgid "Front side action buttons."
+msgstr "Aktionsschaltflächen auf der Vorderseite."
+
+msgid "Front side content."
+msgstr "Inhalt der Vorderseite."
+
+msgid "Front side image."
+msgstr "Bild auf der Vorderseite."
+
+msgid "Go to page:"
+msgstr "Zur Seite wechseln:"
+
+msgid "HTML id attribute for anchor links and JavaScript targeting."
+msgstr "HTML-ID-Attribut für Ankerlinks und JavaScript-Targeting."
+
+msgid "HTMX configuration for AJAX page changes."
+msgstr "HTMX-Konfiguration für AJAX-Seitenwechsel."
+
+msgid "HTMX configuration for AJAX requests."
+msgstr "HTMX-Konfiguration für AJAX-Anfragen."
+
+msgid "HTMX configuration for AJAX submission."
+msgstr "HTMX-Konfiguration für die AJAX-Übermittlung."
+
+msgid "HTTP method for form submission (get or post)."
+msgstr "HTTP-Methode für die Formularübermittlung (GET oder POST)."
+
+msgid "Heading of the description."
+msgstr "Überschrift der Beschreibung."
+
+msgid "Height behavior (auto|full|peek)."
+msgstr "Verhalten der Höhe (auto|full|peek)."
+
+msgid "Hide progress bar when reaching max_value."
+msgstr "Fortschrittsbalken ausblenden, wenn max_value erreicht ist."
+
+msgid "Highlights the title by color."
+msgstr "Hebt den Titel farblich hervor."
+
+msgid "Highlights the title in color and makes the text pulse."
+msgstr "Hebt den Titel farblich hervor und lässt den Text pulsieren."
+
+msgid "Horizontal alignment (start|center|end|between|around|evenly)."
+msgstr "Horizontale Ausrichtung: (start|center|end|between|around|evenly)."
+
+msgid "Horizontal alignment (start|center|end|stretch|baseline)."
+msgstr "Horizontale Ausrichtung (start|center|end|stretch|baseline)."
+
+msgid "ID of a modal dialog to open. The modal must be defined elsewhere in the template."
+msgstr "ID eines zu öffnenden modalen Dialogfelds. Das modale Dialogfeld muss an anderer Stelle in der Vorlage definiert sein."
+
+msgid "ID of element that labels this section."
+msgstr "ID des Elements, das diesen Abschnitt kennzeichnet."
+
+msgid "Icon name (alternative to icon config)."
+msgstr "Symbolname (Alternative zur Symbolkonfiguration)."
+
+msgid "Icon size (alternative to icon config)."
+msgstr "Symbolgröße (Alternative zur Symbolkonfiguration)."
+
+msgid "If **True** only one section can be open at a time."
+msgstr "Wenn **True** gesetzt ist, kann jeweils nur ein Abschnitt geöffnet sein."
+
+msgid "If True, arrange filters vertically."
+msgstr "Falls „True“, werden die Filter vertikal angeordnet."
+
+msgid "If True, auto-load on scroll. If False, show button."
+msgstr "Bei True: Automatisches Laden beim Scrollen. Bei False: Schaltfläche anzeigen."
+
+msgid "If True, enable client-side documentation search with Fuse.js."
+msgstr "Wenn „True“, wird die clientseitige Dokumentationssuche mit Fuse.js aktiviert."
+
+msgid "If True, hide the login button for unauthenticated users."
+msgstr "Wenn „True“, wird die Anmeldeschaltfläche für nicht authentifizierte Benutzer ausgeblendet."
+
+msgid "If True, items always face the camera."
+msgstr "Wenn True, sind die Elemente immer zur Kamera ausgerichtet."
+
+msgid "If True, render compact/minimal style."
+msgstr "Wenn „True“, wird der kompakte/minimale Stil gerendert."
+
+msgid "Image URL."
+msgstr "Bild-URL."
+
+msgid "Image alt text."
+msgstr "Alternativtext für das Bild."
+
+msgid "Images visible per slide."
+msgstr "Anzahl der pro Folie sichtbaren Bilder."
+
+msgid "Importance level of the message."
+msgstr "Wichtigkeitsgrad der Meldung."
+
+msgid "Imprint"
+msgstr "Impressum"
+
+msgid "In progress"
+msgstr "Wird ausgeführt"
+
+msgid "Information about the current version."
+msgstr "Informationen zur aktuellen Version."
+
+msgid "Initial content before first update."
+msgstr "Anfänglicher Inhalt vor der ersten Aktualisierung."
+
+msgid "Initial content."
+msgstr "Anfänglicher Inhalt."
+
+msgid "Initial items to display."
+msgstr "Anfänglich anzuzeigende Elemente."
+
+msgid "Initial search query value."
+msgstr "Anfänglicher Wert der Suchanfrage."
+
+msgid "Inner padding (xs|s|m|l|xl). Optional."
+msgstr "Innerer Abstand (xs|s|m|l|xl). Optional."
+
+msgid "Inner padding (xs|s|m|l|xl)."
+msgstr "Innenabstand (xs|s|m|l|xl)."
+
+msgid "Inner padding size (xs|s|m|l|xl)."
+msgstr "Größe des inneren Abstandsgröße (xs|s|m|l|xl)."
+
+msgid "Interactive map"
+msgstr "Interaktive Karte"
+
+msgid "Item content/description."
+msgstr "Inhalt/Beschreibung des Elements."
+
+msgid "Item title."
+msgstr "Titel des Elements."
+
+msgid "Jump to main content"
+msgstr "Zum Hauptinhalt springen"
+
+msgid "Label for the cancel button."
+msgstr "Bezeichnung für die Schaltfläche „Abbrechen“."
+
+msgid "Label for the reset button."
+msgstr "Bezeichnung für die Schaltfläche „Zurücksetzen“."
+
+msgid "Label for the retry button."
+msgstr "Bezeichnung für die Schaltfläche „Erneut versuchen“."
+
+msgid "Label for the search button."
+msgstr "Bezeichnung für die Suchschaltfläche."
+
+msgid "Label for the submit button."
+msgstr "Bezeichnung für die Schaltfläche „Absenden“."
+
+msgid "Label of the dropdown button."
+msgstr "Bezeichnung der Dropdown-Schaltfläche."
+
+msgid "Label of the dropdown element."
+msgstr "Bezeichnung des Dropdown-Elements."
+
+msgid "Label of the item."
+msgstr "Bezeichnung des Elements."
+
+msgid "Label of the link."
+msgstr "Bezeichnung des Links."
+
+msgid "Label of the respective radio button."
+msgstr "Bezeichnung des jeweiligen Optionsfelds."
+
+msgid "Label of the tab button."
+msgstr "Bezeichnung der Registerkarte."
+
+msgid "Label text."
+msgstr "Beschriftungstext."
+
+msgid "Labels for X-axis categories."
+msgstr "Beschriftungen für die Kategorien der X-Achse."
+
+msgid "Largest configurable value of the range slider."
+msgstr "Größter konfigurierbarer Wert des Bereichsreglers."
+
+msgid "Latitude coordinate."
+msgstr "Breitengradkoordinate."
+
+msgid "Legal notice with copyright, license, and version information."
+msgstr "Rechtlicher Hinweis mit Angaben zu Urheberrecht, Lizenz und Version."
+
+#, python-format
+msgid "Line chart: %(title)s"
+msgstr "Liniendiagramm: %(title)s"
+
+msgid "Line style (solid|dashed|dotted)."
+msgstr "Linienstil: (solid|dashed|dotted)."
+
+msgid "Line thickness (thin|medium|thick)."
+msgstr "Linienstärke: (thin|medium|thick)."
+
+msgid "Link to a privacy policy."
+msgstr "Link zur Datenschutzerklärung."
+
+msgid "Link to an imprint."
+msgstr "Link zum Impressum."
+
+msgid "Links"
+msgstr "Links"
+
+msgid "List marker style (none|disc|circle|square|decimal|decimal-leading-zero)."
+msgstr "Stil der Listenmarkierung (none|disc|circle|square|decimal|decimal-leading-zero)."
+
+msgid "List of action buttons."
+msgstr "Liste der Aktionsschaltflächen."
+
+msgid "List of badge configurations for tags."
+msgstr "Liste der Badge-Konfigurationen für Tags."
+
+msgid "List of breadcrumb navigation items."
+msgstr "Liste der Elemente der Breadcrumb-Navigation."
+
+msgid "List of bullet point items."
+msgstr "Liste der Aufzählungspunkte."
+
+msgid "List of column header texts."
+msgstr "Liste der Spaltenüberschriften."
+
+msgid "List of currently selected options."
+msgstr "Liste der aktuell ausgewählten Optionen."
+
+msgid "List of data layers to display."
+msgstr "Liste der anzuzeigenden Datenebenen."
+
+msgid "List of filter configurations."
+msgstr "Liste der Filterkonfigurationen."
+
+msgid "List of form field configurations."
+msgstr "Liste der Formularfeldkonfigurationen."
+
+msgid "List of image configurations."
+msgstr "Liste der Bildkonfigurationen."
+
+msgid "List of individual sections."
+msgstr "Liste der einzelnen Abschnitte."
+
+msgid "List of items in this category."
+msgstr "Liste der Elemente in dieser Kategorie."
+
+msgid "List of items to display."
+msgstr "Liste der anzuzeigenden Elemente."
+
+msgid "List of marker configurations."
+msgstr "Liste der Markierungskonfigurationen."
+
+msgid "List of model fields with possible operators."
+msgstr "Liste der Modellfelder mit möglichen Operatoren."
+
+msgid "List of navigation categories."
+msgstr "Liste der Navigationskategorien."
+
+msgid "List of neighboring page numbers to display. Use -1 for ellipsis."
+msgstr "Liste der anzuzeigenden benachbarten Seitenzahlen. Verwenden Sie -1 für Auslassungspunkte."
+
+msgid "List of options for select fields."
+msgstr "Liste der Optionen für Auswahlfelder."
+
+msgid "List of row data (each row is a list of cell values)."
+msgstr "Liste der Zeilendaten (jede Zeile ist eine Liste von Zellenwerten)."
+
+msgid "List of step configurations."
+msgstr "Liste der Schrittkonfigurationen."
+
+msgid "List of tab buttons."
+msgstr "Liste der Registerkarten-Schaltflächen."
+
+msgid "List of the checkbox elements."
+msgstr "Liste der Kontrollkästchen-Elemente."
+
+msgid "List of the main navigation items of the application."
+msgstr "Liste der wichtigsten Navigationselemente der Anwendung."
+
+msgid "List of values that can be selected."
+msgstr "Liste der auswählbaren Werte."
+
+msgid "Load more content..."
+msgstr "Weitere Inhalte laden..."
+
+msgid "Load more"
+msgstr "Weitere Inhalte laden"
+
+msgid "Loading..."
+msgstr "Wird geladen..."
+
+msgid "Logged in as"
+msgstr "Angemeldet als"
+
+msgid "Login"
+msgstr "Anmelden"
+
+msgid "Logo configuration for branding at the top of the login form."
+msgstr "Logo-Konfiguration für das Branding oben im Anmeldeformular."
+
+msgid "Logout"
+msgstr "Abmelden"
+
+msgid "Longitude coordinate."
+msgstr "Längenkoordinate."
+
+msgid "Main card content."
+msgstr "Hauptinhalt der Karte."
+
+msgid "Main navigation"
+msgstr "Hauptnavigation"
+
+msgid "Main status title."
+msgstr "Titel des Hauptstatus."
+
+msgid "Map layers"
+msgstr "Kartenebenen"
+
+msgid "Map locations"
+msgstr "Standorte auf der Karte"
+
+msgid "Marker position (inside|outside)."
+msgstr "Markierungsposition (inside|outside)."
+
+msgid "Marker title/label."
+msgstr "Titel/Bezeichnung des Markers."
+
+msgid "Maximum number of characters in a text field."
+msgstr "Maximale Anzahl an Zeichen in einem Textfeld."
+
+msgid "Maximum number of columns (1-4). Fewer columns are shown on narrow containers."
+msgstr "Maximale Anzahl von Spalten (1–4). Bei schmalen Containern werden weniger Spalten angezeigt."
+
+msgid "Maximum number of selectable options."
+msgstr "Maximale Anzahl auswählbarer Optionen."
+
+msgid "Maximum selection reached. Deselect an option first."
+msgstr "Die Höchstanzahl an Auswahlen wurde erreicht. Bitte deaktivieren Sie zunächst eine Option."
+
+msgid "Maximum value for circle scaling."
+msgstr "Maximalwert für die Kreisskalierung."
+
+msgid "Maximum value."
+msgstr "Maximalwert."
+
+msgid "Maximum width (xs|s|m|l|xl|fit|full)."
+msgstr "Maximale Breite (xs|s|m|l|xl|fit|full)."
+
+msgid "Maximum width in rem units."
+msgstr "Maximale Breite in rem-Einheiten."
+
+msgid "Message displayed in the alert."
+msgstr "In der Warnmeldung angezeigte Meldung."
+
+msgid "Message shown when no data available."
+msgstr "Meldung, die angezeigt wird, wenn keine Daten verfügbar sind."
+
+msgid "Message"
+msgstr "Nachricht"
+
+msgid "Minimum item width for auto-fit mode (any CSS unit: px, rem, em, etc.)."
+msgstr "Mindestbreite der Elemente für den Auto-Fit-Modus (beliebige CSS-Einheit: px, rem, em usw.)."
+
+msgid "Minimum number of characters in a text field."
+msgstr "Mindestanzahl an Zeichen in einem Textfeld."
+
+msgid "Minimum selection reached. At least one option must remain selected."
+msgstr "Die Mindestanzahl an Auswahlen wurde erreicht. Es muss mindestens eine Option ausgewählt bleiben."
+
+msgid "Minimum value for circle scaling."
+msgstr "Mindestwert für die Skalierung von Kreisen."
+
+msgid "Minimum value."
+msgstr "Mindestwert."
+
+msgid "Mode: HTMX WebSocket Extension (expects HTML)"
+msgstr "Modus: HTMX WebSocket-Erweiterung (erwartet HTML)"
+
+msgid "More content is loading..."
+msgstr "Weitere Inhalte werden geladen..."
+
+msgid "More information"
+msgstr "Weitere Informationen"
+
+msgid "Name of the Insight UI icon."
+msgstr "Name des Insight-UI-Symbols."
+
+msgid "Name of the JavaScript method to be executed when clicking one of the radio buttons."
+msgstr "Name der JavaScript-Methode, die beim Klicken auf eines der Optionsfelder ausgeführt werden soll."
+
+msgid "Name of the JavaScript method to be executed when the toggle button is clicked."
+msgstr "Name der JavaScript-Methode, die beim Klicken auf die Umschalt-Schaltfläche ausgeführt werden soll."
+
+msgid "Next"
+msgstr "Weiter"
+
+msgid "No data available."
+msgstr "Keine Daten verfügbar."
+
+msgid "No results found"
+msgstr "Keine Ergebnisse gefunden"
+
+msgid "Non-visible additional title that is to be read aloud by screen readers."
+msgstr "Nicht sichtbarer zusätzlicher Titel, der von Bildschirmleseprogrammen vorgelesen werden soll."
+
+msgid "Number of checkbox elements that may be selected at the same time."
+msgstr "Anzahl der Kontrollkästchen-Elemente, die gleichzeitig ausgewählt werden dürfen."
+
+msgid "Number of checkbox elements that must be selected at minimum."
+msgstr "Anzahl der Kontrollkästchen, die mindestens ausgewählt werden müssen."
+
+msgid "Number of columns (1-6). If not set, uses auto-fit mode."
+msgstr "Anzahl der Spalten (1–6). Falls nicht festgelegt, wird der Auto-Fit-Modus verwendet."
+
+msgid "Number of items visible per slide."
+msgstr "Anzahl der pro Folie sichtbaren Elemente."
+
+msgid "Number of rows for textarea fields."
+msgstr "Anzahl der Zeilen für Textbereichsfelder."
+
+msgid "Open link in new tab (only when href is set)."
+msgstr "Link in neuem Tab öffnen (nur wenn „href“ festgelegt ist)."
+
+msgid "Open menu"
+msgstr "Menü öffnen"
+
+msgid "Open sidebar"
+msgstr "Seitenleiste öffnen"
+
+msgid "Optional CSS classes for the outer section."
+msgstr "Optionale CSS-Klassen für den äußeren Bereich."
+
+msgid "Optional CSS classes for the root element."
+msgstr "Optionale CSS-Klassen für das Stammelement."
+
+msgid "Optional CSS classes for the status card."
+msgstr "Optionale CSS-Klassen für die Statuskarte."
+
+msgid "Optional CSS width for image/svg logos."
+msgstr "Optionale CSS-Breite für Bild-/SVG-Logos."
+
+msgid "Optional CSS width value."
+msgstr "Optionaler CSS-Breitenwert."
+
+msgid "Optional HTMX configuration for AJAX navigation."
+msgstr "Optionale HTMX-Konfiguration für die AJAX-Navigation."
+
+msgid "Optional HTMX configuration for dynamic content loading."
+msgstr "Optionale HTMX-Konfiguration zum dynamischen Laden von Inhalten."
+
+msgid "Optional URL for the client-side documentation search index."
+msgstr "Optionale URL für den Index der clientseitigen Dokumentationssuche."
+
+msgid "Optional URL for the license label."
+msgstr "Optionale URL für die Lizenzbezeichnung."
+
+msgid "Optional URL that turns the ribbon into a link."
+msgstr "Optionale URL, die die Multifunktionsleiste in einen Link verwandelt."
+
+msgid "Optional URL to call when cancelling (POST request)."
+msgstr "Optionale URL, die beim Abbrechen aufgerufen werden soll (POST-Anfrage)."
+
+msgid "Optional accessible label for the brand link."
+msgstr "Optionale barrierefreie Bezeichnung für den Markenlink."
+
+msgid "Optional accessible label for the linked ribbon."
+msgstr "Optionale barrierefreie Beschriftung für das verknüpfte Eckband."
+
+msgid "Optional brand mark shown above the card."
+msgstr "Optionales Markenzeichen, das über der Karte angezeigt wird."
+
+msgid "Optional caption/description."
+msgstr "Optionale Bildunterschrift/Beschreibung."
+
+msgid "Optional card image."
+msgstr "Optionales Kartenbild."
+
+msgid "Optional category icon."
+msgstr "Optionales Kategorie-Symbol."
+
+msgid "Optional chapter displayed before the title in muted style."
+msgstr "Optionales Kapitel, das vor dem Titel in dezenter Darstellung angezeigt wird."
+
+msgid "Optional configuration for the items-per-page selector."
+msgstr "Optionale Konfiguration für den Selektor „Elemente pro Seite“."
+
+msgid "Optional dark-theme URL for image/svg logos."
+msgstr "Optionale URL für das dunkle Design bei Bild-/SVG-Logos."
+
+msgid "Optional dark-theme URL."
+msgstr "Optionale URL für das dunkle Design."
+
+msgid "Optional description below the title."
+msgstr "Optionale Beschreibung unterhalb des Titels."
+
+msgid "Optional filter icon."
+msgstr "Optionales Filtersymbol."
+
+msgid "Optional heading above the categories section."
+msgstr "Optionale Überschrift über dem Kategoriebereich."
+
+msgid "Optional heading displayed in the modal header."
+msgstr "Optionale Überschrift, die in der Kopfzeile des Modals angezeigt wird."
+
+msgid "Optional heading/title for the progress bar."
+msgstr "Optionale Überschrift/Titel für den Fortschrittsbalken."
+
+msgid "Optional icon (typically for home item)."
+msgstr "Optionales Symbol (in der Regel für das Startseite-Element)."
+
+msgid "Optional icon configuration."
+msgstr "Optionale Symbolkonfiguration."
+
+msgid "Optional icon displayed before the label."
+msgstr "Optionales Symbol, das vor der Beschriftung angezeigt wird."
+
+msgid "Optional image configuration."
+msgstr "Optionale Bildkonfiguration."
+
+msgid "Optional image displayed below the description text."
+msgstr "Optionales Bild, das unterhalb des Beschreibungstextes angezeigt wird."
+
+msgid "Optional license label, for example AGPL-3.0."
+msgstr "Optionale Lizenzbezeichnung, zum Beispiel AGPL-3.0."
+
+msgid "Optional link URL."
+msgstr "Optionale Link-URL."
+
+msgid "Optional list of action buttons displayed below the badges."
+msgstr "Optionale Liste von Aktionsschaltflächen, die unterhalb der Abzeichen angezeigt wird."
+
+msgid "Optional list of badges displayed below the description."
+msgstr "Optionale Liste von Badges, die unterhalb der Beschreibung angezeigt wird."
+
+msgid "Optional notice heading."
+msgstr "Optionale Überschrift des Hinweises."
+
+msgid "Optional notice text."
+msgstr "Optionaler Text des Hinweises."
+
+msgid "Optional numeric value (for circle markers)."
+msgstr "Optionaler numerischer Wert (für Kreismarkierungen)."
+
+msgid "Optional popup description."
+msgstr "Optionale Popup-Beschreibung."
+
+msgid "Optional rights statement."
+msgstr "Optionale Rechteerklärung."
+
+msgid "Optional semantic text color. Empty uses white, or body text for neutral."
+msgstr "Optionale semantische Textfarbe. Bei leerem Wert wird Weiß oder der Lauftext für „neutral“ verwendet."
+
+msgid "Optional source model label, for example Open Source."
+msgstr "Optionale Bezeichnung des Quellmodells, zum Beispiel „Open Source“."
+
+msgid "Optional subtitle."
+msgstr "Optionaler Untertitel."
+
+msgid "Optional table caption."
+msgstr "Optionale Tabellenbeschriftung."
+
+msgid "Optional text label displayed in the center."
+msgstr "Optionale Textbeschriftung, die in der Mitte angezeigt wird."
+
+msgid "Optional title icon."
+msgstr "Optionales Titelsymbol."
+
+msgid "Optional tooltip text displayed on hover."
+msgstr "Optionaler Tooltip-Text, der beim Darüberfahren mit der Maus angezeigt wird."
+
+msgid "Optional version string, for example v1.2.3."
+msgstr "Optionale Versionsangabe, zum Beispiel v1.2.3."
+
+msgid "Optional, unique tag ID for identifying the element in JavaScript."
+msgstr "Optionale, eindeutige Tag-ID zur Identifizierung des Elements in JavaScript."
+
+msgid "Or"
+msgstr "Oder"
+
+msgid "Orientation (horizontal|vertical)."
+msgstr "Ausrichtung (horizontal|vertical)."
+
+msgid "Page"
+msgstr "Seite"
+
+msgid "Pagination"
+msgstr "Paginierung"
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "Pending"
+msgstr "Ausstehend"
+
+msgid "Pixel threshold before loading more."
+msgstr "Pixel-Schwellenwert, ab dem weitere Elemente geladen werden."
+
+msgid "Placeholder text for the search input."
+msgstr "Platzhaltertext für das Sucheingabefeld."
+
+msgid "Placeholder text, displayed in the field as long as it has not been selected."
+msgstr "Platzhaltertext, der im Feld angezeigt wird, solange noch keine Auswahl getroffen wurde."
+
+msgid "Placeholder text."
+msgstr "Platzhaltertext."
+
+msgid "Polling interval in milliseconds."
+msgstr "Abfrageintervall in Millisekunden."
+
+msgid "Position of the sidebar (\"left\" or \"right\"). Auto-detected from block context."
+msgstr "Position der Seitenleiste (\"left\" oder \"right\"). Wird automatisch aus dem Blockkontext ermittelt."
+
+msgid "Predefined values (optional)."
+msgstr "Vordefinierte Werte (optional)."
+
+msgid "Primary button action."
+msgstr "Primäre Schaltflächenaktion."
+
+msgid "Privacy"
+msgstr "Datenschutz"
+
+msgid "Progress indicator"
+msgstr "Fortschrittsanzeige"
+
+msgid "Public logo configuration."
+msgstr "Konfiguration des öffentlichen Logos."
+
+msgid "Query Builder"
+msgstr "Abfrage-Generator"
+
+msgid "Radio block config for view switching."
+msgstr "Konfiguration des Radio-Blocks für den Ansichtswechsel."
+
+msgid "Register"
+msgstr "Registrieren"
+
+msgid "Remove filter"
+msgstr "Filter entfernen"
+
+msgid "Required for a `<form>`, as the name of the request parameter."
+msgstr "Erforderlich für einen `<form>` als Name des Anfrageparameters."
+
+msgid "Required"
+msgstr "Erforderlich"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Retry"
+msgstr "Erneut versuchen"
+
+msgid "Rotation speed."
+msgstr "Rotationsgeschwindigkeit."
+
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+msgid "Search"
+msgstr "Suchen"
+
+msgid "Search..."
+msgstr "Suche..."
+
+msgid "Second wordmark run."
+msgstr "Zweite Wortmarken-Reihe."
+
+msgid "Secondary button action."
+msgstr "Sekundäre Schaltflächenaktion."
+
+msgid "Section content."
+msgstr "Abschnittsinhalt."
+
+msgid "Section title."
+msgstr "Abschnittstitel."
+
+msgid "Select all"
+msgstr "Alle auswählen"
+
+msgid "Select language"
+msgstr "Sprache auswählen"
+
+msgid "Select option"
+msgstr "Option auswählen"
+
+msgid "Select the field of the filter"
+msgstr "Feld des Filters auswählen"
+
+msgid "Select the operator of the filter"
+msgstr "Operator des Filters auswählen"
+
+msgid "Selector label."
+msgstr "Bezeichnung des Auswahlfelds."
+
+msgid "Send"
+msgstr "Senden"
+
+msgid "Separator between legal metadata parts."
+msgstr "Trennzeichen zwischen den Teilen der rechtlichen Metadaten."
+
+msgid "Series name (shown in legend)."
+msgstr "Name der Reihe (wird in der Legende angezeigt)."
+
+msgid "Series names (for legend)."
+msgstr "Reihenbezeichnungen (für die Legende)."
+
+msgid "Server-Sent Events URL for real-time progress updates."
+msgstr "URL für „Server-Sent Events“ zur Abfrage von Fortschrittsaktualisierungen in Echtzeit."
+
+msgid "Show a cancel button during progress."
+msgstr "Zeigt während des Vorgangs eine Schaltfläche „Abbrechen“ an."
+
+msgid "Show a retry button when an error occurs."
+msgstr "Zeigen Sie eine Schaltfläche „Erneut versuchen“ an, wenn ein Fehler auftritt."
+
+msgid "Show current/total index."
+msgstr "Aktuellen/Gesamtindex anzeigen."
+
+msgid "Show decal patterns for colorblind accessibility."
+msgstr "Anzeige von Dekalmustern zur Barrierefreiheit für Menschen mit Farbblindheit."
+
+msgid "Show details"
+msgstr "Details anzeigen"
+
+msgid "Show labels above input fields instead of just placeholders."
+msgstr "Beschriftungen über den Eingabefeldern anstelle von reinen Platzhaltern anzeigen."
+
+msgid "Show pagination dots."
+msgstr "Paginierungspunkte anzeigen."
+
+msgid "Show the close button in the header."
+msgstr "Schaltfläche „Schließen“ im Kopfbereich anzeigen."
+
+msgid "Show theme toggle button in the corner."
+msgstr "Schaltfläche zum Umschalten des Designs in der Ecke anzeigen."
+
+msgid "Shows a button to close the alert at the end of the alert container."
+msgstr "Zeigt am Ende des Warnmeldungs-Containers eine Schaltfläche zum Schließen der Warnmeldung an."
+
+msgid "Side navigation"
+msgstr "Seitennavigation"
+
+msgid "Sidebar title."
+msgstr "Titel der Seitenleiste."
+
+msgid "Sign in"
+msgstr "Anmelden"
+
+msgid "Sign up here"
+msgstr "Hier registrieren"
+
+msgid "Site status"
+msgstr "Status der Website"
+
+msgid "Size of the icons in the progress bar."
+msgstr "Größe der Symbole in der Fortschrittsanzeige."
+
+msgid "Smallest configurable value of the range slider."
+msgstr "Kleinster konfigurierbarer Wert des Bereichsreglers."
+
+msgid "Space between children (xs|s|m|l|xl)."
+msgstr "Abstand zwischen untergeordneten Elementen (xs|s|m|l|xl)."
+
+msgid "Space between grid items (xs|s|m|l|xl)."
+msgstr "Abstand zwischen den Rasterelementen (xs|s|m|l|xl)."
+
+msgid "Spacer size (xs|s|m|l|xl)."
+msgstr "Abstandsgröße (xs | s | m | l | xl)."
+
+msgid "Spacing between items (xs|s|m|l|xl)."
+msgstr "Abstand zwischen den Elementen (xs|s|m|l|xl)."
+
+msgid "Spacing size (none|xs|s|m|l|xl)."
+msgstr "Abstandsgröße (none|xs|s|m|l|xl)."
+
+msgid "Specify the value of the filter"
+msgstr "Wert des Filters angeben"
+
+msgid "Starting map center [lat, lon]."
+msgstr "Anfangsmittelpunkt der Karte [Breitengrad, Längengrad]."
+
+msgid "Starting zoom level."
+msgstr "Anfangszoomstufe."
+
+msgid "Static, absolute, root-relative, or data URL for image/svg logos."
+msgstr "Statische, absolute, root-relative oder Daten-URL für Bild-/SVG-Logos."
+
+msgid "Static, absolute, root-relative, or data URL for the image."
+msgstr "Statische, absolute, root-relative oder Daten-URL für das Bild."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status:"
+msgstr "Status:"
+
+#, python-format
+msgid "Step %(step)s"
+msgstr "Schritt %(step)s"
+
+msgid "Stop polling/SSE when an error is received."
+msgstr "Beenden Sie das Polling/SSE, wenn ein Fehler auftritt."
+
+msgid "Submit"
+msgstr "Absenden"
+
+msgid "Subtitle of the Hero section, displayed below the title."
+msgstr "Untertitel des Hero-Bereichs, der unterhalb des Titels angezeigt wird."
+
+msgid "Supporting status description."
+msgstr "Ergänzende Statusbeschreibung."
+
+msgid "Table of Contents"
+msgstr "Inhaltsverzeichnis"
+
+msgid "Target URL for form submission."
+msgstr "Ziel-URL für die Formularübermittlung."
+
+msgid "Text label displayed above the checkbox elements."
+msgstr "Textbeschriftung, die über den Kontrollkästchen-Elementen angezeigt wird."
+
+msgid "The ID of the HTML tag to be replaced when switching the radio button."
+msgstr "Die ID des HTML-Tags, das beim Umschalten des Optionsfelds ersetzt werden soll."
+
+msgid "The URL for the HTMX request (hx-get/hx-post)."
+msgstr "Die URL für die HTMX-Anfrage (hx-get/hx-post)."
+
+msgid "The URL to be called when clicking on the item."
+msgstr "Die URL, die beim Klicken auf das Element aufgerufen werden soll."
+
+msgid "The URL to be called when clicking on the link, if not opening a modal or dropdown menu."
+msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern kein Modal- oder Dropdown-Menü geöffnet wird."
+
+msgid "The URL to be called when clicking on the link."
+msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll."
+
+msgid "The URL to be called when clicking on the respective item."
+msgstr "Die URL, die beim Klicken auf den jeweiligen Eintrag aufgerufen werden soll."
+
+msgid "The URL to be called when the tab is clicked."
+msgstr "Die URL, die beim Klicken auf die Registerkarte aufgerufen werden soll."
+
+msgid "The URL to be called when title is clicked."
+msgstr "Die URL, die beim Anklicken des Titels aufgerufen werden soll."
+
+msgid "The URL to navigate to when clicking on the link."
+msgstr "Die URL, zu der beim Klicken auf den Link weitergeleitet werden soll."
+
+msgid "The URL to which the request should be sent when clicking one of the radio buttons."
+msgstr "Die URL, an die die Anfrage gesendet werden soll, wenn auf eines der Optionsfelder geklickt wird."
+
+msgid "The cards to be displayed."
+msgstr "Die anzuzeigenden Karten."
+
+msgid "The copyright holder."
+msgstr "Der Urheberrechtsinhaber."
+
+msgid "The following conditions must be met:"
+msgstr "Die folgenden Bedingungen müssen erfüllt sein:"
+
+msgid "The gap between the columns (CSS unit)."
+msgstr "Der Abstand zwischen den Spalten (CSS-Einheit)."
+
+msgid "The link is only displayed for administrators."
+msgstr "Der Link wird nur für Administratoren angezeigt."
+
+msgid "The link is only displayed for logged-in users."
+msgstr "Der Link wird nur für angemeldete Benutzer angezeigt."
+
+msgid "The main page title, displayed prominently in primary color."
+msgstr "Der Titel der Hauptseite, der in der Primärfarbe hervorgehoben angezeigt wird."
+
+msgid "The maximum value in dual-thumb mode. Defaults to `maximum`."
+msgstr "Der Maximalwert im Dual-Thumb-Modus. Standardwert ist `maximum`."
+
+msgid "The minimum value in dual-thumb mode. Defaults to `minimum`."
+msgstr "Der Mindestwert im Zwei-Daumen-Modus. Standardwert ist `minimum`."
+
+msgid "The shared HTML `name` attribute for all radio buttons in this group."
+msgstr "Das gemeinsame HTML-Attribut „`name`“ für alle Optionsfelder in dieser Gruppe."
+
+msgid "The size of the steps by which the value changes when moving the range slider."
+msgstr "Die Schrittweite, um die sich der Wert beim Verschieben des Bereichsschiebereglers ändert."
+
+msgid "The text content of the article (can contain HTML)."
+msgstr "Der Textinhalt des Artikels (kann HTML enthalten)."
+
+msgid "The text displayed in the ribbon."
+msgstr "Der im Eckband angezeigte Text."
+
+msgid "The value of the currently selected radio button."
+msgstr "Der Wert des aktuell ausgewählten Optionsfelds."
+
+msgid "The value of the input field."
+msgstr "Der Wert des Eingabefeldes."
+
+msgid "The value of the range slider (single-thumb mode only)."
+msgstr "Der Wert des Bereichsschiebereglers (nur im Ein-Schieberegler-Modus)."
+
+msgid "The value of the toggle button."
+msgstr "Der Wert der Umschalt-Schaltfläche."
+
+msgid "The way in which the target is to be replaced (hx-swap)."
+msgstr "Die Art und Weise, wie das Zielelement ersetzt werden soll (hx-swap)."
+
+msgid "The way in which the target is to be replaced."
+msgstr "Die Art und Weise, wie das Ziel ersetzt werden soll."
+
+msgid "Timestamp"
+msgstr "Zeitstempel"
+
+msgid "Title for the alternative login button."
+msgstr "Titel für die Schaltfläche zur alternativen Anmeldung."
+
+msgid "Title of the Hero section."
+msgstr "Titel des Hero-Bereichs."
+
+msgid "Title of the item."
+msgstr "Titel des Elements."
+
+msgid "Title of the step."
+msgstr "Titel des Schritts."
+
+msgid "To next page (Deactivated because there are no more next pages)"
+msgstr "Zur nächsten Seite (Deaktiviert, da keine weiteren folgenden Seiten vorhanden sind)"
+
+msgid "To next page"
+msgstr "Zur nächsten Seite"
+
+msgid "To previous page (Deactivated because there are no more previous pages)"
+msgstr "Zur vorherigen Seite (Deaktiviert, da keine vorherigen Seiten mehr vorhanden sind)"
+
+msgid "To previous page"
+msgstr "Zur vorherigen Seite"
+
+msgid "Toggle theme"
+msgstr "Design umschalten"
+
+msgid "Tooltip explanation text."
+msgstr "Erklärungstext für den Tooltip."
+
+msgid "Top-level navigation links shown before categories."
+msgstr "Navigationslinks der obersten Ebene, die vor den Kategorien angezeigt werden."
+
+msgid "Try a different search term"
+msgstr "Bitte geben Sie einen anderen Suchbegriff ein"
+
+msgid "Type of form field (text, email, password, textarea, select)."
+msgstr "Art des Formularfelds (text, email, password, textarea, select)."
+
+msgid "Type of the alert."
+msgstr "Art der Warnmeldung."
+
+msgid "Type to search..."
+msgstr "Bitte geben Sie einen Suchbegriff ein..."
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Typically the current year (not strictly required)."
+msgstr "In der Regel das aktuelle Jahr (nicht zwingend erforderlich)."
+
+msgid "URL called when the user clicks on the title of the step."
+msgstr "URL, die aufgerufen wird, wenn der Benutzer auf den Titel des Schritts klickt."
+
+msgid "URL for alternative login (e.g., OIDC/SSO). Empty hides the section."
+msgstr "URL für die alternative Anmeldung (z. B., OIDC/SSO). Wenn das Feld leer bleibt, wird der Abschnitt ausgeblendet."
+
+msgid "URL for changing page."
+msgstr "URL zum Wechseln der aktuellen Seite einer paginierten Liste."
+
+msgid "URL for clickable surface (renders as <a> instead of <div>)."
+msgstr "URL für anklickbare Fläche (wird als <a> anstelle von <div> dargestellt)."
+
+msgid "URL for content updates."
+msgstr "URL für Inhaltsaktualisierungen."
+
+msgid "URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
+msgstr ""
+"URL für die Formularaktion. Nicht zusammen mit htmx_config verwenden; verwenden Sie stattdessen "
+"htmx_config.request_url für HTMX-Anfragen."
+
+msgid "URL for loading more items."
+msgstr "URL zum Laden weiterer Elemente."
+
+msgid "URL for password reset. Empty hides the link."
+msgstr "URL für die Passwortzurücksetzung. Wenn das Feld leer ist, wird der Link ausgeblendet."
+
+msgid "URL for registration. Empty hides the link."
+msgstr "URL für die Registrierung. Wenn das Feld leer bleibt, wird der Link ausgeblendet."
+
+msgid "URL for sending chat messages via HTMX POST."
+msgstr "URL zum Senden von Chat-Nachrichten über HTMX-POST."
+
+msgid "URL of a contact email address."
+msgstr "URL einer Kontakt-E-Mail-Adresse."
+
+msgid "URL of the background image."
+msgstr "URL des Hintergrundbildes."
+
+msgid "URL to navigate to when clicking on the brand."
+msgstr "URL, zu der man gelangt, wenn man auf die Marke klickt."
+
+#, python-brace-format
+msgid "URL to poll for progress updates. Expected JSON: {\"value\": 75}."
+msgstr "URL, die zur Abfrage von Fortschrittsaktualisierungen abgefragt wird. Erwartetes JSON: {\"value\": 75}."
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "Unique ID for JavaScript targeting (data-insight-modal)."
+msgstr "Eindeutige ID für das JavaScript-Targeting (data-insight-modal)."
+
+msgid "Unique ID for JavaScript/CSS targeting."
+msgstr "Eindeutige ID für JavaScript-/CSS-Targeting."
+
+msgid "Unique ID for the carousel."
+msgstr "Eindeutige ID für das Karussell."
+
+msgid "Unique ID for the chart element."
+msgstr "Eindeutige ID für das Diagrammelement."
+
+msgid "Unique ID for the component."
+msgstr "Eindeutige ID für die Komponente."
+
+msgid "Unique ID for the field."
+msgstr "Eindeutige ID für das Feld."
+
+msgid "Unique ID for the form element."
+msgstr "Eindeutige ID für das Formularelement."
+
+msgid "Unique ID for this checkbox."
+msgstr "Eindeutige ID für dieses Kontrollkästchen."
+
+msgid "Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown."
+msgstr "Eindeutige Tag-ID zur Identifizierung des Elements in JavaScript. Erforderlich zum Öffnen/Schließen des Dropdowns."
+
+msgid "Unique tag ID for identifying the element in JavaScript."
+msgstr "Eindeutige Tag-ID zur Identifizierung des Elements in JavaScript."
+
+msgid "Update interval in seconds."
+msgstr "Aktualisierungsintervall in Sekunden."
+
+msgid "Use ``<ol>`` instead of ``<ul>``."
+msgstr "Verwenden Sie „``<ol>``“ anstelle von „``<ul>``“."
+
+msgid "Use horizontal layout instead of vertical (default)."
+msgstr "Horizontales Layout anstelle des vertikalen verwenden (Standard)."
+
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "Value (the key value, if the options were passed as a dict) of the currently selected option."
+msgstr "Wert (der Schlüsselwert, falls die Optionen als Dict übergeben wurden) der aktuell ausgewählten Option."
+
+msgid "Value of the respective radio button."
+msgstr "Wert des jeweiligen Optionsfelds."
+
+msgid "Value submitted when checked."
+msgstr "Wert, der bei Aktivierung übermittelt wird."
+
+msgid "Value"
+msgstr "Wert"
+
+msgid "Vertical alignment (start|center|end|between|around|evenly)."
+msgstr "Vertikale Ausrichtung (start|center|end|between|around|evenly)."
+
+msgid "Vertical alignment (start|center|end|stretch|baseline)."
+msgstr "Vertikale Ausrichtung (start|center|end|stretch|baseline)."
+
+msgid "Visual status type."
+msgstr "Typ des visuellen Status."
+
+msgid "Visual style (surface|raised|outline)."
+msgstr "Optischer Stil (surface|raised|outline)."
+
+msgid "Wait for messages..."
+msgstr "Auf Nachrichten warten..."
+
+msgid "WebSocket endpoint URL."
+msgstr "URL des WebSocket-Endpunkts."
+
+msgid "Whether field is disabled."
+msgstr "Gibt an, ob das Feld deaktiviert ist."
+
+msgid "Whether field is required."
+msgstr "Gibt an, ob das Feld ein Pflichtfeld ist."
+
+msgid "Whether more items are available."
+msgstr "Gibt an, ob weitere Elemente verfügbar sind."
+
+msgid "Whether section is initially open."
+msgstr "Gibt an, ob der Abschnitt anfänglich geöffnet ist."
+
+msgid "Whether this tab is initially active."
+msgstr "Gibt an, ob diese Registerkarte anfänglich aktiv ist."
+
+msgid "Whether to display the value as text."
+msgstr "Ob der Wert als Text angezeigt werden soll."
+
+msgid "Whether to push URL to browser history (hx-push-url)."
+msgstr "Angabe, ob die URL in den Browserverlauf übernommen werden soll (hx-push-url)."
+
+msgid "Whether to show a reset button."
+msgstr "Angabe, ob eine Schaltfläche „Zurücksetzen“ angezeigt werden soll."
+
+msgid "Width of the sidebar (\"narrow\", \"normal\", \"wide\")."
+msgstr "Breite der Seitenleiste (\"narrow\", \"normal\", \"wide\")."
+
+msgid "Write something..."
+msgstr "Bitte geben Sie etwas ein..."
+
+msgid "You do not have an account yet?"
+msgstr "Sie haben noch kein Konto?"
+
+msgid "Zoom in"
+msgstr "Vergrößern"
+
+msgid "Zoom out"
+msgstr "Verkleinern"
+
+msgid "carousel"
+msgstr "Karussell"
+
+msgid "of"
+msgstr "von"
+
+msgid "removed"
+msgstr "entfernt"

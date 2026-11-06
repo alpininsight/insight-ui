@@ -69,6 +69,8 @@ class LegalNoticeConfig:
         separator: Separator between legal metadata parts.
         rights_text: Optional rights statement.
         version: Optional version string, for example v1.2.3.
+        holder_url: Optional destination for the copyright holder's name.
+        holder_logo: Optional logo before the holder's name; use empty alt text when decorative.
 
     """
 
@@ -80,6 +82,7 @@ class LegalNoticeConfig:
             license_text="AGPL-3.0",
             license_url="https://github.com/org/repo/blob/main/LICENSE",
             version="v1.0.0",
+            holder_url="https://company.example/",
         )
         """
 
@@ -93,6 +96,11 @@ class LegalNoticeConfig:
     )  # Middle dot
     rights_text: str = field(default="", metadata={"doc": _("Optional rights statement.")})
     version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
+    holder_url: str = field(default="", metadata={"doc": _("Optional destination for the copyright holder's name.")})
+    holder_logo: "LogoConfig | None" = field(
+        default=None,
+        metadata={"doc": _("Optional logo before the holder's name; use empty alt text when decorative.")},
+    )
 
 
 @dataclass

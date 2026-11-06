@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling", "hatch-vcs", "babel==2.18.0", "django==5.2.17"]
 build-backend = "hatchling.build"
 
 [project]
@@ -67,6 +67,8 @@ pytest = [
     "beautifulsoup4>=4.15.0",
     "docstring-parser>=0.18.0",
     "pyyaml>=6.0.3",
+    "babel==2.18.0",
+    "hatchling",
 ]
 
 # For pip
@@ -78,6 +80,8 @@ test = [
     "beautifulsoup4>=4.15.0",
     "docstring-parser>=0.18.0",
     "pyyaml>=6.0.3",
+    "babel==2.18.0",
+    "hatchling",
 ]
 
 [project.urls]
@@ -292,3 +296,6 @@ mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.hatch.build.hooks.custom]
+path = "scripts/hatch_i18n.py"

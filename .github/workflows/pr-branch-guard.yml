@@ -3,6 +3,8 @@ name: Contributor PR policy
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
 
 permissions:
   contents: read
@@ -26,7 +28,92 @@ jobs:
             }
             if (pr.base.ref === 'main' &&
                 (pr.head.ref !== 'develop' || pr.head.repo?.full_name !== pr.base.repo.full_name)) {
-              core.setFailed('Production releases must come from this repository\'s develop branch.');
+              // A separately admitted, exact-base compatibility candidate; never a release approval.
+              const compatibleHead = 'maintenance/v1-webmcp-i18n-compat';
+              const compatibleBase = '24787fc561d5d60d970c129d6a8eae4f5fd5c1ed';
+              if (pr.head.ref === compatibleHead &&
+                  pr.head.repo?.full_name === pr.base.repo.full_name && pr.base.sha === compatibleBase) {
+                const compatibleFiles = new Set([
+                  '.github/workflows/pr-branch-guard.yml',
+                  'docs/releases.md',
+                  'tests/insight_ui/unit/test_maintenance_release_policy.py',
+                  'insight_ui/configs/utils.py',
+                  'insight_ui/templates/insight_ui/components/legal_notice.html',
+                  'insight_ui/templatetags/insight_tags.py',
+                  'insight_ui/static/insight_ui/css/tailwind.css',
+                  'insight_ui/cdn_manifest.json',
+                  'tests/insight_ui/unit/components/test_legal_notice.py',
+                  'insight_ui/locale/de/LC_MESSAGES/django.po',
+                  'insight_ui/locale/de/LC_MESSAGES/djangojs.po',
+                  'scripts/hatch_i18n.py',
+                  'pyproject.toml',
+                  'uv.lock',
+                  'scripts/check_distribution.py',
+                  'scripts/smoke_distribution.py',
+                  'tests/insight_ui/unit/test_distribution_smoke.py',
+                  'tests/insight_ui/unit/test_package_i18n.py',
+                  'docs/i18n.md',
+                  'insight_ui/templates/insight_ui/components/toggle_language.html',
+                  'tests/insight_ui/unit/components/test_navbar_language.py',
+                ]);
+                const files = await github.paginate(github.rest.pulls.listFiles, {
+                  ...context.repo, pull_number: pr.number, per_page: 100
+                });
+                if (files.length !== compatibleFiles.size ||
+                    new Set(files.map(file => file.filename)).size !== compatibleFiles.size || files.some(file =>
+                    !compatibleFiles.has(file.filename) || !['added', 'modified'].includes(file.status))) {
+                  core.setFailed('Compatibility preparation requires exactly the reviewed 21 paths, without renames/deletions.');
+                } else {
+                  // No approved shared OSS AI-review receipt contract has been allocated yet.
+                  // Keep this preparation fail-closed; CI or a human approval cannot substitute.
+                  core.setFailed('Compatibility preparation awaits the approved shared exact-head AI-review contract.');
+                }
+              } else {
+                // One reviewed backport, not a general alternative release lane.
+                const maintenanceBase = '24787fc561d5d60d970c129d6a8eae4f5fd5c1ed'; // v1.15.1
+                const maintenanceHead = 'hotfix/v1.15.2-minimal-stepper';
+                const allowedFiles = new Set([
+                  '.github/workflows/pr-branch-guard.yml',
+                  'docs/releases.md',
+                  'tests/insight_ui/unit/test_maintenance_release_policy.py',
+                  'tests/insight_ui/unit/components/test_minimal_step_bar.py',
+                  'insight_ui/templates/insight_ui/components/minimal_stepper.html',
+                ]);
+                if (pr.head.repo?.full_name !== pr.base.repo.full_name ||
+                    pr.head.ref !== maintenanceHead || pr.base.sha !== maintenanceBase) {
+                  core.setFailed('Production releases must come from develop or the bounded v1.15.2 maintenance path.');
+                } else {
+                  const files = await github.paginate(github.rest.pulls.listFiles, {
+                    ...context.repo, pull_number: pr.number, per_page: 100
+                  });
+                  const requiredFiles = [
+                    'insight_ui/templates/insight_ui/components/minimal_stepper.html',
+                    'tests/insight_ui/unit/components/test_minimal_step_bar.py',
+                  ];
+                  if (!files.length || files.some(file => !allowedFiles.has(file.filename) ||
+                      !['added', 'modified'].includes(file.status)) ||
+                      requiredFiles.some(path => !files.some(file => file.filename === path))) {
+                    core.setFailed('Maintenance scope is limited to the stepper backport, regression and reviewed policy bootstrap.');
+                  } else {
+                    const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                      ...context.repo, pull_number: pr.number, per_page: 100
+                    });
+                    const latest = new Map();
+                    for (const review of reviews) {
+                      if (['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED'].includes(review.state)) {
+                        latest.set(review.user?.login, review);
+                      }
+                    }
+                    const independent = [...latest.values()].some(review =>
+                      review.state === 'APPROVED' && review.commit_id === pr.head.sha &&
+                      review.user?.type === 'User' && review.user.login !== pr.user.login &&
+                      ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(review.author_association));
+                    if (!independent || [...latest.values()].some(review => review.state === 'CHANGES_REQUESTED')) {
+                      core.setFailed('Maintenance requires an independent repository reviewer approval of this exact head.');
+                    }
+                  }
+                }
+              }
             }
             const conventional = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^()\r\n]+\))?!?: \S[^\r\n]*$/;
             if (!conventional.test(pr.title)) {

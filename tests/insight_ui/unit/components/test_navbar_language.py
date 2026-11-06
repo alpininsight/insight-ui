@@ -10,8 +10,10 @@ from typing import TYPE_CHECKING
 from bs4 import BeautifulSoup
 from django.http import HttpResponse
 from django.template import RequestContext, Template
-from django.test import Client, SimpleTestCase, override_settings
+from django.test import Client, RequestFactory, SimpleTestCase, override_settings
 from django.urls import include, path
+from django.utils.safestring import mark_safe
+from django.utils.translation import override
 from django.views.decorators.http import require_GET, require_POST
 from insight_ui.configs import NavbarConfig
 
@@ -75,6 +77,42 @@ def _language_data(response: HttpResponse) -> dict[str, str]:
 )
 class TestNavbarLanguage(SimpleTestCase):
     """Keep host return navigation inside Django's CSRF and redirect boundary."""
+
+    def test_language_control_keeps_translated_name_when_visible_text_is_hidden(self) -> None:
+        """The explicit current-language name must survive every CSS breakpoint."""
+        for language, label in (("de", "Sprache auswählen: Deutsch"), ("en", "Select language: English")):
+            with self.subTest(language=language), override_settings(LANGUAGES=[("de", "Deutsch"), ("en", "English")]):
+                with override(language):
+                    response = _navbar_response(RequestFactory().get(DETAIL_URL))
+                soup = BeautifulSoup(response.content, "html.parser")
+                button = soup.select_one('button[data-insight-dropdown="language-menu"]')
+                assert button["aria-label"] == label
+                assert button["type"] == "button"
+                assert "lg:hidden" in button.select_one("span")["class"]
+                form = button.find_parent("form")
+                assert form["method"] == "post"
+                assert form["action"] == LANGUAGE_URL
+                assert form.select_one('input[name="csrfmiddlewaretoken"]')["value"]
+                assert form.select_one('input[name="next"]')["value"] == DETAIL_URL
+
+    def test_language_name_escapes_even_marked_safe_configuration(self) -> None:
+        """Language labels remain text in the accessible name and dropdown items."""
+        unsafe = 'Deutsch"><img src=x onerror="bad()">'
+        with override_settings(LANGUAGES=[("de", mark_safe(unsafe))]), override("de"):  # noqa: S308 - injection fixture.
+            response = _navbar_response(RequestFactory().get(DETAIL_URL))
+        soup = BeautifulSoup(response.content, "html.parser")
+        button = soup.select_one('button[data-insight-dropdown="language-menu"]')
+        assert button["aria-label"] == "Sprache auswählen: " + unsafe
+        assert soup.find("img") is None
+        assert soup.select("[onerror]") == []
+        assert soup.select_one('button[name="language"]').get_text(strip=True) == unsafe
+
+    def test_language_not_listed_still_has_action_name(self) -> None:
+        """A variant or unlisted current language cannot leave the control unnamed."""
+        with override_settings(LANGUAGES=[("en", "English")]), override("de"):
+            response = _navbar_response(RequestFactory().get(DETAIL_URL))
+        soup = BeautifulSoup(response.content, "html.parser")
+        assert soup.select_one('[data-insight-dropdown="language-menu"]')["aria-label"] == "Sprache auswählen"
 
     def test_language_after_invalid_post_returns_to_get_page(self) -> None:
         """An action Referer must not replace the rendered canonical GET URL."""

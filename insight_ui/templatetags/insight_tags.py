@@ -961,6 +961,8 @@ def legal_notice(
     separator: str | _Unset | None = UNSET,
     rights_text: str | _Unset | None = UNSET,
     version: str | _Unset | None = UNSET,
+    holder_url: str | _Unset | None = UNSET,
+    holder_logo: LogoConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable legal notice line with copyright, license, and version."""
     config = build_config(LegalNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
