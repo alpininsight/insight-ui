@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import base64
 import sys
 from typing import TYPE_CHECKING
 
@@ -91,6 +92,24 @@ class TestBaseTemplateThemeAndHtmx(TestCase):
         assert scripts[defaults["src"]]["integrity"] == defaults["integrity"]
         assert scripts[defaults["src"]]["crossorigin"] == "anonymous"
         assert scripts[defaults["ws_src"]]["integrity"] == defaults["ws_integrity"]
+
+    @override_settings(INSIGHT_UI={"load_prism": True, "load_leaflet": True, "load_echarts": True})
+    def test_opt_in_third_party_scripts_all_require_integrity(self) -> None:
+        """Optional libraries must retain functionality without trusting replaced CDN bytes."""
+        scripts = [
+            tag
+            for tag in BeautifulSoup(self.render_base(), "html.parser").find_all("script", src=True)
+            if tag["src"].startswith("https://")
+        ]
+        # Include the previously unprotected autoloader, rather than hiding it to pass.
+        assert any("prism-autoloader.min.js" in tag["src"] for tag in scripts)
+        assert any("leaflet.js" in tag["src"] for tag in scripts)
+        assert any("echarts.min.js" in tag["src"] for tag in scripts)
+        for tag in scripts:
+            algorithm, encoded = tag["integrity"].split("-", 1)
+            assert algorithm in {"sha256", "sha384", "sha512"}, tag["src"]
+            assert len(base64.b64decode(encoded, validate=True)) == int(algorithm[3:]) // 8
+            assert tag["crossorigin"] == "anonymous", tag["src"]
 
     @override_settings(
         INSIGHT_UI={"htmx": {"src": "/static/vendor/htmx.min.js", "integrity": "", "ws_src": "", "ws_integrity": ""}}
