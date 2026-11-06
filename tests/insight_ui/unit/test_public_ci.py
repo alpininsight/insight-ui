@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Keep contributor checks independent of private infrastructure and credentials."""
 
+import json
 import re
 import tomllib
 from pathlib import Path
@@ -131,6 +132,18 @@ def test_quality_gate_preserves_required_checks() -> None:
     assert policy["name"] == "branch-policy / Repository Policy"
 
 
+def test_stylesheet_check_rebuilds_like_contributors_do() -> None:
+    """CI rebuilds tailwind.css with the contributor command and fails on any difference."""
+    steps = _workflows()["feature-ci.yml"]["jobs"]["stylesheet"]["steps"]
+    build = next(step for step in steps if "tailwind build" in step.get("run", ""))
+    check = next(step for step in steps if "git diff --exit-code" in step.get("run", ""))
+    contributor_build = json.loads((ROOT / "package.json").read_text())["scripts"]["build:tailwind"]
+
+    assert f"DJANGO_SETTINGS_MODULE={build['env']['DJANGO_SETTINGS_MODULE']}" in contributor_build
+    assert build["run"].split("python ", 1)[1] in contributor_build
+    assert "insight_ui/static/insight_ui/css/tailwind.css" in check["run"]
+
+
 def test_artifacts_are_uploaded_only_after_installation_smoke() -> None:
     """Package evidence must be tested, short-lived, and never implicitly published."""
     steps = _workflows()["feature-ci.yml"]["jobs"]["distribution"]["steps"]
@@ -142,6 +155,22 @@ def test_artifacts_are_uploaded_only_after_installation_smoke() -> None:
     assert steps[upload]["with"]["retention-days"] == ARTIFACT_RETENTION_DAYS
     assert steps[upload]["with"]["if-no-files-found"] == "error"
     assert "publish" not in "\n".join(step.get("run", "") for step in steps)
+
+
+def test_browser_acceptance_uses_a_matching_digest_pinned_image() -> None:
+    """Use the image's browsers without downloading a mutable browser in CI."""
+    job = _workflows()["feature-ci.yml"]["jobs"]["browser"]
+    container = job["container"]
+    image = re.fullmatch(
+        r"mcr\.microsoft\.com/playwright/python:v(\d+\.\d+\.\d+)-noble@sha256:[a-f0-9]{64}",
+        container["image"],
+    )
+    assert image is not None, "Pin the official Playwright image by version and digest"
+    assert container["options"] == "--init --ipc=host"
+    commands = [step["run"] for step in job["steps"] if "run" in step]
+    assert not any("playwright install" in command for command in commands)
+    for module in ("button_download_smoke", "outline_ink_smoke"):
+        assert f"uv run --no-sync --with playwright=={image.group(1)} python -m tests.browser.{module}" in commands
 
 
 def test_locked_dependencies_require_only_public_indexes() -> None:

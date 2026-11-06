@@ -23,7 +23,7 @@ class TestAlert(TemplateTagsTestCase):
             with self.subTest(type=alert_type):
                 template_string = f"""
                 {{% load insight_tags %}}
-                {{% alert message="Test message" type="{alert_type}" %}}
+                {{% alert message="Test message" severity="{alert_type}" %}}
                 """
                 rendered = self.render_template(template_string)
                 assert "Test message" in rendered

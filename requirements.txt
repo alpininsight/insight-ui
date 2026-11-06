@@ -6,9 +6,9 @@ defusedxml==0.7.1
     # via insight-ui
 django==6.1.1
     # via insight-ui
-markdown==3.10.3
+markdown==3.11
     # via insight-ui
 sqlparse==0.6.0
     # via django
-tzdata==2026.4 ; sys_platform == 'win32'
+tzdata==2026.5 ; sys_platform == 'win32'
     # via django

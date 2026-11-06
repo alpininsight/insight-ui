@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling", "hatch-vcs", "babel==2.18.0", "django==5.2.17"]
 build-backend = "hatchling.build"
 
 [project]
@@ -54,13 +54,15 @@ default-groups = ["dev"]
 [dependency-groups]
 dev = [
     "mypy>=2.3.0",
-    "django-stubs==6.1.1",
+    "django-stubs==6.1.2",
     "ruff>=0.16.1",
     "pre-commit>=4.6.1",
     "whitenoise>=6.12.0",
     "django-tailwind-cli==4.8.1",
 ]
 pytest = [
+    "babel==2.18.0",
+    "hatchling",
     "pytest==9.1.1",
     "pytest-django==4.14.0",
     "pytest-cov==7.1.0",
@@ -72,6 +74,8 @@ pytest = [
 # For pip
 [project.optional-dependencies]
 test = [
+    "babel==2.18.0",
+    "hatchling",
     "pytest==9.1.1",
     "pytest-django==4.14.0",
     "pytest-cov==7.1.0",
@@ -94,6 +98,9 @@ source = "vcs"
 # Match tags like "v1.2.3" and write a version file for runtime
 tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
+
+[tool.hatch.build.hooks.custom]
+path = "scripts/hatch_i18n.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
@@ -292,3 +299,33 @@ mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.commitizen]
+name = "cz_customize"
+tag_format = "v$version"
+version_scheme = "semver"
+
+[tool.commitizen.customize]
+# Validation pattern: type(scope): description (min 10 chars after colon)
+schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\(\\S+\\))?!?:\\s.{10,}$"
+schema = """
+<type>(<scope>): <description>
+
+Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+Scope: component or area affected (optional but recommended)
+Description: at least 10 characters, imperative mood
+
+Examples:
+  feat(button): add hover animation for primary variant
+  fix(navbar): prevent dropdown from overlapping modal
+  docs: update installation instructions for uv
+"""
+# Template for generating commit messages
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}{% if breaking %}!{% endif %}: {{subject}}"
+# Bump pattern for version detection
+bump_pattern = "^(feat|fix|refactor|perf)"
+bump_map = {"feat" = "MINOR", "fix" = "PATCH", "refactor" = "PATCH", "perf" = "PATCH"}
+# Changelog integration
+commit_parser = "^(?P<change_type>feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\((?P<scope>[^)]+)\\))?!?:\\s(?P<message>.+)$"
+changelog_pattern = "^(feat|fix|docs|refactor|perf).*$"
+change_type_map = {"feat" = "Features", "fix" = "Bug Fixes", "docs" = "Documentation", "refactor" = "Refactoring", "perf" = "Performance"}

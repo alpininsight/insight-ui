@@ -212,7 +212,7 @@ class Command(BaseCommand):
                     raise CommandError(message) from exc
         if dry_run:
             for path in self._pending_writes:
-                self.stdout.write(str(path.relative_to(ui_path.parent)))
+                self.stdout.write(path.relative_to(ui_path.parent).as_posix())
             self.stdout.write("Dry-run complete; no files written.")
             return
         self._apply_scaffold()
@@ -229,7 +229,8 @@ class Command(BaseCommand):
                 self._assert_unchanged(path)
                 written.append(path)
                 writing = path
-                path.write_text(content, encoding="utf-8")
+                # LF on every platform: the rollback compares the written bytes with the plan.
+                path.write_text(content, encoding="utf-8", newline="\n")
                 writing = None
         except (OSError, CommandError) as exc:
             failed = []
@@ -472,7 +473,9 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
         data_attr = f"data-insight-{js_slug}"
         slug_readable = slug.replace("_", " ")
 
-        js_content = f"""export class {class_name} {{
+        js_content = f"""// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
+export class {class_name} {{
     static instances = new WeakMap();
 
     constructor(element) {{

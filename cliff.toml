@@ -39,12 +39,37 @@ trim = true
 conventional_commits = true
 filter_unconventional = true
 split_commits = false
+filter_commits = true
 
 commit_preprocessors = [
     { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
 ]
 
 commit_parsers = [
+    # === Skip rules (must come before group rules) ===
+    { message = "^aider:", skip = true },
+    { message = "^wip:", skip = true },
+    { message = "^Merge", skip = true },
+    { message = "^chore\\(release\\)", skip = true },
+    { message = "^chore\\(deps\\)", skip = true },
+    { message = "^chore\\(pr\\)", skip = true },
+    { message = "^chore\\(pull\\)", skip = true },
+    { message = "^chore\\(changelog\\)", skip = true },
+    { message = "^chore: [Rr]egenerate", skip = true },
+    { message = "^chore: [Uu]pdate stylesheet", skip = true },
+    { message = "^chore: [Ff]ix merge", skip = true },
+    { message = "^chore: [Ll]inting", skip = true },
+    { message = "^chore: [Mm]erge", skip = true },
+    { message = "^chore: [Rr]uff format", skip = true },
+    { message = "^chore\\(develop\\): [Rr]elease", skip = true },
+    { message = "^chore\\(main\\): [Rr]elease", skip = true },
+    { message = "^chore\\(pre-commit\\): [Aa]utoupdate", skip = true },
+    # Low-value generic commits
+    { message = "^fix: [Ff]ix tests$", skip = true },
+    { message = "^test: [Ff]ix tests$", skip = true },
+    { message = "^chore: [Ff]ix tests$", skip = true },
+
+    # === Group rules ===
     { message = "^feat", group = "Features" },
     { message = "^fix", group = "Bug Fixes" },
     { message = "^doc", group = "Documentation" },
@@ -54,16 +79,10 @@ commit_parsers = [
     { message = "^test", group = "Testing" },
     { message = "^build", group = "Build System" },
     { message = "^ci", group = "CI/CD" },
-    { message = "^chore\\(release\\)", skip = true },
-    { message = "^chore\\(deps\\)", skip = true },
-    { message = "^chore\\(pr\\)", skip = true },
-    { message = "^chore\\(pull\\)", skip = true },
-    { message = "^chore\\(changelog\\)", skip = true },
     { message = "^chore", group = "Miscellaneous" },
     { message = "^revert", group = "Reverted" },
 ]
 
 protect_breaking_commits = false
-filter_commits = false
 tag_pattern = "v[0-9].*"
 sort_commits = "oldest"

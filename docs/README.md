@@ -12,13 +12,16 @@ not a second documentation application or a deployment system.
 | Guide | Purpose |
 | --- | --- |
 | [Getting started](getting-started.md) | Integrate the package, settings and base template into your own Django app. |
+| [Migrating to 2.0](migration-2.0.md) | Consumer changes from v1.15.1 to the unreleased 2.0 line. |
 | [Components](components.md) | Configs, template tags, composition and declarative examples. |
 | [Conventions](conventions.md) | Naming, HTML, JavaScript lifecycle and source ownership. |
 | [Design system](design-system.md) | Existing semantic tokens and safe changes to the styling contract. |
 | [Static assets](static-assets.md) | Local files, Tailwind compilation, minification and generic CDN settings. |
+| [Turnstile](turnstile.md) | Optional form challenge and required host-side verification. |
 | [Internationalization](i18n.md) | Package translations, gettext and RTL checks. |
 | [Accessibility](accessibility.md) | Component requirements and behavior-test responsibilities. |
 | [Testing](testing.md) | Local quality, regression, asset and distribution checks. |
+| [Outline interaction ink](outline-ink-contract.md) | Browser acceptance for theme ink, pointer and keyboard states, and native downloads. |
 | [Releases](releases.md) | Stable versions, the central publisher and separately tested consumer upgrades. |
 | [New component checklist](new-component-checklist.md) | Review criteria for the public contributor PR. |
 
@@ -26,7 +29,7 @@ not a second documentation application or a deployment system.
 
 The implementation and these public development rules live in `insight-ui`.
 Dataclass field metadata and source code remain the API source of truth;
-Markdown does not duplicate every parameter table or component demo. [The reference website](https://insight-ui.com/) is maintained separately
+Markdown does not duplicate every parameter table or component demo. [The reference website](https://django-insight-ui.com/) is maintained separately
 and can refer to these guides instead of maintaining another copy of the rules.
 
 The website's catalog, search, editorial examples and application-level audit

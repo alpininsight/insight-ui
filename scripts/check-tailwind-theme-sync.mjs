@@ -50,15 +50,18 @@ function stripCssComments(css) {
     return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
+// Tailwind emits its @theme block first; theme layers written in input.css (shadow tokens) follow later.
 function extractCompiledThemeLayer(css) {
-    const themeStart = css.indexOf("@layer theme");
-    const baseStart = css.indexOf("@layer base", themeStart);
+    const blocks = [];
+    let themeStart = css.indexOf("@layer theme {");
 
-    if (themeStart === -1 || baseStart === -1) {
-        return css;
+    while (themeStart !== -1) {
+        const nextLayer = css.indexOf("\n@layer ", themeStart + 1);
+        blocks.push(css.slice(themeStart, nextLayer === -1 ? css.length : nextLayer));
+        themeStart = css.indexOf("@layer theme {", themeStart + 1);
     }
 
-    return css.slice(themeStart, baseStart);
+    return blocks.length > 0 ? blocks.join("\n") : css;
 }
 
 function extractCustomProperties(css) {

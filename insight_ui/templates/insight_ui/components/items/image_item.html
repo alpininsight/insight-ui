@@ -1,0 +1,17 @@
+{% comment %}
+    Carousel item for a CarouselImageConfig: the caption sits below the image, so it never covers it.
+    Every image gets a stage of the same height (60vh, at most 4:3 of the item width) and is shown whole and
+    centered in it, so the captions of a page start at the same height. The caption is as wide as the image,
+    at least 12rem; it starts at the text edge, which reads better over several lines, center_caption centers
+    short ones.
+{% endcomment %}
+<figure class="@container flex justify-center w-full">
+    <div class="grid grid-rows-[min(60vh,75cqw)_auto] gap-insight-s w-fit max-w-full">
+        <div class="flex justify-center items-center min-w-0">
+            <img src="{{ item.url }}" alt="{{ item.alt }}" class="max-w-full max-h-[min(60vh,75cqw)]">
+        </div>
+        {% if item.caption %}
+            <figcaption class="contain-[inline-size] min-w-[min(12rem,100cqw)] text-sm text-insight-body {% if item.center_caption %}text-center text-balance{% else %}text-start{% endif %}">{{ item.caption }}</figcaption>
+        {% endif %}
+    </div>
+</figure>

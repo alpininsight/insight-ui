@@ -1,11 +1,10 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div
     {% if live_content_config.tag_id %}id="{{ live_content_config.tag_id }}"{% endif %}
-    hx-get="{{ htmx_config.request_url }}"
-    hx-trigger="{{ htmx_config.trigger }}"
-    hx-swap="{{ htmx_config.swap }}"
-    hx-indicator=".htmx-indicator"
+    {# Background polling stays out of the global loading bar unless the HtmxConfig asks for it. #}
+    {% htmx_attributes htmx request_url=live_content_config.request_url trigger=trigger indicator="find .htmx-indicator" global_indicator=False %}
+    class="insight-live-content"
     aria-live="polite"
     aria-busy="false"
     tabindex="-1"

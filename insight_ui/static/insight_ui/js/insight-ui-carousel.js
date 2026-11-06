@@ -3,16 +3,22 @@
 /**
  * Carousel component for Insight UI.
  *
- * A responsive image/content carousel with support for autoplay, pagination dots,
- * touch gestures, keyboard navigation, and RTL layouts.
+ * Browses any items page by page, with autoplay, page dots, touch gestures, keyboard
+ * navigation and RTL layouts. How many items fit on a page follows the width of the
+ * carousel when a minimum item width is set; items on other pages are inert, so the
+ * keyboard focus cannot move into hidden items.
  *
  * @example
- * // HTML structure
- * <div data-insight-carousel data-autoplay="true" data-show-dots="true">
- *   <div class="carousel-track">
- *     <div class="carousel-item">...</div>
+ * // HTML structure (rendered by {% carousel %})
+ * <div data-insight-carousel data-items-per-slide="3" data-min-item-width="16rem" data-show-dots="true">
+ *   <div class="carousel-viewport">
+ *     <div class="carousel-track">
+ *       <div class="carousel-item">...</div>
+ *     </div>
  *   </div>
  *   <button class="carousel-prev">Previous</button>
+ *   <div class="carousel-dots"></div>
+ *   <span class="carousel-index-text"></span>
  *   <button class="carousel-next">Next</button>
  * </div>
  *
@@ -22,6 +28,12 @@
 export class Carousel {
     /** @type {WeakMap<HTMLElement, Carousel>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
+
+    /** @type {string[]} Classes of a page dot button; 24px wide, so it meets the minimum target size */
+    static DOT_CLASSES = ["carousel-dot", "grid", "place-items-center", "size-6", "rounded-insight-full"];
+
+    /** @type {string[]} Classes of the visible mark inside a dot; the mark of the current page is filled */
+    static DOT_MARK_CLASSES = ["size-3", "border", "border-insight-surface", "rounded-insight-full", "transition"];
 
     /**
      * Creates a new Carousel instance.
@@ -39,6 +51,7 @@ export class Carousel {
             this.element.dir === "rtl" ||
             document.documentElement.dir === "rtl" ||
             getComputedStyle(this.element).direction === "rtl";
+        this.viewport = element.querySelector(".carousel-viewport") || element;
         this.track = element.querySelector(".carousel-track");
         this.items = [...element.querySelectorAll(".carousel-item")];
         this.prevBtn = element.querySelector(".carousel-prev");
@@ -49,36 +62,29 @@ export class Carousel {
         this.autoplayEnabled = element.dataset.autoplay === "true";
         this.showDots = element.dataset.showDots === "true";
         this.showIndex = element.dataset.showIndex === "true";
-        this.itemsPerSlide = parseInt(element.dataset.itemsPerSlide || "1");
+        this.maxItemsPerSlide = Math.max(1, parseInt(element.dataset.itemsPerSlide || "1"));
+        this.minItemWidth = element.dataset.minItemWidth || "";
 
-        this.totalSlides = Math.ceil(this.items.length / this.itemsPerSlide);
+        this.itemsPerSlide = 0;
+        this.totalSlides = 0;
         this.index = 0;
         this.autoplayInterval = null;
+        this.dots = [];
+        this.dotsHidden = false;
 
         // Bind handlers for proper cleanup
         this.boundPrevClick = () => { this.prev(); this.restartAutoplay(); };
         this.boundNextClick = () => { this.next(); this.restartAutoplay(); };
         this.boundTouchStart = (e) => { this.startX = e.touches[0].clientX; };
         this.boundTouchEnd = this.handleTouchEnd.bind(this);
-        this.boundWindowResize = () => this.resizeItems();
+        this.boundWindowResize = () => this.layout();
         this.boundKeyDown = this.handleKeyDown.bind(this);
         this.boundMouseEnter = () => this.pauseAutoplay();
         this.boundMouseLeave = () => this.resumeAutoplay();
         this.boundFocusIn = () => this.pauseAutoplay();
         this.boundFocusOut = () => this.resumeAutoplay();
-        this.boundDotClicks = [];
+        this.boundDotsClick = this.handleDotsClick.bind(this);
         this.autoplayPaused = false;
-
-        this.dots = [...this.element.querySelectorAll(".carousel-dot")];
-        this.dots.forEach((dot, i) => {
-            const handler = () => {
-                this.index = i;
-                this.update();
-                this.restartAutoplay();
-            };
-            this.boundDotClicks.push({ element: dot, handler });
-            dot.addEventListener("click", handler);
-        });
 
         this.init();
 
@@ -89,18 +95,15 @@ export class Carousel {
     }
 
     /**
-     * Initialize the carousel with start values e.g. index = 0, to show the first page.
-     * Add EventListeners to the 'next' and 'previous' Buttons and for the resize event.
-     * Add MutationObserver for changes of the "dir" attribute of the <html> tag.
-     * If autoplay is activated, start the autoplay interval.
+     * Lay out the first page, register the listeners and start autoplay if enabled.
+     * The layout follows the width of the carousel, also when only its container resizes.
      */
     init() {
-        this.resizeItems();
-        if (this.showIndex) this.updateIndexText();
-        this.update();
+        this.layout();
 
         this.prevBtn.addEventListener("click", this.boundPrevClick);
         this.nextBtn.addEventListener("click", this.boundNextClick);
+        this.dotsContainer?.addEventListener("click", this.boundDotsClick);
         this.element.addEventListener("touchstart", this.boundTouchStart);
         this.element.addEventListener("touchend", this.boundTouchEnd);
         this.element.addEventListener("keydown", this.boundKeyDown);
@@ -114,7 +117,17 @@ export class Carousel {
             this.startAutoplay();
         }
 
-        window.addEventListener("resize", this.boundWindowResize);
+        if ("ResizeObserver" in window) {
+            this.viewportWidth = null;
+            this.resizeObserver = new ResizeObserver(([entry]) => {
+                if (entry.contentRect.width === this.viewportWidth) return;
+                this.viewportWidth = entry.contentRect.width;
+                this.layout();
+            });
+            this.resizeObserver.observe(this.viewport);
+        } else {
+            window.addEventListener("resize", this.boundWindowResize);
+        }
 
         // Add MutationObserver for "dir" changes
         this.dirObserver = new MutationObserver((mutations) => {
@@ -136,6 +149,110 @@ export class Carousel {
     }
 
     /**
+     * Returns how many items fit on a page: at most data-items-per-slide, and with a minimum item
+     * width only as many as fit into the current width, at least one.
+     *
+     * @returns {number}
+     */
+    fittingItemsPerSlide() {
+        if (!this.minItemWidth) return this.maxItemsPerSlide;
+        const minWidth = this.measure(this.minItemWidth);
+        const width = this.viewport.clientWidth;
+        if (!minWidth || !width) return this.maxItemsPerSlide;
+        return Math.max(1, Math.min(this.maxItemsPerSlide, Math.floor(width / minWidth)));
+    }
+
+    /**
+     * Converts a CSS length such as "16rem" to pixels in the context of the carousel.
+     *
+     * @param {string} length - The CSS length
+     * @returns {number} The width in pixels
+     */
+    measure(length) {
+        const probe = document.createElement("div");
+        probe.style.cssText = `position:absolute;visibility:hidden;width:${length}`;
+        this.viewport.append(probe);
+        const width = probe.getBoundingClientRect().width;
+        probe.remove();
+        return width;
+    }
+
+    /**
+     * Sizes the items for the number that fits on a page and rebuilds the page dots. The page
+     * keeps showing the item that was first on it.
+     */
+    layout() {
+        const itemsPerSlide = this.fittingItemsPerSlide();
+        const firstItem = this.index * (this.itemsPerSlide || itemsPerSlide);
+        const changed = itemsPerSlide !== this.itemsPerSlide;
+        this.itemsPerSlide = itemsPerSlide;
+        this.totalSlides = Math.ceil(this.items.length / itemsPerSlide);
+
+        this.items.forEach(item => {
+            item.style.flex = `0 0 ${100 / itemsPerSlide}%`;
+        });
+        this.index = Math.min(Math.floor(firstItem / itemsPerSlide), Math.max(this.totalSlides - 1, 0));
+        if (changed) this.buildDots();
+        this.fitDots();
+        this.update();
+    }
+
+    /**
+     * Creates one dot per page; the dots are buttons that name their page.
+     */
+    buildDots() {
+        if (!this.showDots || !this.dotsContainer) return;
+        this.dots = Array.from({ length: this.totalSlides }, (_, page) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.classList.add(...Carousel.DOT_CLASSES);
+            dot.dataset.index = String(page);
+            dot.setAttribute("aria-label", interpolate(gettext("Go to page %(page)s"), { page: page + 1 }, true));
+            const mark = document.createElement("span");
+            mark.classList.add(...Carousel.DOT_MARK_CLASSES);
+            dot.append(mark);
+            return dot;
+        });
+        this.dotsContainer.replaceChildren(...this.dots);
+    }
+
+    /**
+     * Shows the page number instead of the dots when the dots do not fit into the control row.
+     */
+    fitDots() {
+        if (!this.showDots || !this.dotsContainer) return;
+        const row = this.dotsContainer.parentElement;
+        this.dotsContainer.hidden = false;
+        if (this.indexText) this.indexText.hidden = !this.showIndex;
+        this.dotsHidden = row.scrollWidth > row.clientWidth;
+        this.dotsContainer.hidden = this.dotsHidden;
+        if (this.indexText) this.indexText.hidden = !this.showIndex && !this.dotsHidden;
+    }
+
+    /**
+     * Shows the page of a clicked dot.
+     *
+     * @param {MouseEvent} event - The click event
+     */
+    handleDotsClick(event) {
+        const dot = event.target.closest(".carousel-dot");
+        if (!dot) return;
+        this.goTo(parseInt(dot.dataset.index));
+    }
+
+    /**
+     * Shows a page and restarts autoplay.
+     *
+     * @param {number} index - The page to show
+     */
+    goTo(index) {
+        if (!this.totalSlides) return;
+        this.index = (index + this.totalSlides) % this.totalSlides;
+        this.update();
+        this.restartAutoplay();
+    }
+
+    /**
      * Handles touch end events for swipe navigation.
      *
      * @param {TouchEvent} e - The touch end event
@@ -154,35 +271,24 @@ export class Carousel {
     }
 
     /**
-     * Handles keyboard events for carousel navigation.
+     * Handles keyboard navigation on the controls. Keys inside the items belong to their content,
+     * e.g. a text field. On a dot the focus follows to the dot of the new page, so Enter stays there.
      *
      * @param {KeyboardEvent} e - The keyboard event
      */
     handleKeyDown(e) {
-        switch (e.key) {
-            case 'ArrowLeft':
-                e.preventDefault();
-                if (this.isRTL) { this.next(); } else { this.prev(); }
-                this.restartAutoplay();
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                if (this.isRTL) { this.prev(); } else { this.next(); }
-                this.restartAutoplay();
-                break;
-            case 'Home':
-                e.preventDefault();
-                this.index = 0;
-                this.update();
-                this.restartAutoplay();
-                break;
-            case 'End':
-                e.preventDefault();
-                this.index = this.totalSlides - 1;
-                this.update();
-                this.restartAutoplay();
-                break;
-        }
+        if (e.target.closest(".carousel-item")) return;
+        const forward = this.isRTL ? -1 : 1;
+        const targets = {
+            ArrowLeft: this.index - forward,
+            ArrowRight: this.index + forward,
+            Home: 0,
+            End: this.totalSlides - 1,
+        };
+        if (!(e.key in targets)) return;
+        e.preventDefault();
+        this.goTo(targets[e.key]);
+        if (e.target.closest(".carousel-dot")) this.dots[this.index]?.focus();
     }
 
     /**
@@ -206,39 +312,34 @@ export class Carousel {
     }
 
     /**
-     * Resize elements to fit the carousel width.
-     */
-    resizeItems() {
-        this.items.forEach(item => {
-            item.style.flex = `0 0 ${100 / this.itemsPerSlide}%`;
-        });
-    }
-
-    /**
-     * Translate the carousel items to show the elements of current page.
-     * Update the pagination bubbles and the page number in the bottom corner.
+     * Translate the track to the current page, make items on other pages inert and update the
+     * page dots and the page number.
      */
     update() {
         const offset = this.index * 100 * (this.isRTL ? 1 : -1);
         this.track.style.transform = `translateX(${offset}%)`;
+        const first = this.index * this.itemsPerSlide;
+        this.items.forEach((item, position) => {
+            item.inert = position < first || position >= first + this.itemsPerSlide;
+        });
         if (this.showDots) this.updateDots();
-        if (this.showIndex) this.updateIndexText();
+        if (this.showIndex || this.dotsHidden) this.updateIndexText();
     }
 
     /**
-     * Update current page index and translate the carousel items to show the elements of
-     * the next page. Update the pagination bubbles and the page number in the bottom corner.
+     * Show the next page; after the last page the first one follows.
      */
     next() {
+        if (!this.totalSlides) return;
         this.index = (this.index + 1) % this.totalSlides;
         this.update();
     }
 
     /**
-     * Update current page index and translate the carousel items to show the elements of
-     * the previous page. Update the pagination bubbles and the page number in the bottom corner.
+     * Show the previous page; before the first page the last one follows.
      */
     prev() {
+        if (!this.totalSlides) return;
         this.index = (this.index - 1 + this.totalSlides) % this.totalSlides;
         this.update();
     }
@@ -268,17 +369,25 @@ export class Carousel {
     }
 
     /**
-     * Set the corresponding css classes to the pagination bubbles, to highlight the active page.
+     * Fill the dot of the current page and mark it as current. Only that dot is in the tab order;
+     * the arrow keys move between the dots.
      */
     updateDots() {
         this.dots.forEach((dot, i) => {
-            dot.classList.toggle("bg-insight-primary", i === this.index);
-            dot.classList.toggle("bg-transparent", i !== this.index);
+            const current = i === this.index;
+            dot.firstElementChild.classList.toggle("bg-insight-primary", current);
+            dot.firstElementChild.classList.toggle("bg-transparent", !current);
+            dot.tabIndex = current ? 0 : -1;
+            if (current) {
+                dot.setAttribute("aria-current", "true");
+            } else {
+                dot.removeAttribute("aria-current");
+            }
         });
     }
 
     /**
-     * Update current page number in the bottom corner (if shown).
+     * Update the current page number (if shown).
      */
     updateIndexText() {
         if (this.indexText) {
@@ -300,31 +409,18 @@ export class Carousel {
         // Stop autoplay interval
         this.stopAutoplay();
 
-        // Remove button listeners
         this.prevBtn.removeEventListener("click", this.boundPrevClick);
         this.nextBtn.removeEventListener("click", this.boundNextClick);
-
-        // Remove touch listeners
+        this.dotsContainer?.removeEventListener("click", this.boundDotsClick);
         this.element.removeEventListener("touchstart", this.boundTouchStart);
         this.element.removeEventListener("touchend", this.boundTouchEnd);
-
-        // Remove keyboard listener
         this.element.removeEventListener("keydown", this.boundKeyDown);
-
-        // Remove hover/focus listeners for autoplay pause
         this.element.removeEventListener("mouseenter", this.boundMouseEnter);
         this.element.removeEventListener("mouseleave", this.boundMouseLeave);
         this.element.removeEventListener("focusin", this.boundFocusIn);
         this.element.removeEventListener("focusout", this.boundFocusOut);
-
-        // Remove window resize listener
         window.removeEventListener("resize", this.boundWindowResize);
-
-        // Remove dot click handlers
-        this.boundDotClicks.forEach(({ element, handler }) => {
-            element.removeEventListener("click", handler);
-        });
-        this.boundDotClicks = [];
+        this.resizeObserver?.disconnect();
 
         // Disconnect RTL observer
         if (this.dirObserver) {

@@ -1,45 +1,42 @@
 {% load i18n insight_tags %}
 
+{% comment %}
+    The carousel only provides the browsing: each item is rendered with carousel_config.item_template, which
+    gets item and the page context. The script sets how many items fit on a page, builds the page dots and
+    makes items on other pages inert, so they cannot be focused. When the dots do not fit, it shows the page
+    number instead. The item content fills the item, so own partials need no width classes; the items share
+    the height of the tallest.
+{% endcomment %}
 <div
+  {% if carousel_config.tag_id %}id="{{ carousel_config.tag_id }}"{% endif %}
   data-insight-carousel
   data-autoplay="{{ carousel_config.autoplay|yesno:'true,false' }}"
   data-show-dots="{{ carousel_config.show_dots|yesno:'true,false' }}"
   data-show-index="{{ carousel_config.show_index|yesno:'true,false' }}"
-  data-items-per-slide="{{ carousel_config.items_per_slide|default:1 }}"
+  data-items-per-slide="{{ carousel_config.items_per_slide }}"
+  {% if carousel_config.min_item_width %}data-min-item-width="{{ carousel_config.min_item_width }}"{% endif %}
   role="region"
-  aria-roledescription="{% trans 'carousel' %}"
+  aria-roledescription="{% translate 'carousel' %}"
   aria-label="{{ carousel_config.label|default:_('Content carousel') }}"
-  class="flex relative rtl:flex-row-reverse w-full"
+  class="relative w-full"
 >
-  <div class="mx-auto max-w-5xl overflow-hidden">
-    <div class="carousel-track flex pt-6 pb-16 transition-transform duration-500 ease-in-out">
-      {% for item in carousel_config.carousel_items %}
-        <div class="carousel-item flex justify-center px-2">
-          {% block carousel_content %}{% endblock carousel_content %}
+  {# From sm on the arrows sit beside the track, so they never cover an item. #}
+  <div class="carousel-viewport overflow-hidden sm:mx-14">
+    <div class="carousel-track motion-reduce:transition-none flex transition-transform duration-500 ease-in-out">
+      {% for item in carousel_config.items %}
+        <div class="carousel-item grid px-2" role="group" aria-roledescription="{% translate 'slide' %}" aria-label="{% blocktranslate with number=forloop.counter total=item_count %}{{ number }} of {{ total }}{% endblocktranslate %}">
+          {% include carousel_config.item_template %}
         </div>
       {% endfor %}
     </div>
   </div>
 
-  <!-- Navigation Buttons -->
-  {% button label=_("To previous page") icon_name="chevron-left" icon_only=True round=True extra_classes="carousel-prev absolute top-1/2 ltr:left-4 rtl:right-4 -translate-y-1/2" %}
-  {% button label=_("To next page") icon_name="chevron-right" icon_only=True round=True extra_classes="carousel-next absolute top-1/2 ltr:right-4 rtl:left-4 -translate-y-1/2" %}
-
-  <!-- Pagination Dots -->
-  {% if carousel_config.show_dots %}
-    <div class="carousel-dots -translate-x-1/2 flex absolute bottom-4 left-1/2 gap-2">
-      {% for i in slides_count %}
-        <button class="carousel-dot size-3 bg-transparent border border-insight-surface rounded-insight-full transition" data-index="{{ i }}">
-          <span class="sr-only">{% trans "Go to page:" %} {{ i }}</span>
-        </button>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <!-- Page number -->
-  {% if carousel_config.show_index %}
-    <div class="carousel-index absolute right-4 bottom-4 px-3 py-1 text-sm bg-insight-surface rounded-insight-overlay">
-      <span class="carousel-index-text text-insight-body"></span>
-    </div>
-  {% endif %}
+  <div class="flex gap-insight-m justify-center items-center mt-insight-m">
+    {% button label=_("To previous page") icon_name="chevron-left" icon_only=True round=True extra_classes="carousel-prev sm:absolute sm:top-1/2 sm:start-0 sm:-translate-y-1/2" %}
+    {% if carousel_config.show_dots %}
+      <div class="carousel-dots flex"></div>
+    {% endif %}
+    <span class="carousel-index-text text-sm text-insight-body whitespace-nowrap"{% if not carousel_config.show_index %} hidden{% endif %}></span>
+    {% button label=_("To next page") icon_name="chevron-right" icon_only=True round=True extra_classes="carousel-next sm:absolute sm:top-1/2 sm:end-0 sm:-translate-y-1/2" %}
+  </div>
 </div>

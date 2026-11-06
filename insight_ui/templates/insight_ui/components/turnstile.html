@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div data-insight-turnstile
+     data-sitekey="{{ turnstile_config.site_key }}"
+     data-theme="{{ turnstile_config.theme }}"
+     data-size="{{ turnstile_config.size }}"
+     {% if turnstile_config.action %}data-action="{{ turnstile_config.action }}"{% endif %}>
+  <div data-insight-turnstile-widget></div>
+  <p data-insight-turnstile-error role="alert" hidden>{% trans "Verification is unavailable. Please reload and try again." %}</p>
+</div>
+<noscript><p>{% trans "Enable JavaScript to complete verification." %}</p></noscript>

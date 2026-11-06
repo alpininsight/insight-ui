@@ -24,6 +24,29 @@ generate the browser module skeleton. Add its behavior tests yourself:
 | Config metadata | Typed fields and `metadata["doc"]` | Describe required fields, behavior and defaults. |
 | Mutable Config defaults | A dataclass `default_factory` | Never share a list between instances. |
 
+### Config Fields And Tag Arguments
+
+- A field that holds another Config is named by its role, without a `_config`
+  suffix: `htmx`, `icon`, `badge`, `table`, `items_per_page`, `user_menu`.
+  Several fields of the same kind get role prefixes: `primary_action`,
+  `secondary_action`.
+- Field and tag names are the snake case of the class name. Class names follow
+  English spelling: `navbar`, `sidebar`, `dropdown` and `checkbox` are one word,
+  `search_bar` and `user_menu` are two.
+- `request_url` is where a component navigates or sends its request. `url` (and
+  `url_dark`) is the resource itself, such as an image or logo. A Config with
+  several URLs uses `<role>_url`: `sign_up_url`, `cancel_url`.
+- Text fields end in `_text`: `help_text`, `error_text`, `empty_text`. A
+  component whose main content is a message uses `message`.
+- A component that sends requests takes an optional `htmx: HtmxConfig` for the
+  shared options. What its own mechanism needs (trigger, target, swap, method)
+  goes to `{% htmx_attributes %}` as an override; see
+  [HTMX requests](components.md#htmx-requests).
+- Layout tags use an HTML dialect on purpose: `id`, `class`, `href`. Components use
+  `tag_id`, `extra_classes` and `request_url`. Keep each side consistent.
+- Field descriptions in `metadata["doc"]` are one line. Allowed values and
+  defaults come from the type and the field itself, so do not repeat them.
+
 Config modules are organized by category. Use [configs/](../insight_ui/configs/)
 and its public exports, not one new configuration system per atomic level.
 See [component anatomy](components.md) for the source map.
@@ -79,7 +102,12 @@ identifiers are not translated. Preserve the repository's SPDX/REUSE conventions
 do not add internal brand assets or third-party assets without provenance.
 
 New public fields, hooks and tokens require compatible defaults and tests.
-Document breaking changes explicitly. Temporary screenshots, browser profiles,
+
+When you rename or remove something public, update every usage in the same
+change. Mark breaking commits with `!` and add a section to
+[Migrating to 2.0](migration-2.0.md) (or the guide of the next major version):
+before/after, the pull request and a search pattern for host projects,
+plus a checklist entry. Temporary screenshots, browser profiles,
 credentials, local paths and debugging output are not package source.
 
 [All package guides](README.md) | [Contribution workflow](../CONTRIBUTING.md)

@@ -3,6 +3,8 @@ name: Contributor PR policy
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
 
 permissions:
   contents: read

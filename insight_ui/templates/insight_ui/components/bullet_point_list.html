@@ -1,46 +1,42 @@
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
 <ol>
     {% for item in items %}
-        <li class="relative {% if not forloop.first %}pt-10{% endif %}">
+        <li class="relative {% if not forloop.first %}pt-10{% endif %}"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if not forloop.first %}
-                <div aria-hidden="true" class="-top-1 start-4 absolute {% if not item.completed and not item.current %}bg-insight-text-disabled{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
+                <div aria-hidden="true" class="-top-1 start-4 absolute {% if item.status == 'pending' %}bg-insight-text-disabled{% elif item.status == 'failed' %}bg-insight-danger{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
             {% endif %}
-            <a
-                {% if item.request_url and not item.current %}
-                    href="{% url item.request_url %}"
-                    {% if htmx %}
-                        hx-get="{{ item.request_url }}"
-                        hx-target="{{ htmx.target }}"
-                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-                        hx-trigger="submit"
-                    {% endif %}
-                {% endif %}
-                {% if item.current %}aria-current="step"{% endif %}
-                class="flex relative items-start {% if not item.request_url %}pointer-events-none{% endif %}"
-            >
+            {% if item.request_url and item.status != "current" %}
+                <a href="{{ item.request_url }}" {% htmx_attributes htmx request_url=item.request_url %} class="flex relative items-start">
+            {% else %}
+                <div class="flex relative items-start">
+            {% endif %}
                 <!-- Bullet -->
-                <span class="flex items-center h-9">
-                    <span class="flex relative z-10 justify-center items-center size-8 border-2 {% if item.completed %}border-insight-success{% elif item.current %}border-insight-primary{% else %}border-insight-text-disabled{% endif %} text-insight-headline rounded-insight-full">
-                        {% if item.completed %}
-                            <span class="text-insight-success">
-                                {% icon name="check" size="s" %}
-                            </span>
-                        {% elif item.bullet_icon %}
-                            {% icon item.bullet_icon %}
-                        {% elif item.bullet_text %}
-                            <span>{{ item.bullet_text }}</span>
-                        {% else %}
-                            <span class="{% if item.current %}bg-insight-primary{% else %}bg-insight-text-disabled{% endif %} size-2.5 rounded-insight-full"></span>
-                        {% endif %}
-                    </span>
+            <span class="flex items-center h-9">
+                <span class="flex relative z-10 justify-center items-center size-8 border-2 {% if item.status == 'completed' %}border-insight-success{% elif item.status == 'failed' %}border-insight-danger{% elif item.status == 'current' %}border-insight-primary{% else %}border-insight-text-disabled{% endif %} text-insight-headline rounded-insight-full">
+                    {% if item.status == "completed" %}
+                        <span class="text-insight-success-text">
+                            {% icon name="check" size="s" %}
+                        </span>
+                    {% elif item.status == "failed" %}
+                        <span class="text-insight-danger-text">
+                            {% icon name="x-mark" size="s" %}
+                        </span>
+                    {% else %}
+                        <span class="{% if item.status == 'current' %}bg-insight-primary{% else %}bg-insight-text-disabled{% endif %} size-2.5 rounded-insight-full"></span>
+                    {% endif %}
                 </span>
+            </span>
                 <!-- Information -->
-                <div class="flex flex-col ms-4 min-w-0">
-                    <span class="font-medium text-sm {% if not item.completed and not item.current %}text-insight-muted{% elif item.current %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title}}</span>
-                    <span class="text-sm {% if not item.completed and not item.current %}text-insight-muted{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
+            <div class="flex flex-col ms-4 min-w-0">
+                <span class="font-medium text-sm {% if item.status == 'pending' %}text-insight-muted{% elif item.status == 'failed' %}text-insight-danger-text{% elif item.status == 'current' %}text-insight-primary-text{% else %}text-insight-headline{% endif %}">{% if item.status == "completed" %}<span class="sr-only">{% trans "Completed" %}: </span>{% elif item.status == "failed" %}<span class="sr-only">{% trans "Failed" %}: </span>{% endif %}{{ item.title }}</span>
+                <span class="text-sm {% if item.status == 'pending' %}text-insight-muted{% elif item.status == 'failed' %}text-insight-danger-text{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
+            </div>
+            {% if item.request_url and item.status != "current" %}
+                </a>
+            {% else %}
                 </div>
-            </a>
+            {% endif %}
         </li>
     {% endfor %}
 </ol>

@@ -1,0 +1,23 @@
+{% load i18n %}
+{% comment %}
+    Removed words are struck through, added words underlined; color only reinforces that.
+    Screen readers hear "Removed:" / "Added:" before each change. The legend repeats the visual
+    convention for sighted readers and is hidden from assistive technology.
+
+    Keep the paragraph below on one line; do not indent or wrap it for readability. Every space and line break
+    between its tags is rendered: the paragraph keeps the line breaks of the texts (whitespace-pre-line), and
+    the changes sit inside running text, so a break before "</ins>." would show as "Tuesday .".
+    Django has no whitespace control, and spaceless does not remove whitespace next to text.
+    test_text_diff_marks_removed_and_added_words fails when whitespace slips in.
+
+    Structure of the line, one part after the other:
+        equal  -> the text as is
+        delete -> <del><span class="sr-only">Removed: </span>text</del>
+        insert -> <ins><span class="sr-only">Added: </span>text</ins>
+{% endcomment %}
+<div class="insight-text-diff">
+    <p class="text-insight-body whitespace-pre-line">{% for part in parts %}{% if part.kind == "equal" %}{{ part.text }}{% elif part.kind == "delete" %}<del class="insight-diff-delete"><span class="sr-only">{% translate "Removed:" %} </span>{{ part.text }}</del>{% else %}<ins class="insight-diff-insert"><span class="sr-only">{% translate "Added:" %} </span>{{ part.text }}</ins>{% endif %}{% endfor %}</p>
+    {% if show_legend %}
+        <p class="mt-2 text-sm text-insight-muted" aria-hidden="true"><del class="insight-diff-delete">{% translate "removed" %}</del> <ins class="insight-diff-insert">{% translate "added" %}</ins></p>
+    {% endif %}
+</div>

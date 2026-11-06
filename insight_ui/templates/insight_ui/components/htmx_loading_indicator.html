@@ -12,37 +12,88 @@
             transform: translateX(100%);
         }
     }
-    #loading-indicator {
+    #insight-global-loading-indicator {
         opacity: 0;
         transition: opacity 150ms ease-out;
         pointer-events: none;
     }
-    #loading-indicator.visible {
+    #insight-global-loading-indicator.visible {
         opacity: 1;
     }
-    #loading-indicator .loading-bar {
+    #insight-global-loading-indicator .loading-bar {
         animation: insight-loading-progress 1.2s ease-in-out infinite;
     }
 </style>
-<div id="loading-indicator" class="fixed top-0 right-0 left-0 z-[60] h-0.5 bg-insight-primary/20 overflow-hidden" role="progressbar" aria-label="{% trans 'Loading...' %}">
+{# Purely visual: screen readers get aria-busy on the request target and, for slow requests, the status message below. #}
+<div id="insight-global-loading-indicator" class="fixed top-0 right-0 left-0 z-60 h-0.5 bg-insight-primary/20 overflow-hidden" aria-hidden="true">
     <div class="loading-bar absolute inset-0 bg-insight-primary"></div>
 </div>
+<div id="insight-global-loading-status" class="sr-only" role="status" aria-live="polite" data-message="{% trans 'Loading...' %}"></div>
 <script>
     (function() {
-        const DELAY_MS = 150;
+        const SHOW_DELAY_MS = 150;
+        const ANNOUNCE_DELAY_MS = 1000;
+        const indicator = document.getElementById('insight-global-loading-indicator');
+        const status = document.getElementById('insight-global-loading-status');
+        // Keyed by htmx's request object: afterRequest can fire twice for one request
+        // (again on a parent when the element replaced itself).
+        const activeRequests = new Set();
+        const busyTargets = new Map();
         let showTimeout = null;
-        const indicator = document.getElementById('loading-indicator');
+        let announceTimeout = null;
 
-        document.body.addEventListener('htmx:beforeRequest', function() {
-            clearTimeout(showTimeout);
-            showTimeout = setTimeout(function() {
-                indicator.classList.add('visible');
-            }, DELAY_MS);
+        // Requests from elements inside [data-insight-global-indicator="false"] (e.g. background polling)
+        // are not tracked, so they neither show the bar nor cut short the bar of a parallel user request.
+        function isIgnored(evt) {
+            const elt = evt.detail && evt.detail.elt;
+            return Boolean(elt && elt.closest && elt.closest('[data-insight-global-indicator="false"]'));
+        }
+
+        function markBusy(target) {
+            const entry = busyTargets.get(target) || { count: 0, previous: target.getAttribute('aria-busy') };
+            entry.count += 1;
+            busyTargets.set(target, entry);
+            target.setAttribute('aria-busy', 'true');
+        }
+
+        function unmarkBusy(target) {
+            const entry = busyTargets.get(target);
+            if (!entry) return;
+            entry.count -= 1;
+            if (entry.count > 0) return;
+            busyTargets.delete(target);
+            if (entry.previous === null) {
+                target.removeAttribute('aria-busy');
+            } else {
+                target.setAttribute('aria-busy', entry.previous);
+            }
+        }
+
+        // beforeSend instead of beforeRequest: a cancelled beforeRequest never gets an afterRequest.
+        document.body.addEventListener('htmx:beforeSend', function(evt) {
+            if (isIgnored(evt)) return;
+            const request = evt.detail;
+            activeRequests.add(request);
+            if (request.target) markBusy(request.target);
+            if (activeRequests.size === 1) {
+                showTimeout = setTimeout(function() {
+                    indicator.classList.add('visible');
+                }, SHOW_DELAY_MS);
+                announceTimeout = setTimeout(function() {
+                    status.textContent = status.dataset.message;
+                }, ANNOUNCE_DELAY_MS);
+            }
         });
 
-        document.body.addEventListener('htmx:afterRequest', function() {
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            const request = evt.detail;
+            if (!activeRequests.delete(request)) return;
+            if (request.target) unmarkBusy(request.target);
+            if (activeRequests.size > 0) return;
             clearTimeout(showTimeout);
+            clearTimeout(announceTimeout);
             indicator.classList.remove('visible');
+            status.textContent = '';
         });
     })();
 </script>

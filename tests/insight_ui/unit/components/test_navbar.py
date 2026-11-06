@@ -6,6 +6,7 @@ import warnings
 
 import pytest
 from bs4 import BeautifulSoup
+from django.test import override_settings
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.navigation import (
@@ -127,20 +128,20 @@ class TestNavbar(TemplateTagsTestCase):
 
     def test_navbar_keeps_existing_positional_arguments(self) -> None:
         """Keyword arguments work as expected."""
-        usermenu = UserMenuConfig()
+        user_menu = UserMenuConfig()
         search_bar = SearchBarConfig(placeholder="Search...")
         nav_config = NavbarConfig(
             brand=None,
             links=[],
             search_bar=search_bar,
-            usermenu=usermenu,
+            user_menu=user_menu,
             hide_login=True,
             show_language_selector=True,
             show_theme_toggle=True,
         )
 
         assert nav_config.search_bar is search_bar
-        assert nav_config.usermenu is usermenu
+        assert nav_config.user_menu is user_menu
         assert nav_config.hide_login is True
         assert nav_config.show_language_selector is True
         assert nav_config.show_theme_toggle is True
@@ -152,7 +153,7 @@ class TestNavbar(TemplateTagsTestCase):
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 avatar_url="/media/avatars/demo.webp",
                 avatar_alt="Demo user avatar",
             ),
@@ -206,7 +207,7 @@ class TestNavbar(TemplateTagsTestCase):
         """User menu icon names render through the documented string contract."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon=IconConfig("user"))],
             ),
         )
@@ -221,11 +222,10 @@ class TestNavbar(TemplateTagsTestCase):
         assert menu_link.find("svg") is not None
 
     def test_navbar_renders_brand_mark_when_configured(self) -> None:
-        """Navbar can render a controlled brand mark."""
+        """The brand link is named by the wordmark it shows; the logo beside it is decorative."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 request_url="/",
-                aria_label="Insight UI Indexpage",
                 mark=BrandMarkConfig(
                     primary_text="Insight",
                     secondary_text="UI",
@@ -244,11 +244,10 @@ class TestNavbar(TemplateTagsTestCase):
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        brand_link = soup.find("a", attrs={"aria-label": "Insight UI Indexpage"})
-        assert brand_link is not None
-        assert "Insight" in brand_link.get_text(" ", strip=True)
-        assert "UI" in brand_link.get_text(" ", strip=True)
-        assert brand_link.find("img") is not None
+        brand_link = soup.find("a", href="/")
+        assert not brand_link.has_attr("aria-label")
+        assert brand_link.get_text(" ", strip=True) == "Insight UI"
+        assert brand_link.find("img")["alt"] == ""
         assert brand_link.find("svg") is None
 
     def test_navbar_link_config_warns_without_request_url_modal_id_or_dropdown(self) -> None:
@@ -262,3 +261,57 @@ class TestNavbar(TemplateTagsTestCase):
             warnings.simplefilter("always")
             NavbarLinkConfig(text="Home", request_url="/")
         assert len(caught) == 0
+
+    @override_settings(INSIGHT_UI={"brand": {"mark": BrandMarkConfig(primary_text="Acme", secondary_text="Prototype")}})
+    def test_navbar_without_config_uses_brand_defaults(self) -> None:
+        """Without a Config the navbar shows the configured brand."""
+        rendered = self.render_template("{% load insight_tags %}{% navbar %}")
+        soup = BeautifulSoup(rendered, "html.parser")
+        assert soup.find("nav") is not None
+        assert "Acme" in soup.get_text()
+        assert "Prototype" in soup.get_text()
+
+    def test_navbar_renders_explicit_config(self) -> None:
+        """An explicit NavbarConfig is rendered as supplied."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=navbar_config %}",
+            {"navbar_config": NavbarConfig(show_theme_toggle=True)},
+        )
+        assert "data-insight-theme-toggle" in rendered
+
+
+def render_navbar(config: NavbarConfig) -> BeautifulSoup:
+    """Render a navbar with the given config."""
+    from django.template import Context, Template  # noqa: PLC0415
+
+    html = Template("{% load insight_tags %}{% navbar config=config %}").render(Context({"config": config}))
+    return BeautifulSoup(html, "html.parser")
+
+
+def test_external_navbar_link_tells_screen_readers_about_the_new_tab() -> None:
+    """A navbar link that opens a new tab says so after its text; an internal one does not."""
+    soup = render_navbar(
+        NavbarConfig(
+            links=[
+                NavbarLinkConfig(text="Docs", request_url="https://example.com/", external=True),
+                NavbarLinkConfig(text="Home", request_url="/"),
+            ]
+        )
+    )
+
+    assert soup.find("a", href="https://example.com/").get_text(" ", strip=True) == "Docs (opens in a new tab)"
+    assert "Home" in [link.get_text(" ", strip=True) for link in soup.find_all("a", href="/")]
+
+
+def test_external_navbar_link_needs_a_url() -> None:
+    """A modal or dropdown entry has no URL to open in a new tab."""
+    with pytest.raises(ValueError, match="external only applies together with request_url"):
+        NavbarLinkConfig(text="About", modal_id="about", external=True)
+
+
+def test_brand_logo_without_wordmark_keeps_its_name() -> None:
+    """Without a wordmark the logo is the only content, so its alt text names the brand link."""
+    mark = BrandMarkConfig(logo=LogoConfig(url="insight_ui/svg/insight-ui-logo.svg", alt="Insight UI"))
+    soup = render_navbar(NavbarConfig(NavbarBrandConfig(request_url="/home/", mark=mark)))
+
+    assert soup.find("a", href="/home/").find("img")["alt"] == "Insight UI"

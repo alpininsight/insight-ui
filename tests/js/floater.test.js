@@ -94,6 +94,7 @@ describe('Floater Component', () => {
       expect(floater.target.classList.contains('hidden')).toBe(true);
 
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
 
       expect(floater.target.classList.contains('hidden')).toBe(false);
     });
@@ -110,6 +111,7 @@ describe('Floater Component', () => {
 
       // Show
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
       expect(floater.target.classList.contains('hidden')).toBe(false);
 
       // Mouseout starts hide timer
@@ -136,6 +138,7 @@ describe('Floater Component', () => {
 
       // Show via trigger
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
 
       // Start hide timer
       trigger.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
@@ -148,6 +151,126 @@ describe('Floater Component', () => {
 
       // Should still be visible
       expect(floater.target.classList.contains('hidden')).toBe(false);
+    });
+  });
+
+  describe('Tooltip show delay', () => {
+    function createTooltip(attributes = '') {
+      const container = TestUtils.createDOM(`
+        <div>
+          <button data-insight-tooltip="Help" ${attributes}><span class="label">Hover</span></button>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-tooltip]');
+      return { trigger, floater: new InsightUI.Floater(trigger, 'tooltip') };
+    }
+
+    const isVisible = floater => !floater.target.classList.contains('hidden');
+
+    it('should show the tooltip only after the global delay', () => {
+      const { trigger, floater } = createTooltip();
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY - 1);
+      expect(isVisible(floater)).toBe(false);
+
+      vi.advanceTimersByTime(1);
+      expect(isVisible(floater)).toBe(true);
+    });
+
+    it('should not show the tooltip if the pointer leaves before the delay', () => {
+      const { trigger, floater } = createTooltip();
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(100);
+      trigger.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+      vi.advanceTimersByTime(1000);
+
+      expect(isVisible(floater)).toBe(false);
+    });
+
+    it('should not restart the delay when moving between child elements of the trigger', () => {
+      const { trigger, floater } = createTooltip();
+      const child = trigger.querySelector('.label');
+      const delay = InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY;
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(delay / 2);
+      trigger.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: child }));
+      child.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      vi.advanceTimersByTime(delay / 2);
+
+      expect(isVisible(floater)).toBe(true);
+    });
+
+    it('should show immediately with data-tooltip-delay="0"', () => {
+      const { trigger, floater } = createTooltip('data-tooltip-delay="0"');
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+      expect(isVisible(floater)).toBe(true);
+    });
+
+    it('should use the global delay that base.html sets on <html>', () => {
+      document.documentElement.dataset.tooltipDelay = '100';
+      try {
+        const { trigger, floater } = createTooltip();
+
+        trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+        vi.advanceTimersByTime(100);
+
+        expect(isVisible(floater)).toBe(true);
+      } finally {
+        delete document.documentElement.dataset.tooltipDelay;
+      }
+    });
+
+    it('should use the delay of a surrounding container', () => {
+      const container = TestUtils.createDOM(`
+        <div data-tooltip-delay="0">
+          <button data-insight-tooltip="Help">Hover</button>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-tooltip]');
+      const floater = new InsightUI.Floater(trigger, 'tooltip');
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+      expect(isVisible(floater)).toBe(true);
+    });
+
+    it('should show immediately on keyboard focus', () => {
+      const { trigger, floater } = createTooltip();
+      // jsdom does not track the keyboard modality behind :focus-visible.
+      vi.spyOn(trigger, 'matches').mockImplementation(selector => selector === ':focus-visible');
+
+      trigger.dispatchEvent(new FocusEvent('focus'));
+
+      expect(isVisible(floater)).toBe(true);
+    });
+
+    it('should cancel a pending show when destroyed', () => {
+      const { trigger, floater } = createTooltip();
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      floater.destroy();
+
+      expect(() => vi.advanceTimersByTime(1000)).not.toThrow();
+    });
+
+    it('should show hover popovers without delay', () => {
+      const container = TestUtils.createDOM(`
+        <div>
+          <button data-insight-popover="delay-popover">Hover</button>
+          <div id="delay-popover">Content</div>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-popover]');
+      const floater = new InsightUI.Floater(trigger, 'popover');
+
+      trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+      expect(isVisible(floater)).toBe(true);
     });
   });
 

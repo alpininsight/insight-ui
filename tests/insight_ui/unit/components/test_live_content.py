@@ -3,7 +3,8 @@
 """Tests for the live_content component."""
 
 import pytest
-from insight_ui.configs import LiveContentConfig
+from bs4 import BeautifulSoup
+from insight_ui.configs import HtmxConfig, LiveContentConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -33,3 +34,41 @@ class TestLiveContent(TemplateTagsTestCase):
         """
         rendered = self.render_template(template_string)
         assert "/api/live-data/" in rendered
+
+    def test_live_content_shows_only_its_own_loading_indicator(self) -> None:
+        """Polling must not reveal the indicators of forms or other components on the page."""
+        rendered = self.render_template('{% load insight_tags %}{% live_content request_url="/api/live-data/" %}')
+        container = BeautifulSoup(rendered, "html.parser").select_one("[hx-get]")
+
+        assert container["hx-indicator"] == "find .htmx-indicator"
+        assert container.select_one(".htmx-indicator") is not None
+        # The inline script toggles aria-busy on elements with this class.
+        assert "insight-live-content" in container["class"]
+
+    def test_live_content_keeps_background_updates_out_of_global_loading_bar(self) -> None:
+        """Polling does not flash the global loading bar unless switched on."""
+        default = self.render_template('{% load insight_tags %}{% live_content request_url="/api/live-data/" %}')
+        enabled = self.render_template(
+            '{% load insight_tags %}{% live_content request_url="/api/live-data/" htmx=htmx %}',
+            {"htmx": HtmxConfig(show_global_loading_indicator=True)},
+        )
+
+        assert BeautifulSoup(default, "html.parser").select_one("[hx-get]")["data-insight-global-indicator"] == "false"
+        assert (
+            not BeautifulSoup(enabled, "html.parser").select_one("[hx-get]").has_attr("data-insight-global-indicator")
+        )
+
+    def test_live_content_polls_with_the_shared_request_options(self) -> None:
+        """The HtmxConfig adds shared options; trigger and indicator stay fixed by the component."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% live_content request_url="/api/live-data/" interval=5 htmx=htmx %}',
+            {"htmx": HtmxConfig(request_url="/ignored/", target="#stats", swap_method="outerHTML", vals={"a": 1})},
+        )
+        container = BeautifulSoup(rendered, "html.parser").select_one("[hx-get]")
+
+        assert container["hx-get"] == "/api/live-data/"
+        assert container["hx-trigger"] == "load, every 5s"
+        assert container["hx-target"] == "#stats"
+        assert container["hx-swap"] == "outerHTML"
+        assert container["hx-vals"] == '{"a":1}'
+        assert container["hx-indicator"] == "find .htmx-indicator"

@@ -13,7 +13,9 @@ Insight UI's roles describe the design purpose.
 
 ## Existing Roles
 
-Use the current names, not earlier token names from old examples:
+Use the current names. The v1.15.1 family tokens `foreground` and `text` were
+renamed, and the old `text` name changed meaning. Follow the two-pass replace
+in [Migrating to 2.0](migration-2.0.md) before editing a host stylesheet:
 
 | Purpose | Token source | Preferred class / use |
 | --- | --- | --- |
@@ -25,32 +27,138 @@ Use the current names, not earlier token names from old examples:
 | Main content text | `--color-insight-text-body` | `text-insight-body` |
 | Heading text | `--color-insight-text-headline` | `text-insight-headline` |
 | Secondary content | `--color-insight-text-muted` | `text-insight-muted` |
-| Semantic text/icon color | `--color-insight-primary-foreground` | `text-insight-primary-foreground` |
+| Semantic text/icon color | `--color-insight-primary-text` | `text-insight-primary-text` |
 | Filled action background | `--color-insight-primary-action` | Prefer the existing primary button. |
-| Text on the filled action | `--color-insight-primary-text` | Used together with its action background. |
+| Text on the filled action | `--color-insight-primary-on-action` | Used together with its action background. |
+| Link text | `--color-insight-text-link` | `text-insight-link` (with hover color and underline) |
 | Reusable spacing | `--spacing-insight-m` | `p-insight-m`, `gap-insight-m` |
 | Control radius | `--radius-insight-control` | `rounded-insight-control` |
 | Surface radius | `--radius-insight-surface` | `rounded-insight-surface` |
 | Surface shadow | `--shadow-insight-surface` | `shadow-insight-surface` |
 | Overlay shadow | `--shadow-insight-overlay` | `shadow-insight-overlay` |
 
-The background, border and text shorthands are explicit `@layer utilities`
-classes, not interchangeable with generated Tailwind utilities. Prefer them for
-plain classes, but do not assume state or opacity variants exist. For example,
-the [table template](../insight_ui/templates/insight_ui/components/table.html)
-uses `odd:bg-insight-bg-raised/50`, which is present in the generated CSS.
+The background, border and text shorthands are defined with `@utility` in
+`input.css`, so they work with variants (`hover:bg-insight-raised`,
+`even:bg-insight-base`, `after:bg-insight-surface`) like any Tailwind utility.
+Define new shorthands the same way: a plain class in `@layer utilities` gets no
+variants, and the variant class silently does nothing
+([test](../tests/insight_ui/unit/test_utility_variants.py)). The plain classes
+are always in the package stylesheet; a variant is only generated where a
+package template or your own Tailwind build uses it. Opacity modifiers such as
+`/50` need the token utility, e.g. `odd:bg-insight-bg-raised/50` in the
+[table template](../insight_ui/templates/insight_ui/components/table.html).
 
 The [token checker](../scripts/check_design_tokens.py) flags selected raw color,
 radius, shadow and verbose utility patterns. Some replacement suggestions are
 older names; verify them against `input.css`, not as a separate token contract.
 This table is a starting point, not an inventory of every value.
 
-## Host Assets And Contributor Builds
+## Color Families
 
-Hosts can use the packaged stylesheet without a contributor build;
-`INSIGHT_UI["use_tailwind_cli"]` defaults to `False` in
-[config.py](../insight_ui/config.py). Do not copy `tests.tailwind_settings` or
-`devtools` into a host. Host-only styles belong in its own stylesheet/build.
+`primary`, `secondary`, `success`, `warning`, `danger` and `info` share the same
+tokens. Pick the token by what you color, not by the theme:
+
+| You color | Token | Light / dark theme |
+| --- | --- | --- |
+| A border, bar or indicator | `--color-insight-primary` | The same in both themes |
+| Text, an icon, a link or an outline border | `--color-insight-primary-text` | Switches to `-text-dark` |
+| The fill of a button or checked control | `--color-insight-primary-action`, `-action-hover`, `-action-active` | Switches to `-action-dark` and its states |
+| Text and icons on that fill | `--color-insight-primary-on-action` | Switches to `-on-action-dark` |
+| A subtle background (subtle button, badge, alert) | `--color-insight-primary-soft` | Switches to `-soft-dark` |
+
+The family color itself (`text-insight-primary`) is an accent. It does not
+change with the theme, so as text it lacks contrast in one of them; use
+`text-insight-primary-text` for text and icons. Tokens ending in `-dark` hold the
+dark theme values; templates use the names without `-dark`, which switch on
+`[data-theme="dark"]`.
+
+`-action` is separate from the accent for brand colors that work in only one
+theme. A dark brand blue is a fine accent, and a fine button in the light theme,
+but barely visible as a button on the dark background. Keep the accent and give
+the dark theme a lighter button and text color in your
+[theme stylesheet](#theming-a-host):
+
+```css
+@layer theme {
+    :root {
+        --color-insight-primary: #003153;             /* brand color, borders and bars */
+        --color-insight-primary-action-dark: #2F6FAB; /* lighter buttons in the dark theme */
+        --color-insight-primary-action-hover-dark: #3A78B4;
+        --color-insight-primary-action-active-dark: #2A6399;
+        --color-insight-primary-text-dark: #9CC8EB;   /* readable text and icons in the dark theme */
+    }
+}
+```
+
+The dark button colors stay dark enough for the white `-on-action` text (4.5:1)
+and light enough to stand out from the dark page (3:1). For a light button in
+the dark theme, set `--color-insight-primary-on-action-dark` to a dark text
+color instead. The same applies to a light brand color, e.g. yellow, which needs
+dark `-on-action` text on its buttons. [The token tests](../tests/insight_ui/unit/test_design_tokens.py)
+check that text, links and text on fills reach WCAG AA in both themes.
+
+## Theming A Host
+
+The token names are the contract, not the layout of `input.css`. Pick the
+lightest way that covers what you change:
+
+| You change | Way |
+| --- | --- |
+| Colors, radii, spacing tokens, shadows, font | A theme stylesheet, no build |
+| Breakpoints, or Tailwind classes in your own templates | Your own Tailwind build |
+
+**Theme stylesheet.** The compiled classes read the tokens at runtime
+(`var(--radius-insight-control)`), so a stylesheet that sets the same tokens
+anew changes them everywhere. Point `INSIGHT_UI["theme_stylesheet"]` at it; the
+base template loads it right after the package stylesheet, always from your
+staticfiles, also with the package CDN enabled.
+
+```css
+/* static/brand/theme.css, INSIGHT_UI["theme_stylesheet"] = "brand/theme.css" */
+@font-face {
+    font-family: "Brand Sans";
+    src: url("fonts/BrandSans.woff2");
+}
+
+@layer theme {
+    :root {
+        --font-sans: "Brand Sans", sans-serif;
+        --radius-insight-control: 0.5rem;
+        --color-insight-primary-action: #003153;
+        --color-insight-primary-action-dark: #2F6FAB;
+    }
+}
+```
+
+- Put the tokens in `@layer theme`. The dark theme switches tokens in
+  `@layer base`; an unlayered `:root` would beat that switch and keep the light
+  value in both themes.
+- Set the `-dark` tokens too. Without them the dark theme keeps the package's
+  dark values.
+- Checking the contrast of your values is up to you; the package tests cover
+  its defaults.
+- Tokens that reach the classes this way: `--color-insight-*`,
+  `--radius-insight-*`, `--spacing-insight-*`, `--shadow-insight-*`,
+  `--font-sans` and Tailwind's `--text-*` sizes. Breakpoints cannot: media
+  queries do not read variables, so Tailwind writes their values into the CSS.
+- A shadow token may be `none` to remove the shadow. The `shadow-insight-*`
+  classes set `box-shadow` on their own, so on one element they and a `ring-*`
+  replace each other; package elements with a shadow show focus with an
+  outline. Do the same in your own markup.
+- For a shadow and a ring on one element, e.g. a menu with a hairline ring or a
+  selected card, use Tailwind's form `shadow-(--shadow-insight-raised)` (also
+  `-subtle`, `-surface`, `-overlay`; all in the package stylesheet). It shares
+  one `box-shadow` list with `ring-*`, so its token must stay a shadow: remove
+  it with `0 0 #0000`, not `none`, which would drop the ring too.
+
+**Your own build.** Compile a stylesheet that imports the package's `input.css`
+and also scans your templates, then point `INSIGHT_UI["stylesheet"]` at its
+output. Any compiler works: `django-tailwind-cli` (`manage.py tailwind
+runserver` while developing, `tailwind build` for a release; keep it out of the
+production dependencies) or the Node CLI (`npx @tailwindcss/cli -i input.css -o
+static/css/app.css --watch`). The package only knows the path, not the tool.
+
+## Contributor Builds
 
 For package changes, `build:static-all` in [package.json](../package.json) builds
 Tailwind with [tests/tailwind_settings.py](../tests/tailwind_settings.py), then

@@ -11,6 +11,7 @@
  */
 
 import { Accordion } from "./insight-ui-accordion.js";
+import { BadgeList } from "./insight-ui-badge-list.js";
 import { Carousel } from "./insight-ui-carousel.js";
 import { Checkbox } from "./insight-ui-checkbox.js";
 import { CodeBlock } from "./insight-ui-code-block.js";
@@ -21,17 +22,20 @@ import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
 import { ProgressBar } from "./insight-ui-progress-bar.js";
+import { QueryBuilder } from "./insight-ui-query-builder.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
 import { Search } from "./insight-ui-search.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
-import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
+import { Turnstile } from "./insight-ui-turnstile.js";
+import { RingCarousel } from "./insight-ui-ring-carousel.js";
 
 // Expose component classes for lifecycle cleanup lookups in insight-ui-utils.js
 window.InsightUI = window.InsightUI || {};
 Object.assign(window.InsightUI, {
 	Accordion,
+	BadgeList,
 	Carousel,
 	Checkbox,
 	CodeBlock,
@@ -42,12 +46,14 @@ Object.assign(window.InsightUI, {
 	Modal,
 	Multiselect,
 	ProgressBar,
+	QueryBuilder,
 	RangeSlider,
 	Search,
 	Sidebar,
 	Tabs,
 	ThemeToggle,
-	ThreeDCarousel,
+	Turnstile,
+	RingCarousel,
 });
 
 /**
@@ -56,6 +62,7 @@ Object.assign(window.InsightUI, {
  */
 function initAll() {
 	Accordion.initAll();
+	BadgeList.initAll();
 	Carousel.initAll();
 	Checkbox.initAll();
 	CodeBlock.initAll();
@@ -66,12 +73,14 @@ function initAll() {
 	Modal.initAll();
 	Multiselect.initAll();
 	ProgressBar.initAll();
+	QueryBuilder.initAll();
 	RangeSlider.initAll();
 	Search.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
 	ThemeToggle.initAll();
-	ThreeDCarousel.initAll();
+	Turnstile.initAll();
+	RingCarousel.initAll();
 	InsightUI.WebSocket?.init();
 }
 

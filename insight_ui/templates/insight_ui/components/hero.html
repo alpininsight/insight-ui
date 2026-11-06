@@ -6,9 +6,9 @@
     {% endif %}
 
     <div class="space-y-4 max-w-4xl xl:space-y-8{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
-        {% if hero_config.badge_config %}
+        {% if hero_config.badge %}
             <div class="mb-4">
-                {% badge config=hero_config.badge_config %}
+                {% badge config=hero_config.badge %}
             </div>
         {% endif %}
 
@@ -28,7 +28,7 @@
                     {% button config=hero_config.cta_primary size="l" %}
                 {% endif %}
                 {% if hero_config.cta_secondary %}
-                    {% button config=hero_config.cta_secondary size="l" outline=True %}
+                    {% button config=hero_config.cta_secondary size="l" variant="outline" %}
                 {% endif %}
             </div>
         {% endif %}

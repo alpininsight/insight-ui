@@ -5,6 +5,8 @@
 import re
 from pathlib import Path
 
+import pytest
+
 INPUT_CSS = Path("insight_ui/utils/input.css")
 SRGB_LINEAR_THRESHOLD = 0.04045
 WCAG_AA_CONTRAST_RATIO = 4.5
@@ -77,36 +79,70 @@ def test_insight_tokens_are_not_defined_twice() -> None:
     assert duplicates == []
 
 
-def test_semantic_action_and_foreground_tokens_meet_wcag_aa() -> None:
-    """Keep semantic control and soft-surface pairs readable in both themes."""
+def _assert_readable(css: str, foreground_token: str, background_token: str) -> None:
+    """Assert that text in one token is readable on the other."""
+    foreground_color = _hex_token(css, foreground_token)
+    background_color = _hex_token(css, background_token)
+
+    ratio = _contrast_ratio(foreground_color, background_color)
+
+    assert ratio >= WCAG_AA_CONTRAST_RATIO, (
+        f"{foreground_token} ({foreground_color}) on {background_token} ({background_color}) "
+        f"has contrast {ratio:.2f}, needs {WCAG_AA_CONTRAST_RATIO}"
+    )
+
+
+ROLES = ["primary", "secondary", "success", "warning", "danger", "info"]
+
+
+@pytest.mark.parametrize("role", ROLES)
+@pytest.mark.parametrize(
+    ("foreground", "background"),
+    [
+        ("on-action", "action"),
+        ("on-action", "action-hover"),
+        ("on-action", "action-active"),
+        ("on-action-dark", "action-dark"),
+        ("on-action-dark", "action-hover-dark"),
+        ("on-action-dark", "action-active-dark"),
+        ("text", "soft"),
+        ("text-dark", "soft-dark"),
+    ],
+    ids=lambda suffix: suffix,
+)
+def test_semantic_color_pairs_meet_wcag_aa(role: str, foreground: str, background: str) -> None:
+    """Keep filled controls in all states and text on soft surfaces readable in both themes."""
     css = INPUT_CSS.read_text()
 
-    for role in ("primary", "secondary", "success", "warning", "danger", "info"):
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-action"),
-                _hex_token(css, f"--color-insight-{role}-text"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-action-dark"),
-                _hex_token(css, f"--color-insight-{role}-text"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-foreground"),
-                _hex_token(css, f"--color-insight-{role}-soft"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-foreground-dark"),
-                _hex_token(css, f"--color-insight-{role}-soft-dark"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
+    _assert_readable(css, f"--color-insight-{role}-{foreground}", f"--color-insight-{role}-{background}")
+
+
+@pytest.mark.parametrize("role", ROLES)
+@pytest.mark.parametrize(
+    ("foreground", "background"),
+    [
+        ("text", "bg-base"),
+        ("text", "bg-surface"),
+        ("text-dark", "bg-base-dark"),
+        ("text-dark", "bg-surface-dark"),
+    ],
+    ids=lambda suffix: suffix,
+)
+def test_text_tokens_are_readable_on_page_backgrounds(role: str, foreground: str, background: str) -> None:
+    """The -text tokens color text and icons, so they must be readable on the page in both themes."""
+    css = INPUT_CSS.read_text()
+
+    _assert_readable(css, f"--color-insight-{role}-{foreground}", f"--color-insight-{background}")
+
+
+@pytest.mark.parametrize("link", ["text-link", "text-link-hover"])
+@pytest.mark.parametrize(
+    ("theme", "background"),
+    [("", "bg-base"), ("", "bg-surface"), ("-dark", "bg-base-dark"), ("-dark", "bg-surface-dark")],
+    ids=["light-base", "light-surface", "dark-base", "dark-surface"],
+)
+def test_link_colors_are_readable_in_both_themes(link: str, theme: str, background: str) -> None:
+    """Links and their hover state are text, in the light and the dark theme."""
+    css = INPUT_CSS.read_text()
+
+    _assert_readable(css, f"--color-insight-{link}{theme}", f"--color-insight-{background}")

@@ -10,12 +10,15 @@
     aria-describedby="{{ chart_config.tag_id }}-table"
 ></div>
 
+{{ chart_data|json_script:chart_data_id }}
+
 <script type="module">
-    var chartDom = document.getElementById("{{ chart_config.tag_id }}");
+    const data = JSON.parse(document.getElementById("{{ chart_data_id|escapejs }}").textContent);
+    var chartDom = document.getElementById("{{ chart_config.tag_id|escapejs }}");
     var myChart = echarts.init(chartDom);
     var option;
 
-    const rawData = {{ chart_config.dataset.data }};
+    const rawData = data.data;
     const totalData = [];
     for (let i = 0; i < rawData[0].length; ++i)
     {
@@ -27,7 +30,7 @@
         totalData.push(sum);
     }
 
-    const series = {{ chart_config.dataset.series|safe }}.map((name, sid) => {
+    const series = data.series.map((name, sid) => {
         return {
             name,
             type: 'bar',
@@ -51,7 +54,7 @@
             }
         },
         title: {
-            text: "{{ chart_config.dataset.title }}"
+            text: data.title
         },
         legend: {
             selectedMode: false
@@ -61,7 +64,7 @@
         },
         xAxis: {
             type: 'category',
-            data: {{ chart_config.dataset.x_axis_legend|safe }}
+            data: data.x_axis_legend
         },
         series
     };

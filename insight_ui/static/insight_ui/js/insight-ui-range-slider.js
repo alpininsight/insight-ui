@@ -16,11 +16,14 @@ export class RangeSlider {
     /** @type {WeakMap<HTMLElement, RangeSlider>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    /** @type {string[]} Tailwind classes for hidden items */
-    static HIDDEN_CLASSES = ["invisible", "w-0", "overflow-hidden"];
+    /** @type {string} Tailwind class for hidden items; items are positioned absolutely, so they keep no space */
+    static HIDDEN_CLASS = "invisible";
 
-    /** @type {string[]} Tailwind classes for rotated legend container */
-    static ROTATE_MODE_CLASSES = ["items-start", "h-auto", "min-h-16"];
+    /** @type {string[]} Tailwind classes for the rotated legend container, which gets the height of the rotated items */
+    static ROTATE_MODE_CLASSES = ["h-20"];
+
+    /** @type {number} Minimum gap in pixels between two visible legend items */
+    static LEGEND_GAP = 8;
 
     /** @type {string[]} Tailwind classes for rotated items */
     static ROTATED_CLASSES = [
@@ -73,6 +76,8 @@ export class RangeSlider {
         } else {
             this.boundInputHandler = this.updateProgress.bind(this);
         }
+        this.boundResetHandler = this.handleFormReset.bind(this);
+        this.resetTimer = null;
 
         this.init();
 
@@ -105,9 +110,12 @@ export class RangeSlider {
             this.updateProgress();
         }
 
+        // Native form reset restores the input values but not the progress visuals.
+        this.form = this.element.closest("form");
+        this.form?.addEventListener("reset", this.boundResetHandler);
+
         if (this.legendMode !== "static" && this.legendItems.length >= 2) {
-            window.addEventListener("resize", this.boundResizeHandler);
-            this.adjustLegend();
+            this.observeLegendWidth();
         }
 
         // Add MutationObserver for RTL changes on document
@@ -218,6 +226,21 @@ export class RangeSlider {
     }
 
     /**
+     * Update the progress visuals after the surrounding form was reset.
+     * The reset event fires before the browser restores the values, so the update is deferred.
+     */
+    handleFormReset() {
+        clearTimeout(this.resetTimer);
+        this.resetTimer = setTimeout(() => {
+            if (this.isDualRange) {
+                this.updateDualProgress();
+            } else if (this.input) {
+                this.updateProgress();
+            }
+        });
+    }
+
+    /**
      * Get the current value(s) of the slider.
      * @returns {number|{min: number, max: number}} Single value or object with min/max
      */
@@ -251,24 +274,17 @@ export class RangeSlider {
     }
 
     /**
-     * Check if legend items are overlapping.
-     * @returns {boolean} True if items overlap
+     * Check if visible legend items overlap or come closer than LEGEND_GAP.
+     * Items are positioned under their thumb positions, so neighbors are compared by their real boxes.
+     * @returns {boolean} True if two neighboring items overlap
      */
     isOverlapping() {
-        const legendRect = this.legend.getBoundingClientRect();
-        let totalWidth = 0;
+        const rects = this.legendItems
+            .filter(item => !item.classList.contains(RangeSlider.HIDDEN_CLASS))
+            .map(item => item.getBoundingClientRect())
+            .sort((a, b) => a.left - b.left);
 
-        this.legendItems.forEach(item => {
-            if (!item.classList.contains("invisible")) {
-                totalWidth += item.getBoundingClientRect().width;
-            }
-        });
-
-        // Add some spacing buffer (8px per visible item)
-        const visibleCount = this.legendItems.filter(i => !i.classList.contains("invisible")).length;
-        totalWidth += (visibleCount - 1) * 8;
-
-        return totalWidth > legendRect.width;
+        return rects.some((rect, index) => index > 0 && rect.left < rects[index - 1].right + RangeSlider.LEGEND_GAP);
     }
 
     /**
@@ -276,9 +292,29 @@ export class RangeSlider {
      */
     resetLegend() {
         this.legendItems.forEach(item => {
-            item.classList.remove(...RangeSlider.HIDDEN_CLASSES, ...RangeSlider.ROTATED_CLASSES);
+            item.classList.remove(RangeSlider.HIDDEN_CLASS, ...RangeSlider.ROTATED_CLASSES);
         });
         this.legend.classList.remove(...RangeSlider.ROTATE_MODE_CLASSES);
+    }
+
+    /**
+     * Adjust the legend once its layout exists and whenever its width changes, also when only the
+     * surrounding container resizes. The items are measured, so adjusting before the stylesheet
+     * positioned them would find no overlap. Height changes are ignored: the rotate mode changes the height.
+     */
+    observeLegendWidth() {
+        if (!("ResizeObserver" in window)) {
+            window.addEventListener("resize", this.boundResizeHandler);
+            this.adjustLegend();
+            return;
+        }
+        this.legendWidth = null;
+        this.legendObserver = new ResizeObserver(([entry]) => {
+            if (entry.contentRect.width === this.legendWidth) return;
+            this.legendWidth = entry.contentRect.width;
+            this.adjustLegend();
+        });
+        this.legendObserver.observe(this.legend);
     }
 
     /**
@@ -301,19 +337,15 @@ export class RangeSlider {
      * Apply skip mode: progressively hide legend items.
      */
     applySkipMode() {
-        let skipLevel = 2;
-        const itemCount = this.legendItems.length;
+        const last = this.legendItems.length - 1;
 
-        while (this.isOverlapping() && skipLevel <= itemCount) {
+        // Try every step from dense to sparse until no items overlap. First and last always stay; a middle
+        // item closer to the last one than a step would crowd it, so it is hidden as well.
+        for (let step = 2; step <= last && this.isOverlapping(); step++) {
             this.legendItems.forEach((item, index) => {
-                // Always show first and last
-                if (index === 0 || index === itemCount - 1) return;
-                // Hide items not at skipLevel intervals
-                if (index % skipLevel !== 0) {
-                    item.classList.add(...RangeSlider.HIDDEN_CLASSES);
-                }
+                const shown = index === 0 || index === last || (index % step === 0 && last - index >= step);
+                item.classList.toggle(RangeSlider.HIDDEN_CLASS, !shown);
             });
-            skipLevel *= 2;
         }
     }
 
@@ -344,6 +376,11 @@ export class RangeSlider {
         }
 
         window.removeEventListener("resize", this.boundResizeHandler);
+        this.legendObserver?.disconnect();
+        this.form?.removeEventListener("reset", this.boundResetHandler);
+
+        // A reset scheduled just before destroy would otherwise access the removed element.
+        clearTimeout(this.resetTimer);
 
         // Disconnect RTL observer
         if (this.dirObserver) {

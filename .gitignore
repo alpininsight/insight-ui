@@ -219,8 +219,10 @@ misc/
 img/
 staticfiles/
 node_modules/
-/insight_ui/static/insight_ui/css/*.min.css
-/insight_ui/static/insight_ui/js/*.min.js
+# Generated minified assets in any directory, including nested paths.
+# This does not stop `git add -f`; `npm run check:generated-assets` does.
+*.min.css
+*.min.js
 .playwright-mcp/
 .playwright-cli/
 /_wt/
