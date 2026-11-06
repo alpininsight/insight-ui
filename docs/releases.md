@@ -143,3 +143,15 @@ separate. The exact compatible release version and sequencing relative to #740
 are unassigned; never reuse a published version or silently absorb the 2.0
 Develop backlog. Prepare the three-file bootstrap on Develop first and carry its
 reviewed bytes into the distinct legacy PR.
+
+### Existing legacy security dependency
+
+The compatible source remains **not release-ready** while the legacy layout-tag
+attribute/href fix in PR #761 is absent. The two runtime/regression paths for
+that fix are outside this 21-path allocation; do not silently absorb them or
+mutate the other PR. Develop already contains the corresponding fix from #748.
+Source preparation, translation completeness and green CI are not a security
+clearance for the old package. Resolve the existing security backport and its
+Matti/Peter disposition before an artifact/consumer pin is accepted. A Main
+merge of #761 or #740 changes the fixed base, expires this compatibility
+exception and requires a freshly allocated base, policy and exact-head review.
