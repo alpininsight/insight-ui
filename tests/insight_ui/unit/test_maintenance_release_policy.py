@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Execute the read-only branch policy against bounded release metadata."""
 
-import copy
 import json
 import shutil
 import subprocess
@@ -13,36 +12,21 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
 WORKFLOW = ROOT / ".github/workflows/pr-branch-guard.yml"
-BASE = "24787fc561d5d60d970c129d6a8eae4f5fd5c1ed"
-HEAD = "a" * 40
-TEMPLATE = "insight_ui/templates/insight_ui/components/minimal_stepper.html"
-REGRESSION = "tests/insight_ui/unit/components/test_minimal_step_bar.py"
 pytestmark = pytest.mark.skipif(not (ROOT / ".git").exists(), reason="Policy applies to source checkouts.")
 
 
 def _fixture() -> dict:
-    """Provide the only exceptional branch with an independent exact-head review."""
+    """Describe an ordinary same-repository release promotion, without approvals."""
     return {
         "pr": {
             "number": 1,
-            "title": "fix(stepper): correct failed-state icon",
+            "title": "chore(release): prepare Insight UI 2.0 release candidate",
             "user": {"login": "author"},
-            "base": {"ref": "main", "sha": BASE, "repo": {"full_name": "org/repo"}},
-            "head": {
-                "ref": "hotfix/v1.15.2-minimal-stepper",
-                "sha": HEAD,
-                "repo": {"full_name": "org/repo"},
-            },
+            "base": {"ref": "main", "sha": "b" * 40, "repo": {"full_name": "org/repo"}},
+            "head": {"ref": "develop", "sha": "a" * 40, "repo": {"full_name": "org/repo"}},
         },
-        "files": [{"filename": name, "status": "modified"} for name in (TEMPLATE, REGRESSION)],
-        "reviews": [
-            {
-                "state": "APPROVED",
-                "commit_id": HEAD,
-                "user": {"login": "reviewer", "type": "User"},
-                "author_association": "MEMBER",
-            }
-        ],
+        "files": [],
+        "reviews": [],
     }
 
 
@@ -81,64 +65,52 @@ def _failures(payload: dict) -> list[str]:
     return json.loads(result.stdout)
 
 
-def test_only_bounded_independently_reviewed_backport_is_allowed() -> None:
-    """The narrow maintenance exception is distinct from arbitrary feature releases."""
-    assert _failures(_fixture()) == []
-
-
 @pytest.mark.parametrize(("base", "head"), [("develop", "fix/icon"), ("main", "develop")])
-def test_normal_integration_paths_do_not_require_maintenance_reviews(base: str, head: str) -> None:
-    """Existing normal contribution and release routes are unchanged."""
+def test_normal_feature_and_release_paths_remain_allowed(base: str, head: str) -> None:
+    """The cleanup retains the normal workflow without creating a publish approval."""
     payload = _fixture()
     payload["pr"]["base"]["ref"] = base
     payload["pr"]["head"]["ref"] = head
-    payload["reviews"] = []
     assert _failures(payload) == []
 
 
-@pytest.mark.parametrize("invalid", ["fork", "branch", "base", "scope", "deleted", "renamed", "missing-test"])
-def test_maintenance_rejects_branch_base_and_scope_expansion(invalid: str) -> None:
-    """A branch name alone cannot authorize unrelated code or a future release."""
+@pytest.mark.parametrize(
+    "branch",
+    ["hotfix/v1.15.2-minimal-stepper", "maintenance/v1-webmcp-i18n-compat", "support/1.15", "fix/icon"],
+)
+def test_main_rejects_non_develop_heads_even_with_approved_review(branch: str) -> None:
+    """The retired narrow exception cannot be revived with old approval metadata."""
     payload = _fixture()
-    if invalid == "fork":
-        payload["pr"]["head"]["repo"]["full_name"] = "outsider/repo"
-    elif invalid == "branch":
-        payload["pr"]["head"]["ref"] = "hotfix/arbitrary-feature"
-    elif invalid == "base":
-        payload["pr"]["base"]["sha"] = "b" * 40
-    elif invalid == "scope":
-        payload["files"].append({"filename": "insight_ui/configs/navigation.py", "status": "modified"})
-    elif invalid in {"deleted", "renamed"}:
-        payload["files"][0]["status"] = invalid
-    else:
-        payload["files"].pop()
+    payload["pr"]["head"]["ref"] = branch
+    payload["pr"]["base"]["sha"] = "24787fc561d5d60d970c129d6a8eae4f5fd5c1ed"
+    payload["reviews"] = [
+        {
+            "state": "APPROVED",
+            "commit_id": "a" * 40,
+            "user": {"login": "reviewer", "type": "User"},
+            "author_association": "OWNER",
+        }
+    ]
+    assert _failures(payload) == ["Production releases must come from this repository's develop branch."]
+
+
+def test_main_rejects_a_fork_named_develop() -> None:
+    """Matching a protected branch name in another repository grants no exception."""
+    payload = _fixture()
+    payload["pr"]["head"]["repo"]["full_name"] = "outsider/repo"
     assert _failures(payload)
 
 
-@pytest.mark.parametrize("invalid", ["missing", "self", "bot", "stale", "outsider", "dismissed", "changes-requested"])
-def test_maintenance_requires_current_independent_approval(invalid: str) -> None:
-    """No stale/self/bot review or unresolved objection can satisfy approval."""
+@pytest.mark.parametrize("base", ["support/1.15", "feature/stack", "other"])
+def test_policy_rejects_unapproved_target_branches(base: str) -> None:
+    """Contributions cannot bypass the Develop/Main target contract."""
     payload = _fixture()
-    review = payload["reviews"][0]
-    if invalid == "missing":
-        payload["reviews"] = []
-    elif invalid == "self":
-        review["user"]["login"] = "author"
-    elif invalid == "bot":
-        review["user"]["type"] = "Bot"
-    elif invalid == "stale":
-        review["commit_id"] = "b" * 40
-    elif invalid == "outsider":
-        review["author_association"] = "CONTRIBUTOR"
-    else:
-        later = copy.deepcopy(review)
-        later["state"] = invalid.replace("-", "_").upper()
-        payload["reviews"].append(later)
+    payload["pr"]["base"]["ref"] = base
     assert _failures(payload)
 
 
-def test_maintenance_never_bypasses_title_policy() -> None:
-    """The additional path retains the ordinary Conventional Commit gate."""
+def test_release_promotion_still_requires_a_conventional_title() -> None:
+    """Removing the maintenance lane preserves the ordinary title check."""
     payload = _fixture()
     payload["pr"]["title"] = "release everything"
     assert _failures(payload)
