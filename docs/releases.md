@@ -63,41 +63,22 @@ compatible additions use a minor release and incompatible public API changes
 need a major release with migration guidance. Do not delete and re-upload a
 release to correct its description or classifier.
 
-## Bounded v1.15.2 Maintenance Backport
+## Develop To Main For The 2.0 Line
 
-The failed-state icon in v1.15.1's `minimal_stepper` references the removed
-`danger` icon. Develop already corrects it, but also changes the public step
-status API and other interfaces. Do not publish that integration backlog as a
-patch or copy the reusable template into a consumer.
+Feature and documentation PRs target Develop. Only this repository's Develop
+branch may target Main. The abandoned one-off 1.x maintenance exception is
+removed; a review, branch name, old base SHA or small file list cannot revive it.
+Future maintenance arrangements require a separate, reviewed release strategy.
 
-For this correction only, `hotfix/v1.15.2-minimal-stepper` may target `main`
-from the exact v1.15.1 commit `24787fc561d5d60d970c129d6a8eae4f5fd5c1ed`.
-The metadata-only branch policy limits the diff to the stepper template, its
-render regression, this release guide, the policy workflow and its tests.
-Both the template and render regression are mandatory; renamed/deleted files,
-other source/API changes, forks and other hotfix branch names are rejected.
-The exception expires automatically once Main advances beyond that base.
+This metadata-only check is a contributor guardrail, not an authorization
+boundary: a PR can edit its own workflow. Repository rulesets, exact-head
+independent review and the release gates above remain separate controls; this
+source cleanup changes none of their settings. It adds no publication path,
+credentials, approval bypass, bot-comment parser or consumer activation.
 
-Review the policy bootstrap separately on Develop, then inspect the bounded
-Main backport. It requires an independent repository reviewer's approval of
-the exact head; self-approval, bot reviews and stale approvals do not count.
-Submitted/dismissed reviews rerun the read-only policy. Do not self-approve,
-use an administrator bypass or merge the full Develop backlog to unblock it.
-This is preparation until that independent review and all normal Contributor
-CI checks pass, not permission to merge or publish automatically.
-
-The maintenance diff must retain the v1.15.1 `items` and status API. Only the
-failed icon changes to `x-mark`; the regression renders every supported old
-state. Keep the existing Develop implementation and its new API unchanged.
-GitVersion still determines the final stable version after reviewed Main
-integration; `v1.15.2` is the intended patch, not a forced override.
-
-All remaining release gates above still apply: supported Python/Django,
-JavaScript/static and isolated distribution checks; exact Main/tag identity;
-central non-publishing build; independent approval of version and both file
-hashes; explicit Trusted Publishing; public-index hash/fresh-install checks;
-and separate consumer PRs and deployment acceptance. No source-repository
-publisher, publication credentials or live application changes are added.
+The breaking 2.0 line needs migration guidance and an explicitly selected RC
+version before consumer trial. Main promotion, artifact/version/hash approval,
+Trusted Publishing and actual consumer acceptance retain their own gates.
 
 ## Reference Application
 
