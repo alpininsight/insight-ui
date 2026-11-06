@@ -26,6 +26,26 @@ npx --no-install vitest run tests/js/tabs.test.js
 uv run pytest tests/insight_ui/unit/test_contributor_docs.py
 ```
 
+### Bug Fixes And Regression Evidence
+
+Every behavior-changing bug fix must include a regression test for the reported
+failure. Reproduce it through the public contract, confirm that the test fails
+with the faulty behavior and passes with the correction, and record that evidence
+in the PR. If an existing test already detects the failure, name the test and
+show its result instead of adding a duplicate.
+
+Choose the layer that exposes the defect: a rendered component, a JavaScript
+interaction, an installed wheel/sdist, or a real browser using the shipped CSS.
+Use a meaningful negative case; an assertion that merely repeats the new code
+does not show that the reported failure is prevented. Do not skip a failing
+regression or weaken its assertion to obtain green CI.
+
+Editorial-only changes need no artificial behavior test. Explain that scope in
+the PR and run the relevant documentation checks. After each merge, review the
+final CI and follow-up comments, record any missed defect or process gap in the
+PR, and state a concrete prevention measure. Carry recurring lessons into these
+contributor guides or the relevant tests.
+
 ### What To Assert
 
 Test the public contract: parameter names and accepted values, rendered content,
