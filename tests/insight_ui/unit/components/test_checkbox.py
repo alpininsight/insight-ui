@@ -17,7 +17,11 @@ class TestCheckbox(TemplateTagsTestCase):
     def test_checkbox_config(self) -> None:
         """Test the {% checkbox %} tag with config dataclass."""
         config = CheckboxConfig(
-            "accept-terms", "accept_terms", "I accept the terms and conditions", required=True, value="accepted"
+            name="accept-terms",
+            tag_id="accept_terms",
+            label="I accept the terms and conditions",
+            required=True,
+            value="accepted",
         )
 
         result = insight_ui.templatetags.insight_tags.checkbox(config=config)

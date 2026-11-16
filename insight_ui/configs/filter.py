@@ -19,7 +19,7 @@ from insight_ui.configs.types import (
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SearchBarConfig:
     """Configuration for the search_bar component.
 
@@ -87,7 +87,7 @@ class SearchBarConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FilterConfig:
     """Configuration for a single filter in generic_filter.
 
@@ -130,7 +130,7 @@ class FilterConfig:
             raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GenericFilterConfig:
     """Configuration for the generic_filter component.
 
@@ -187,7 +187,7 @@ class GenericFilterConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class QueryBuilderFieldConfig:
     """Configuration for a field in the query builder.
 
@@ -232,7 +232,7 @@ class QueryBuilderFieldConfig:
             raise ValueError(msg)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class QueryBuilderFilterConfig:
     """An active filter of the query builder.
 
@@ -258,7 +258,7 @@ class QueryBuilderFilterConfig:
         validate_query_logic(self.logic, "logic")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class QueryBuilderConfig:
     """Configuration for the query_builder component.
 

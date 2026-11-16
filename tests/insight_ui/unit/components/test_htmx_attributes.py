@@ -164,7 +164,9 @@ def find_requesting_element(soup: BeautifulSoup) -> Tag:
             "{% dropdown c %}",
             {
                 "c": DropdownConfig(
-                    tag_id="menu", title="Menu", items=[DropdownItemConfig("Edit", "/edit/", htmx=FULL_CONFIG)]
+                    tag_id="menu",
+                    title="Menu",
+                    items=[DropdownItemConfig(text="Edit", request_url="/edit/", htmx=FULL_CONFIG)],
                 )
             },
             id="dropdown",
@@ -191,14 +193,14 @@ def test_link_button_requests_its_href() -> None:
 
 def test_button_without_trigger_uses_the_click_default() -> None:
     """Buttons no longer get trigger="submit" from the config, which never fired on a button."""
-    button = render("{% button config=c %}", {"c": ButtonConfig(label="Load", htmx=HtmxConfig("/items/"))})
+    button = render("{% button config=c %}", {"c": ButtonConfig(label="Load", htmx=HtmxConfig(request_url="/items/"))})
 
     assert not button.find("button").has_attr("hx-trigger")
 
 
 def test_form_fixes_its_trigger_and_indicator() -> None:
     """The form always submits on submit and shows only its own indicator."""
-    form = render("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx=HtmxConfig("/save/"))}).form
+    form = render("{% form config=c %}", {"c": FormConfig(tag_id="f", htmx=HtmxConfig(request_url="/save/"))}).form
 
     assert form["hx-trigger"] == "submit"
     assert form["hx-indicator"] == "find .htmx-indicator"
@@ -207,7 +209,7 @@ def test_form_fixes_its_trigger_and_indicator() -> None:
 def test_search_bar_sends_on_submit_only() -> None:
     """The search runs on the search button and Return, the default trigger of its form."""
     element = find_requesting_element(
-        render("{% search_bar config=c %}", {"c": SearchBarConfig(htmx=HtmxConfig("/search/"))})
+        render("{% search_bar config=c %}", {"c": SearchBarConfig(htmx=HtmxConfig(request_url="/search/"))})
     )
 
     assert element.name == "form"
@@ -217,7 +219,11 @@ def test_search_bar_sends_on_submit_only() -> None:
 def test_breadcrumbs_request_their_own_item_urls() -> None:
     """Each breadcrumb requests its own URL with the shared target and swap."""
     config = BreadcrumbsConfig(
-        items=[BreadcrumbItemConfig("Home", "/"), BreadcrumbItemConfig("Docs", "/docs/"), BreadcrumbItemConfig("Now")],
+        items=[
+            BreadcrumbItemConfig(text="Home", request_url="/"),
+            BreadcrumbItemConfig(text="Docs", request_url="/docs/"),
+            BreadcrumbItemConfig(text="Now"),
+        ],
         htmx=HtmxConfig(target="#main"),
     )
     links = render("{% breadcrumbs config=c %}", {"c": config}).find_all("a")

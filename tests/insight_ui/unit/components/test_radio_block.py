@@ -16,12 +16,12 @@ class TestRadioBlock(TemplateTagsTestCase):
         """Test the {% radio_block %} tag with HTMX attributes."""
         # Create a test config with HTMX attributes (not using demo context)
         config = RadioBlockConfig(
-            "size",
-            "Select size:",
+            name="size",
+            label="Select size:",
             items=[
-                RadioItemConfig("small", "small-size", "s"),
-                RadioItemConfig("medium", "medium-size", "m"),
-                RadioItemConfig("large", "large-size", "l", disabled=True),
+                RadioItemConfig(value="small", tag_id="small-size", label="s"),
+                RadioItemConfig(value="medium", tag_id="medium-size", label="m"),
+                RadioItemConfig(value="large", tag_id="large-size", label="l", disabled=True),
             ],
             as_row=True,
             request_url="/api/size/",
@@ -134,7 +134,9 @@ class TestRadioBlock(TemplateTagsTestCase):
     def test_radio_block_htmx_can_bring_its_own_url(self) -> None:
         """htmx.request_url is used when the block has no request_url."""
         config = RadioBlockConfig(
-            name="view", items=[RadioItemConfig(value="card")], htmx=HtmxConfig("/products/", target="#products")
+            name="view",
+            items=[RadioItemConfig(value="card")],
+            htmx=HtmxConfig(request_url="/products/", target="#products"),
         )
 
         rendered = self.render_template("{% load insight_tags %}{% radio_block config %}", {"config": config})

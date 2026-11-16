@@ -11,7 +11,7 @@ from insight_ui.configs.layout import ModalConfig
 from insight_ui.configs.types import Severity, validate_not_empty, validate_severity
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AlertConfig:
     """Configuration for the alert component.
 
@@ -47,7 +47,7 @@ class AlertConfig:
         validate_severity(self.severity)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MessageDialogConfig(ModalConfig):
     """Configuration for the message_dialog component.
 
@@ -72,8 +72,8 @@ class MessageDialogConfig(ModalConfig):
             message="The project and all its data will be deleted. This cannot be undone.",
             alert=True,
             actions=[
-                ButtonConfig(label="Cancel", color="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
-                ButtonConfig(label="Delete", color="danger", htmx=HtmxConfig("/projects/7/delete/", method="post")),
+                ButtonConfig(label="Cancel", color="secondary", data_attrs=[DataAttrConfig(name="insight-dismiss", value="modal")]),
+                ButtonConfig(label="Delete", color="danger", htmx=HtmxConfig(request_url="/projects/7/delete/", method="post")),
             ],
         )
         """

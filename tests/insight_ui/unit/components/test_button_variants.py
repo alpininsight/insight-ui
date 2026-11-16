@@ -124,7 +124,7 @@ def test_badge_renders_its_color_class() -> None:
 
 def test_disabled_badge_is_dimmed_and_disables_its_remove_button() -> None:
     """A disabled badge cannot be removed."""
-    config = BadgeConfig(label="Draft", disabled=True, remove_htmx=HtmxConfig("/filters/", target="#list"))
+    config = BadgeConfig(label="Draft", disabled=True, remove_htmx=HtmxConfig(request_url="/filters/", target="#list"))
     soup = render("{% badge config=config %}", {"config": config})
 
     assert "badge-disabled" in soup.find(class_="badge")["class"]
@@ -134,7 +134,7 @@ def test_disabled_badge_is_dimmed_and_disables_its_remove_button() -> None:
 @pytest.mark.parametrize(("color", "button_class"), [("neutral", "btn-plain"), ("danger", "btn-danger")])
 def test_remove_button_follows_the_badge_color(color: str, button_class: str) -> None:
     """The remove icon matches the badge; neutral has no button color and uses the text color."""
-    config = BadgeConfig(label="Tag", color=color, remove_htmx=HtmxConfig("/filters/", target="#list"))
+    config = BadgeConfig(label="Tag", color=color, remove_htmx=HtmxConfig(request_url="/filters/", target="#list"))
     button = render("{% badge config=config %}", {"config": config}).find("button")
 
     assert button_class in button["class"]

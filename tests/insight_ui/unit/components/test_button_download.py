@@ -98,7 +98,10 @@ def test_download_rejects_explicit_htmx_interception() -> None:
         ButtonConfig(label="Download", request_url="/file.svg", download=True, htmx=HtmxConfig())
     with pytest.raises(ValueError, match="HTMX request"):
         ButtonConfig(
-            label="Download", request_url="/file.svg", download=True, hx_attrs=[DataAttrConfig("get", "/file")]
+            label="Download",
+            request_url="/file.svg",
+            download=True,
+            hx_attrs=[DataAttrConfig(name="get", value="/file")],
         )
 
 

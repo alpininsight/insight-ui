@@ -35,6 +35,7 @@ pattern for a host project.
 - [ ] Let layout-tag filters and `_()` translations resolve on each render. A filter on a quoted value is kept.
 - [ ] Give `{% tabs %}` a stable `id`. Expect one active tab, `type="button"`, an SVG for `icon`, and `hx-trigger="load, click"` on the active HTMX tab.
 - [ ] In a right-to-left container, ArrowLeft moves to the next tab.
+- [ ] Build configs with keyword arguments only; positional calls raise `TypeError`.
 - [ ] Pass config dataclasses into template tags. Dictionaries are rejected.
 - [ ] Rename alert `type`, infobox `info_type` and status screen `status` to `severity`.
 - [ ] Drop `foreground_color=` and `aria_label=` on `corner_ribbon`; the text follows the fill color and is the link name.
@@ -493,6 +494,33 @@ Search: `{% tabs`, `{% tab`, `TabsConfig(`, `role="tab"`, `data-insight-tabs`
 and `mr-2`.
 
 ## Template tags and configs
+
+### Keyword arguments only
+
+Every config dataclass takes keyword arguments only. A positional call raises
+`TypeError`. Field order is no longer part of the API, so a new or reordered
+field cannot shift the meaning of an existing call. `name` on field configs
+moved this way in 2.0, and Python would not have reported it.
+
+Before:
+
+```python
+IconConfig("home", "s")
+NavbarLinkConfig("Start", "/")
+```
+
+After:
+
+```python
+IconConfig(name="home", size="s")
+NavbarLinkConfig(text="Start", request_url="/")
+```
+
+Template tags are not affected; their arguments were keywords already.
+
+Search: `Config\(\s*[^)\s=]+\s*[,)]` (regex) finds calls that open with a
+positional argument. Any that are missed raise `TypeError` with the class name
+on first use.
 
 ### Dictionaries are rejected
 
@@ -976,18 +1004,18 @@ SelectConfig(name="country", label="Country", options={"placeholder": "Choose", 
 Search: `FormFieldConfig`, `FORM_FIELD_TYPE_VALUES`, `validate_form_field_type`,
 `FormFieldType`.
 
-### `name` is required and comes first
+### `name` is required
 
 [#692](https://github.com/alpininsight/insight-ui/pull/692).
 
-`name` is the first field of `BaseFormFieldConfig`, so it is the first
-positional argument of every field config, including `CheckboxConfig`.
+Every field config needs `name`, including `CheckboxConfig`.
 It must be a non-empty string. `None` and `""` raise `ValueError` in
 `__post_init__`. A missing template variable rendered into an attribute
 becomes `""` and fails the same check.
 
-v1.15.1 field order started with `tag_id`, then `name`, and both defaulted to
-`None`. The same positional call now stores the arguments the other way round.
+v1.15.1 field configs started with `tag_id`, then `name`, and both defaulted
+to `None`. Positional calls like the one below now raise `TypeError`, see
+[Keyword arguments only](#keyword-arguments-only).
 
 Before:
 
@@ -1002,8 +1030,7 @@ InputFieldConfig(name="email", tag_id="email-id")
 ```
 
 Search: `InputFieldConfig(`, `TextareaConfig(`, `SelectConfig(`,
-`CheckboxConfig(` and the other field configs. Prefer a keyword search for
-calls that pass `tag_id` positionally.
+`CheckboxConfig(` and the other field configs.
 
 ### Empty required values
 
@@ -1429,7 +1456,7 @@ named their `HtmxConfig` field `htmx_config`. Every other component calls it
 Before:
 
 ```python
-ButtonConfig(label="Delete", htmx_config=HtmxConfig("/items/7/delete/", method="post"))
+ButtonConfig(label="Delete", htmx_config=HtmxConfig(request_url="/items/7/delete/", method="post"))
 ```
 
 ```text
@@ -1439,7 +1466,7 @@ ButtonConfig(label="Delete", htmx_config=HtmxConfig("/items/7/delete/", method="
 After:
 
 ```python
-ButtonConfig(label="Delete", htmx=HtmxConfig("/items/7/delete/", method="post"))
+ButtonConfig(label="Delete", htmx=HtmxConfig(request_url="/items/7/delete/", method="post"))
 ```
 
 ```text

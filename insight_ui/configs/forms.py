@@ -41,7 +41,7 @@ type FormField = (
 FORM_FIELD_CONFIGS: tuple[type, ...] = get_args(FormField.__value__)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TurnstileConfig:
     """Public widget settings for an optional Cloudflare Turnstile challenge.
 
@@ -76,7 +76,7 @@ class TurnstileConfig:
             raise ValueError("TurnstileConfig action must be up to 32 letters, digits, _ or -.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FormConfig:
     """Configuration for the form component.
 

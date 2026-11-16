@@ -18,6 +18,7 @@ generate the browser module skeleton. Add its behavior tests yourself:
 | --- | --- | --- |
 | Python fields, functions, tags and component slug | `snake_case` | `example_panel` |
 | Config class | `PascalCase` + `Config` | `ExamplePanelConfig` |
+| Config constructor | `@dataclass(kw_only=True)`; field order is not API | `ExamplePanelConfig(tag_id="panel")` |
 | Component template | Existing components directory; slug filename | `example_panel.html` |
 | Browser module | `insight-ui-` prefix and kebab-case | `insight-ui-example-panel.js` |
 | Tests | Python `test_*.py`; Vitest `*.test.js` | `test_example_panel.py`, `example-panel.test.js` |

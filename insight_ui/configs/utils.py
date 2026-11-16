@@ -28,7 +28,7 @@ from insight_ui.configs.types import (
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InfoboxConfig:
     """Configuration for the infobox component.
 
@@ -55,7 +55,7 @@ class InfoboxConfig:
         validate_severity(self.severity)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LegalNoticeConfig:
     """Configuration for the legal_notice component.
 
@@ -108,7 +108,7 @@ class LegalNoticeConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LogoConfig:
     """Configuration for the logo component.
 
@@ -151,7 +151,7 @@ class LogoConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BrandMarkConfig:
     """Configuration for the brand_mark component.
 
@@ -202,7 +202,7 @@ class BrandMarkConfig:
         validate_inline_position(self.logo_position, "logo_position")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class StatusScreenConfig:
     """Configuration for the status_screen component.
 
@@ -254,7 +254,7 @@ class StatusScreenConfig:
         validate_severity(self.severity)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CornerRibbonConfig:
     """Configuration for the corner_ribbon component.
 
@@ -298,7 +298,7 @@ class CornerRibbonConfig:
         validate_color_type(self.color, "color")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ProgressBarConfig:
     """Configuration for a simple progress bar with optional auto-update modes.
 
@@ -392,7 +392,7 @@ class ProgressBarConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapMarkerConfig:
     """Configuration for a marker on a geo map.
 
@@ -416,7 +416,7 @@ class GeoMapMarkerConfig:
     value: int | float | None = field(default=None, metadata={"doc": _("Optional numeric value (for circle markers).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapDatasetConfig:
     """Configuration for a dataset layer on a geo map.
 
@@ -453,7 +453,7 @@ class GeoMapDatasetConfig:
         validate_geo_map_marker_type(self.type, "type")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapConfig:
     """Configuration for the geo_map component.
 
@@ -504,7 +504,7 @@ class GeoMapConfig:
         validate_not_empty(self, "tag_id")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartSeriesConfig:
     """Configuration for a chart data series.
 
@@ -520,7 +520,7 @@ class ChartSeriesConfig:
     data: list[int | float] = field(metadata={"doc": _("Data points for this series.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartDatasetConfig:
     """Configuration for chart data.
 
@@ -552,7 +552,7 @@ class ChartDatasetConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartConfig:
     """Configuration for chart components (e.g. bar_chart, line_chart).
 
@@ -594,7 +594,7 @@ class ChartConfig:
         validate_not_empty(self, "tag_id")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LiveContentConfig:
     """Configuration for the live_content component.
 
@@ -633,7 +633,7 @@ class LiveContentConfig:
         validate_not_empty(self, "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class WebSocketConfig:
     """Configuration for the websocket component.
 
@@ -673,7 +673,7 @@ class WebSocketConfig:
         validate_not_empty(self, "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BadgeConfig:
     """Configuration for a badge element.
 
@@ -693,7 +693,7 @@ class BadgeConfig:
     """
 
     __example__ = """
-        BadgeConfig("New Feature", IconConfig("sparkles", "s"))
+        BadgeConfig(label="New Feature", icon=IconConfig(name="sparkles", size="s"))
     """
 
     label: str = field(metadata={"doc": _("Badge label.")})
@@ -748,7 +748,7 @@ def _require_htmx_target(config: object, field_name: str) -> None:
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BadgeListConfig:
     """Configuration for the badge list component.
 
@@ -771,11 +771,11 @@ class BadgeListConfig:
             label="Active filters",
             items=[
                 BadgeConfig(
-                    "Country: Germany",
+                    label="Country: Germany",
                     remove_htmx=HtmxConfig(request_url="?status=open", target="#results"),
                 ),
                 BadgeConfig(
-                    "Status: Open",
+                    label="Status: Open",
                     remove_htmx=HtmxConfig(request_url="?country=de", target="#results"),
                 ),
             ],
@@ -802,7 +802,7 @@ class BadgeListConfig:
         _require_htmx_target(self, "clear_all_htmx")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TextDiffConfig:
     """Configuration for the text_diff component.
 
@@ -825,7 +825,7 @@ class TextDiffConfig:
     show_legend: bool = field(default=True, metadata={"doc": _("Explain the markings below the text.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CodeDiffConfig:
     """Configuration for the code_diff component.
 

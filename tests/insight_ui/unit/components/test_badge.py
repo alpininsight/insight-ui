@@ -16,7 +16,7 @@ def render(template: str, context: dict | None = None) -> BeautifulSoup:
 
 def removable_badge(label: str, url: str) -> BadgeConfig:
     """Create a badge that removes itself via a request to the given URL."""
-    return BadgeConfig(label, remove_htmx=HtmxConfig(request_url=url, target="#results"))
+    return BadgeConfig(label=label, remove_htmx=HtmxConfig(request_url=url, target="#results"))
 
 
 # --- badge ---------------------------------------------------------------
@@ -33,7 +33,7 @@ def test_badge_without_remove_request_has_no_button() -> None:
 def test_badge_remove_button_sends_request_on_click() -> None:
     """The remove button names the badge for screen readers and sends the configured request."""
     config = BadgeConfig(
-        "Country: Germany",
+        label="Country: Germany",
         remove_htmx=HtmxConfig(request_url="?status=open", target="#results", push_url=True),
     )
     button = render("{% badge config=config %}", {"config": config}).select_one(".badge button")
@@ -51,7 +51,7 @@ def test_badge_remove_button_sends_request_on_click() -> None:
 def test_badge_remove_label_can_be_customized() -> None:
     """The accessible name of the remove button uses the configured text."""
     config = BadgeConfig(
-        "Germany", remove_label="Remove filter", remove_htmx=HtmxConfig(request_url="?", target="#results")
+        label="Germany", remove_label="Remove filter", remove_htmx=HtmxConfig(request_url="?", target="#results")
     )
     button = render("{% badge config=config %}", {"config": config}).select_one(".badge button")
 
@@ -61,7 +61,7 @@ def test_badge_remove_label_can_be_customized() -> None:
 def test_badge_remove_request_requires_a_target() -> None:
     """Without a target HTMX would swap the response into the button itself."""
     with pytest.raises(ValueError, match=r"remove_htmx needs a target"):
-        BadgeConfig("Germany", remove_htmx=HtmxConfig(request_url="?"))
+        BadgeConfig(label="Germany", remove_htmx=HtmxConfig(request_url="?"))
 
 
 # --- badge_list ----------------------------------------------------------

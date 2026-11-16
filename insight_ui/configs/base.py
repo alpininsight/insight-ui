@@ -27,7 +27,7 @@ from insight_ui.configs.types import (
 _ATTRIBUTE_NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DataAttrConfig:
     """Configuration for a custom data attribute.
 
@@ -83,7 +83,7 @@ DIRECTIONAL_ICON_NAMES: frozenset[str] = frozenset(
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class IconConfig:
     """Configuration for an icon.
 
@@ -135,7 +135,7 @@ class IconConfig:
         validate_icon_color(self.color, "color")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ImageConfig:
     """Configuration for an image element.
 
@@ -168,7 +168,7 @@ class ImageConfig:
         validate_not_empty(self, "url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HtmxConfig:
     """Request options shared by all components that send HTMX requests.
 
@@ -226,7 +226,7 @@ class HtmxConfig:
         validate_http_method(self.method, "method")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BaseFormFieldConfig:
     """Base configuration for form field components.
 

@@ -687,8 +687,8 @@ def button(
     if icon_name is not UNSET:
         icon = (
             IconConfig(
-                icon_name,
-                icon_size if icon_size is not UNSET else "m",
+                name=icon_name,
+                size=icon_size if icon_size is not UNSET else "m",
                 mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
             )
             if icon_name
@@ -1179,7 +1179,7 @@ def logo(
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = IconConfig(name=icon_name, size=icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -1394,8 +1394,8 @@ def badge(
     if icon_name is not UNSET:
         icon = (
             IconConfig(
-                icon_name,
-                icon_size if icon_size is not UNSET else "m",
+                name=icon_name,
+                size=icon_size if icon_size is not UNSET else "m",
                 mirror_rtl=None if icon_mirror_rtl is UNSET else icon_mirror_rtl,
             )
             if icon_name
@@ -1419,7 +1419,7 @@ def badge(
     if config.remove_htmx:
         remove_button = ButtonConfig(
             label=f"{config.remove_label or _('Remove')}: {config.label}",
-            icon=IconConfig("x-mark", "xs"),
+            icon=IconConfig(name="x-mark", size="xs"),
             icon_only=True,
             # Same color as the badge; a neutral badge has no button color, so its button uses the text color.
             color="secondary" if config.color == "neutral" else cast("ButtonColor", config.color),
