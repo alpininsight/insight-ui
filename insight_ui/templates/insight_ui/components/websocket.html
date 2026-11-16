@@ -16,7 +16,7 @@
     aria-atomic="false"
   >
     {% if websocket_config.initial_content %}
-      {{ websocket_config.initial_content|safe }}
+      {{ websocket_config.initial_content }}
     {% else %}
       <p class="text-insight-body">{% trans "Wait for messages..." %}</p>
     {% endif %}

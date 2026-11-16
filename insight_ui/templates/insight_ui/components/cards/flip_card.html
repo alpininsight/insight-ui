@@ -15,7 +15,7 @@
                 {% else %}
                     <h{{ flip_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.title }}</h{{ flip_card_config.heading_level }}>
                 {% endif %}
-                <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ flip_card_config.content|safe }}</p>
+                <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ flip_card_config.content }}</p>
             </div>
 
             {# Tags #}
@@ -55,7 +55,7 @@
                     <h{{ flip_card_config.heading_level }} class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.back_title }}</h{{ flip_card_config.heading_level }}>
                 {% endif %}
                 {% if flip_card_config.back_content %}
-                    <div class="flex-1 text-insight-body text-base overflow-auto">{{ flip_card_config.back_content|safe }}</div>
+                    <div class="flex-1 text-insight-body text-base overflow-auto">{{ flip_card_config.back_content }}</div>
                 {% endif %}
             </div>
 

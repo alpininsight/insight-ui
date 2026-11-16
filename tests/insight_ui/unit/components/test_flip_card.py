@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the flip_card component."""
 
+from django.utils.safestring import mark_safe
+
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
 
@@ -12,9 +14,9 @@ class TestFlipCard(TemplateTagsTestCase):
         """Flip card can render formatted content on a styled back side."""
         card = {
             "title": "Formatted Flip",
-            "content": "Front <strong>content</strong>.",
+            "content": mark_safe("Front <strong>content</strong>."),
             "image": {"url": "/static/product.png", "alt": "Product preview"},
-            "back_content": "<p>Lorem ipsum</p>",
+            "back_content": mark_safe("<p>Lorem ipsum</p>"),
         }
         template_string = """
         {% load insight_tags %}
