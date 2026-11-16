@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from django.core.paginator import Page
 from django.utils.functional import Promise
 from django.utils.html import format_html_join
-from django.utils.safestring import SafeString, mark_safe
+from django.utils.safestring import SafeData, SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
 
@@ -113,6 +113,7 @@ from insight_ui.configs import (
 from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils import query_builder as query_builder_utils
 from insight_ui.utils.diff import text_parts, unified_diff
+from insight_ui.utils.safe_markdown import render_untrusted
 
 register = template.Library()
 
@@ -213,8 +214,12 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
 
 @register.filter
 def markdownify(value: str) -> SafeString:
-    """Convert markdown to html."""
-    html = markdown(value)
+    """Convert markdown to html.
+
+    A plain string may come from users: its raw HTML is shown as text and links or images with a scheme outside
+    the allowed URL schemes lose their URL. A safe string (``mark_safe``) is trusted and may contain HTML.
+    """
+    html = markdown(value) if isinstance(value, SafeData) else render_untrusted(str(value))
 
     # Assign "inline-tag" class to <code> elements
     html = html.replace("<code>", '<span class="inline-tag">')
