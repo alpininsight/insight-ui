@@ -48,6 +48,7 @@ pattern for a host project.
 - [ ] Give every breadcrumb item except the last a `request_url`, and select breadcrumbs as `nav ol`.
 - [ ] Use relative URLs or the allowed schemes in config URL fields (links: `http`, `https`, `mailto`, `tel`; images also `data`), and rename `mail_url=` / `imprint=` / `privacy=` on `FooterContactConfig` to `email=` / `imprint_url=` / `privacy_url=`.
 - [ ] Use lowercase hyphenated `DataAttrConfig` names.
+- [ ] Write links in infobox messages and page header descriptions as Markdown, or pass HTML there as `mark_safe()`; `|markdownify` shows HTML tags from plain strings as text.
 - [ ] Remove `trigger=` from `HtmxConfig`.
 - [ ] Rename `htmx_config=` to `htmx=` on buttons, forms, the search bar and `generic_filter`.
 - [ ] Rename `badge_config=` (hero), `table_config=` and `view_radio_config=` (toggle view), `usermenu=` (navbar) and `empty_msg=` (table).
@@ -701,6 +702,33 @@ and `data-copy="false"` to hide the copy button of a normal code block.
 
 Search: `|diff:` and imports of `file_template` or `styles` from
 `insight_ui.utils.diff`.
+
+### Markdown shows HTML tags as text
+
+The `markdownify` filter renders `InfoboxConfig.message` and the paragraphs of
+`PageHeaderConfig.description`. For a plain string it still renders Markdown
+formatting, but HTML tags in the text are shown as text, and links and images
+with a scheme outside the URL fields' list (links: `http`, `https`, `mailto`,
+`tel`; images: `http`, `https`, `data`) keep their text but lose the URL.
+Relative URLs are unchanged. A safe string is trusted as before and may contain
+HTML; a literal written in a template is safe in Django.
+
+Before:
+
+```python
+InfoboxConfig(message='Read the <a href="/guide/" class="font-bold">guide</a>.')
+```
+
+After:
+
+```python
+InfoboxConfig(message="Read the [guide](/guide/).")
+InfoboxConfig(message=mark_safe('Read the <a href="/guide/" class="font-bold">guide</a>.'))
+```
+
+Search: HTML tags in `message=` of `InfoboxConfig` and `{% infobox %}`, in
+`description=` of `PageHeaderConfig` and `{% page_header %}`, and host
+templates that use `|markdownify`.
 
 ### Button and badge color and variant
 
