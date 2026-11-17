@@ -11,7 +11,7 @@ from insight_ui.configs.base import HtmxConfig
 from insight_ui.configs.types import HeadingLevel, validate_heading_level, validate_not_empty, validate_urls
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InfiniteScrollConfig:
     """Configuration for the infinite_scroll component.
 
@@ -62,7 +62,7 @@ class InfiniteScrollConfig:
         validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PaginationIppConfig:
     """Configuration for items-per-page selector in pagination.
 
@@ -99,7 +99,7 @@ class PaginationIppConfig:
             raise ValueError("'selected_option' must be included in 'options'.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PaginationConfig:
     """Configuration for the pagination component.
 
@@ -157,7 +157,7 @@ class PaginationConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TableConfig:
     """Configuration for the table component.
 

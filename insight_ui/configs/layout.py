@@ -11,7 +11,7 @@ from insight_ui.configs.types import validate_not_empty, validate_urls
 from insight_ui.configs.utils import BadgeConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PageHeaderConfig:
     """Configuration for the page_header component.
 
@@ -47,7 +47,7 @@ class PageHeaderConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ArticleConfig:
     """Configuration for the article component.
 
@@ -83,7 +83,7 @@ class ArticleConfig:
     fixed: bool = field(default=False, metadata={"doc": _("Disable responsive behavior and always use max_columns.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PageConfig:
     """
     Configuration for the page block tag.
@@ -121,7 +121,7 @@ class PageConfig:
     height: str = field(default="auto", metadata={"doc": _("Height behavior (auto|full|peek).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HBoxConfig:
     """
     Configuration for the hbox block tag.
@@ -171,7 +171,7 @@ class HBoxConfig:
     wrap: bool = field(default=False, metadata={"doc": _("Allow flex items to wrap.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class VBoxConfig:
     """
     Configuration for the vbox block tag.
@@ -218,7 +218,7 @@ class VBoxConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SpacerConfig:
     """
     Configuration for the spacer simple tag.
@@ -238,7 +238,7 @@ class SpacerConfig:
     size: str = field(default="m", metadata={"doc": _("Spacer size (xs|s|m|l|xl).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DividerConfig:
     """
     Configuration for the divider simple tag.
@@ -267,7 +267,7 @@ class DividerConfig:
     label: str = field(default="", metadata={"doc": _("Optional text label displayed in the center.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SectionConfig:
     """
     Configuration for the section block tag.
@@ -305,7 +305,7 @@ class SectionConfig:
     aria_labelledby: str = field(default="", metadata={"doc": _("ID of element that labels this section.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SurfaceConfig:
     """
     Configuration for the surface block tag.
@@ -355,7 +355,7 @@ class SurfaceConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GridConfig:
     """
     Configuration for the grid block tag.
@@ -409,7 +409,7 @@ class GridConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HeroConfig:
     """Configuration for the hero component.
 
@@ -452,7 +452,7 @@ class HeroConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ModalConfig:
     """
     Configuration for the modal block tag.
@@ -503,7 +503,7 @@ class ModalConfig:
         validate_not_empty(self, "id")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ListConfig:
     """
     Configuration for the list block tag.
@@ -561,7 +561,7 @@ class ListConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label for the list.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ListItemConfig:
     """
     Configuration for the listitem block tag.

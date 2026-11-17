@@ -18,21 +18,29 @@ class TestFooter(TemplateTagsTestCase):
     def test_footer_basic(self) -> None:
         """Test für grundlegende footer Funktionalität."""
         footer_data = FooterConfig(
-            FooterDescriptionConfig(
-                "Insight UI",
-                "A modern UI library for Django applications to get started quickly.",
-                LogoConfig("insight_ui/svg/insight-ui-logo.svg", alt="Insight UI Logo", height="6rem"),
+            description=FooterDescriptionConfig(
+                title="Insight UI",
+                text="A modern UI library for Django applications to get started quickly.",
+                logo=LogoConfig(url="insight_ui/svg/insight-ui-logo.svg", alt="Insight UI Logo", height="6rem"),
             ),
-            [
-                NavbarLinkConfig("Startpage", "/", IconConfig("home", "xs")),
-                NavbarLinkConfig("Storybook", "/"),
-                NavbarLinkConfig("Documentation", "/"),
+            links=[
+                NavbarLinkConfig(text="Startpage", request_url="/", icon=IconConfig(name="home", size="xs")),
+                NavbarLinkConfig(text="Storybook", request_url="/"),
+                NavbarLinkConfig(text="Documentation", request_url="/"),
             ],
-            FooterContactConfig(
-                "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
+            contact=FooterContactConfig(
+                email="support@alpininsight.com",
+                imprint_url="https://alpininsight.com/imprint/",
+                privacy_url="https://alpininsight.com/privacy/",
             ),
-            LegalNoticeConfig(2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", "/license/"),
-            "v1.0.0",
+            legal=LegalNoticeConfig(
+                year=2026,
+                holder="Alpin Insight Solutions GmbH & Co. KG",
+                source_label="Open Source",
+                license_text="AGPL-3.0",
+                license_url="/license/",
+            ),
+            version="v1.0.0",
         )
 
         template_string = """
@@ -84,9 +92,9 @@ class TestFooter(TemplateTagsTestCase):
 def test_footer_section_headings_are_h2() -> None:
     """Footer sections are top-level sections of the page, so they must not jump from h1/h2 to h4."""
     footer = FooterConfig(
-        FooterDescriptionConfig("Insight UI", "Summary"),
-        [NavbarLinkConfig("Startpage", "/")],
-        FooterContactConfig("support@example.com"),
+        description=FooterDescriptionConfig(title="Insight UI", text="Summary"),
+        links=[NavbarLinkConfig(text="Startpage", request_url="/")],
+        contact=FooterContactConfig(email="support@example.com"),
     )
     html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
     soup = BeautifulSoup(html, "html.parser")
@@ -99,7 +107,9 @@ def test_footer_section_headings_are_h2() -> None:
 def test_contact_email_is_shown_and_linked_with_mailto() -> None:
     """The address is the link text; the link adds mailto: itself."""
     footer = FooterConfig(
-        FooterDescriptionConfig("Insight UI", "Summary"), [], FooterContactConfig(email="team@example.com")
+        description=FooterDescriptionConfig(title="Insight UI", text="Summary"),
+        links=[],
+        contact=FooterContactConfig(email="team@example.com"),
     )
     html = Template("{% load insight_tags %}{% footer config=footer %}").render(Context({"footer": footer}))
     link = BeautifulSoup(html, "html.parser").find("a", href="mailto:team@example.com")

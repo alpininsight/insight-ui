@@ -550,7 +550,7 @@ export class {class_name} {{
             raise CommandError(message)
         new_class = f'''
 
-@dataclass
+@dataclass(kw_only=True)
 class {config_class_name}:
     """Configuration for the {slug.replace("_", " ")} component.
 

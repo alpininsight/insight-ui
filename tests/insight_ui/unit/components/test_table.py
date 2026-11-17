@@ -17,13 +17,13 @@ class TestTable(TemplateTagsTestCase):
     def test_table_basic(self) -> None:
         """Test für grundlegende table Funktionalität."""
         table = TableConfig(
-            ["Name", "E-Mail", "Status", "Actions"],
-            [
+            headers=["Name", "E-Mail", "Status", "Actions"],
+            rows=[
                 ["Max Mustermann", "max@example.com", "Active", EDIT_BUTTON],
                 ["Anna Schmidt", "anna@example.com", "Inactive", EDIT_BUTTON],
                 ["Tom Weber", "tom@example.com", "Active", EDIT_BUTTON],
             ],
-            "Example of a table component.",
+            caption="Example of a table component.",
         )
 
         template_string = """
@@ -50,7 +50,7 @@ class TestTable(TemplateTagsTestCase):
         """A table without rows shows empty_text in the body."""
         rendered = self.render_template(
             "{% load insight_tags %}{% table config=c %}",
-            {"c": TableConfig(["Name"], [], empty_text="No users found.")},
+            {"c": TableConfig(headers=["Name"], rows=[], empty_text="No users found.")},
         )
 
         assert BeautifulSoup(rendered, "html.parser").find("tbody").get_text(strip=True) == "No users found."

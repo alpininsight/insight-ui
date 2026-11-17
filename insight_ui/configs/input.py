@@ -29,7 +29,7 @@ from insight_ui.configs.types import (
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ButtonConfig:
     """Configuration for the button component.
 
@@ -69,7 +69,7 @@ class ButtonConfig:
             label="Click Me!",
             request_url="",
             on_click="calculateSomething()",
-            icon=IconConfig("rocket-launch", "m"),
+            icon=IconConfig(name="rocket-launch", size="m"),
             icon_end=True,
             icon_only=False,
             color="primary",
@@ -137,7 +137,6 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
-    # Append to preserve positional construction of all existing fields.
     download: bool | str = field(
         default=False,
         metadata={"doc": "Lets the browser download the link target; a string suggests the file name."},
@@ -182,7 +181,7 @@ class ButtonConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InputFieldConfig(BaseFormFieldConfig):
     """Configuration for the input_field component.
 
@@ -248,7 +247,7 @@ class InputFieldConfig(BaseFormFieldConfig):
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TextareaConfig(BaseFormFieldConfig):
     """Configuration for the textarea component.
 
@@ -289,7 +288,7 @@ class TextareaConfig(BaseFormFieldConfig):
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CheckboxConfig(BaseFormFieldConfig):
     """Configuration for the checkbox component.
 
@@ -325,7 +324,7 @@ class CheckboxConfig(BaseFormFieldConfig):
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CheckboxItemConfig:
     """Configuration for a single checkbox within a checkbox group.
 
@@ -373,7 +372,7 @@ class CheckboxItemConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CheckboxGroupConfig:
     """Configuration for the checkbox_group component.
 
@@ -435,7 +434,7 @@ class CheckboxGroupConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DropdownItemConfig:
     """Configuration for an item within a dropdown menu.
 
@@ -469,7 +468,7 @@ class DropdownItemConfig:
         validate_not_empty(self, "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DropdownConfig:
     """Configuration for the dropdown component.
 
@@ -516,7 +515,7 @@ class DropdownConfig:
         validate_button_variant(self.variant)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RadioItemConfig:
     """Configuration for a single radio button within a group.
 
@@ -565,7 +564,7 @@ class RadioItemConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RadioGroupConfig:
     """Configuration for the radio_group component.
 
@@ -620,7 +619,7 @@ class RadioGroupConfig:
             raise ValueError(f"current_value '{self.current_value}' must match one of the items' values.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RadioBlockConfig:
     """Configuration for the radio_block component.
 
@@ -720,7 +719,7 @@ class RadioBlockConfig:
             raise ValueError(f"current_value '{self.current_value}' must match one of the items' values.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SliderConfig(BaseFormFieldConfig):
     """Configuration for the slider (range slider) component.
 
@@ -821,7 +820,7 @@ class SliderConfig(BaseFormFieldConfig):
                 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ToggleConfig(BaseFormFieldConfig):
     """Configuration for the toggle component.
 
@@ -893,7 +892,7 @@ class ToggleConfig(BaseFormFieldConfig):
                 raise ValueError(msg)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SelectConfig(BaseFormFieldConfig):
     """Configuration for the select component.
 
@@ -945,7 +944,7 @@ class SelectConfig(BaseFormFieldConfig):
             raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MultiselectConfig(BaseFormFieldConfig):
     """Configuration for the multiselect component.
 
@@ -1007,7 +1006,7 @@ class MultiselectConfig(BaseFormFieldConfig):
             raise ValueError(f"selected_options {invalid} must be included in 'options'.")  # noqa: TRY003
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChatConfig:
     """Configuration for the chat component.
 

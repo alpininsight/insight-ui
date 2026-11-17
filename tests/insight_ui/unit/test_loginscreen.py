@@ -13,7 +13,7 @@ def login_context() -> dict:
     """Build an ordinary host config instead of importing a demo."""
     return get_config() | {
         "login_config": LoginScreenConfig(
-            logo=LogoConfig("insight_ui/svg/insight-ui-logo.svg", alt="Insight UI Logo", height="8rem"),
+            logo=LogoConfig(url="insight_ui/svg/insight-ui-logo.svg", alt="Insight UI Logo", height="8rem"),
         ),
         "footer_config": FooterConfig(),
     }

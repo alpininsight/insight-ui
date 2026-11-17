@@ -20,7 +20,7 @@ from insight_ui.configs.types import (
 from insight_ui.configs.utils import BadgeConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CardConfig:
     """Configuration for the card component.
 
@@ -59,7 +59,7 @@ class CardConfig:
         validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AppCardConfig:
     """Configuration for the app_card component.
 
@@ -101,7 +101,7 @@ class AppCardConfig:
         validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FlipCardConfig:
     """Configuration for the flip_card component.
 
@@ -151,7 +151,7 @@ class FlipCardConfig:
         validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CarouselConfig:
     """Configuration for the carousel component.
 
@@ -208,7 +208,7 @@ class CarouselConfig:
             raise ValueError(msg)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CarouselImageConfig:
     """An image shown by the carousel with the image item template.
 
@@ -238,7 +238,7 @@ class CarouselImageConfig:
         validate_not_empty(self, "url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RingCarouselConfig:
     """Configuration for the ring_carousel component.
 
@@ -289,7 +289,7 @@ class RingCarouselConfig:
             raise ValueError(msg)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ToggleViewConfig:
     """Configuration for the toggle_view component.
 

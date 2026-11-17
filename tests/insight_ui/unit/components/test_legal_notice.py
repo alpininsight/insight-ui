@@ -14,11 +14,11 @@ class TestLegalNotice(TemplateTagsTestCase):
     def test_legal_notice_renders_full_legal_line(self) -> None:
         """Check legal notice output with license metadata."""
         config = LegalNoticeConfig(
-            2026,
-            "Alpin Insight Solutions GmbH & Co. KG",
-            "Open Source",
-            "AGPL-3.0",
-            "https://example.com/license",
+            year=2026,
+            holder="Alpin Insight Solutions GmbH & Co. KG",
+            source_label="Open Source",
+            license_text="AGPL-3.0",
+            license_url="https://example.com/license",
             rights_text="All rights reserved.",
         )
         template_string = """
@@ -94,7 +94,9 @@ class TestLegalNotice(TemplateTagsTestCase):
 
     def test_holder_link_without_a_logo_preserves_legacy_metadata(self) -> None:
         """The name may be linked independently of the optional logo."""
-        config = LegalNoticeConfig(2026, "Example Company", "Open Source", holder_url="/company/", version="v1.2.3")
+        config = LegalNoticeConfig(
+            year=2026, holder="Example Company", source_label="Open Source", holder_url="/company/", version="v1.2.3"
+        )
         rendered = self.render_template("{% load insight_tags %}{% legal_notice config=config %}", {"config": config})
         notice = BeautifulSoup(rendered, "html.parser").find("p")
 

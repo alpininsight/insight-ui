@@ -373,7 +373,7 @@ def test_app_local_shell_and_accessible_names_render_in_active_language(language
     context = {
         **get_config(),
         "footer": FooterConfig(
-            contact=FooterContactConfig("team@example.com", "/imprint/", "/privacy/"),
+            contact=FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/"),
             legal=LegalNoticeConfig(year=2026, holder="Example"),
         ),
         "navbar": NavbarConfig(show_theme_toggle=True, show_language_selector=True, hide_login=True),

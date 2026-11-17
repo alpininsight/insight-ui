@@ -26,7 +26,7 @@ from insight_ui.configs.types import (
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NavbarBrandConfig:
     """Configuration for the navbar brand section.
 
@@ -56,7 +56,7 @@ class NavbarBrandConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NavbarLinkConfig:
     """Configuration for a navbar navigation link.
 
@@ -124,7 +124,7 @@ class NavbarLinkConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UserMenuLinkConfig:
     """Configuration for a user menu link.
 
@@ -137,7 +137,7 @@ class UserMenuLinkConfig:
     """
 
     __example__ = """
-        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s"))
+        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig(name="user", size="s"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
@@ -151,7 +151,7 @@ class UserMenuLinkConfig:
         validate_not_empty(self, "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UserMenuConfig:
     """Configuration for the user dropdown menu.
 
@@ -168,8 +168,8 @@ class UserMenuConfig:
     __example__ = """
         UserMenuConfig(
             links=[
-                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s")),
-                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon=IconConfig("cog-6-tooth", "s")),
+                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig(name="user", size="s")),
+                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon=IconConfig(name="cog-6-tooth", size="s")),
             ],
             avatar_url=user.profile.avatar_url,
         )
@@ -187,7 +187,7 @@ class UserMenuConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LoginScreenConfig:
     """Configuration for the login screen.
 
@@ -249,7 +249,7 @@ class LoginScreenConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NavbarConfig:
     """Configuration for the navbar component.
 
@@ -323,7 +323,7 @@ class NavbarConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarItemConfig:
     """Configuration for a sidebar navigation item.
 
@@ -365,7 +365,7 @@ class SidebarItemConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarCategoryConfig:
     """Configuration for a sidebar category (group of items).
 
@@ -391,7 +391,7 @@ class SidebarCategoryConfig:
     items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarDataConfig:
     """Configuration for sidebar content.
 
@@ -435,7 +435,7 @@ class SidebarDataConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarConfig:
     """Configuration for the sidebar layout tag.
 
@@ -484,7 +484,7 @@ class SidebarConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterDescriptionConfig:
     """Configuration for the footer description section.
 
@@ -511,7 +511,7 @@ class FooterDescriptionConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterContactConfig:
     """Configuration for footer contact information.
 
@@ -551,7 +551,7 @@ class FooterContactConfig:
             raise ValueError(msg) from error
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterConfig:
     """Configuration for the footer component.
 
@@ -606,7 +606,7 @@ class FooterConfig:
     version: str = field(default="", metadata={"doc": _("Information about the current version.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BreadcrumbItemConfig:
     """Configuration for a breadcrumb navigation item.
 
@@ -618,7 +618,7 @@ class BreadcrumbItemConfig:
     """
 
     __example__ = """
-        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home"))
+        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig(name="home"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
@@ -632,7 +632,7 @@ class BreadcrumbItemConfig:
         validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BreadcrumbsConfig:
     """Configuration for the breadcrumbs component.
 
@@ -647,7 +647,7 @@ class BreadcrumbsConfig:
     __example__ = """
         BreadcrumbsConfig(
             items=[
-                BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home")),
+                BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig(name="home")),
                 BreadcrumbItemConfig(text="Products", request_url="/products/"),
                 BreadcrumbItemConfig(text="Laptops"),
             ],
@@ -678,7 +678,7 @@ class BreadcrumbsConfig:
                 raise ValueError(msg)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class StepperItemConfig:
     """Configuration for a step in the stepper component.
 
@@ -707,7 +707,7 @@ class StepperItemConfig:
         validate_step_status(self.status)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class StepperConfig:
     """Configuration for the stepper component.
 
@@ -731,7 +731,7 @@ class StepperConfig:
     items: list[StepperItemConfig] = field(default_factory=list, metadata={"doc": _("List of step configurations.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MinimalStepperConfig:
     """Configuration for the minimal_stepper component.
 
@@ -768,7 +768,7 @@ class MinimalStepperConfig:
             validate_step_status(status, f"steps[{i}]")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BulletPointItemConfig:
     """Configuration for an item in the bullet_point_list component.
 
@@ -795,7 +795,7 @@ class BulletPointItemConfig:
         validate_step_status(self.status)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BulletPointListConfig:
     """Configuration for the bullet_point_list component.
 
@@ -823,7 +823,7 @@ class BulletPointListConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AccordionItemConfig:
     """Configuration for an accordion section.
 
@@ -843,7 +843,7 @@ class AccordionItemConfig:
     open: bool = field(default=False, metadata={"doc": _("Whether section is initially open.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AccordionConfig:
     """Configuration for the accordion component.
 
@@ -879,7 +879,7 @@ class AccordionConfig:
         validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TabConfig:
     """Configuration for a single tab.
 
@@ -906,7 +906,7 @@ class TabConfig:
         validate_not_empty(self, "tag_id", "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TabsConfig:
     """Configuration for the tabs component.
 

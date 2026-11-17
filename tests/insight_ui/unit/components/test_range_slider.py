@@ -18,9 +18,9 @@ class TestRangeSlider(TemplateTagsTestCase):
     def test_slider_config(self) -> None:
         """Test the {% slider %} tag with config dataclass."""
         config = SliderConfig(
-            "range-slider-skip",
-            "range_slider_skip",
-            "Legend Mode: Skip",
+            name="range-slider-skip",
+            tag_id="range_slider_skip",
+            label="Legend Mode: Skip",
             value=6,
             minimum=1,
             maximum=12,

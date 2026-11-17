@@ -27,21 +27,21 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar(self) -> None:
         """Test für grundlegende navbar Funktionalität."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(
+            brand=NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(
                     primary_text="Insight UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/insight-ui-logo.svg",
-                        "insight_ui/svg/insight-ui-logo.svg",
-                        "Insight UI Logo",
+                        url="insight_ui/svg/insight-ui-logo.svg",
+                        url_dark="insight_ui/svg/insight-ui-logo.svg",
+                        alt="Insight UI Logo",
                         height="2rem",
                     ),
                 ),
             ),
-            [
-                NavbarLinkConfig("Startpage", "/", IconConfig("home", "s")),
-                NavbarLinkConfig("About", modal_id="about-modal"),
+            links=[
+                NavbarLinkConfig(text="Startpage", request_url="/", icon=IconConfig(name="home", size="s")),
+                NavbarLinkConfig(text="About", modal_id="about-modal"),
             ],
             search_bar=SearchBarConfig(placeholder="Search..."),
             show_language_selector=True,
@@ -59,7 +59,7 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
         """Authenticated user menus are hidden by default."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(
+            brand=NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
@@ -126,8 +126,8 @@ class TestNavbar(TemplateTagsTestCase):
         assert search_container is not None
         assert search_container["data-search-index"] == "/static/documentation/data/search-index-en.json"
 
-    def test_navbar_keeps_existing_positional_arguments(self) -> None:
-        """Keyword arguments work as expected."""
+    def test_navbar_keeps_keyword_arguments(self) -> None:
+        """Each keyword argument lands in its own field."""
         user_menu = UserMenuConfig()
         search_bar = SearchBarConfig(placeholder="Search...")
         nav_config = NavbarConfig(
@@ -149,7 +149,7 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
         """Host apps can provide a user avatar URL via UserMenuConfig."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(
+            brand=NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
@@ -185,7 +185,7 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_user_menu_keeps_initials_fallback_without_avatar(self) -> None:
         """Existing initials fallback remains the default user menu trigger."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(
+            brand=NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
@@ -206,9 +206,9 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_user_menu_renders_string_icon(self) -> None:
         """User menu icon names render through the documented string contract."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
+            brand=NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
             user_menu=UserMenuConfig(
-                links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon=IconConfig("user"))],
+                links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon=IconConfig(name="user"))],
             ),
         )
 
@@ -224,15 +224,15 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_renders_brand_mark_when_configured(self) -> None:
         """The brand link is named by the wordmark it shows; the logo beside it is decorative."""
         nav_config = NavbarConfig(
-            NavbarBrandConfig(
+            brand=NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(
                     primary_text="Insight",
                     secondary_text="UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/insight-ui-logo.svg",
-                        "insight_ui/svg/insight-ui-logo.svg",
-                        "Insight UI Logo",
+                        url="insight_ui/svg/insight-ui-logo.svg",
+                        url_dark="insight_ui/svg/insight-ui-logo.svg",
+                        alt="Insight UI Logo",
                         height="2rem",
                     ),
                 ),
@@ -312,6 +312,6 @@ def test_external_navbar_link_needs_a_url() -> None:
 def test_brand_logo_without_wordmark_keeps_its_name() -> None:
     """Without a wordmark the logo is the only content, so its alt text names the brand link."""
     mark = BrandMarkConfig(logo=LogoConfig(url="insight_ui/svg/insight-ui-logo.svg", alt="Insight UI"))
-    soup = render_navbar(NavbarConfig(NavbarBrandConfig(request_url="/home/", mark=mark)))
+    soup = render_navbar(NavbarConfig(brand=NavbarBrandConfig(request_url="/home/", mark=mark)))
 
     assert soup.find("a", href="/home/").find("img")["alt"] == "Insight UI"

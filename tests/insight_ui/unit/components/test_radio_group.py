@@ -16,12 +16,14 @@ class TestRadioGroup(TemplateTagsTestCase):
         """Test the {% radio_group %} tag."""
         context = {
             "model_radio_config": RadioGroupConfig(
-                "model",
-                "Select AI Model:",
-                [
-                    RadioItemConfig("BERT", "model1", "BERT"),
-                    RadioItemConfig("PaLM 2", "model2", "PaLM 2"),
-                    RadioItemConfig("LLaMA 2", "model3", "LLaMA 2", disabled=True, disabled_reason="Unavailable"),
+                name="model",
+                label="Select AI Model:",
+                items=[
+                    RadioItemConfig(value="BERT", tag_id="model1", label="BERT"),
+                    RadioItemConfig(value="PaLM 2", tag_id="model2", label="PaLM 2"),
+                    RadioItemConfig(
+                        value="LLaMA 2", tag_id="model3", label="LLaMA 2", disabled=True, disabled_reason="Unavailable"
+                    ),
                 ],
             )
         }

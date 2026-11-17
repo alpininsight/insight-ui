@@ -158,7 +158,7 @@ def check_translations(package: Path) -> None:
     context = {
         **get_config(),
         "footer": FooterConfig(
-            contact=FooterContactConfig("team@example.com", "/imprint/", "/privacy/"),
+            contact=FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/"),
             legal=LegalNoticeConfig(year=2026, holder="Example"),
         ),
         "navbar": NavbarConfig(show_theme_toggle=True, hide_login=True),
