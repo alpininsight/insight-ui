@@ -1,33 +1,34 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Configuration classes for utility components (differentiator, charts, maps, etc.)."""
+"""Configuration classes for utility components (diffs, charts, maps, etc.)."""
 
 import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import IconConfig
+from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
-    AlertType,
-    BadgeType,
+    WEBSOCKET_URL_SCHEMES,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
     InlinePosition,
+    Severity,
     Size,
-    validate_alert_type,
-    validate_badge_type,
     validate_color_type,
     validate_corner_position,
     validate_geo_map_marker_type,
     validate_inline_position,
+    validate_not_empty,
+    validate_severity,
     validate_size,
+    validate_urls,
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InfoboxConfig:
     """Configuration for the infobox component.
 
@@ -35,26 +36,26 @@ class InfoboxConfig:
 
     Attributes:
         message: Descriptive message.
-        info_type: Importance level of the message.
+        severity: Severity of the message.
 
     """
 
     __example__ = """
         InfoboxConfig(
             message="Tip: You can drag and drop files here.",
-            info_type="info",
+            severity="info",
         )
         """
 
     message: str = field(metadata={"doc": _("Descriptive message.")})
-    info_type: AlertType = field(default="info", metadata={"doc": _("Importance level of the message.")})
+    severity: Severity = field(default="info", metadata={"doc": _("Severity of the message.")})
 
     def __post_init__(self) -> None:
-        """Validate info_type after initialization."""
-        validate_alert_type(self.info_type, "info_type")
+        """Validate severity after initialization."""
+        validate_severity(self.severity)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LegalNoticeConfig:
     """Configuration for the legal_notice component.
 
@@ -69,6 +70,8 @@ class LegalNoticeConfig:
         separator: Separator between legal metadata parts.
         rights_text: Optional rights statement.
         version: Optional version string, for example v1.2.3.
+        holder_url: Optional destination for the copyright holder's name.
+        holder_logo: Optional logo before the holder's name; use empty alt text when decorative.
 
     """
 
@@ -80,6 +83,7 @@ class LegalNoticeConfig:
             license_text="AGPL-3.0",
             license_url="https://github.com/org/repo/blob/main/LICENSE",
             version="v1.0.0",
+            holder_url="https://company.example/",
         )
         """
 
@@ -93,9 +97,18 @@ class LegalNoticeConfig:
     )  # Middle dot
     rights_text: str = field(default="", metadata={"doc": _("Optional rights statement.")})
     version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
+    holder_url: str = field(default="", metadata={"doc": _("Optional destination for the copyright holder's name.")})
+    holder_logo: "LogoConfig | None" = field(
+        default=None,
+        metadata={"doc": _("Optional logo before the holder's name; use empty alt text when decorative.")},
+    )
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LogoConfig:
     """Configuration for the logo component.
 
@@ -133,8 +146,12 @@ class LogoConfig:
     height: str = field(default="2rem", metadata={"doc": _("CSS height for image/svg logos.")})
     width: str = field(default="", metadata={"doc": _("Optional CSS width for image/svg logos.")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class BrandMarkConfig:
     """Configuration for the brand_mark component.
 
@@ -156,7 +173,7 @@ class BrandMarkConfig:
             primary_text="Insight",
             secondary_text="UI",
             primary_text_color="text-insight-headline",
-            secondary_text_color="text-insight-secondary",
+            secondary_text_color="text-insight-secondary-text",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -172,7 +189,7 @@ class BrandMarkConfig:
         default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
     )
     secondary_text_color: str = field(
-        default="text-insight-secondary", metadata={"doc": _("CSS class for secondary text color.")}
+        default="text-insight-secondary-text", metadata={"doc": _("CSS class for secondary text color.")}
     )
     logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
@@ -185,7 +202,7 @@ class BrandMarkConfig:
         validate_inline_position(self.logo_position, "logo_position")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class StatusScreenConfig:
     """Configuration for the status_screen component.
 
@@ -194,7 +211,7 @@ class StatusScreenConfig:
     Attributes:
         title: Main status title.
         description: Supporting status description.
-        status: Visual status type.
+        severity: Severity of the status.
         brand: Optional brand mark shown above the card.
         notice_title: Optional notice heading.
         notice: Optional notice text.
@@ -210,17 +227,17 @@ class StatusScreenConfig:
         StatusScreenConfig(
             title="Sign-in failed",
             description="The SSO process could not be completed.",
-            status="error",
+            severity="error",
             notice_title="What happened?",
             notice="Please try again or contact support if the issue persists.",
-            primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
-            secondary_action=ButtonConfig(label="Back to start", request_url="/", type="secondary"),
+            primary_action=ButtonConfig(label="Try again", request_url="/login/", color="primary"),
+            secondary_action=ButtonConfig(label="Back to start", request_url="/", color="secondary"),
         )
         """
 
     title: str = field(metadata={"doc": _("Main status title.")})
     description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
-    status: AlertType = field(default="info", metadata={"doc": _("Visual status type.")})
+    severity: Severity = field(default="info", metadata={"doc": _("Severity of the status.")})
     brand: BrandMarkConfig | None = field(
         default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
@@ -233,23 +250,21 @@ class StatusScreenConfig:
     card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
 
     def __post_init__(self) -> None:
-        """Validate status after initialization."""
-        validate_alert_type(self.status, "status")
+        """Validate severity after initialization."""
+        validate_severity(self.severity)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CornerRibbonConfig:
     """Configuration for the corner_ribbon component.
 
     Renders a decorative diagonal ribbon in a browser corner.
 
     Attributes:
-        text: The text displayed in the ribbon.
+        text: The text displayed in the ribbon; also the name screen readers announce.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
-        color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
+        color: Fill of the ribbon; the text takes the color made for it.
         request_url: Optional URL that turns the ribbon into a link.
-        aria_label: Optional accessible label for the linked ribbon.
 
     """
 
@@ -258,60 +273,32 @@ class CornerRibbonConfig:
             text="Beta",
             position="top-right",
             color="warning",
-            foreground_color="primary",
             request_url="/beta",
         )
         """
 
-    text: str = field(metadata={"doc": _("The text displayed in the ribbon.")})
+    text: str = field(metadata={"doc": _("The text displayed in the ribbon; also the name screen readers announce.")})
     position: CornerPosition = field(
         default="top-right",
         metadata={"doc": _("Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.")},
     )
     color: ColorType = field(
         default="primary",
-        metadata={"doc": _("Color variant for the ribbon.")},
-    )
-    foreground_color: ColorType | str = field(
-        default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
+        metadata={"doc": _("Fill of the ribbon; the text takes the color made for it.")},
     )
     request_url: str = field(
         default="",
         metadata={"doc": _("Optional URL that turns the ribbon into a link.")},
     )
-    aria_label: str = field(
-        default="",
-        metadata={"doc": _("Optional accessible label for the linked ribbon.")},
-    )
 
     def __post_init__(self) -> None:
         """Validate position and color after initialization."""
+        validate_urls(self)
         validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
-        if self.foreground_color:
-            validate_color_type(self.foreground_color, "foreground_color")
-
-    @property
-    def background_class(self) -> str:
-        """Map neutral to an existing elevation token, not an undefined color."""
-        if self.color == "neutral":
-            return "bg-insight-bg-raised"
-        return f"bg-insight-{self.color}"
-
-    @property
-    def foreground_class(self) -> str:
-        """Use the neutral body text role and preserve semantic color overrides."""
-        if self.foreground_color == "neutral":
-            return "text-insight-text-body"
-        if self.foreground_color:
-            return f"text-insight-{self.foreground_color}"
-        if self.color == "neutral":
-            return "text-insight-text-body"
-        return "text-white"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ProgressBarConfig:
     """Configuration for a simple progress bar with optional auto-update modes.
 
@@ -394,6 +381,7 @@ class ProgressBarConfig:
 
     def __post_init__(self) -> None:
         """Warn if both request_url and sse_url are set, since sse_url silently takes priority."""
+        validate_urls(self)
         if self.request_url and self.sse_url:
             identifier = self.tag_id or self.label or "(unnamed)"
             warnings.warn(
@@ -404,7 +392,7 @@ class ProgressBarConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapMarkerConfig:
     """Configuration for a marker on a geo map.
 
@@ -428,7 +416,7 @@ class GeoMapMarkerConfig:
     value: int | float | None = field(default=None, metadata={"doc": _("Optional numeric value (for circle markers).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapDatasetConfig:
     """Configuration for a dataset layer on a geo map.
 
@@ -465,7 +453,7 @@ class GeoMapDatasetConfig:
         validate_geo_map_marker_type(self.type, "type")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GeoMapConfig:
     """Configuration for the geo_map component.
 
@@ -477,6 +465,7 @@ class GeoMapConfig:
         map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
         aria_label: Accessible label describing the map's purpose.
+        tag_id: Unique ID of the map; give each map on a page its own.
 
     """
 
@@ -508,9 +497,14 @@ class GeoMapConfig:
     aria_label: str = field(
         default=_("Interactive map"), metadata={"doc": _("Accessible label describing the map's purpose.")}
     )
+    tag_id: str = field(default="map", metadata={"doc": _("Unique ID of the map; give each map on a page its own.")})
+
+    def __post_init__(self) -> None:
+        """Require an ID for the map element."""
+        validate_not_empty(self, "tag_id")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartSeriesConfig:
     """Configuration for a chart data series.
 
@@ -526,7 +520,7 @@ class ChartSeriesConfig:
     data: list[int | float] = field(metadata={"doc": _("Data points for this series.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartDatasetConfig:
     """Configuration for chart data.
 
@@ -558,7 +552,7 @@ class ChartDatasetConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ChartConfig:
     """Configuration for chart components (e.g. bar_chart, line_chart).
 
@@ -595,18 +589,24 @@ class ChartConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label describing the chart's purpose.")})
     show_decal: bool = field(default=True, metadata={"doc": _("Show decal patterns for colorblind accessibility.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
 
-@dataclass
+
+@dataclass(kw_only=True)
 class LiveContentConfig:
     """Configuration for the live_content component.
 
-    Renders a container that auto-refreshes via HTMX polling.
+    Renders a container that auto-refreshes via HTMX polling. The updates stay out of the
+    global loading bar unless htmx sets show_global_loading_indicator=True.
 
     Attributes:
         request_url: URL for content updates.
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
+        htmx: Shared request options such as target, swap method or vals.
 
     """
 
@@ -623,9 +623,17 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as target, swap method or vals.")}
+    )
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
+        validate_not_empty(self, "request_url")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class WebSocketConfig:
     """Configuration for the websocket component.
 
@@ -659,8 +667,13 @@ class WebSocketConfig:
     )
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self, request_url=WEBSOCKET_URL_SCHEMES)
+        validate_not_empty(self, "request_url")
 
-@dataclass
+
+@dataclass(kw_only=True)
 class BadgeConfig:
     """Configuration for a badge element.
 
@@ -670,14 +683,17 @@ class BadgeConfig:
         label: Badge label.
         icon: An optional icon displayed before the text.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
-        type: Defines the color of the badge.
+        color: Color of the badge.
         size: Defines the size of the badge.
+        disabled: **True** to show the badge as disabled; also disables its remove button.
         tooltip: Optional tooltip text displayed on hover.
+        remove_htmx: Request sent by a remove button next to the label. The button is only shown if this is set.
+        remove_label: Accessible name of the remove button, followed by the badge label. Defaults to "Remove".
 
     """
 
     __example__ = """
-        BadgeConfig("New Feature", IconConfig("sparkles", "s"))
+        BadgeConfig(label="New Feature", icon=IconConfig(name="sparkles", size="s"))
     """
 
     label: str = field(metadata={"doc": _("Badge label.")})
@@ -688,11 +704,157 @@ class BadgeConfig:
             "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
         },
     )
-    type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
+    color: ColorType = field(default="primary", metadata={"doc": _("Color of the badge.")})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    disabled: bool = field(
+        default=False,
+        metadata={"doc": _("**True** to show the badge as disabled; also disables its remove button.")},
+    )
     tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
+    remove_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("Request sent by a remove button next to the label. The button is only shown if this is set.")
+        },
+    )
+    remove_label: str = field(
+        default="",
+        metadata={"doc": _('Accessible name of the remove button, followed by the badge label. Defaults to "Remove".')},
+    )
 
     def __post_init__(self) -> None:
-        """Validate type and size after initialization."""
-        validate_badge_type(self.type, "type")
+        """Validate color, size and the target of the remove request after initialization."""
+        validate_color_type(self.color)
         validate_size(self.size, "size")
+        _require_htmx_target(self, "remove_htmx")
+
+
+def _require_htmx_target(config: object, field_name: str) -> None:
+    """Require a target for a button request, because HTMX would otherwise swap the response into the button.
+
+    Args:
+        config: The config holding the HtmxConfig.
+        field_name: Name of the HtmxConfig field to check.
+
+    Raises:
+        ValueError: If the HtmxConfig is set but has no target.
+
+    """
+    htmx = getattr(config, field_name)
+    if htmx is not None and not htmx.target:
+        raise ValueError(  # noqa: TRY003
+            f"{config.__class__.__name__}.{field_name} needs a target, e.g. the element that contains the list "
+            "and the badges, so the response does not replace the button itself."
+        )
+
+
+@dataclass(kw_only=True)
+class BadgeListConfig:
+    """Configuration for the badge list component.
+
+    Renders badges as a labelled list, e.g. the active filters above a table. After a badge is removed
+    and the list is swapped by HTMX, the focus moves to the next remove button, so keyboard users can
+    remove several badges in a row.
+
+    Attributes:
+        tag_id: Unique ID of the list, used to restore the focus after an HTMX swap.
+        label: Accessible name of the list, e.g. "Active filters".
+        items: Badges shown in the list.
+        clear_all_htmx: Request sent by a "Remove all" button after the badges. The button is only shown if this is set.
+        clear_all_label: Text of the "Remove all" button. Defaults to "Remove all".
+
+    """
+
+    __example__ = """
+        BadgeListConfig(
+            tag_id="active-filters",
+            label="Active filters",
+            items=[
+                BadgeConfig(
+                    label="Country: Germany",
+                    remove_htmx=HtmxConfig(request_url="?status=open", target="#results"),
+                ),
+                BadgeConfig(
+                    label="Status: Open",
+                    remove_htmx=HtmxConfig(request_url="?country=de", target="#results"),
+                ),
+            ],
+            clear_all_htmx=HtmxConfig(request_url="?", target="#results"),
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID of the list, used to restore the focus after an HTMX swap.")})
+    label: str = field(metadata={"doc": _('Accessible name of the list, e.g. "Active filters".')})
+    items: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("Badges shown in the list.")})
+    clear_all_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _('Request sent by a "Remove all" button after the badges. The button is only shown if this is set.')
+        },
+    )
+    clear_all_label: str = field(
+        default="", metadata={"doc": _('Text of the "Remove all" button. Defaults to "Remove all".')}
+    )
+
+    def __post_init__(self) -> None:
+        """Require an ID and an accessible name, and a target for the remove-all request."""
+        validate_not_empty(self, "tag_id", "label")
+        _require_htmx_target(self, "clear_all_htmx")
+
+
+@dataclass(kw_only=True)
+class TextDiffConfig:
+    """Configuration for the text_diff component.
+
+    Marks the changes between two texts for readers without a developer background: removed words
+    are struck through, added words are underlined, so the meaning does not depend on color.
+
+    Attributes:
+        before: Original text.
+        after: Changed text.
+        show_legend: Explain the markings below the text.
+
+    """
+
+    __example__ = """
+        TextDiffConfig(before="The meeting is on Monday.", after="The meeting is on Tuesday at noon.")
+        """
+
+    before: str = field(metadata={"doc": _("Original text.")})
+    after: str = field(metadata={"doc": _("Changed text.")})
+    show_legend: bool = field(default=True, metadata={"doc": _("Explain the markings below the text.")})
+
+
+@dataclass(kw_only=True)
+class CodeDiffConfig:
+    """Configuration for the code_diff component.
+
+    Shows the changes between two short code snippets as a unified diff in a code block, with
+    syntax highlighting. Needs INSIGHT_UI["load_prism"].
+
+    Attributes:
+        before: Original code.
+        after: Changed code.
+        language: Language for the syntax highlighting, e.g. python.
+        filename: Optional file name shown in the toolbar.
+        tag_id: Optional ID of the code block.
+
+    """
+
+    __example__ = """
+        CodeDiffConfig(
+            before='ButtonConfig(label="Save", type="primary")',
+            after='ButtonConfig(label="Save", color="primary")',
+            language="python",
+        )
+        """
+
+    before: str = field(metadata={"doc": _("Original code.")})
+    after: str = field(metadata={"doc": _("Changed code.")})
+    language: str = field(default="text", metadata={"doc": _("Language for the syntax highlighting, e.g. python.")})
+    filename: str = field(default="", metadata={"doc": _("Optional file name shown in the toolbar.")})
+    tag_id: str = field(default="", metadata={"doc": _("Optional ID of the code block.")})
+
+    def __post_init__(self) -> None:
+        """Require a language, because it selects the grammar of the code block."""
+        validate_not_empty(self, "language")

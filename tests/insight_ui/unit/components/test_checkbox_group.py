@@ -15,18 +15,20 @@ class TestCheckboxGroup(TemplateTagsTestCase):
     def test_checkbox_group(self) -> None:
         """Test the {% checkbox_group %} tag."""
         checkbox_context = CheckboxGroupConfig(
-            "language",
-            "Choose languages: (max. 3)",
-            [
-                CheckboxItemConfig("english", "English", "english"),
-                CheckboxItemConfig("german", "German", "german", checked=True),
-                CheckboxItemConfig("french", "French", "french"),
-                CheckboxItemConfig("spanish", "Spanish", "spanish"),
-                CheckboxItemConfig("italian", "Italian (currently not available)", "italian", True),
+            name="language",
+            label="Choose languages: (max. 3)",
+            items=[
+                CheckboxItemConfig(tag_id="english", label="English", value="english"),
+                CheckboxItemConfig(tag_id="german", label="German", value="german", checked=True),
+                CheckboxItemConfig(tag_id="french", label="French", value="french"),
+                CheckboxItemConfig(tag_id="spanish", label="Spanish", value="spanish"),
+                CheckboxItemConfig(
+                    tag_id="italian", label="Italian (currently not available)", value="italian", disabled=True
+                ),
             ],
-            True,
-            1,
-            3,
+            as_row=True,
+            minimum_checked=1,
+            maximum_checked=3,
         )
 
         template_string = """

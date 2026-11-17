@@ -9,7 +9,7 @@
         {% endif %}
 
         <div
-            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %}text-insight-success-foreground bg-insight-success-soft{% elif status_screen_config.status == 'warning' %}text-insight-warning-foreground bg-insight-warning-soft{% elif status_screen_config.status == 'error' %}text-insight-danger-foreground bg-insight-danger-soft{% else %}text-insight-info-foreground bg-insight-info-soft{% endif %}"
+            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.severity == 'success' %}text-insight-success-text bg-insight-success-soft{% elif status_screen_config.severity == 'warning' %}text-insight-warning-text bg-insight-warning-soft{% elif status_screen_config.severity == 'error' %}text-insight-danger-text bg-insight-danger-soft{% else %}text-insight-info-text bg-insight-info-soft{% endif %}"
             aria-hidden="true"
         >
             {% icon name=status_screen_icon size="l" %}
@@ -27,8 +27,8 @@
 
         {% if status_screen_config.notice or status_screen_config.notice_title %}
             <div
-                class="px-4 py-2 mx-auto mt-6 max-w-lg text-start border border-s-4 border-insight-surface rounded-e-insight-control {% if status_screen_config.status == 'success' %}border-s-insight-success{% elif status_screen_config.status == 'warning' %}border-s-insight-warning{% elif status_screen_config.status == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
-                role="{% if status_screen_config.status == 'error' %}alert{% else %}status{% endif %}"
+                class="px-4 py-2 mx-auto mt-6 max-w-lg text-start border border-s-4 border-insight-surface rounded-e-insight-control {% if status_screen_config.severity == 'success' %}border-s-insight-success{% elif status_screen_config.severity == 'warning' %}border-s-insight-warning{% elif status_screen_config.severity == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
+                role="{% if status_screen_config.severity == 'error' %}alert{% else %}status{% endif %}"
             >
                 {% if status_screen_config.notice_title %}
                     <p class="font-semibold text-insight-headline">{{ status_screen_config.notice_title }}</p>

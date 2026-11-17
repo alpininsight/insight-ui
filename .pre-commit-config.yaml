@@ -22,6 +22,7 @@ repos:
       - id: detect-private-key
       - id: check-merge-conflict
       - id: mixed-line-ending
+        args: ["--fix=lf"]
       - id: check-added-large-files
         args: ["--maxkb=1024"]
       - id: no-commit-to-branch
@@ -66,9 +67,9 @@ repos:
     hooks:
       - id: gitleaks
 
-  # Conventional Commits (commit-msg validation)
+  # Conventional Commits validation with custom schema
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.18.0
+    rev: v4.8.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -102,7 +103,7 @@ repos:
         name: Check design token usage
         entry: uv run python scripts/check_design_tokens.py
         language: system
-        files: '(^|/)templates/.*\.html$'
+        files: '(^|/)templates/.*\.html$|^insight_ui/static/insight_ui/js/.*(?<!\.min)\.js$|^insight_ui/utils/input\.css$'
         require_serial: true
 
       # Run pytest

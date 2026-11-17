@@ -29,12 +29,17 @@ REQUIRED = {
     "insight_ui/utils/input.css",
     "insight_ui/static/insight_ui/css/tailwind.css",
     "insight_ui/static/insight_ui/js/insight-ui-init.js",
+    "insight_ui/locale/de/LC_MESSAGES/django.po",
+    "insight_ui/locale/de/LC_MESSAGES/django.mo",
+    "insight_ui/locale/de/LC_MESSAGES/djangojs.po",
+    "insight_ui/locale/de/LC_MESSAGES/djangojs.mo",
 }
 SOURCE_ONLY = {
     "package.json",
     "package-lock.json",
     "tests/__init__.py",
     "tests/settings.py",
+    "scripts/hatch_i18n.py",
 }
 
 

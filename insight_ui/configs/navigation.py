@@ -5,16 +5,28 @@
 import warnings
 from dataclasses import dataclass, field
 
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
+from insight_ui.configs.types import (
+    HeadingLevel,
+    Size,
+    StepStatus,
+    validate_heading_level,
+    validate_not_empty,
+    validate_size,
+    validate_step_status,
+    validate_urls,
+)
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NavbarBrandConfig:
     """Configuration for the navbar brand section.
 
@@ -22,7 +34,6 @@ class NavbarBrandConfig:
 
     Attributes:
         request_url: URL to navigate to when clicking on the brand.
-        aria_label: Optional accessible label for the brand link.
         mark: Brand mark with logo and wordmark.
 
     """
@@ -38,11 +49,14 @@ class NavbarBrandConfig:
         """
 
     request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
-    aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
     mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class NavbarLinkConfig:
     """Configuration for a navbar navigation link.
 
@@ -55,6 +69,7 @@ class NavbarLinkConfig:
         staff_only: The link is only displayed for administrators.
         modal_id: ID of a modal dialog to open. The modal must be defined elsewhere in the template.
         dropdown: Configuration of a dropdown menu.
+        external: **True** to open the link in a new tab.
 
     """
 
@@ -84,9 +99,14 @@ class NavbarLinkConfig:
         metadata={"doc": _("ID of a modal dialog to open. The modal must be defined elsewhere in the template.")},
     )
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
+    external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
+        if self.external and not self.request_url:
+            msg = f"NavbarLinkConfig '{self.text}': external only applies together with request_url."
+            raise ValueError(msg)
         if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "
@@ -104,7 +124,7 @@ class NavbarLinkConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UserMenuLinkConfig:
     """Configuration for a user menu link.
 
@@ -117,7 +137,7 @@ class UserMenuLinkConfig:
     """
 
     __example__ = """
-        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s"))
+        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig(name="user", size="s"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
@@ -125,8 +145,13 @@ class UserMenuLinkConfig:
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
+        validate_not_empty(self, "request_url")
 
-@dataclass
+
+@dataclass(kw_only=True)
 class UserMenuConfig:
     """Configuration for the user dropdown menu.
 
@@ -143,8 +168,8 @@ class UserMenuConfig:
     __example__ = """
         UserMenuConfig(
             links=[
-                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s")),
-                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon=IconConfig("cog-6-tooth", "s")),
+                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig(name="user", size="s")),
+                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon=IconConfig(name="cog-6-tooth", size="s")),
             ],
             avatar_url=user.profile.avatar_url,
         )
@@ -157,8 +182,12 @@ class UserMenuConfig:
     avatar_url: str = field(default="", metadata={"doc": _("URL to the user's avatar image.")})
     avatar_alt: str = field(default="", metadata={"doc": _("Alt text for the avatar image.")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class LoginScreenConfig:
     """Configuration for the login screen.
 
@@ -215,22 +244,26 @@ class LoginScreenConfig:
         metadata={"doc": _("URL for registration. Empty hides the link.")},
     )
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class NavbarConfig:
     """Configuration for the navbar component.
 
     Renders a full navigation bar with brand, links, and optional features.
 
-    The user menu behavior is controlled by LOGIN_URL and the usermenu config:
+    The user menu behavior is controlled by LOGIN_URL and the user_menu config:
     - If LOGIN_URL is set and user is not authenticated: show login button (unless hide_login=True)
-    - If user is authenticated: show user dropdown with logout (and custom links from usermenu)
+    - If user is authenticated: show user dropdown with logout (and custom links from user_menu)
 
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         search_bar: Configuration for the search bar. If None, no search bar is displayed.
-        usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
+        user_menu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
@@ -255,7 +288,7 @@ class NavbarConfig:
                 placeholder="Search...",
                 enable_search=True,
             ),
-            usermenu=UserMenuConfig(
+            user_menu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
                 ],
@@ -274,7 +307,7 @@ class NavbarConfig:
         default=None,
         metadata={"doc": _("Configuration for the search bar. If None, no search bar is displayed.")},
     )
-    usermenu: UserMenuConfig | None = field(
+    user_menu: UserMenuConfig | None = field(
         default=None,
         metadata={"doc": _("Configuration for the user dropdown menu. None uses defaults (logout only).")},
     )
@@ -290,7 +323,7 @@ class NavbarConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarItemConfig:
     """Configuration for a sidebar navigation item.
 
@@ -315,6 +348,7 @@ class SidebarItemConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
+        validate_urls(self)
         if not self.request_url:
             warnings.warn(
                 f"SidebarItemConfig '{self.text}' has no request_url set. The link will not be rendered.",
@@ -331,7 +365,7 @@ class SidebarItemConfig:
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarCategoryConfig:
     """Configuration for a sidebar category (group of items).
 
@@ -357,7 +391,7 @@ class SidebarCategoryConfig:
     items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarDataConfig:
     """Configuration for sidebar content.
 
@@ -401,7 +435,7 @@ class SidebarDataConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SidebarConfig:
     """Configuration for the sidebar layout tag.
 
@@ -450,7 +484,7 @@ class SidebarConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterDescriptionConfig:
     """Configuration for the footer description section.
 
@@ -477,33 +511,47 @@ class FooterDescriptionConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterContactConfig:
     """Configuration for footer contact information.
 
     Contact information, link to the imprint, privacy policy and a contact email address.
 
     Attributes:
-        mail_url: URL of a contact email address.
-        imprint: Link to an imprint.
-        privacy: Link to a privacy policy.
+        email: Contact email address; the link adds mailto:.
+        imprint_url: Link to an imprint.
+        privacy_url: Link to a privacy policy.
 
     """
 
     __example__ = """
         FooterContactConfig(
-            mail_url="support@example.com",
-            imprint="/imprint/",
-            privacy="/privacy/",
+            email="support@example.com",
+            imprint_url="/imprint/",
+            privacy_url="/privacy/",
         )
         """
 
-    mail_url: str = field(default="", metadata={"doc": _("URL of a contact email address.")})
-    imprint: str = field(default="", metadata={"doc": _("Link to an imprint.")})
-    privacy: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
+    email: str = field(default="", metadata={"doc": _("Contact email address; the link adds mailto:.")})
+    imprint_url: str = field(default="", metadata={"doc": _("Link to an imprint.")})
+    privacy_url: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow and an email that is not an address."""
+        validate_urls(self)
+        if not self.email:
+            return
+        if self.email.lower().startswith("mailto:"):
+            msg = "FooterContactConfig.email: pass the address without mailto:, the link adds it."
+            raise ValueError(msg)
+        try:
+            validate_email(self.email)
+        except ValidationError as error:
+            msg = f"FooterContactConfig.email: {self.email!r} is not an email address."
+            raise ValueError(msg) from error
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FooterConfig:
     """Configuration for the footer component.
 
@@ -529,9 +577,9 @@ class FooterConfig:
                 NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
             ],
             contact=FooterContactConfig(
-                mail_url="support@example.com",
-                imprint="/imprint/",
-                privacy="/privacy/",
+                email="support@example.com",
+                imprint_url="/imprint/",
+                privacy_url="/privacy/",
             ),
             legal=LegalNoticeConfig(
                 year=2026,
@@ -558,7 +606,7 @@ class FooterConfig:
     version: str = field(default="", metadata={"doc": _("Information about the current version.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BreadcrumbItemConfig:
     """Configuration for a breadcrumb navigation item.
 
@@ -570,15 +618,21 @@ class BreadcrumbItemConfig:
     """
 
     __example__ = """
-        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home"))
+        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig(name="home"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
+    def __post_init__(self) -> None:
+        """Require a label and reject URL schemes the fields do not allow."""
+        if not isinstance(self.text, Promise):
+            validate_not_empty(self, "text")
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class BreadcrumbsConfig:
     """Configuration for the breadcrumbs component.
 
@@ -593,7 +647,7 @@ class BreadcrumbsConfig:
     __example__ = """
         BreadcrumbsConfig(
             items=[
-                BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home")),
+                BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig(name="home")),
                 BreadcrumbItemConfig(text="Products", request_url="/products/"),
                 BreadcrumbItemConfig(text="Laptops"),
             ],
@@ -607,8 +661,24 @@ class BreadcrumbsConfig:
         default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
     )
 
+    def __post_init__(self) -> None:
+        """Require a URL on every item before the last one; the last item is the current page."""
+        self.validate_items()
 
-@dataclass
+    def validate_items(self, *, resolve_lazy: bool = False) -> None:
+        """Keep lazy labels and URLs unresolved during setup, and validate them before rendering."""
+        for item in self.items:
+            if resolve_lazy or not isinstance(item.text, Promise):
+                validate_not_empty(item, "text")
+        for item in self.items[:-1]:
+            if not resolve_lazy and isinstance(item.request_url, Promise):
+                continue
+            if not item.request_url:
+                msg = f"BreadcrumbsConfig item {item.text!r} needs a request_url; only the last item may omit it."
+                raise ValueError(msg)
+
+
+@dataclass(kw_only=True)
 class StepperItemConfig:
     """Configuration for a step in the stepper component.
 
@@ -616,14 +686,12 @@ class StepperItemConfig:
         title: Title of the step.
         description: Additional description of the step below the title.
         request_url: URL called when the user clicks on the title of the step.
-        success: Displays a checkmark instead of the step number.
-        failed: Displays an X instead of the step number.
-        current: Highlights the title in color and makes the text pulse.
+        status: Status of the step.
 
     """
 
     __example__ = """
-        StepperItemConfig(title="Address", description="Enter shipping address", success=True)
+        StepperItemConfig(title="Address", description="Enter shipping address", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the step.")})
@@ -631,12 +699,15 @@ class StepperItemConfig:
     request_url: str = field(
         default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")}
     )
-    success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
-    failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the step.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_urls(self)
+        validate_step_status(self.status)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class StepperConfig:
     """Configuration for the stepper component.
 
@@ -650,8 +721,8 @@ class StepperConfig:
     __example__ = """
         StepperConfig(
             items=[
-                StepperItemConfig(title="Address", description="Enter shipping address", success=True),
-                StepperItemConfig(title="Payment", description="Select payment method", current=True),
+                StepperItemConfig(title="Address", description="Enter shipping address", status="completed"),
+                StepperItemConfig(title="Payment", description="Select payment method", status="current"),
                 StepperItemConfig(title="Review", description="Review and confirm"),
             ],
         )
@@ -660,17 +731,17 @@ class StepperConfig:
     items: list[StepperItemConfig] = field(default_factory=list, metadata={"doc": _("List of step configurations.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MinimalStepperConfig:
     """Configuration for the minimal_stepper component.
 
     Renders a compact progress indicator.
 
     Attributes:
-        items: List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive.
-        step_count: Number of process steps. (Only if 'items' is not set!)
-        current_step: Current step of the process. (Only if 'items' is not set!)
-        current_step_status: Status of the current step. (Only if 'items' is not set!)
+        steps: Status of each process step.
+        step_count: Number of process steps. (Only if 'steps' is not set!)
+        current_step: Current step of the process. (Only if 'steps' is not set!)
+        current_step_status: Status of the current step. (Only if 'steps' is not set!)
         icon_size: Size of the icons in the progress bar.
 
     """
@@ -679,20 +750,13 @@ class MinimalStepperConfig:
         MinimalStepperConfig(step_count=5, current_step=3)
         """
 
-    items: list[StepStatus] = field(
-        default_factory=list,
-        metadata={
-            "doc": _(
-                "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
-            )
-        },
-    )
-    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'items' is not set!)")})
+    steps: list[StepStatus] = field(default_factory=list, metadata={"doc": _("Status of each process step.")})
+    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'steps' is not set!)")})
     current_step: int = field(
-        default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
+        default=0, metadata={"doc": _("Current step of the process. (Only if 'steps' is not set!)")}
     )
     current_step_status: StepStatus = field(
-        default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
+        default="current", metadata={"doc": _("Status of the current step. (Only if 'steps' is not set!)")}
     )
     icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
 
@@ -700,37 +764,38 @@ class MinimalStepperConfig:
         """Validate icon_size and step status values after initialization."""
         validate_size(self.icon_size, "icon_size")
         validate_step_status(self.current_step_status, "current_step_status")
-        for i, status in enumerate(self.items):
-            validate_step_status(status, f"items[{i}]")
+        for i, status in enumerate(self.steps):
+            validate_step_status(status, f"steps[{i}]")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BulletPointItemConfig:
     """Configuration for an item in the bullet_point_list component.
 
     Attributes:
         title: Title of the item.
         description: Additional description of the item below the title.
-        request_url: The URL to be called when clicking on the respective item.
-        completed: Displays a checkmark instead of a bullet point.
-        current: Highlights the title by color.
+        request_url: URL called when the user clicks on the item.
+        status: Status of the item.
 
     """
 
     __example__ = """
-        BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True)
+        BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the item.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the item below the title.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
-    )
-    completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
+    request_url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the item.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the item.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_urls(self)
+        validate_step_status(self.status)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BulletPointListConfig:
     """Configuration for the bullet_point_list component.
 
@@ -745,8 +810,8 @@ class BulletPointListConfig:
     __example__ = """
         BulletPointListConfig(
             items=[
-                BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-                BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+                BulletPointItemConfig(title="Setup", description="Initial configuration", status="completed"),
+                BulletPointItemConfig(title="Configure", description="Add settings", status="current"),
                 BulletPointItemConfig(title="Deploy", description="Push to production"),
             ],
         )
@@ -758,7 +823,7 @@ class BulletPointListConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AccordionItemConfig:
     """Configuration for an accordion section.
 
@@ -778,7 +843,7 @@ class AccordionItemConfig:
     open: bool = field(default=False, metadata={"doc": _("Whether section is initially open.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AccordionConfig:
     """Configuration for the accordion component.
 
@@ -788,6 +853,7 @@ class AccordionConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         items: List of individual sections.
         exclusive: If **True** only one section can be open at a time.
+        heading_level: Heading level of the section titles.
 
     """
 
@@ -805,9 +871,15 @@ class AccordionConfig:
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the section titles.")})
+
+    def __post_init__(self) -> None:
+        """Reject an empty tag_id and validate heading_level."""
+        validate_not_empty(self, "tag_id")
+        validate_heading_level(self.heading_level)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TabConfig:
     """Configuration for a single tab.
 
@@ -828,8 +900,13 @@ class TabConfig:
     request_url: str = field(metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_urls(self)
+        validate_not_empty(self, "tag_id", "request_url")
 
-@dataclass
+
+@dataclass(kw_only=True)
 class TabsConfig:
     """Configuration for the tabs component.
 
@@ -839,6 +916,7 @@ class TabsConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         tabs: List of tab buttons.
         label: Non-visible additional title that is to be read aloud by screen readers.
+        htmx: Shared request options such as push_url or a loading indicator.
 
     """
 
@@ -859,9 +937,19 @@ class TabsConfig:
     label: str = field(
         default="", metadata={"doc": _("Non-visible additional title that is to be read aloud by screen readers.")}
     )
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Shared request options such as push_url or a loading indicator.")}
+    )
 
     def __post_init__(self) -> None:
-        """Set the first tab as active if no tab is currently active."""
+        """Require at least one tab and set the first tab as active if no tab is currently active.
+
+        Raises:
+            ValueError: If tabs is empty.
+
+        """
+        if not self.tabs:
+            raise ValueError(f"TabsConfig {self.tag_id} needs at least one tab.")  # noqa: TRY003
         if any(tab.active for tab in self.tabs):
             return
 

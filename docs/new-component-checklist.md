@@ -13,7 +13,7 @@ Follow [CONTRIBUTING.md](../CONTRIBUTING.md) for the generator and local preview
 
 - [ ] Existing components cannot already express the use case through composition.
 - [ ] The name, category and atomic level describe the component, not a customer.
-- [ ] The Config is a typed dataclass exported through `insight_ui.configs`.
+- [ ] The Config is a typed, keyword-only dataclass exported through `insight_ui.configs`.
 - [ ] Defaults, validation and optional values agree with the real tag signature.
 - [ ] Molecules/organisms reuse child Configs and tags, not copies of their HTML/JS.
 - [ ] HTML is semantic, untrusted values stay escaped and repeated IDs are safe.

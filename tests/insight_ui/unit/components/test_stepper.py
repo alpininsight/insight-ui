@@ -15,7 +15,7 @@ class TestStepper(TemplateTagsTestCase):
         """The ordered list contains only list items, including visual connectors."""
         config = StepperConfig(
             items=[
-                StepperItemConfig(title="Address", success=True),
+                StepperItemConfig(title="Address", status="completed"),
                 StepperItemConfig(title="Review"),
             ]
         )
@@ -36,3 +36,30 @@ class TestStepper(TemplateTagsTestCase):
 
         assert "text-insight-muted" in rendered
         assert "text-insight-disabled" not in rendered
+
+    def test_current_step_is_marked_for_assistive_technology(self) -> None:
+        """Only the current step carries aria-current."""
+        config = StepperConfig(
+            items=[
+                StepperItemConfig(title="Address", status="completed"),
+                StepperItemConfig(title="Payment", status="current"),
+                StepperItemConfig(title="Review"),
+            ]
+        )
+
+        rendered = self.render_template("{% load insight_tags %}{% stepper config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        current = soup.find_all("li", attrs={"aria-current": "step"})
+        assert len(current) == 1
+        assert "Payment" in current[0].get_text()
+
+    def test_failed_step_shows_its_title_and_description(self) -> None:
+        """A failed step keeps its content visible."""
+        config = StepperConfig(items=[StepperItemConfig(title="Payment", description="Card declined", status="failed")])
+
+        rendered = self.render_template("{% load insight_tags %}{% stepper config %}", {"config": config})
+
+        assert "Payment" in rendered
+        assert "Card declined" in rendered
+        assert 'aria-current="step"' not in rendered

@@ -24,11 +24,11 @@ export class ProgressBar {
 
     /** @type {Object} CSS classes for different states (arrays for multi-class values) */
     static classes = {
-        fillNormal: ['bg-blue-600'],
-        fillError: ['bg-red-500'],
+        fillNormal: ['bg-insight-info'],
+        fillError: ['bg-insight-danger'],
         hidden: ['hidden'],
-        errorWarning: ['text-amber-600', 'dark:text-amber-400'],
-        errorFatal: ['text-red-600', 'dark:text-red-400'],
+        errorWarning: ['text-insight-warning-text'],
+        errorFatal: ['text-insight-danger-text'],
     };
 
     /**

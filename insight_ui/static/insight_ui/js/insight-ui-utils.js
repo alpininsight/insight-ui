@@ -82,6 +82,25 @@ window.InsightUI.handlers = {
             }
         });
 
+        // Buttons and links disabled with aria-disabled stay focusable, so their reason is reachable.
+        // Their activation is blocked before any other listener: no default action (submit, reset, link),
+        // no handlers of the page. Enter and Space on a button arrive here as a click as well.
+        document.addEventListener('click', function(e) {
+            const control = e.target.closest('button, a');
+            if (control?.getAttribute('aria-disabled') === 'true') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }, true);
+
+        // A form submitted through a disabled button, e.g. with form.requestSubmit(button), is not sent.
+        document.addEventListener('submit', function(e) {
+            if (e.submitter?.getAttribute('aria-disabled') === 'true') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }, true);
+
         // Alert/notification dismiss handler
         document.addEventListener('click', function(e) {
             const dismissBtn = e.target.closest('[data-insight-dismiss="alert"]');

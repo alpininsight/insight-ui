@@ -22,9 +22,57 @@ documentation application, credentials or running deployment is needed.
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_button.py
-npm test -- tests/js/tabs.test.js
+npx --no-install vitest run tests/js/tabs.test.js
 uv run pytest tests/insight_ui/unit/test_contributor_docs.py
 ```
+
+### Bug Fixes And Regression Evidence
+
+Every behavior-changing bug fix must include a regression test for the reported
+failure. Reproduce it through the public contract, confirm that the test fails
+with the faulty behavior and passes with the correction, and record that evidence
+in the PR. If an existing test already detects the failure, name the test and
+show its result instead of adding a duplicate.
+
+Choose the layer that exposes the defect: a rendered component, a JavaScript
+interaction, an installed wheel/sdist, or a real browser using the shipped CSS.
+Use a meaningful negative case; an assertion that merely repeats the new code
+does not show that the reported failure is prevented. Do not skip a failing
+regression or weaken its assertion to obtain green CI.
+
+Editorial-only changes need no artificial behavior test. Explain that scope in
+the PR and run the relevant documentation checks. After each merge, review the
+final CI and follow-up comments, record any missed defect or process gap in the
+PR, and state a concrete prevention measure. Carry recurring lessons into these
+contributor guides or the relevant tests.
+
+### What To Assert
+
+Test the public contract: parameter names and accepted values, rendered content,
+accessibility attributes, data attributes that drive behavior, and state changes.
+
+- Classes are fine to assert when a public parameter maps to them with fixed
+  values, for example `{% sidebar width="narrow" %}` renders `w-56`. The value is
+  the API and the class is its documented effect. The same holds for semantic
+  component classes, theme classes and state classes that JavaScript relies on.
+- Do not assert incidental styling that no parameter controls, such as `flex` or
+  `gap-2` in a template.
+- Do not write tests that only record a refactoring, for example that a new token
+  or class is present and the old one is gone. They document the diff instead of
+  testing behavior; the migration guide covers renames.
+- Do not test internal names: template variables, private helpers, local names.
+
+Native link downloads also have a real-browser check, not a jsdom substitute:
+
+```bash
+uv run --with playwright==1.64.0 python -m playwright install chromium
+uv run --with playwright==1.64.0 python -m tests.browser.button_download_smoke
+```
+
+It renders the public tag, serves a local SVG and downloads it using Enter
+with page JavaScript disabled. Default, empty and suggested filenames and file
+bytes are checked. Contributor CI runs it in the required browser job;
+Playwright remains a test-only tool, not a package runtime dependency.
 
 The [existing button tests](../tests/insight_ui/unit/components/test_button.py)
 and [tabs tests](../tests/js/tabs.test.js) are working examples. Test the public
@@ -52,6 +100,14 @@ The minimal host is [tests/settings.py](../tests/settings.py), not a removed
 Docs `core.settings`. Package Python tests and all Vitest behavior tests stay
 here. Do not replace a failing required check with a skipped test or an ignored
 shell exit code. Report commands, versions and known limits in the PR.
+
+The generated `insight_ui/static/insight_ui/css/tailwind.css` is committed. CI
+rebuilds it and fails on a difference, so rebuild and commit it whenever a
+template, Config, script or template tag gains a new utility class. After
+renaming a CSS class, also update `requiredPatterns` in
+[build-static-assets.mjs](../scripts/build-static-assets.mjs) and the
+[CDN manifest](../insight_ui/cdn_manifest.json) where they list it, then run
+`npm run verify:static-build`.
 
 Use `uv run pytest --cov=insight_ui --cov-report=term-missing` and
 `npm run test:coverage` to inspect coverage; a percentage is not proof that the

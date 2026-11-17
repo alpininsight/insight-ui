@@ -1,10 +1,12 @@
 {% load static i18n insight_tags %}
 
+{# Shared shell of the modal block tag and the message_dialog tag; the message dialog fills modal_body and modal_footer. #}
 <div
     id="{{ modal_id }}"
-    role="dialog"
+    role="{{ role|default:'dialog' }}"
     aria-modal="true"
     {% if title %}aria-labelledby="{{ modal_id }}-title"{% endif %}
+    {% if describedby %}aria-describedby="{{ describedby }}"{% endif %}
     tabindex="-1"
     class="hidden fixed inset-0 z-50 overflow-y-auto {{ wrapper_class }}"
 >
@@ -24,15 +26,16 @@
                         <div></div>
                     {% endif %}
                     {% if show_close %}
-                        {% button label=_("Close") type="secondary" subtle=True icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
+                        {% button label=_("Close") color="secondary" variant="subtle" icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
                     {% endif %}
                 </div>
             {% endif %}
 
             {# Modal Body - User Content #}
             <div class="p-6">
-                {{ content }}
+                {% block modal_body %}{{ content }}{% endblock %}
             </div>
+            {% block modal_footer %}{% endblock %}
         </div>
     </div>
 </div>

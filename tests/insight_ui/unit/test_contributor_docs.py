@@ -14,7 +14,7 @@ from defusedxml import ElementTree
 from django.template import engines
 from django.test import RequestFactory, override_settings
 from insight_ui.config import get_config
-from insight_ui.configs import ButtonConfig
+from insight_ui.configs import ButtonConfig, FormConfig, TurnstileConfig
 from markdown import markdown
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -24,12 +24,15 @@ GUIDES = (
     "conventions.md",
     "design-system.md",
     "static-assets.md",
+    "turnstile.md",
     "i18n.md",
     "accessibility.md",
     "testing.md",
     "new-component-checklist.md",
 )
 DOCUMENTS = (ROOT / "README.md", ROOT / "CONTRIBUTING.md", *sorted((ROOT / "docs").glob("*.md")))
+# Settings a host project must add; the setup guide has to show them.
+HOST_SETTINGS = ("STATIC_URL", "INSIGHT_UI")
 pytestmark = pytest.mark.skipif(
     not (ROOT / ".git").exists(),
     reason="Contributor guides belong to the Git checkout, not the source distribution.",
@@ -42,15 +45,14 @@ def _code_blocks(path: Path, language: str) -> list[str]:
     return re.findall(pattern, path.read_text(encoding="utf-8"), re.MULTILINE | re.DOTALL)
 
 
-def _documented_host_settings() -> dict[str, object]:
-    """Use the guide's literal settings so tests cannot hide stale setup examples."""
-    code = _code_blocks(ROOT / "docs/getting-started.md", "python")[0]
-    tree = ast.parse(code)
-    return {
-        node.targets[0].id: ast.literal_eval(node.value)
-        for node in tree.body
-        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)
-    }
+def _documented_settings(path: Path) -> dict[str, ast.expr]:
+    """Collect top-level settings assignments from all Python examples of a guide."""
+    settings = {}
+    for code in _code_blocks(path, "python"):
+        for node in ast.parse(code, filename=str(path)).body:
+            if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+                settings[node.targets[0].id] = node.value
+    return settings
 
 
 def test_public_guide_index_covers_contributor_tasks() -> None:
@@ -95,8 +97,12 @@ def test_readme_hero_uses_the_public_display_name() -> None:
     """The README bubble and its accessible label must name the same product."""
     label = "Django-Insight-UI"
     soup = BeautifulSoup((ROOT / "README.md").read_text(encoding="utf-8"), "html.parser")
-    image = soup.find("img", src=lambda value: value and value.endswith("/.github/assets/hero-title.svg"))
+    image = soup.find(
+        "img",
+        src=lambda value: value and urlsplit(value).path.endswith("/.github/assets/hero-title.svg"),
+    )
     assert image is not None
+    assert urlsplit(image["src"]).query == "v=django-insight-ui"
     assert image["alt"] == label
     assert image["width"] == "600"
 
@@ -140,24 +146,33 @@ def test_public_python_examples_parse(path: Path) -> None:
         ast.parse(code, filename=str(path))
 
 
+def test_getting_started_shows_the_host_settings() -> None:
+    """The setup guide spells out the settings a host project needs as plain literals."""
+    settings = _documented_settings(ROOT / "docs/getting-started.md")
+    for name in HOST_SETTINGS:
+        assert name in settings, f"docs/getting-started.md does not show {name} = ..."
+        value = ast.literal_eval(settings[name])
+        with override_settings(**{name: value}):
+            assert get_config()
+
+
 @pytest.mark.parametrize("path", DOCUMENTS, ids=lambda path: str(path.relative_to(ROOT)))
 def test_public_template_examples_render(path: Path) -> None:
     """Compile real tag signatures and render the documented template examples."""
-    host_settings = _documented_host_settings()
-    with override_settings(INSIGHT_UI=host_settings["INSIGHT_UI"], STATIC_URL=host_settings["STATIC_URL"]):
-        for code in _code_blocks(path, "django"):
-            template = engines["django"].from_string(code)
-            rendered = template.render(
-                {
-                    **get_config(),
-                    "save_button": ButtonConfig(label="Save", button_type="submit"),
-                    "display_name": "Contributor",
-                    "items": ["one", "two"],
-                },
-                request=RequestFactory().get("/"),
-            )
-            assert rendered.strip(), path
-            assert "{%" not in rendered, path
+    for code in _code_blocks(path, "django"):
+        template = engines["django"].from_string(code)
+        rendered = template.render(
+            {
+                **get_config(),
+                "save_button": ButtonConfig(label="Save", button_type="submit"),
+                "form_config": FormConfig(turnstile=TurnstileConfig(site_key="public-test")),
+                "display_name": "Contributor",
+                "items": ["one", "two"],
+            },
+            request=RequestFactory().get("/"),
+        )
+        assert rendered.strip(), path
+        assert "{%" not in rendered, path
 
 
 @pytest.mark.parametrize("version", ["1.2.3", "v1.2.3"])

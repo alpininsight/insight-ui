@@ -405,6 +405,79 @@ describe('InsightUI.handlers', () => {
       delete globalThis.myCallback;
     });
   });
+
+  describe('aria-disabled controls', () => {
+    beforeEach(() => {
+      InsightUI.handlers.init();
+    });
+
+    it('blocks the click of a disabled button before the page listeners', () => {
+      const container = TestUtils.createDOM('<button type="button" aria-disabled="true">Save</button>');
+      const button = container.querySelector('button');
+      const listener = vi.fn();
+      button.addEventListener('click', listener);
+
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+      button.dispatchEvent(event);
+
+      expect(listener).not.toHaveBeenCalled();
+      expect(event.defaultPrevented).toBe(true);
+    });
+
+    it('keeps a disabled button focusable', () => {
+      const container = TestUtils.createDOM('<button type="button" aria-disabled="true">Save</button>');
+      const button = container.querySelector('button');
+
+      button.focus();
+
+      expect(document.activeElement).toBe(button);
+    });
+
+    it('does not submit a form through a disabled submit button', () => {
+      const container = TestUtils.createDOM(
+        '<form><input name="q"><button type="submit" aria-disabled="true">Search</button></form>'
+      );
+      const form = container.querySelector('form');
+      const onSubmit = vi.fn((e) => e.preventDefault());
+      form.addEventListener('submit', onSubmit);
+
+      container.querySelector('button').click();
+      form.requestSubmit(container.querySelector('button'));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it('submits a form through an enabled submit button', () => {
+      const container = TestUtils.createDOM('<form><input name="q"><button type="submit">Search</button></form>');
+      const form = container.querySelector('form');
+      const onSubmit = vi.fn((e) => e.preventDefault());
+      form.addEventListener('submit', onSubmit);
+
+      container.querySelector('button').click();
+
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not block an enabled button', () => {
+      const container = TestUtils.createDOM('<button type="button">Save</button>');
+      const listener = vi.fn();
+      container.querySelector('button').addEventListener('click', listener);
+
+      container.querySelector('button').click();
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('blocks a click on the icon inside a disabled button', () => {
+      const container = TestUtils.createDOM('<button type="button" aria-disabled="true"><span>icon</span></button>');
+      const listener = vi.fn();
+      container.querySelector('button').addEventListener('click', listener);
+
+      container.querySelector('span').click();
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
 });
 
 describe('InsightUI.lifecycle', () => {

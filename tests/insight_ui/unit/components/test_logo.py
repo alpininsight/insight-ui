@@ -30,7 +30,7 @@ class TestLogo(TemplateTagsTestCase):
 
     def test_logo_renders_dark_variant(self) -> None:
         """Dark logo variants should render two images with theme-switching classes."""
-        config = LogoConfig("light.png", "dark.png", "Insight UI Logo")
+        config = LogoConfig(url="light.png", url_dark="dark.png", alt="Insight UI Logo")
         template_string = """
         {% load insight_tags %}
         {% logo config=config %}
@@ -48,7 +48,7 @@ class TestLogo(TemplateTagsTestCase):
 
     def test_logo_renders_icon(self) -> None:
         """Icon logos should use the existing Insight UI icon set."""
-        config = LogoConfig(icon=IconConfig("sparkles", "xl"), alt="Decorative product icon")
+        config = LogoConfig(icon=IconConfig(name="sparkles", size="xl"), alt="Decorative product icon")
         template_string = """
         {% load insight_tags %}
         {% logo config=config %}

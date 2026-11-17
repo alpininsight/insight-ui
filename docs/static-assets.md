@@ -71,6 +71,50 @@ icon entries and use paths relative to that manifest. Keep meaningful artwork
 inside the maskable safe area. These assets describe application identity, not
 the navbar's BrandMark Config; see [host branding](getting-started.md#brand-defaults-and-explicit-composition).
 
+## Host Layout Utilities
+
+`css/tailwind.css` is compiled from `input.css`, which scans only the package's
+templates, Configs, scripts and template tags (`@source`). Utilities that
+appear only in **host** templates are not generated. For example,
+`@md:grid-cols-3` exists because a package template uses it, but `md:grid-cols-3`
+does not. Hosts own their layout CSS:
+
+- For a few rules, add a host stylesheet in the base template's `extra_head` block.
+- For Tailwind in host templates, run a host Tailwind build that scans your
+  templates *and* the installed `insight_ui` package. Then point
+  `INSIGHT_UI["stylesheet"]` at its output, whichever compiler produced it.
+- To change only token values (colors, radii, font), no build is needed; see
+  [theming a host](design-system.md#theming-a-host).
+
+With `assets.cdn_enabled`, the main stylesheet comes from the package CDN only
+while `INSIGHT_UI["stylesheet"]` is not set. Once you set it, to any path, it
+is your own build and is served from your staticfiles, like
+`INSIGHT_UI["theme_stylesheet"]`.
+
+Do not edit the generated package CSS in `site-packages`.
+
+## Self-Hosted HTMX
+
+The base template loads HTMX and `htmx-ext-ws` from `INSIGHT_UI["htmx"]`. By
+default these are jsdelivr URLs with SRI hashes, and `assets.cdn_enabled` does
+not affect them. For offline demos or a `script-src 'self'` policy, serve your
+own copies and point the settings at them. Keep or update the integrity hashes,
+or set them to `""` to omit SRI:
+
+```python
+INSIGHT_UI = {
+    "htmx": {
+        "src": "/static/vendor/htmx/htmx.min.js",
+        "integrity": "",
+        "ws_src": "/static/vendor/htmx/ws.js",
+        "ws_integrity": "",
+    },
+}
+```
+
+An empty `src` or `ws_src` omits that script, for hosts that already load HTMX
+themselves. Insight UI does not ship HTMX in the wheel.
+
 ## Build In An Insight UI Source Checkout
 
 Install the development groups with uv, then Node dependencies using `npm ci`.
@@ -97,12 +141,14 @@ must still inspect the CSS that the package will actually ship.
 
 ### Reproducible Tailwind CLI builds
 
-The source build intentionally pins `django-tailwind-cli==4.6.2` in
-`pyproject.toml` and Tailwind CLI `4.3.3` in
-`tests/tailwind_settings.py`. Keep both pins exact: the installed
-`django-tailwind-cli` 4.6.2 code uses `TAILWIND_CLI_VERSION="latest"` to follow
-the GitHub release redirect and falls back to `4.1.3` when that lookup fails.
-See the [official 4.6.2 resolver code](https://github.com/django-commons/django-tailwind-cli/blob/v4.6.2/src/django_tailwind_cli/config.py#L412-L455).
+The source build pins `django-tailwind-cli` exactly in `pyproject.toml` and the
+Tailwind CLI version as `TAILWIND_CLI_VERSION` in
+[tests/tailwind_settings.py](../tests/tailwind_settings.py). Keep both pins exact:
+without an explicit `TAILWIND_CLI_VERSION`, `django-tailwind-cli` uses `"latest"`,
+follows the GitHub release redirect and falls back to an older built-in version
+when that lookup fails. The current values live only in those two files and in
+[the reproducibility test](../tests/insight_ui/unit/test_tailwind_reproducibility.py),
+which fails when they drift apart.
 
 `npm run build:tailwind` is the only package entry point that compiles Tailwind;
 `npm run build:static-all` includes it. `build:static`, `build:js` and
@@ -117,8 +163,6 @@ For either update, run the focused reproducibility tests and
 The Tailwind source explicitly scans package templates, configs, JS and tags.
 It does not scan this Markdown or the separate documentation application's
 templates. Dynamically assembled classes need explicit build coverage.
-`use_tailwind_cli=False` selects packaged CSS at runtime; it does not mean the
-source build can skip Tailwind compilation.
 
 ## Optional Host-Owned CDN
 

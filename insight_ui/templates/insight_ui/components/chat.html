@@ -2,23 +2,21 @@
 
 <div class="mx-auto w-full lg:w-3xl">
     <!-- Response-container -->
-    <div class="grow my-2" id="response" aria-live="polite" aria-atomic="false"></div>
+    <div class="grow my-2" id="{{ chat_config.tag_id }}-response" aria-live="polite" aria-atomic="false"></div>
 
     <!-- Input-container -->
     <form
-        hx-post="{{ request_url }}"
-        hx-swap="beforeend"
-        hx-target="#response"
+        {% htmx_attributes htmx request_url=chat_config.request_url method="post" target=response_target swap="beforeend" %}
         hx-on::after-request="if(event.detail.successful) this.reset()"
         class="mt-8 space-y-2"
     >
         {% csrf_token %}
-        <label class="block font-medium text-sm text-insight-body" for="msg">
+        <label class="block font-medium text-sm text-insight-body" for="{{ chat_config.tag_id }}-message">
             {% trans "Message" %}
         </label>
         <div class="flex gap-2">
-            <input class="input w-full" id="msg" name="msg" type="text" placeholder="{% trans 'Write something...' %}">
-            {% button label=_("Send") type="primary" button_type="submit" %}
+            <input class="input w-full" id="{{ chat_config.tag_id }}-message" name="msg" type="text" placeholder="{% trans 'Write something...' %}">
+            {% button label=_("Send") color="primary" button_type="submit" %}
         </div>
     </form>
 </div>

@@ -16,7 +16,7 @@ class TestToggle(TemplateTagsTestCase):
 
     def test_toggle_config(self) -> None:
         """Test the {% toggle %} tag with config dataclass."""
-        config = ToggleConfig("toggle-switch", "toggle-switch", "Click me!", switch=True)
+        config = ToggleConfig(name="toggle-switch", tag_id="toggle-switch", label="Click me!", switch=True)
         result = insight_ui.templatetags.insight_tags.toggle(config=config)
 
         assert result["toggle_config"] == config

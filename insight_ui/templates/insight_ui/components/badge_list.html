@@ -1,0 +1,19 @@
+{% load i18n insight_tags %}
+
+<div id="{{ badge_list_config.tag_id }}" class="flex flex-wrap gap-insight-s items-center" data-insight-badge-list>
+    {# role="list" keeps the list semantics in Safari, which drops them for unstyled lists. #}
+    {# The list stays rendered when empty, so the focus can move to it after the last badge was removed. #}
+    <ul
+        role="list"
+        aria-label="{{ badge_list_config.label }}"
+        tabindex="-1"
+        class="flex flex-wrap gap-insight-xs items-center rounded-insight-control focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-insight-primary-action"
+    >
+        {% for badge_config in badge_list_config.items %}
+            <li>{% badge config=badge_config %}</li>
+        {% endfor %}
+    </ul>
+    {% if clear_all_button %}
+        {% button config=clear_all_button %}
+    {% endif %}
+</div>
