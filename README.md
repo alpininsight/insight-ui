@@ -19,7 +19,7 @@ HTMX-powered · Tailwind-based · RTL & i18n ready
 
 [![PyPI](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
 [![Insight UI Python package publication](https://github.com/alpininsight/.github-private/actions/workflows/insight-ui-publish-python.yml/badge.svg?branch=main&event=workflow_dispatch)](https://github.com/alpininsight/.github-private/actions/workflows/insight-ui-publish-python.yml)
-[![Latest on Django Packages](https://img.shields.io/badge/PyPI-insight-ui-tags-8c3c26.svg)](https://djangopackages.org/packages/p/insight-ui/)
+[![Django Packages](https://img.shields.io/badge/Django%20Packages-insight--ui-8c3c26.svg)](https://djangopackages.org/packages/p/insight-ui/)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/alpininsight/insight-ui/blob/main/LICENSE)
