@@ -55,7 +55,7 @@ class ArticleConfig:
     Uses CSS Container Queries to adapt column count based on available width.
 
     Attributes:
-        content: The text content of the article (can contain HTML).
+        content: The text content of the article; HTML only as a safe string (mark_safe, format_html).
         max_columns: Maximum number of columns (1-4). Fewer columns are shown on narrow containers.
         column_gap: The gap between the columns (CSS unit).
         title: An optional title above the article.
@@ -66,13 +66,15 @@ class ArticleConfig:
     __example__ = """
         ArticleConfig(
             title="About Us",
-            content="<p>Our company was founded in...</p>",
+            content=mark_safe("<p>Our company was founded in...</p>"),
             max_columns=3,
             column_gap="2rem",
         )
         """
 
-    content: str = field(metadata={"doc": _("The text content of the article (can contain HTML).")})
+    content: str = field(
+        metadata={"doc": _("The text content of the article; HTML only as a safe string (mark_safe, format_html).")}
+    )
     max_columns: int = field(
         default=2, metadata={"doc": _("Maximum number of columns (1-4). Fewer columns are shown on narrow containers.")}
     )

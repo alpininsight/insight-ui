@@ -42,6 +42,7 @@ pattern for a host project.
 - [ ] Map stepper booleans and the old step strings onto `pending` / `current` / `completed` / `failed`.
 - [ ] Replace `completed=` / `current=` on bullet point items with `status=`, and pass `request_url` as a URL, not a URL name.
 - [ ] Replace the `diff` filter with `{% text_diff %}` or `{% code_diff %}` and drop `|safe`.
+- [ ] Pass HTML for card, article, live content, websocket and table cell content as `mark_safe()` or `format_html()`; plain strings are escaped.
 - [ ] Replace `FormFieldConfig` with the concrete field config. Pass `name=` as a keyword.
 - [ ] Give every button a non-empty label, and give ids, names and URLs that the configs now require.
 - [ ] Give every breadcrumb item except the last a `request_url`, and select breadcrumbs as `nav ol`.
@@ -885,6 +886,47 @@ logo's `alt` as the link name.
 
 Search: `NavbarBrandConfig(` with `aria_label=`, and tests that look up the
 brand link by `aria-label`.
+
+### Content fields are escaped
+
+These fields rendered their value as raw HTML and now escape it like any
+other Django variable:
+
+| Config | Field |
+| --- | --- |
+| `ArticleConfig` | `content` |
+| `CardConfig`, `AppCardConfig` | `content` |
+| `FlipCardConfig` | `content`, `back_content` |
+| `LiveContentConfig`, `WebSocketConfig` | `initial_content` |
+| `TableConfig` | every cell in `rows` |
+
+A plain string with tags now shows the tags as text. Text from users or the
+database is safe in these fields without further steps. For HTML you trust,
+pass a safe string: `mark_safe()` for fixed markup, `format_html()` when the
+markup contains values, because it escapes those. A literal written in a
+template, such as `{% card content="<em>Note</em>" %}`, is already safe in
+Django and keeps rendering as HTML.
+
+Before:
+
+```python
+CardConfig(title="Order", content=f"<strong>{order.customer}</strong>")
+TableConfig(rows=[[user.name, '<a href="/edit/">Edit</a>']])
+```
+
+After:
+
+```python
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+
+CardConfig(title="Order", content=format_html("<strong>{}</strong>", order.customer))
+TableConfig(rows=[[user.name, mark_safe('<a href="/edit/">Edit</a>')]])
+```
+
+Search: the configs above with `content=`, `back_content=`,
+`initial_content=` or `rows=` built in Python, and template variables passed
+to `content=`, `back_content=` or `initial_content=` on these tags.
 
 ## Forms
 
