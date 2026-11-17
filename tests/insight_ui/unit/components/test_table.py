@@ -3,9 +3,12 @@
 """Tests for the table component."""
 
 from bs4 import BeautifulSoup
+from django.utils.safestring import mark_safe
 from insight_ui.configs.list import TableConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
+
+EDIT_BUTTON = mark_safe('<button class="btn btn-primary">Edit</button>')
 
 
 class TestTable(TemplateTagsTestCase):
@@ -16,9 +19,9 @@ class TestTable(TemplateTagsTestCase):
         table = TableConfig(
             ["Name", "E-Mail", "Status", "Actions"],
             [
-                ["Max Mustermann", "max@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
-                ["Anna Schmidt", "anna@example.com", "Inactive", '<button class="btn btn-primary">Edit</button>'],
-                ["Tom Weber", "tom@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
+                ["Max Mustermann", "max@example.com", "Active", EDIT_BUTTON],
+                ["Anna Schmidt", "anna@example.com", "Inactive", EDIT_BUTTON],
+                ["Tom Weber", "tom@example.com", "Active", EDIT_BUTTON],
             ],
             "Example of a table component.",
         )

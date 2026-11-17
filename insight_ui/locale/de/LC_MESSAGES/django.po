@@ -2131,9 +2131,9 @@ msgstr "Das gemeinsame HTML-Attribut „`name`“ für alle Optionsfelder in die
 msgid "The size of the steps by which the value changes when moving the range slider."
 msgstr "Die Schrittweite, um die sich der Wert beim Verschieben des Bereichsschiebereglers ändert."
 
-#: configs/layout.py:75
-msgid "The text content of the article (can contain HTML)."
-msgstr "Der Textinhalt des Artikels (kann HTML enthalten)."
+#: configs/layout.py:76
+msgid "The text content of the article; HTML only as a safe string (mark_safe, format_html)."
+msgstr "Der Textinhalt des Artikels; HTML nur als sicherer String (mark_safe, format_html)."
 
 #: configs/utils.py:280
 msgid "The text displayed in the ribbon; also the name screen readers announce."

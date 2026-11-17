@@ -18,7 +18,7 @@
             {% for row in table_config.rows %}
                 <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-base">
                     {% for cell in row %}
-                        <td class="px-4 py-3 text-start text-sm">{{ cell|safe }}</td>
+                        <td class="px-4 py-3 text-start text-sm">{{ cell }}</td>
                     {% endfor %}
                 </tr>
             {% empty %}
