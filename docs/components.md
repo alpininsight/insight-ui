@@ -30,6 +30,10 @@ not validate every value; check the Config constructor and rendering tests.
 Public forms can opt into the [Turnstile component](turnstile.md). Its widget
 must be paired with server-side verification in the host application.
 
+The [public Config contract](component-config-contract.md) defines the shared
+package/Docs boundary and verification rules for Core and extensions. A Config
+export is not, by itself, a promise that another package's tag accepts `config=`.
+
 ## Configs And Supported Overrides
 
 The button supports both inline arguments and Config objects:
