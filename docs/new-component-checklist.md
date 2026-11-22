@@ -14,6 +14,9 @@ Follow [CONTRIBUTING.md](../CONTRIBUTING.md) for the generator and local preview
 - [ ] Existing components cannot already express the use case through composition.
 - [ ] The name, category and atomic level describe the component, not a customer.
 - [ ] The Config is a typed, keyword-only dataclass exported through `insight_ui.configs`.
+- [ ] The [public Config contract](component-config-contract.md) is followed:
+  Configs and documented type aliases remain package-owned, and Docs consumes
+  the exports rather than maintaining another schema.
 - [ ] Defaults, validation and optional values agree with the real tag signature.
 - [ ] Molecules/organisms reuse child Configs and tags, not copies of their HTML/JS.
 - [ ] HTML is semantic, untrusted values stay escaped and repeated IDs are safe.
@@ -41,6 +44,8 @@ Follow [CONTRIBUTING.md](../CONTRIBUTING.md) for the generator and local preview
 - [ ] Python and, when appropriate, Vitest tests verify actual public behavior.
 - [ ] Config docstring/metadata integrity and the relevant scaffold tests pass;
   they supplement, not replace, tests of the completed component and its examples.
+- [ ] Config/tag contract tests cover required inputs, effective defaults and
+  supported overrides; `UNSET` is not confused with a Config's field default.
 - [ ] Assets were rebuilt and the component inspected in light/dark and narrow views.
 - [ ] Required [quality and distribution checks](testing.md) passed on the PR head.
 - [ ] The PR explains the use case, compatible defaults, tests and remaining limits.

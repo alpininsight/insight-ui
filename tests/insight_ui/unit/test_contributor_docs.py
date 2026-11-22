@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[3]
 GUIDES = (
     "getting-started.md",
     "components.md",
+    "component-config-contract.md",
     "conventions.md",
     "design-system.md",
     "static-assets.md",
