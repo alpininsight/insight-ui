@@ -250,11 +250,12 @@ instances, light/dark mode, and narrow screens. For interactive components, test
 keyboard operation, accessible names, and focus behavior as well as mouse use.
 The generator's own tests cover all categories in disposable package copies;
 they validate field documentation and render the generated `__example__` through
-the real tag. The Config integrity tests compare field metadata with docstrings:
+the real tag. The Config contract tests compare field metadata with docstrings
+and require keyword-only fields:
 
 ```bash
 uv run pytest tests/insight_ui/unit/test_devtools.py \
-  tests/insight_ui/unit/configs/test_docstring_integrity.py
+  tests/insight_ui/unit/configs/test_config_contract.py
 ```
 
 On Windows without developer mode or admin rights, the tests that redirect

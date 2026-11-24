@@ -265,15 +265,6 @@ wheels = [
 ]
 
 [[package]]
-name = "docstring-parser"
-version = "0.18.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e0/4d/f332313098c1de1b2d2ff91cf2674415cc7cddab2ca1b01ae29774bd5fdf/docstring_parser-0.18.0.tar.gz", hash = "sha256:292510982205c12b1248696f44959db3cdd1740237a968ea1e2e7a900eeb2015", size = 29341, upload-time = "2026-04-14T04:09:19.867Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a7/5f/ed01f9a3cdffbd5a008556fc7b2a08ddb1cc6ace7effa7340604b1d16699/docstring_parser-0.18.0-py3-none-any.whl", hash = "sha256:b3fcbed555c47d8479be0796ef7e19c2670d428d72e96da63f3a40122860374b", size = 22484, upload-time = "2026-04-14T04:09:18.638Z" },
-]
-
-[[package]]
 name = "filelock"
 version = "4.2.9"
 source = { registry = "https://pypi.org/simple" }
@@ -329,7 +320,6 @@ dependencies = [
 test = [
     { name = "babel" },
     { name = "beautifulsoup4" },
-    { name = "docstring-parser" },
     { name = "hatchling" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -349,7 +339,6 @@ dev = [
 pytest = [
     { name = "babel" },
     { name = "beautifulsoup4" },
-    { name = "docstring-parser" },
     { name = "hatchling" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -363,7 +352,6 @@ requires-dist = [
     { name = "beautifulsoup4", marker = "extra == 'test'", specifier = ">=4.15.0" },
     { name = "defusedxml", specifier = ">=0.7.1" },
     { name = "django", specifier = ">=5.2.17,<7" },
-    { name = "docstring-parser", marker = "extra == 'test'", specifier = ">=0.18.0" },
     { name = "hatchling", marker = "extra == 'test'" },
     { name = "markdown", specifier = ">=3.10.3" },
     { name = "pytest", marker = "extra == 'test'", specifier = "==9.1.1" },
@@ -385,7 +373,6 @@ dev = [
 pytest = [
     { name = "babel", specifier = "==2.18.0" },
     { name = "beautifulsoup4", specifier = ">=4.15.0" },
-    { name = "docstring-parser", specifier = ">=0.18.0" },
     { name = "hatchling" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },

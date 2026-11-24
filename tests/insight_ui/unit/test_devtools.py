@@ -112,16 +112,17 @@ from django.utils.translation import override
 from insight_ui import configs
 from insight_ui.configs import ExamplePanelConfig
 from insight_ui.templatetags import insight_tags
-from tests.insight_ui.unit.configs.test_docstring_integrity import validate_config_docs
+from insight_ui.testing import config_problems, tag_problems
 
 assert 'ExamplePanelConfig' in configs.__all__
 assert is_dataclass(ExamplePanelConfig)
 assert get_type_hints(ExamplePanelConfig) == {'tag_id': str}
 config_fields = {field.name: field for field in fields(ExamplePanelConfig)}
 assert config_fields['tag_id'].default == ''
+assert config_problems(configs) == []
 with override('en'):
-    validate_config_docs(ExamplePanelConfig)
     assert str(config_fields['tag_id'].metadata['doc']).strip()
+assert [problem for problem in tag_problems(insight_tags.register) if problem.startswith('example_panel:')] == []
 
 # __example__ is indented source text. Only consume the scaffold's literal arguments;
 # do not evaluate arbitrary example code as part of discovery or documentation rendering.

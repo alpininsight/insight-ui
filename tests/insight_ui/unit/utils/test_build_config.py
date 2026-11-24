@@ -2,14 +2,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the shared config contract of all component template tags."""
 
-import inspect
-import re
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field
 
 import pytest
+from bs4 import BeautifulSoup
 from django.template import Context, Template
+from django.template.backends.django import DjangoTemplates
+from insight_ui.configs import UNSET, ButtonConfig, build_config
 from insight_ui.templatetags import insight_tags
-from insight_ui.templatetags.insight_tags import UNSET, build_config
+from insight_ui.testing import tag_problems
 
 
 @dataclass
@@ -93,63 +94,52 @@ FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
 }
 
 
-def _tags_accepting_config() -> list[str]:
-    """Return the names of all insight_tags template tags with a config parameter."""
-    return sorted(
-        name
-        for name, compile_func in insight_tags.register.tags.items()
-        if "config" in inspect.signature(inspect.unwrap(compile_func)).parameters
+def test_core_tags_follow_the_tag_contract() -> None:
+    """Tag arguments and Config fields match, apart from the listed exceptions, and a dict config is rejected."""
+    problems = tag_problems(
+        insight_tags.register,
+        convenience_arguments=CONVENIENCE_ARGUMENTS,
+        config_only_tags=CONFIG_ONLY_TAGS,
+        fields_without_tag_argument=FIELDS_WITHOUT_TAG_ARGUMENT,
     )
 
-
-def _config_class(tag_name: str) -> type:
-    """Return the config dataclass named in the tag's ``config`` annotation."""
-    func = inspect.unwrap(insight_tags.register.tags[tag_name])
-    annotation = str(inspect.signature(func).parameters["config"].annotation)
-    class_names = re.findall(r"\b\w+Config\b", annotation)
-    assert len(class_names) == 1, f"{tag_name}: cannot derive config class from {annotation!r}"
-    return getattr(insight_tags, class_names[0])
+    assert problems == []
 
 
-def _tag_arguments(tag_name: str) -> set[str]:
-    """Return the keyword-only arguments of a tag."""
-    func = inspect.unwrap(insight_tags.register.tags[tag_name])
-    return {name for name, param in inspect.signature(func).parameters.items() if param.kind is param.KEYWORD_ONLY}
-
-
-@pytest.mark.parametrize("tag_name", _tags_accepting_config())
-def test_tag_arguments_are_config_fields(tag_name: str) -> None:
-    """Every tag argument maps to a field of the tag's config, so build_config can apply it."""
-    config_fields = {f.name for f in fields(_config_class(tag_name))}
-    unknown = _tag_arguments(tag_name) - config_fields - CONVENIENCE_ARGUMENTS.get(tag_name, set())
-
-    assert not unknown, f"{tag_name}: arguments without a config field: {sorted(unknown)}"
-
-
-@pytest.mark.parametrize("tag_name", sorted(set(_tags_accepting_config()) - CONFIG_ONLY_TAGS))
-def test_config_fields_are_tag_arguments(tag_name: str) -> None:
-    """Every config field is a tag argument, apart from the documented exceptions."""
-    config_fields = {f.name for f in fields(_config_class(tag_name))}
-    missing = config_fields - _tag_arguments(tag_name)
-
-    assert missing == FIELDS_WITHOUT_TAG_ARGUMENT.get(tag_name, set()), (
-        f"{tag_name}: config fields without a tag argument: {sorted(missing)}. "
-        "Add the argument or update FIELDS_WITHOUT_TAG_ARGUMENT."
-    )
-
-
-def test_exception_lists_name_existing_tags() -> None:
-    """The exception lists do not refer to removed or renamed tags."""
-    tags = set(_tags_accepting_config())
-    listed = set(CONVENIENCE_ARGUMENTS) | CONFIG_ONLY_TAGS | set(FIELDS_WITHOUT_TAG_ARGUMENT)
-
-    assert listed <= tags, f"Unknown tags: {sorted(listed - tags)}"
-
-
-@pytest.mark.parametrize("tag_name", _tags_accepting_config())
-def test_template_tag_rejects_dict_config(tag_name: str) -> None:
-    """Every component tag rejects dicts as config instead of rendering them silently."""
-    template = Template(f"{{% load insight_tags %}}{{% {tag_name} config=cfg %}}")
+def test_template_tag_rejects_dict_config() -> None:
+    """A dict passed as config in a template fails instead of rendering silently."""
+    template = Template("{% load insight_tags %}{% button config=cfg %}")
 
     with pytest.raises(TypeError, match="must be a dataclass instance"):
-        template.render(Context({"cfg": {"name": "field", "label": "Label"}}))
+        template.render(Context({"cfg": {"label": "Label"}}))
+
+
+# --- Extension packages ------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("arguments", "label", "tooltip"),
+    [
+        pytest.param("", "Save", "Saves the draft", id="omitted"),
+        pytest.param('label="Save now"', "Save now", "Saves the draft", id="override"),
+        pytest.param('tooltip=""', "Save", None, id="empty-override"),
+    ],
+)
+def test_extension_tag_forwards_omitted_arguments_to_core_tag(arguments: str, label: str, tooltip: str | None) -> None:
+    """An extension tag passes its UNSET defaults on to a Core tag, which keeps the Config values for them."""
+    engine = DjangoTemplates(
+        {
+            "NAME": "extension",
+            "DIRS": [],
+            "APP_DIRS": True,
+            "OPTIONS": {"libraries": {"extension_tags": "tests.insight_ui.unit.utils.extension_tags"}},
+        }
+    )
+    template = engine.from_string(f"{{% load extension_tags %}}{{% extension_button config=save {arguments} %}}")
+
+    html = template.render({"save": ButtonConfig(label="Save", tooltip="Saves the draft")})
+
+    button = BeautifulSoup(html, "html.parser").button
+    assert button is not None
+    assert button.get_text(strip=True) == label
+    assert button.get("data-insight-tooltip") == tooltip

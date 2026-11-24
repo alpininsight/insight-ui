@@ -53,6 +53,23 @@ There are two signature shapes to distinguish:
   equality between `UNSET` and a field default. Test omission, Config input and
   explicit keyword overrides, including `False` and permitted `None` values.
 
+A Config-aware tag of an extension imports the helpers from the public Config
+API and declares each argument as `T | Unset = UNSET`:
+
+```python
+from typing import Any
+
+from insight_ui.configs import UNSET, Unset, build_config
+
+
+def profile_card(config: ProfileCardConfig | None = None, *, title: str | Unset = UNSET) -> dict[str, Any]:
+    config = build_config(ProfileCardConfig, config, title=title)
+    return {"profile_card_config": config}
+```
+
+Arguments it does not use itself can go on to a Core tag unchanged: Core
+treats the same `UNSET` as omitted, so the Config value stays.
+
 The presence of a Config class does **not** prove that its tag accepts
 `config=`. Document that calling form only after the corresponding package
 implements and tests it. An export relocation does not itself implement a new
@@ -78,6 +95,32 @@ tag signature, a narrower wheel or a Docs integration.
    Django apps. Package public imports and supported rendering must not rely on
    undeclared host-only modules. Verify the declared wheel contents and metadata,
    rather than assuming a source reorganization changed them.
+
+`insight_ui.testing` covers the reflection part of steps 1 and 2 with the
+checks Core runs on itself. Each returns one message per problem, so any test
+runner can use them:
+
+```python
+from insight_ui.testing import config_problems, tag_problems
+from profiles import configs
+from profiles.templatetags.profile_tags import register
+
+
+def test_configs_follow_the_contract() -> None:
+    assert config_problems(configs) == []
+
+
+def test_tags_follow_the_contract() -> None:
+    assert tag_problems(register, fields_without_tag_argument={"profile_card": {"avatar"}}) == []
+```
+
+`config_problems()` checks the dataclasses in `configs.__all__`: keyword-only
+fields, and the same text in the `Attributes` docstring and `metadata["doc"]`.
+`tag_problems()` checks each tag with a `config` argument: its keyword-only
+arguments and the Config fields match, and a dict as `config` is rejected.
+Deliberate gaps go into `convenience_arguments`, `config_only_tags` or
+`fields_without_tag_argument`; an entry that no longer applies is reported as
+well. Neither check renders a template or compares defaults.
 
 ## Documentation Handoff
 

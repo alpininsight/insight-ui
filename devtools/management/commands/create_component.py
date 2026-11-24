@@ -450,7 +450,7 @@ class Command(BaseCommand):
             return
 
         new_tag = f'''@register.inclusion_tag("insight_ui/components/{slug}.html")
-def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = UNSET) -> dict[str, Any]:
+def {slug}(config: {config_class_name} | None = None, *, tag_id: str | Unset = UNSET) -> dict[str, Any]:
     """Render the {name.lower()} component."""
     config = build_config({config_class_name}, config, tag_id=tag_id)
     return {{"{slug}_config": config}}
