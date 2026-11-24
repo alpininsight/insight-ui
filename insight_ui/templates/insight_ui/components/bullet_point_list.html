@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<ol>
+<ol role="list">
     {% for item in items %}
         <li class="relative {% if not forloop.first %}pt-10{% endif %}"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if not forloop.first %}
