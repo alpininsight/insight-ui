@@ -40,6 +40,23 @@ class TestMinimalStepBar(TemplateTagsTestCase):
         for status, step in zip(STEP_STATUS_VALUES, steps, strict=True):
             assert step.find("svg") is not None, f"No icon rendered for status {status!r}"
 
+    def test_minimal_stepper_places_every_status_icon_directly_in_its_step(self) -> None:
+        """Every status puts its icon straight into the step, so the step centers it vertically.
+
+        A wrapper around the icon makes it inline content on a text baseline: it sat about 3px above the
+        middle and stretched all steps of the stepper whenever a current or pending step was shown.
+        """
+        config = MinimalStepperConfig(steps=list(STEP_STATUS_VALUES))
+
+        rendered = self.render_template("{% load insight_tags %}{% minimal_stepper config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        steps = soup.find("ol", {"aria-label": "Progress indicator"}).find_all("li", recursive=False)
+        for status, step in zip(STEP_STATUS_VALUES, steps, strict=True):
+            children = step.find_all(recursive=False)
+            assert len(children) == 1, f"Step {status!r} wraps its icon: {children}"
+            assert children[0].find("svg", recursive=False) is not None, f"Step {status!r} has no direct icon"
+
 
 @pytest.mark.parametrize("icon_size", ["xs", "s", "m", "l", "xl"])
 @pytest.mark.parametrize("mode", ["explicit_steps", "generated_steps"])
