@@ -28,6 +28,15 @@ class TestMinimalStepBar(TemplateTagsTestCase):
         assert len(items) == len(config.steps)
         assert items[1]["aria-current"] == "step"
 
+    def test_minimal_stepper_list_contains_only_its_steps(self) -> None:
+        """The progress list holds nothing but its list items, as an <ol> must; the chevron styles live in the CSS."""
+        config = MinimalStepperConfig(steps=["completed", "current", "pending"])
+
+        rendered = self.render_template("{% load insight_tags %}{% minimal_stepper config %}", {"config": config})
+        progress = BeautifulSoup(rendered, "html.parser").find("ol", {"aria-label": "Progress indicator"})
+
+        assert [child.name for child in progress.find_all(recursive=False)] == ["li", "li", "li"]
+
     def test_minimal_stepper_renders_an_icon_for_every_step_status(self) -> None:
         """Every status renders its icon, so an unknown icon name for any status fails here."""
         config = MinimalStepperConfig(steps=list(STEP_STATUS_VALUES))
