@@ -18,16 +18,16 @@
             {% if user_menu.links %}
                 <ul>
                     {% for link in user_menu.links %}
-                        <li>
-                            {% if not link.staff_only or user.is_staff %}
+                        {% if not link.staff_only or user.is_staff %}
+                            <li>
                                 <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-base">
                                     {% if link.icon %}
                                         {% icon config=link.icon %}
                                     {% endif %}
                                     {{ link.text }}
                                 </a>
-                            {% endif %}
-                        </li>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             {% endif %}
