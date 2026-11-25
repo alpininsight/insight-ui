@@ -4,6 +4,7 @@
 
 import argparse
 import importlib
+import json
 import os
 import secrets
 import shutil
@@ -136,25 +137,35 @@ def check_translations(package: Path) -> None:
         SearchBarConfig,
     )
 
-    labels = {
-        "Contact": "Kontakt",
-        "Imprint": "Impressum",
-        "Privacy": "Datenschutz",
-        "Do you have any questions or feedback?": "Haben Sie Fragen oder Anregungen?",
-        "All rights reserved.": "Alle Rechte vorbehalten.",
-        "Main navigation": "Hauptnavigation",
-        "Side navigation": "Seitennavigation",
-        "Search results": "Suchergebnisse",
-        "No results found": "Keine Ergebnisse gefunden",
-        "Toggle theme": "Design umschalten",
-        "Open menu": "Menü öffnen",
-        "Close": "Schließen",
-    }
+    # Source texts of the rendered shell; the expected German comes from the installed catalog, so the smoke checks
+    # that the artifact ships and activates its catalogs, not the wording.
+    messages = (
+        "Contact",
+        "Imprint",
+        "Privacy",
+        "Do you have any questions or feedback?",
+        "All rights reserved.",
+        "Main navigation",
+        "Side navigation",
+        "Search results",
+        "No results found",
+        "Toggle theme",
+        "Open menu",
+        "Close",
+    )
+    skip_link = "Jump to main content"
+    installed = {}
     for domain in ("django", "djangojs"):
         catalog = package / f"locale/de/LC_MESSAGES/{domain}.mo"
         require_origin(catalog, package)
         with catalog.open("rb") as stream:
-            gettext.GNUTranslations(stream)
+            installed[domain] = gettext.GNUTranslations(stream)
+    german = {message: installed["django"].gettext(message) for message in (*messages, skip_link)}
+    copy = installed["djangojs"].gettext("Copy")
+    untranslated = [message for message, text in {**german, "Copy": copy}.items() if text == message]
+    if untranslated:
+        message = f"Installed German catalogs do not translate: {untranslated}"
+        raise RuntimeError(message)
     context = {
         **get_config(),
         "footer": FooterConfig(
@@ -174,12 +185,13 @@ def check_translations(package: Path) -> None:
             rendered = template.render(Context(context))
             base = render_to_string("insight_ui/base.html", get_config())
             catalog = JavaScriptCatalog.as_view(packages=["insight_ui"])(RequestFactory().get("/jsi18n/"))
-        expected = [translated if language == "de" else source for source, translated in labels.items()]
-        skip = "Zum Hauptinhalt springen" if language == "de" else "Jump to main content"
+        expected = [german[source] if language == "de" else source for source in messages]
+        skip = german[skip_link] if language == "de" else skip_link
         if not all(text in rendered for text in expected) or skip not in base:
             message = f"Installed app-local {language} shell translations are incomplete."
             raise RuntimeError(message)
-        if language == "de" and '"Copy": "Kopieren"' not in catalog.content.decode():
+        # Django serializes the JavaScript catalog with json.dumps, so the entry is built the same way.
+        if language == "de" and f'"Copy": {json.dumps(copy)}' not in catalog.content.decode():
             message = "Installed German JavaScript catalog is missing."
             raise RuntimeError(message)
 
