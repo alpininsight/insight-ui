@@ -45,11 +45,11 @@ MESSAGES = {
     "Contact": "Kontakt",
     "Imprint": "Impressum",
     "Privacy": "Datenschutz",
-    "Do you have any questions or feedback?": "Haben Sie Fragen oder Anregungen?",
+    "Do you have any questions or feedback?": "Fragen oder Anregungen?",
     "All rights reserved.": "Alle Rechte vorbehalten.",
     "Jump to main content": "Zum Hauptinhalt springen",
     "Main navigation": "Hauptnavigation",
-    "Side navigation": "Seitennavigation",
+    "Side navigation": "Navigation der Seitenleiste",
     "Search": "Suchen",
     "Search results": "Suchergebnisse",
     "No results found": "Keine Ergebnisse gefunden",
@@ -298,7 +298,7 @@ def test_ordered_list_description_translates_prose_around_double_backtick_code()
     field = next(field for field in fields(ListConfig) if field.name == "ordered")
     with override("de"):
         description = str(field.metadata["doc"])
-    assert "Verwenden Sie" in description
+    assert "verwenden" in description
     assert "anstelle von" in description
     assert "``<ol>``" in description
     assert "``<ul>``" in description

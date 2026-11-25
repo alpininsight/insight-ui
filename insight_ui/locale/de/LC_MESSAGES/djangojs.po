@@ -35,7 +35,7 @@ msgstr "%(current)s von %(total)s"
 
 #: static/insight_ui/js/insight-ui-query-builder.js:185
 msgid "Choose a field first"
-msgstr "Wählen Sie zunächst ein Feld aus"
+msgstr "Zuerst ein Feld auswählen"
 
 #: static/insight_ui/js/insight-ui-code-block.js:157 static/insight_ui/js/insight-ui-code-block.js:231
 msgid "Copy"
@@ -57,7 +57,7 @@ msgstr "Filter entfernt"
 #: static/insight_ui/js/insight-ui-carousel.js:210
 #, python-format
 msgid "Go to page %(page)s"
-msgstr "Weiter zu Seite %(page)s"
+msgstr "Zu Seite %(page)s"
 
 #: static/insight_ui/js/insight-ui-carousel.js:394
 #, python-format
