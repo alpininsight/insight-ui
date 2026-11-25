@@ -64,7 +64,7 @@ class LegalNoticeConfig:
     Attributes:
         year: Typically the current year (not strictly required).
         holder: The copyright holder.
-        source_label: Optional source model label, for example Open Source.
+        source_label: Optional label for the source code model, for example Open Source.
         license_text: Optional license label, for example AGPL-3.0.
         license_url: Optional URL for the license label.
         separator: Separator between legal metadata parts.
@@ -89,7 +89,9 @@ class LegalNoticeConfig:
 
     year: int | str = field(default="", metadata={"doc": _("Typically the current year (not strictly required).")})
     holder: str = field(default="", metadata={"doc": _("The copyright holder.")})
-    source_label: str = field(default="", metadata={"doc": _("Optional source model label, for example Open Source.")})
+    source_label: str = field(
+        default="", metadata={"doc": _("Optional label for the source code model, for example Open Source.")}
+    )
     license_text: str = field(default="", metadata={"doc": _("Optional license label, for example AGPL-3.0.")})
     license_url: str = field(default="", metadata={"doc": _("Optional URL for the license label.")})
     separator: str = field(
@@ -158,11 +160,11 @@ class BrandMarkConfig:
     Renders a public Insight UI icon plus a two-tone wordmark.
 
     Attributes:
-        primary_text: First wordmark run.
-        secondary_text: Second wordmark run.
+        primary_text: First part of the wordmark.
+        secondary_text: Second part of the wordmark.
         primary_text_color: CSS class for primary text color.
         secondary_text_color: CSS class for secondary text color.
-        logo: Public logo configuration.
+        logo: Optional logo shown before or after the wordmark.
         logo_position: Logo position, either 'start' or 'end'.
         css_class: Optional CSS classes for the root element.
 
@@ -183,15 +185,17 @@ class BrandMarkConfig:
         )
         """
 
-    primary_text: str = field(default="", metadata={"doc": _("First wordmark run.")})
-    secondary_text: str = field(default="", metadata={"doc": _("Second wordmark run.")})
+    primary_text: str = field(default="", metadata={"doc": _("First part of the wordmark.")})
+    secondary_text: str = field(default="", metadata={"doc": _("Second part of the wordmark.")})
     primary_text_color: str = field(
         default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
     )
     secondary_text_color: str = field(
         default="text-insight-secondary-text", metadata={"doc": _("CSS class for secondary text color.")}
     )
-    logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
+    logo: LogoConfig | None = field(
+        default=None, metadata={"doc": _("Optional logo shown before or after the wordmark.")}
+    )
     logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
     )
@@ -209,7 +213,7 @@ class StatusScreenConfig:
     Renders a centered full-page status view from reusable Insight UI building blocks.
 
     Attributes:
-        title: Main status title.
+        title: Main title of the status screen.
         description: Supporting status description.
         severity: Severity of the status.
         brand: Optional brand mark shown above the card.
@@ -235,7 +239,7 @@ class StatusScreenConfig:
         )
         """
 
-    title: str = field(metadata={"doc": _("Main status title.")})
+    title: str = field(metadata={"doc": _("Main title of the status screen.")})
     description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
     severity: Severity = field(default="info", metadata={"doc": _("Severity of the status.")})
     brand: BrandMarkConfig | None = field(
@@ -263,7 +267,7 @@ class CornerRibbonConfig:
     Attributes:
         text: The text displayed in the ribbon; also the name screen readers announce.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
-        color: Fill of the ribbon; the text takes the color made for it.
+        color: Fill color of the ribbon; the text uses the matching foreground color.
         request_url: Optional URL that turns the ribbon into a link.
 
     """
@@ -284,7 +288,7 @@ class CornerRibbonConfig:
     )
     color: ColorType = field(
         default="primary",
-        metadata={"doc": _("Fill of the ribbon; the text takes the color made for it.")},
+        metadata={"doc": _("Fill color of the ribbon; the text uses the matching foreground color.")},
     )
     request_url: str = field(
         default="",
@@ -812,7 +816,7 @@ class TextDiffConfig:
     Attributes:
         before: Original text.
         after: Changed text.
-        show_legend: Explain the markings below the text.
+        show_legend: Show a legend below the text that explains the markings.
 
     """
 
@@ -822,7 +826,9 @@ class TextDiffConfig:
 
     before: str = field(metadata={"doc": _("Original text.")})
     after: str = field(metadata={"doc": _("Changed text.")})
-    show_legend: bool = field(default=True, metadata={"doc": _("Explain the markings below the text.")})
+    show_legend: bool = field(
+        default=True, metadata={"doc": _("Show a legend below the text that explains the markings.")}
+    )
 
 
 @dataclass(kw_only=True)

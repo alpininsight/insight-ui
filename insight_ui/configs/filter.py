@@ -25,7 +25,7 @@ class SearchBarConfig:
 
     Attributes:
         request_url: URL for form action. Do not use together with htmx; use htmx.request_url instead for HTMX requests.
-        tag_id: Id of the search input and prefix of the results list, unique on the page.
+        tag_id: ID of the search input and prefix of the results list, unique on the page.
         name: Name of the request parameter.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
@@ -69,7 +69,7 @@ class SearchBarConfig:
     # Append new defaults so existing positional callers retain their meanings.
     tag_id: str = dc_field(
         default="search",
-        metadata={"doc": _("Id of the search input and prefix of the results list, unique on the page.")},
+        metadata={"doc": _("ID of the search input and prefix of the results list, unique on the page.")},
     )
     name: str = dc_field(default="search", metadata={"doc": _("Name of the request parameter.")})
 

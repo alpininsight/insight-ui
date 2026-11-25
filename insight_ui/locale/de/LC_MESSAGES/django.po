@@ -88,10 +88,6 @@ msgstr "**True**, wenn die Optionsfelder nebeneinander angezeigt werden sollen."
 msgid "**True** if the toggle button should be selected."
 msgstr "**True**, wenn die Umschaltfläche ausgewählt sein soll."
 
-#: configs/input.py:868
-msgid "**True** if the toggle button should look like a typical switch select."
-msgstr "**True**, wenn die Umschaltfläche wie ein typischer Schalter aussehen soll."
-
 #: configs/input.py:864
 msgid "**True** shows only the icon; the label becomes the accessible name and tooltip."
 msgstr "**True** zeigt nur das Symbol an; die Beschriftung wird zum barrierefreien Namen und zum Tooltip."
@@ -110,6 +106,10 @@ msgstr ""
 #: configs/input.py:91 configs/navigation.py:102
 msgid "**True** to open the link in a new tab."
 msgstr "**True**, um den Link in einem neuen Tab zu öffnen."
+
+#: configs/input.py:868
+msgid "**True** to render the toggle button as a switch."
+msgstr "**True**, um die Umschaltfläche als Schalter anzuzeigen."
 
 #: configs/utils.py:711
 msgid "**True** to show the badge as disabled; also disables its remove button."
@@ -145,7 +145,7 @@ msgid "AND"
 msgstr "UND"
 
 #: templates/insight_ui/components/query_builder.html:22
-msgid "AND binds tighter than OR: \"A AND B OR C\" finds entries that match both A and B, or C."
+msgid "AND is evaluated before OR: \"A AND B OR C\" finds entries that match both A and B, or C."
 msgstr ""
 "UND wird vor ODER ausgewertet: „A UND B ODER C“ findet Einträge, die A und B erfüllen, sowie Einträge, die C erfüllen."
 
@@ -562,8 +562,8 @@ msgid "Content carousel"
 msgstr "Inhaltskarussell"
 
 #: configs/navigation.py:483
-msgid "Content for the navigation variant (only used with ``sidebar_nav.html``)."
-msgstr "Inhalt für die Navigationsvariante (wird nur mit ``sidebar_nav.html`` verwendet)."
+msgid "Content for the navigation variant (only used with `sidebar_nav.html`)."
+msgstr "Inhalt für die Navigationsvariante (wird nur mit `sidebar_nav.html` verwendet)."
 
 #: templates/insight_ui/components/live_content.html:23
 msgid "Content is loading..."
@@ -672,7 +672,7 @@ msgid "Do you have any questions or feedback?"
 msgstr "Fragen oder Anregungen?"
 
 #: configs/card.py:277
-msgid "Duration of a turn in milliseconds."
+msgid "Duration of one turning step in milliseconds."
 msgstr "Dauer eines Drehschritts in Millisekunden."
 
 #: templates/insight_ui/components/turnstile.html:11
@@ -699,30 +699,26 @@ msgstr "Fehlermeldung, die unterhalb des Feldes angezeigt wird; kennzeichnet das
 msgid "Establishing connection..."
 msgstr "Verbindung wird hergestellt..."
 
-#: configs/utils.py:825
-msgid "Explain the markings below the text."
-msgstr "Unterhalb des Textes eine Legende anzeigen, welche die Markierungen erklärt."
-
 #: configs/input.py:355
 msgid ""
-"Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to "
-"explicitly skip."
+"Explanation why the checkbox is disabled, shown as visible text below the option and linked to the checkbox. An empty "
+"string omits it on purpose."
 msgstr ""
 "Erläuterung, warum das Kontrollkästchen deaktiviert ist; erscheint als sichtbarer Text unterhalb der Option und ist "
 "mit dem Kontrollkästchen verknüpft. Mit einer leeren Zeichenkette wird bewusst darauf verzichtet."
 
 #: configs/base.py:260
 msgid ""
-"Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to "
-"explicitly skip."
+"Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits "
+"it on purpose."
 msgstr ""
 "Erläuterung, warum das Feld deaktiviert ist; erscheint als sichtbarer Text unterhalb des Feldes und ist mit dem Feld "
 "verknüpft. Mit einer leeren Zeichenkette wird bewusst darauf verzichtet."
 
 #: configs/input.py:549
 msgid ""
-"Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to "
-"explicitly skip."
+"Explanation why the radio button is disabled, shown as visible text below the option and linked to the radio button. "
+"An empty string omits it on purpose."
 msgstr ""
 "Erläuterung, warum das Optionsfeld deaktiviert ist; erscheint als sichtbarer Text unterhalb der Option und ist mit "
 "dem Optionsfeld verknüpft. Mit einer leeren Zeichenkette wird bewusst darauf verzichtet."
@@ -756,7 +752,7 @@ msgid "Fill available height in parent container."
 msgstr "Verfügbare Höhe im übergeordneten Container ausfüllen."
 
 #: configs/utils.py:287
-msgid "Fill of the ribbon; the text takes the color made for it."
+msgid "Fill color of the ribbon; the text uses the matching foreground color."
 msgstr "Füllfarbe des Eckbands; der Text erhält die dafür vorgesehene Farbe."
 
 #: templates/insight_ui/components/query_builder.html:7
@@ -777,7 +773,7 @@ msgid "Filter label."
 msgstr "Filterbezeichnung."
 
 #: configs/utils.py:186
-msgid "First wordmark run."
+msgid "First part of the wordmark."
 msgstr "Erster Teil der Wortmarke."
 
 #: templates/insight_ui/login.html:88
@@ -837,8 +833,8 @@ msgid "HTTP method ('get' or 'post')."
 msgstr "HTTP-Methode („get“ oder „post“)."
 
 #: configs/forms.py:135
-msgid "HTTP method for form submission (get or post)."
-msgstr "HTTP-Methode für die Formularübermittlung (get oder post)."
+msgid "HTTP method for form submission ('get' or 'post')."
+msgstr "HTTP-Methode für die Formularübermittlung („get“ oder „post“)."
 
 #: configs/card.py:146
 msgid "Heading level of the front and back titles."
@@ -892,6 +888,10 @@ msgstr "ID eines zu öffnenden Modals. Das Modal muss an anderer Stelle in der V
 msgid "ID of element that labels this section."
 msgstr "ID des Elements, das diesen Abschnitt kennzeichnet."
 
+#: configs/filter.py:72
+msgid "ID of the search input and prefix of the results list, unique on the page."
+msgstr "ID des Sucheingabefelds und Präfix der Ergebnisliste, eindeutig auf der Seite."
+
 #: configs/utils.py:143
 msgid "Icon configuration used when type is 'icon'."
 msgstr "Symbolkonfiguration, die verwendet wird, wenn der Typ „icon“ ist."
@@ -907,10 +907,6 @@ msgstr "Symbolgröße (Alternative zur Symbolkonfiguration)."
 #: configs/base.py:104
 msgid "Icon size: 'xl', 'l', 'm', 's', or 'xs'."
 msgstr "Symbolgröße: „xl“, „l“, „m“, „s“ oder „xs“."
-
-#: configs/filter.py:72
-msgid "Id of the search input and prefix of the results list, unique on the page."
-msgstr "ID des Sucheingabefelds und Präfix der Ergebnisliste, eindeutig auf der Seite."
 
 #: configs/navigation.py:873
 msgid "If **True** only one section can be open at a time."
@@ -1223,7 +1219,7 @@ msgid "Main navigation"
 msgstr "Hauptnavigation"
 
 #: configs/utils.py:238
-msgid "Main status title."
+msgid "Main title of the status screen."
 msgstr "Haupttitel des Statusbildschirms."
 
 #: templatetags/insight_tags.py:1288
@@ -1467,8 +1463,8 @@ msgid "Optional ID of the code block."
 msgstr "Optionale ID des Codeblocks."
 
 #: configs/forms.py:143
-msgid "Optional Turnstile widget; the host must verify its token."
-msgstr "Optionales Turnstile-Widget; die einbindende Anwendung muss sein Token prüfen."
+msgid "Optional Turnstile widget; the host application must verify its token server-side."
+msgstr "Optionales Turnstile-Widget; die einbindende Anwendung muss sein Token serverseitig prüfen."
 
 #: configs/filter.py:67
 msgid "Optional URL for the client-side documentation search index."
@@ -1566,6 +1562,10 @@ msgstr "Optionales Symbol, das vor der Beschriftung angezeigt wird."
 msgid "Optional image displayed below the description text."
 msgstr "Optionales Bild, das unterhalb des Beschreibungstextes angezeigt wird."
 
+#: configs/utils.py:92
+msgid "Optional label for the source code model, for example Open Source."
+msgstr "Optionale Angabe zum Quellcode-Modell, zum Beispiel „Open Source“."
+
 #: configs/utils.py:93
 msgid "Optional license label, for example AGPL-3.0."
 msgstr "Optionale Lizenzbezeichnung, zum Beispiel AGPL-3.0."
@@ -1581,6 +1581,10 @@ msgstr "Optionale Liste von Badges, die unterhalb der Beschreibung angezeigt wir
 #: configs/utils.py:103
 msgid "Optional logo before the holder's name; use empty alt text when decorative."
 msgstr "Optionales Logo vor dem Namen des Inhabers; bei dekorativer Verwendung einen leeren Alt-Text angeben."
+
+#: configs/utils.py:194
+msgid "Optional logo shown before or after the wordmark."
+msgstr "Optionales Logo vor oder hinter der Wortmarke."
 
 #: configs/utils.py:244
 msgid "Optional notice heading."
@@ -1601,10 +1605,6 @@ msgstr "Optionale Popup-Beschreibung."
 #: configs/utils.py:98
 msgid "Optional rights statement."
 msgstr "Optionale Rechteerklärung."
-
-#: configs/utils.py:92
-msgid "Optional source model label, for example Open Source."
-msgstr "Optionale Angabe zum Quellcode-Modell, zum Beispiel „Open Source“."
 
 #: configs/card.py:52
 msgid "Optional subtitle."
@@ -1680,7 +1680,7 @@ msgid "Placeholder text for the search input."
 msgstr "Platzhaltertext für das Sucheingabefeld."
 
 #: configs/input.py:226 configs/input.py:285
-msgid "Placeholder text, displayed in the field as long as it has not been selected."
+msgid "Placeholder text shown while the field is empty."
 msgstr "Platzhaltertext, der im Feld angezeigt wird, solange es leer ist."
 
 #: configs/utils.py:367
@@ -1722,10 +1722,6 @@ msgstr "Fortschrittsanzeige"
 #: configs/forms.py:58
 msgid "Public Turnstile site key. Never use the secret key here."
 msgstr "Öffentlicher Turnstile-Site-Schlüssel. Niemals den geheimen Schlüssel hier eintragen."
-
-#: configs/utils.py:194
-msgid "Public logo configuration."
-msgstr "Konfiguration des öffentlichen Logos."
 
 #: configs/card.py:329
 msgid "Radio block whose item values (\"grid\", \"table\", \"carousel\") pick the view."
@@ -1792,7 +1788,7 @@ msgid "Search..."
 msgstr "Suche..."
 
 #: configs/utils.py:187
-msgid "Second wordmark run."
+msgid "Second part of the wordmark."
 msgstr "Zweiter Teil der Wortmarke."
 
 #: configs/layout.py:444
@@ -1875,6 +1871,10 @@ msgstr "Während des Vorgangs eine Schaltfläche „Abbrechen“ anzeigen."
 msgid "Show a dot per page."
 msgstr "Pro Seite einen Punkt anzeigen."
 
+#: configs/utils.py:825
+msgid "Show a legend below the text that explains the markings."
+msgstr "Unterhalb des Textes eine Legende anzeigen, welche die Markierungen erklärt."
+
 #: configs/utils.py:379
 msgid "Show a retry button when an error occurs."
 msgstr "Eine Schaltfläche „Erneut versuchen“ anzeigen, wenn ein Fehler auftritt."
@@ -1933,8 +1933,8 @@ msgid "Site status"
 msgstr "Status der Website"
 
 #: configs/navigation.py:761
-msgid "Size of the icons in the progress bar."
-msgstr "Größe der Symbole in der Fortschrittsanzeige."
+msgid "Size of the step icons."
+msgstr "Größe der Symbole in den Schritten."
 
 #: configs/input.py:772
 msgid "Smallest configurable value of the range slider."
@@ -2062,7 +2062,7 @@ msgid "The URL to be called when clicking on the item."
 msgstr "Die URL, die beim Klicken auf den Eintrag aufgerufen werden soll."
 
 #: configs/navigation.py:89
-msgid "The URL to be called when clicking on the link, if not opening a modal or dropdown menu."
+msgid "The URL to be called when clicking on the link, unless it opens a modal or a dropdown menu."
 msgstr ""
 "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern er kein Modal und kein Dropdown-Menü öffnet."
 
@@ -2139,8 +2139,8 @@ msgid "The text displayed in the ribbon; also the name screen readers announce."
 msgstr "Der im Eckband angezeigte Text; zugleich der Name, den Bildschirmleseprogramme ansagen."
 
 #: configs/input.py:223
-msgid "The type of the input field, e.g.: 'text', 'password', 'date', etc."
-msgstr "Der Typ des Eingabefeldes, z. B.: „text“, „password“, „date“ usw."
+msgid "The type of the input field, e.g. 'text', 'password' or 'date'."
+msgstr "Der Typ des Eingabefeldes, z. B. „text“, „password“ oder „date“."
 
 #: configs/input.py:323
 msgid "The value of the checkbox (this is not the state, see 'checked' for that)."
@@ -2191,7 +2191,7 @@ msgid "To next page"
 msgstr "Zur nächsten Seite"
 
 #: templates/insight_ui/components/pagination.html:38
-msgid "To next page (Deactivated because there are no more next pages)"
+msgid "To next page (disabled, this is the last page)"
 msgstr "Zur nächsten Seite (deaktiviert, da dies die letzte Seite ist)"
 
 #: templates/insight_ui/components/carousel.html:35 templates/insight_ui/components/pagination.html:16
@@ -2199,7 +2199,7 @@ msgid "To previous page"
 msgstr "Zur vorherigen Seite"
 
 #: templates/insight_ui/components/pagination.html:18
-msgid "To previous page (Deactivated because there are no more previous pages)"
+msgid "To previous page (disabled, this is the first page)"
 msgstr "Zur vorherigen Seite (deaktiviert, da dies die erste Seite ist)"
 
 #: templates/insight_ui/components/toggle_theme.html:4
@@ -2378,7 +2378,7 @@ msgid "Value"
 msgstr "Wert"
 
 #: configs/input.py:935
-msgid "Value (the key value, if the options were passed as a dict) of the currently selected option."
+msgid "Value of the currently selected option (its key if the options are a dict)."
 msgstr "Wert der aktuell ausgewählten Option (bei Optionen als Dict der Schlüssel)."
 
 #: configs/input.py:538
@@ -2426,7 +2426,7 @@ msgid "Visual style of the toggle button; switches ignore it."
 msgstr "Optischer Stil der Umschaltfläche; Schalter ignorieren diese Einstellung."
 
 #: templates/insight_ui/components/websocket.html:21
-msgid "Wait for messages..."
+msgid "Waiting for messages..."
 msgstr "Es wird auf Nachrichten gewartet..."
 
 #: configs/utils.py:657

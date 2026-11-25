@@ -19,7 +19,7 @@
 
     {# The precedence only matters once there are two filters; the script shows the text then. #}
         <p id="{{ config.tag_id }}-help" class="text-sm text-insight-body"{% if rows|length < 2 %} hidden{% endif %} data-insight-query-builder-help>
-            {% translate 'AND binds tighter than OR: "A AND B OR C" finds entries that match both A and B, or C.' %}
+            {% translate 'AND is evaluated before OR: "A AND B OR C" finds entries that match both A and B, or C.' %}
         </p>
 
         <div class="flex flex-col gap-insight-s" data-insight-query-builder-rows>

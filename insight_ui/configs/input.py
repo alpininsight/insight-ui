@@ -192,10 +192,10 @@ class InputFieldConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
-        input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
-        placeholder: Placeholder text, displayed in the field as long as it has not been selected.
+        input_type: The type of the input field, e.g. 'text', 'password' or 'date'.
+        placeholder: Placeholder text shown while the field is empty.
         value: The value of the input field.
         minimum: Smallest numeric value (for `input_type='number'`).
         maximum: Largest numeric value (for `input_type='number'`).
@@ -219,11 +219,9 @@ class InputFieldConfig(BaseFormFieldConfig):
         """
 
     input_type: HtmlInputType = field(
-        default="text", metadata={"doc": _("The type of the input field, e.g.: 'text', 'password', 'date', etc.")}
+        default="text", metadata={"doc": _("The type of the input field, e.g. 'text', 'password' or 'date'.")}
     )
-    placeholder: str = field(
-        default="", metadata={"doc": _("Placeholder text, displayed in the field as long as it has not been selected.")}
-    )
+    placeholder: str = field(default="", metadata={"doc": _("Placeholder text shown while the field is empty.")})
     value: str | int | float | None = field(default=None, metadata={"doc": _("The value of the input field.")})
     minimum: int | None = field(
         default=None, metadata={"doc": _("Smallest numeric value (for `input_type='number'`).")}
@@ -258,9 +256,9 @@ class TextareaConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
-        placeholder: Placeholder text, displayed in the field as long as it has not been selected.
+        placeholder: Placeholder text shown while the field is empty.
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
@@ -280,9 +278,7 @@ class TextareaConfig(BaseFormFieldConfig):
         )
         """
 
-    placeholder: str = field(
-        default="", metadata={"doc": _("Placeholder text, displayed in the field as long as it has not been selected.")}
-    )
+    placeholder: str = field(default="", metadata={"doc": _("Placeholder text shown while the field is empty.")})
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
@@ -299,7 +295,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
@@ -333,7 +329,7 @@ class CheckboxItemConfig:
         label: Label text.
         value: Value submitted when checked.
         disabled: **True** if the checkbox should be disabled.
-        disabled_reason: Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the checkbox is disabled, shown as visible text below the option and linked to the checkbox. An empty string omits it on purpose.
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
@@ -351,7 +347,7 @@ class CheckboxItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the checkbox is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
+                "Explanation why the checkbox is disabled, shown as visible text below the option and linked to the checkbox. An empty string omits it on purpose."
             )
         },
     )
@@ -525,7 +521,7 @@ class RadioItemConfig:
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
-        disabled_reason: Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the radio button is disabled, shown as visible text below the option and linked to the radio button. An empty string omits it on purpose.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
@@ -545,7 +541,7 @@ class RadioItemConfig:
         default=None,
         metadata={
             "doc": _(
-                "Explanation why the radio button is disabled, shown as visible linked text below the option. Set to empty string to explicitly skip."
+                "Explanation why the radio button is disabled, shown as visible text below the option and linked to the radio button. An empty string omits it on purpose."
             )
         },
     )
@@ -730,7 +726,7 @@ class SliderConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
@@ -831,13 +827,13 @@ class ToggleConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
         icon_only: **True** shows only the icon; the label becomes the accessible name and tooltip.
         checked: **True** if the toggle button should be selected.
-        switch: **True** if the toggle button should look like a typical switch select.
+        switch: **True** to render the toggle button as a switch.
         variant: Visual style of the toggle button; switches ignore it.
         color: Color of the toggle button or the switched-on track; ignored by the neutral variant.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
@@ -863,9 +859,7 @@ class ToggleConfig(BaseFormFieldConfig):
         metadata={"doc": _("**True** shows only the icon; the label becomes the accessible name and tooltip.")},
     )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the toggle button should be selected.")})
-    switch: bool = field(
-        default=False, metadata={"doc": _("**True** if the toggle button should look like a typical switch select.")}
-    )
+    switch: bool = field(default=False, metadata={"doc": _("**True** to render the toggle button as a switch.")})
     variant: ControlVariant = field(
         default="neutral", metadata={"doc": _("Visual style of the toggle button; switches ignore it.")}
     )
@@ -903,10 +897,10 @@ class SelectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
         options: List of values that can be selected.
-        selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
+        selected_option: Value of the currently selected option (its key if the options are a dict).
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
         error_text: Error message shown below the field; marks the field as invalid.
@@ -930,9 +924,7 @@ class SelectConfig(BaseFormFieldConfig):
     )
     selected_option: str = field(
         default="",
-        metadata={
-            "doc": _("Value (the key value, if the options were passed as a dict) of the currently selected option.")
-        },
+        metadata={"doc": _("Value of the currently selected option (its key if the options are a dict).")},
     )
 
     def __post_init__(self) -> None:
@@ -955,7 +947,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
-        disabled_reason: Explanation why the field is disabled, shown as visible linked text below the field. Set to empty string to explicitly skip.
+        disabled_reason: Explanation why the field is disabled, shown as visible text below the field and linked to it. An empty string omits it on purpose.
         required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.

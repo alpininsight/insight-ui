@@ -15,7 +15,7 @@
             {% if previous_url %}
                 {% button tag_id=pagination_config.tag_id|add:'-previous' request_url=previous_url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
-                {% button tag_id=pagination_config.tag_id|add:'-previous' label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-previous' label=_('To previous page (disabled, this is the first page)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
 
             <div class="hidden gap-1 justify-center md:flex">
@@ -35,7 +35,7 @@
             {% if next_url %}
                 {% button tag_id=pagination_config.tag_id|add:'-next' request_url=next_url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' htmx=pagination_config.htmx %}
             {% else %}
-                {% button tag_id=pagination_config.tag_id|add:'-next' label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
+                {% button tag_id=pagination_config.tag_id|add:'-next' label=_('To next page (disabled, this is the last page)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
         </div>
 

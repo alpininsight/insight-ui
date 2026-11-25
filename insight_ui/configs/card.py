@@ -250,7 +250,7 @@ class RingCarouselConfig:
         items: Items to display, e.g. CardConfig or model instances.
         item_template: Template that renders one item; gets item and the page context.
         label: Accessible name of the carousel.
-        duration: Duration of a turn in milliseconds.
+        duration: Duration of one turning step in milliseconds.
         tilt: Camera tilt in degrees; the ring is seen from above.
         face_camera: Turn every item towards the camera; otherwise items tilt with the ring.
 
@@ -274,7 +274,7 @@ class RingCarouselConfig:
         metadata={"doc": _("Template that renders one item; gets item and the page context.")},
     )
     label: str = field(default="", metadata={"doc": _("Accessible name of the carousel.")})
-    duration: int = field(default=600, metadata={"doc": _("Duration of a turn in milliseconds.")})
+    duration: int = field(default=600, metadata={"doc": _("Duration of one turning step in milliseconds.")})
     tilt: int = field(default=0, metadata={"doc": _("Camera tilt in degrees; the ring is seen from above.")})
     face_camera: bool = field(
         default=False,
