@@ -33,6 +33,9 @@
         <button
             type="{{ button_config.button_type }}"
             {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
+            {% if button_config.name %}name="{{ button_config.name }}"{% endif %}
+            {% if button_config.value %}value="{{ button_config.value }}"{% endif %}
+            {% if button_config.form %}form="{{ button_config.form }}"{% endif %}
             {% if button_config.disabled %}
                 aria-disabled="true"
             {% else %}
