@@ -81,7 +81,8 @@ STATIC_ROOT = Path(BASE_DIR / "staticfiles")
 STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
-# Tailwind source file
+# Tailwind version and source file (keep version aligned with CI version)
+TAILWIND_CLI_VERSION = "4.3.3"
 TAILWIND_CLI_SRC_CSS = BASE_DIR / "insight_ui" / "utils" / "input.css"
 
 # WhiteNoise configuration
