@@ -1,0 +1,49 @@
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
+# Insight UI
+
+> A reusable Django component library by Alpin Insight Solutions: production-ready UI building blocks implemented as Django template tags with typed configuration dataclasses, styled with Tailwind CSS, and enhanced with HTMX. WCAG 2.2 AA is the accessibility target.
+
+The PyPI package is `insight-ui`. Install it with `uv add insight-ui` or `pip install insight-ui` (Python 3.12 or later, Django 5.2 to 6.x). Add `insight_ui` to `INSTALLED_APPS` and include the `insight_ui.context_processors.insight_ui_context` context processor. Extend `insight_ui/base.html` and load the `insight_tags` library to use components such as `{% button %}`, `{% card %}`, and `{% alert %}`.
+
+Insight UI is accessibility-focused, RTL and i18n ready, and includes light and dark themes. WCAG 2.2 AA is a design target, not a verified package-wide conformance claim; conformance must be assessed for complete pages and processes in the consuming application. No separate JavaScript framework is required.
+
+Documentation website: <https://insight-ui.com>
+Company website: <https://alpininsight.com>
+License: AGPL-3.0. A commercial license is described in `COMMERCIAL_LICENSE.md`.
+
+## Documentation
+
+- [Insight UI documentation](https://insight-ui.com/): live documentation and component catalog
+- [Installation](https://insight-ui.com/docs/installation): install the package and add it to a Django project
+- [Base template](https://insight-ui.com/docs/base_template): `insight_ui/base.html` page structure and blocks
+- [Component configs](https://insight-ui.com/docs/configs): typed configuration dataclasses for the component catalog
+- [Customization](https://insight-ui.com/docs/customization): design tokens, theming, and template overrides
+- [README](https://github.com/alpininsight/insight-ui/blob/develop/README.md): features, quick start, and package scope
+- [Getting started](https://github.com/alpininsight/insight-ui/blob/develop/docs/getting-started.md): installation and configuration, including static assets
+- [Components guide](https://github.com/alpininsight/insight-ui/blob/develop/docs/components.md): template tag API and patterns
+- [Public Config contract](https://github.com/alpininsight/insight-ui/blob/develop/docs/component-config-contract.md): Config and tag parity for consumers and extensions
+- [Design system](https://github.com/alpininsight/insight-ui/blob/develop/docs/design-system.md): tokens, theming, and customization
+- [Static assets](https://github.com/alpininsight/insight-ui/blob/develop/docs/static-assets.md): staticfiles and CDN configuration
+- [Accessibility](https://github.com/alpininsight/insight-ui/blob/develop/docs/accessibility.md): WCAG scope, testing, and limitations
+- [Internationalization](https://github.com/alpininsight/insight-ui/blob/develop/docs/i18n.md): i18n and RTL support
+- [Migrating to 2.0](https://github.com/alpininsight/insight-ui/blob/develop/docs/migration-2.0.md): breaking changes from v1.15.1
+
+## Package source
+
+- [insight-ui on PyPI](https://pypi.org/project/insight-ui/): install with `uv add insight-ui` or `pip install insight-ui`
+- [insight_ui package](https://github.com/alpininsight/insight-ui/tree/develop/insight_ui): Django component library source
+- [pyproject.toml](https://github.com/alpininsight/insight-ui/blob/develop/pyproject.toml): package metadata and supported Python and Django versions
+- [Contributor guides](https://github.com/alpininsight/insight-ui/blob/develop/docs/README.md): index of package and contributor documentation in this repository
+
+## Optional
+
+- [Company website](https://alpininsight.com): Alpin Insight Solutions
+- [CONTRIBUTING](https://github.com/alpininsight/insight-ui/blob/develop/CONTRIBUTING.md): local development, the `devtools` playground, and pull request workflow
+- [Testing](https://github.com/alpininsight/insight-ui/blob/develop/docs/testing.md): local quality, regression, asset, and distribution checks
+- [LICENSE](https://github.com/alpininsight/insight-ui/blob/develop/LICENSE): GNU Affero General Public License v3.0
+- [Commercial licensing](https://github.com/alpininsight/insight-ui/blob/develop/COMMERCIAL_LICENSE.md)
+- [CHANGELOG](https://github.com/alpininsight/insight-ui/blob/develop/CHANGELOG.md)
