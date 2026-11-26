@@ -1,5 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/alpininsight/insight-ui",
+  "public_key": "pk_VWZLPfLHdTXNbuwS6HLCt",
   "projectTitle": "Insight UI",
   "description": "A reusable Django component library that provides production-ready UI building blocks as template tags with typed configuration dataclasses, styled with Tailwind CSS and enhanced with HTMX. Accessibility (WCAG 2.2 AA) is a design target.",
   "folders": [
