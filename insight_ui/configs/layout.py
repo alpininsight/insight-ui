@@ -7,10 +7,11 @@ from dataclasses import dataclass, field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.types import validate_not_empty, validate_urls
 from insight_ui.configs.utils import BadgeConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PageHeaderConfig:
     """Configuration for the page_header component.
 
@@ -30,7 +31,7 @@ class PageHeaderConfig:
             title="Page Header",
             chapter="Insight UI",
             description="A header component for documentation pages.",
-            badges=[BadgeConfig(label="New", type="success")],
+            badges=[BadgeConfig(label="New", color="success")],
             buttons=[ButtonConfig(label="Get Started", request_url="/start")],
         )
         """
@@ -46,7 +47,7 @@ class PageHeaderConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ArticleConfig:
     """Configuration for the article component.
 
@@ -54,7 +55,7 @@ class ArticleConfig:
     Uses CSS Container Queries to adapt column count based on available width.
 
     Attributes:
-        content: The text content of the article (can contain HTML).
+        content: The text content of the article; HTML only as a safe string (mark_safe, format_html).
         max_columns: Maximum number of columns (1-4). Fewer columns are shown on narrow containers.
         column_gap: The gap between the columns (CSS unit).
         title: An optional title above the article.
@@ -65,13 +66,15 @@ class ArticleConfig:
     __example__ = """
         ArticleConfig(
             title="About Us",
-            content="<p>Our company was founded in...</p>",
+            content=mark_safe("<p>Our company was founded in...</p>"),
             max_columns=3,
             column_gap="2rem",
         )
         """
 
-    content: str = field(metadata={"doc": _("The text content of the article (can contain HTML).")})
+    content: str = field(
+        metadata={"doc": _("The text content of the article; HTML only as a safe string (mark_safe, format_html).")}
+    )
     max_columns: int = field(
         default=2, metadata={"doc": _("Maximum number of columns (1-4). Fewer columns are shown on narrow containers.")}
     )
@@ -80,7 +83,7 @@ class ArticleConfig:
     fixed: bool = field(default=False, metadata={"doc": _("Disable responsive behavior and always use max_columns.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PageConfig:
     """
     Configuration for the page block tag.
@@ -118,7 +121,7 @@ class PageConfig:
     height: str = field(default="auto", metadata={"doc": _("Height behavior (auto|full|peek).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HBoxConfig:
     """
     Configuration for the hbox block tag.
@@ -168,7 +171,7 @@ class HBoxConfig:
     wrap: bool = field(default=False, metadata={"doc": _("Allow flex items to wrap.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class VBoxConfig:
     """
     Configuration for the vbox block tag.
@@ -215,7 +218,7 @@ class VBoxConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SpacerConfig:
     """
     Configuration for the spacer simple tag.
@@ -235,7 +238,7 @@ class SpacerConfig:
     size: str = field(default="m", metadata={"doc": _("Spacer size (xs|s|m|l|xl).")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DividerConfig:
     """
     Configuration for the divider simple tag.
@@ -264,7 +267,7 @@ class DividerConfig:
     label: str = field(default="", metadata={"doc": _("Optional text label displayed in the center.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SectionConfig:
     """
     Configuration for the section block tag.
@@ -302,7 +305,7 @@ class SectionConfig:
     aria_labelledby: str = field(default="", metadata={"doc": _("ID of element that labels this section.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SurfaceConfig:
     """
     Configuration for the surface block tag.
@@ -347,8 +350,12 @@ class SurfaceConfig:
     href: str = field(default="", metadata={"doc": _("URL for clickable surface (renders as <a> instead of <div>).")})
     external: bool = field(default=False, metadata={"doc": _("Open link in new tab (only when href is set).")})
 
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
-@dataclass
+
+@dataclass(kw_only=True)
 class GridConfig:
     """
     Configuration for the grid block tag.
@@ -402,7 +409,7 @@ class GridConfig:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HeroConfig:
     """Configuration for the hero component.
 
@@ -415,7 +422,7 @@ class HeroConfig:
         cta_primary: Primary 'Call-to-Action' button.
         cta_secondary: Secondary 'Call-to-Action' button.
         background_image_url: URL of the background image.
-        badge_config: A badge with icon and text.
+        badge: A badge with icon and text.
 
     """
 
@@ -424,9 +431,9 @@ class HeroConfig:
             title="Welcome to Our Platform",
             subtitle="The Future of Web Development",
             description="Build amazing applications with modern tools.",
-            cta_primary=ButtonConfig(label="Get Started", request_url="/signup/", type="primary"),
-            cta_secondary=ButtonConfig(label="Learn More", request_url="/docs/", type="secondary"),
-            badge_config=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
+            cta_primary=ButtonConfig(label="Get Started", request_url="/signup/", color="primary"),
+            cta_secondary=ButtonConfig(label="Learn More", request_url="/docs/", color="secondary"),
+            badge=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
         )
         """
 
@@ -438,10 +445,14 @@ class HeroConfig:
     cta_primary: ButtonConfig | None = field(default=None, metadata={"doc": _("Primary 'Call-to-Action' button.")})
     cta_secondary: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
-    badge_config: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+    badge: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+
+    def __post_init__(self) -> None:
+        """Reject URL schemes the fields do not allow."""
+        validate_urls(self)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ModalConfig:
     """
     Configuration for the modal block tag.
@@ -465,8 +476,8 @@ class ModalConfig:
         {% modal id="confirm-delete" title="Confirm Deletion" %}
             <p>Are you sure you want to delete this item?</p>
             {% hbox gap="s" h_align="end" %}
-                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
-                {% button label="Delete" type="danger" %}
+                {% button label="Cancel" color="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" color="danger" %}
             {% endhbox %}
         {% endmodal %}
 
@@ -487,8 +498,12 @@ class ModalConfig:
     width: int = field(default=32, metadata={"doc": _("Maximum width in rem units.")})
     show_close: bool = field(default=True, metadata={"doc": _("Show the close button in the header.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "id")
 
-@dataclass
+
+@dataclass(kw_only=True)
 class ListConfig:
     """
     Configuration for the list block tag.
@@ -546,7 +561,7 @@ class ListConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label for the list.")})
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ListItemConfig:
     """
     Configuration for the listitem block tag.

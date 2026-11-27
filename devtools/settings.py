@@ -81,7 +81,8 @@ STATIC_ROOT = Path(BASE_DIR / "staticfiles")
 STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
-# Tailwind source file
+# Tailwind version and source file (keep version aligned with CI version)
+TAILWIND_CLI_VERSION = "4.3.3"
 TAILWIND_CLI_SRC_CSS = BASE_DIR / "insight_ui" / "utils" / "input.css"
 
 # WhiteNoise configuration
@@ -99,7 +100,6 @@ INSIGHT_UI = {
     "load_leaflet": False,  # Enable only when previewing maps.
     "load_echarts": False,  # Enable only when previewing charts.
     "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
-    "use_tailwind_cli": False,  # Use npm run build:static-all after changing styles.
     "navbar_fixed": False,
     "assets": {"cdn_enabled": False, "use_minified": False},
 }

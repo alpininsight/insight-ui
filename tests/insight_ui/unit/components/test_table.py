@@ -3,9 +3,12 @@
 """Tests for the table component."""
 
 from bs4 import BeautifulSoup
+from django.utils.safestring import mark_safe
 from insight_ui.configs.list import TableConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
+
+EDIT_BUTTON = mark_safe('<button class="btn btn-primary">Edit</button>')
 
 
 class TestTable(TemplateTagsTestCase):
@@ -14,13 +17,13 @@ class TestTable(TemplateTagsTestCase):
     def test_table_basic(self) -> None:
         """Test für grundlegende table Funktionalität."""
         table = TableConfig(
-            ["Name", "E-Mail", "Status", "Actions"],
-            [
-                ["Max Mustermann", "max@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
-                ["Anna Schmidt", "anna@example.com", "Inactive", '<button class="btn btn-primary">Edit</button>'],
-                ["Tom Weber", "tom@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
+            headers=["Name", "E-Mail", "Status", "Actions"],
+            rows=[
+                ["Max Mustermann", "max@example.com", "Active", EDIT_BUTTON],
+                ["Anna Schmidt", "anna@example.com", "Inactive", EDIT_BUTTON],
+                ["Tom Weber", "tom@example.com", "Active", EDIT_BUTTON],
             ],
-            "Example of a table component.",
+            caption="Example of a table component.",
         )
 
         template_string = """
@@ -42,3 +45,12 @@ class TestTable(TemplateTagsTestCase):
 
         first_row = [td.get_text(strip=True) for td in rows[0].find_all("td")]
         assert first_row == ["Max Mustermann", "max@example.com", "Active", "Edit"]
+
+    def test_empty_text_is_shown_without_rows(self) -> None:
+        """A table without rows shows empty_text in the body."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% table config=c %}",
+            {"c": TableConfig(headers=["Name"], rows=[], empty_text="No users found.")},
+        )
+
+        assert BeautifulSoup(rendered, "html.parser").find("tbody").get_text(strip=True) == "No users found."

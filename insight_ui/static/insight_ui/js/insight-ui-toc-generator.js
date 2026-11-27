@@ -52,8 +52,10 @@ class TableOfContents {
      * Builds the nested ToC structure from headings.
      */
     buildTOC() {
+        // Safari drops the list semantics of lists without markers; role="list" keeps them.
         const rootList = document.createElement("ul");
         rootList.className = "list-none";
+        rootList.setAttribute("role", "list");
 
         const listStack = [rootList];
         let currentLevel = 1;
@@ -75,6 +77,7 @@ class TableOfContents {
             while (level > currentLevel) {
                 const ul = document.createElement("ul");
                 ul.className = "list-none";
+                ul.setAttribute("role", "list");
 
                 listStack[listStack.length - 1]
                     .lastElementChild
@@ -96,12 +99,12 @@ class TableOfContents {
             a.textContent = heading.textContent;
             a.className = `
         pe-2 py-1 text-sm text-insight-headline line-clamp-1
-        border-s border-gray-200 dark:border-gray-700
-        hover:border-gray-400 hover:text-gray-400
+        border-s border-insight-surface
+        hover:border-insight-text-muted hover:text-insight-muted
         aria-[current=location]:font-bold
-        aria-[current=location]:text-insight-primary-hover
+        aria-[current=location]:text-insight-text-link-hover
         focus-visible:outline focus-visible:outline-2
-        focus-visible:outline-blue-600 focus-visible:outline-offset-2
+        focus-visible:outline-insight-focus focus-visible:outline-offset-2
       `.trim();
 
             a.style.paddingInlineStart = `${0.5 * currentLevel}rem`;

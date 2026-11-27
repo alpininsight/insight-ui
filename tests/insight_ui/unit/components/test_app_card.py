@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the app_card component."""
 
+from django.utils.safestring import mark_safe
+
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
 
@@ -12,7 +14,7 @@ class TestAppCard(TemplateTagsTestCase):
         """App card content can render developer-provided HTML fragments."""
         card = {
             "title": "Catalog Product",
-            "content": "Supports <strong>formatted</strong> content.",
+            "content": mark_safe("Supports <strong>formatted</strong> content."),
             "image": {"url": "/static/product.png", "alt": "Product preview"},
         }
         template_string = """

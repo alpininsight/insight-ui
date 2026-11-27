@@ -42,7 +42,7 @@ class TestBrandMark(TemplateTagsTestCase):
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
         assert rendered.strip() != ""
         assert '<span class="font-medium text-insight-headline">' in rendered
-        assert '<span class="font-bold text-insight-secondary">' in rendered
+        assert '<span class="font-bold text-insight-secondary-text">' in rendered
 
     def test_brand_mark_custom_text(self) -> None:
         """primary_text / secondary_text override the wordmark runs."""
@@ -50,7 +50,7 @@ class TestBrandMark(TemplateTagsTestCase):
             '{% load insight_tags %}{% brand_mark primary_text="Foo Bar" secondary_text="Cloud" %}'
         )
         assert '<span class="font-medium text-insight-headline">Foo Bar</span>' in rendered
-        assert '<span class="font-bold text-insight-secondary">Cloud</span>' in rendered
+        assert '<span class="font-bold text-insight-secondary-text">Cloud</span>' in rendered
 
     def test_brand_mark_config(self) -> None:
         """A config dict configures the mark."""
@@ -85,4 +85,4 @@ class TestBrandMark(TemplateTagsTestCase):
         rendered = self.render_template(
             '{% load insight_tags %}{% brand_mark primary_text="Foo Bar" secondary_text="Cloud" %}'
         )
-        assert '<span class="font-bold text-insight-secondary">Cloud</span>' in rendered
+        assert '<span class="font-bold text-insight-secondary-text">Cloud</span>' in rendered

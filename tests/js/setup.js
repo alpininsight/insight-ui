@@ -25,15 +25,7 @@ Object.defineProperty(navigator, 'clipboard', {
   writable: true,
 });
 
-// Mock Element.animate (used by ThreeDCarousel)
-Element.prototype.animate = vi.fn(() => ({
-  finished: Promise.resolve(),
-  cancel: vi.fn(),
-  pause: vi.fn(),
-  play: vi.fn(),
-}));
-
-// Mock window.matchMedia (used by ThreeDCarousel)
+// Mock window.matchMedia (used by Sidebar and ThemeToggle)
 window.matchMedia = vi.fn().mockImplementation((query) => ({
   matches: false,
   media: query,
@@ -99,11 +91,11 @@ globalThis.TestUtils = {
     return this.createDOM(`
       <div data-insight-accordion="${id}" data-exclusive="${exclusive}">
         <div>
-          <button aria-expanded="false" aria-controls="${id}-panel-0">Panel 1</button>
+          <button aria-expanded="false" aria-controls="${id}-panel-0"><span>Panel 1</span><span data-accordion-chevron></span></button>
           <div id="${id}-panel-0" style="height: 0; opacity: 0;">Content 1</div>
         </div>
         <div>
-          <button aria-expanded="false" aria-controls="${id}-panel-1">Panel 2</button>
+          <button aria-expanded="false" aria-controls="${id}-panel-1"><span>Panel 2</span><span data-accordion-chevron></span></button>
           <div id="${id}-panel-1" style="height: 0; opacity: 0;">Content 2</div>
         </div>
       </div>
@@ -183,28 +175,31 @@ globalThis.TestUtils = {
   },
 
   /**
-   * Creates a 3D carousel component DOM structure
+   * Creates a ring carousel component DOM structure
    * @param {string} id - Unique ID for the carousel
    * @param {number} itemCount - Number of carousel items
-   * @param {boolean} faceCamera - Whether items face the camera
-   * @param {number} velocity - Animation duration in ms
-   * @returns {HTMLElement} Container with 3D carousel elements
+   * @param {object} options - tilt and faceCamera
+   * @returns {HTMLElement} Container with ring carousel elements
    */
-  create3DCarousel(id = 'test-3d-carousel', itemCount = 4, faceCamera = false, velocity = 1000) {
+  createRingCarousel(id = 'test-ring-carousel', itemCount = 4, { tilt = 0, faceCamera = false } = {}) {
     const items = Array.from({ length: itemCount }, (_, i) => `
-      <div class="carousel-item" style="--position: ${i + 1}">
-        <div class="item-content">Item ${i + 1}</div>
+      <div class="ring-carousel-item">
+        <div class="ring-carousel-faces">
+          <div class="ring-carousel-front"><div><a href="#${i + 1}">Item ${i + 1}</a></div></div>
+          <div class="ring-carousel-back" aria-hidden="true"></div>
+        </div>
       </div>
     `).join('');
 
     return this.createDOM(`
-      <div id="${id}" data-insight-3D-carousel data-face-camera="${faceCamera}" data-velocity="${velocity}">
-        <div class="carousel-track" style="--quantity: ${itemCount}">
-          ${items}
+      <div id="${id}" data-insight-ring-carousel data-tilt="${tilt}" data-face-camera="${faceCamera}" class="ring-carousel">
+        <div class="ring-carousel-stage">
+          <div class="ring-carousel-ring">${items}</div>
         </div>
-        <div class="carousel-controls">
-          <button class="carousel-prev">Previous</button>
-          <button class="carousel-next">Next</button>
+        <div>
+          <button class="ring-carousel-prev">Previous</button>
+          <span data-ring-carousel-status></span>
+          <button class="ring-carousel-next">Next</button>
         </div>
       </div>
     `);

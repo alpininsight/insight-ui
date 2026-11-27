@@ -2,19 +2,23 @@
 
 <fieldset
     data-insight-checkbox-group
+    {# A fieldset (role group) does not support aria-invalid; the linked error text carries the state. #}
+    {% include "insight_ui/components/_form_field_aria.html" with field_id=checkbox_group_config.name help_text=checkbox_group_config.help_text error_text=checkbox_group_config.error_text disabled=checkbox_group_config.disabled disabled_reason=checkbox_group_config.disabled_reason invalid=False %}
     data-minimum-checked="{{ checkbox_group_config.minimum_checked|default:-1 }}"
     data-maximum-checked="{{ checkbox_group_config.maximum_checked|default:1000000 }}"
     data-msg-min-reached="{% trans 'Minimum selection reached. At least one option must remain selected.' %}"
     data-msg-max-reached="{% trans 'Maximum selection reached. Deselect an option first.' %}"
+    {% data_attributes checkbox_group_config.data_attrs %}
 >
     {% if checkbox_group_config.label %}
         <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ checkbox_group_config.label }}</legend>
     {% endif %}
     <div class="flex {% if not checkbox_group_config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in checkbox_group_config.items %}
-            {% checkbox tag_id=item.tag_id name=checkbox_group_config.name value=item.value checked=item.checked disabled=item.disabled disabled_reason=item.disabled_reason label=item.label %}
+            {% checkbox tag_id=item.tag_id name=checkbox_group_config.name value=item.value checked=item.checked disabled=item.disabled disabled_reason=item.disabled_reason label=item.label data_attrs=item.data_attrs %}
         {% endfor %}
     </div>
     {# Live region for constraint violation announcements #}
     <span class="sr-only" aria-live="assertive" aria-atomic="true" data-checkbox-announcement></span>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=checkbox_group_config.name help_text=checkbox_group_config.help_text error_text=checkbox_group_config.error_text disabled=checkbox_group_config.disabled disabled_reason=checkbox_group_config.disabled_reason %}
 </fieldset>

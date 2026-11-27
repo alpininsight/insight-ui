@@ -4,19 +4,40 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
-const generatedAssetPatterns = [
-    ":(glob)insight_ui/static/insight_ui/css/**/*.min.css",
-    ":(glob)insight_ui/static/insight_ui/js/**/*.min.js",
-];
 
-const { stdout } = await execFileAsync("git", ["ls-files", "--", ...generatedAssetPatterns]);
-const trackedAssets = stdout.split("\n").filter(Boolean);
-
-if (trackedAssets.length > 0) {
-    console.error("Generated minified assets must not be tracked in the package repository:");
-    console.error(trackedAssets.map((asset) => `- ${asset}`).join("\n"));
-    console.error("The central static-assets workflow generates and publishes these CDN artifacts.");
-    process.exit(1);
+function isTrackedMinifiedAsset(path) {
+    return path.endsWith(".min.css") || path.endsWith(".min.js");
 }
 
-console.log("No generated minified static assets are tracked.");
+// Index only. `build:static` writes ignored, untracked siblings next to the
+// sources; those local artifacts must not fail this check.
+async function trackedMinifiedAssets() {
+    const { stdout: toplevel } = await execFileAsync("git", ["rev-parse", "--show-toplevel"], {
+        encoding: "utf8",
+    });
+    const repoRoot = toplevel.trim();
+    const { stdout } = await execFileAsync("git", ["-C", repoRoot, "ls-files", "-z"], {
+        cwd: repoRoot,
+        encoding: "utf8",
+    });
+
+    return stdout.split("\0").filter(isTrackedMinifiedAsset);
+}
+
+try {
+    const trackedAssets = await trackedMinifiedAssets();
+
+    if (trackedAssets.length > 0) {
+        console.error("Tracked minified assets must not be committed:");
+        console.error(trackedAssets.map((asset) => `- ${asset}`).join("\n"));
+        console.error("Minified CSS and JavaScript are generated CDN artifacts.");
+        console.error(".gitignore does not stop git add -f; remove them from the index.");
+        process.exit(1);
+    }
+
+    console.log("No minified CSS or JavaScript assets are tracked.");
+} catch (error) {
+    const detail = `${error.stderr ?? ""}`.trim() || error.message;
+    console.error(`Could not list tracked files: ${detail}`);
+    process.exit(1);
+}

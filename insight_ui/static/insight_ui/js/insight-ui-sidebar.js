@@ -5,10 +5,15 @@
  *
  * Handles both static sidebars and drawer sidebars, with support for
  * mobile drawer behavior where static sidebars become drawers on small screens.
+ * Such a sidebar is one element: it stays in the layout from Tailwind's lg
+ * breakpoint and is a drawer below it.
  */
 export class Sidebar {
     /** @type {WeakMap<HTMLElement, Sidebar>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
+
+    /** @type {string} Tailwind's lg breakpoint, where a mobile drawer becomes a static sidebar again */
+    static DESKTOP_QUERY = "(min-width: 64rem)";
 
     /**
      * Creates a new Sidebar instance.
@@ -26,16 +31,19 @@ export class Sidebar {
         this.side = wrapper.getAttribute("data-insight-sidebar");
         this.isStatic = wrapper.getAttribute("data-static") === "true";
         this.mobileBehavior = wrapper.getAttribute("data-mobile-behavior") || "hidden";
-        this.isMobileDrawer = wrapper.getAttribute("data-mobile-drawer") === "true";
+        this.isMobileDrawer = this.isStatic && this.mobileBehavior === "drawer";
+        // Only drawers open and close; a mobile drawer does so below the lg breakpoint.
+        this.isDrawer = !this.isStatic || this.isMobileDrawer;
+        // A mobile drawer is hidden as a drawer only; from lg it stays visible in the layout.
+        this.hiddenClass = this.isMobileDrawer ? "max-lg:hidden" : "hidden";
+        this.desktopQuery = this.isMobileDrawer ? window.matchMedia(Sidebar.DESKTOP_QUERY) : null;
 
-        // The mobile wrapper owns the pair's interaction lifecycle. Its static
-        // sibling must never bind the same external toggle or acquire a trap.
         this.toggleBtn = this.isMobileDrawer
             ? document.querySelector(`[data-sidebar-toggle="${this.side}"]`)
             : null;
 
         // Find open button for drawer sidebars
-        this.openBtn = !this.isStatic && !this.isMobileDrawer
+        this.openBtn = !this.isStatic
             ? document.querySelector(`[data-sidebar-target="${this.side}"]`)
             : null;
 
@@ -47,7 +55,7 @@ export class Sidebar {
         this.boundOpenBtnClick = null;
         this.boundMouseMove = null;
         this.boundMouseLeave = null;
-        this.boundResizeHandler = null;
+        this.boundMediaChange = null;
         this.boundKeyDown = null;
         this.releaseFocusTrap = null;
         this.triggerElement = null;
@@ -70,8 +78,8 @@ export class Sidebar {
     init() {
         if (!this.wrapper || !this.sidebar) return;
 
-        // Static content stays inert even when it has a separate mobile drawer.
-        if (this.isStatic) {
+        // A static sidebar without the mobile drawer has nothing to open or close.
+        if (!this.isDrawer) {
             return;
         }
 
@@ -83,8 +91,12 @@ export class Sidebar {
         });
 
         // Initialize sidebar position for drawers
-        if (!this.isStatic || this.isMobileDrawer) {
-            this.initSidebar();
+        this.initSidebar();
+
+        // Crossing the lg breakpoint turns a mobile drawer into the static sidebar and back.
+        if (this.desktopQuery) {
+            this.boundMediaChange = () => this.onBreakpointChange();
+            this.desktopQuery.addEventListener('change', this.boundMediaChange);
         }
 
         // Setup auto-close behavior
@@ -109,7 +121,26 @@ export class Sidebar {
      * Initializes the sidebar transform for off-screen positioning.
      */
     initSidebar() {
-        this.sidebar.style.transform = this.getOffscreenTransform();
+        this.sidebar.style.transform = this.getRestingTransform();
+    }
+
+    /**
+     * Returns the transform of the closed sidebar: off-screen for a drawer, none for a
+     * mobile drawer that currently sits in the layout.
+     *
+     * @returns {string} The CSS transform value
+     */
+    getRestingTransform() {
+        return this.desktopQuery?.matches ? '' : this.getOffscreenTransform();
+    }
+
+    /**
+     * Closes an open mobile drawer when the window grows to the lg breakpoint and moves the
+     * sidebar back into or out of view for its new role.
+     */
+    onBreakpointChange() {
+        if (this.state !== "closed") this.finishClose();
+        this.sidebar.style.transform = this.getRestingTransform();
     }
 
     /**
@@ -151,7 +182,7 @@ export class Sidebar {
      * Opens the sidebar with focus trapping and keyboard support.
      */
     openSidebar(trigger = document.activeElement) {
-        if (!this.wrapper || !this.sidebar || this.isStatic || this.state === "open") return;
+        if (!this.wrapper || !this.sidebar || !this.isDrawer || this.state === "open") return;
         this.cancelAnimation();
         // Keep the original invoker if a closing drawer is reopened.
         this.triggerElement ||= trigger;
@@ -159,7 +190,7 @@ export class Sidebar {
 
         // Ensure sidebar starts off-screen before becoming visible
         this.sidebar.style.transform = this.getOffscreenTransform();
-        this.wrapper.classList.remove("hidden");
+        this.wrapper.classList.remove(this.hiddenClass);
 
         // Animate to visible position in next frame
         this.openFrame = requestAnimationFrame(() => {
@@ -188,7 +219,7 @@ export class Sidebar {
      * Closes the sidebar with animation.
      */
     closeSidebar() {
-        if (!this.wrapper || !this.sidebar || this.isStatic || this.state !== "open") return;
+        if (!this.wrapper || !this.sidebar || !this.isDrawer || this.state !== "open") return;
         this.cancelAnimation();
         this.state = "closing";
         this.sidebar.style.transform = this.getOffscreenTransform();
@@ -239,8 +270,8 @@ export class Sidebar {
     finishClose() {
         this.cancelAnimation();
         this.state = "closed";
-        this.wrapper.classList.add("hidden");
-        this.sidebar.style.transform = this.getOffscreenTransform();
+        this.wrapper.classList.add(this.hiddenClass);
+        this.sidebar.style.transform = this.getRestingTransform();
         this.toggleBtn?.setAttribute("aria-expanded", "false");
         this.openBtn?.setAttribute("aria-expanded", "false");
         this.openBtn?.classList.remove("hidden");
@@ -297,7 +328,7 @@ export class Sidebar {
     destroy() {
         if (!this.wrapper) return;
         debugLog("Destroy sidebar: ", this.sidebar, this.side);
-        if (!this.isStatic && this.sidebar) this.finishClose();
+        if (this.isDrawer && this.sidebar) this.finishClose();
         else this.cancelAnimation();
 
         // Remove close button handlers
@@ -324,9 +355,9 @@ export class Sidebar {
             this.sidebar.removeEventListener('mouseleave', this.boundMouseLeave);
         }
 
-        // Remove resize handler
-        if (this.boundResizeHandler) {
-            window.removeEventListener('resize', this.boundResizeHandler);
+        // Remove breakpoint handler
+        if (this.boundMediaChange) {
+            this.desktopQuery.removeEventListener('change', this.boundMediaChange);
         }
 
         // Remove keydown handler

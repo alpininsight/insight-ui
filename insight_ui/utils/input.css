@@ -10,9 +10,10 @@
 *
 *   Structure:
 *   1. Tailwind Import & Configuration
-*   2. @theme - Design Tokens (colors, spacing, radii, shadows, animations)
+*   2. @theme - Design Tokens (colors, spacing, radii, animations); shadow tokens follow in
+*      a plain @layer theme block, so Tailwind does not inline them into its shadow classes
 *   3. @layer base - Browser resets, dark mode switching, default typography
-*   4. @layer utilities - Shorthand utility classes
+*   4. @utility - Shorthand utility classes
 *   5. @layer components - Reusable component classes (buttons, badges, inputs)
 *
 */
@@ -27,14 +28,23 @@
 @source "../configs/";
 @source "../static/insight_ui/js/";
 @source "../templatetags/";
-/* Public icon and ribbon colors must not depend on host or docs templates. */
+/* Public icon and family accent colors must not depend on host or docs templates. */
 @source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
 @source inline("text-insight-text-{headline,body,muted,link}");
+/* Icon colors use the readable -text token of a color family (IconConfig.color_class). */
+@source inline("text-insight-{primary,secondary,success,warning,danger,info}-text");
+/* The shorthand utilities below were plain classes and always in the stylesheet; hosts may use them. */
+@source inline("bg-insight-{base,surface,raised,overlay}");
+@source inline("border-insight-{surface,raised,overlay}");
+@source inline("text-insight-{headline,body,muted,disabled,inverse}");
+@source inline("shadow-insight-{subtle,surface,raised,overlay,focus}");
+/* Tailwind's form of the shadows shares one box-shadow list with ring-*, for a shadow and a ring on one element. */
+@source inline("shadow-(--shadow-insight-{subtle,surface,raised,overlay})");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
 * This allows programmatic theme switching via JavaScript.
-* Usage in templates: dark:bg-gray-900, dark:text-white
+* Usage in templates: dark:hidden, dark:inline-block
 */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -90,130 +100,136 @@
     --color-insight-border-overlay-dark: #2F3B54;
 
     /*
-    * Primary color (brand color)
-    * Main action color for primary buttons, links, focus indicators.
+    * Primary (brand color): main actions, links, focus.
+    *
+    * Every color family has the same tokens. Use the token for what you color, not for the theme:
+    * the names without -dark switch to their -dark value in the dark theme (see [data-theme="dark"]).
+    *
+    * - primary:            Decorative accent: borders, bars, indicators. The same in both themes,
+    *                       so it is not meant for text; it may lack contrast in one theme.
+    * - primary-text:       The color as text, icons, outline borders and links. Contrast-safe in both themes.
+    * - primary-action:     Fill of interactive elements (solid buttons, checked controls), with
+    *                       -action-hover and -action-active for their states. Separate from the accent,
+    *                       so a brand color that does not work as a fill in one theme can get an
+    *                       own -action-dark value.
+    * - primary-on-action:  Text and icons on an -action fill, e.g. dark text on a light yellow button.
+    *                       Switches to -on-action-dark, for a dark theme fill that needs other text.
+    * - primary-soft:       Subtle background: subtle buttons, badges, alert backgrounds.
+    * - *-dark:             Dark theme values of the switching tokens; templates use the names without -dark.
     */
-    --color-insight-primary: #0856C0;              /* Semantic accent for non-text decoration */
-    --color-insight-primary-foreground: #0856C0;   /* Text and icons on light surfaces */
-    --color-insight-primary-foreground-dark: #90C5FF; /* Text and icons on dark surfaces */
-    --color-insight-primary-action: #0856C0;       /* Filled controls with white text */
+    --color-insight-primary: #0856C0;
+    --color-insight-primary-text: #0856C0;
+    --color-insight-primary-text-dark: #90C5FF;
+    --color-insight-primary-action: #0856C0;
     --color-insight-primary-action-hover: #1555B0;
     --color-insight-primary-action-active: #124A9E;
     --color-insight-primary-action-dark: #0856C0;
     --color-insight-primary-action-hover-dark: #1555B0;
     --color-insight-primary-action-active-dark: #124A9E;
-    --color-insight-primary-soft: #E3EFFF;         /* Background for subtle highlights (active nav items, badges) */
-    --color-insight-primary-hover: #1555B0;        /* Hover state (darker in light mode) */
-    --color-insight-primary-active: #124A9E;       /* Active/pressed state */
+    --color-insight-primary-on-action: #FFFFFF;
+    --color-insight-primary-on-action-dark: #FFFFFF;
+    --color-insight-primary-soft: #E3EFFF;
     --color-insight-primary-soft-dark: #203351;
-    --color-insight-primary-hover-dark: #72AEFF;   /* Hover state (lighter in dark mode) */
-    --color-insight-primary-active-dark: #90C5FF;
-    --color-insight-primary-text: #FFFFFF;         /* Text on filled primary buttons */
 
     /*
-    * Secondary color (accent color)
-    * Alternative action color for secondary buttons, less prominent CTAs.
+    * Secondary (second brand color): less prominent actions.
+    * Tokens as described for primary.
     */
     --color-insight-secondary: #006B60;
-    --color-insight-secondary-foreground: #006B60;
-    --color-insight-secondary-foreground-dark: #75D1C5;
+    --color-insight-secondary-text: #006B60;
+    --color-insight-secondary-text-dark: #75D1C5;
     --color-insight-secondary-action: #006B60;
     --color-insight-secondary-action-hover: #005A52;
     --color-insight-secondary-action-active: #004C45;
     --color-insight-secondary-action-dark: #006B60;
     --color-insight-secondary-action-hover-dark: #005A52;
     --color-insight-secondary-action-active-dark: #004C45;
+    --color-insight-secondary-on-action: #FFFFFF;
+    --color-insight-secondary-on-action-dark: #FFFFFF;
     --color-insight-secondary-soft: #DDF4F1;
-    --color-insight-secondary-hover: #005A52;
-    --color-insight-secondary-active: #004C45;
     --color-insight-secondary-soft-dark: #133A36;
-    --color-insight-secondary-hover-dark: #51BCB0;
-    --color-insight-secondary-active-dark: #75D1C5;
-    --color-insight-secondary-text: #FFFFFF;       /* Text on filled secondary buttons */
 
     /*
-    * Success color
-    * Positive actions, confirmations, successful operations.
+    * Success: confirmations, positive states.
+    * Tokens as described for primary.
     */
-    --color-insight-success: #007B2F;              /* Success icons, positive badges */
-    --color-insight-success-foreground: #007B2F;
-    --color-insight-success-foreground-dark: #8CE1A4;
+    --color-insight-success: #007B2F;
+    --color-insight-success-text: #007B2F;
+    --color-insight-success-text-dark: #8CE1A4;
     --color-insight-success-action: #007B2F;
     --color-insight-success-action-hover: #006824;
     --color-insight-success-action-active: #00521D;
     --color-insight-success-action-dark: #007B2F;
     --color-insight-success-action-hover-dark: #006824;
     --color-insight-success-action-active-dark: #00521D;
-    --color-insight-success-soft: #E0F5E5;         /* Success banner background */
-    --color-insight-success-hover: #006824;
-    --color-insight-success-active: #00521D;
+    --color-insight-success-on-action: #FFFFFF;
+    --color-insight-success-on-action-dark: #FFFFFF;
+    --color-insight-success-soft: #E0F5E5;
     --color-insight-success-soft-dark: #1E3A26;
-    --color-insight-success-hover-dark: #67CD87;
-    --color-insight-success-active-dark: #8CE1A4;
-    --color-insight-success-text: #FFFFFF;         /* Text on filled success buttons */
 
     /*
-    * Warning color
-    * Warning notices, potentially problematic actions.
+    * Warning: notices, potentially problematic actions.
+    * Tokens as described for primary.
     */
-    --color-insight-warning: #8A4B00;              /* Warning icons, attention badges */
-    --color-insight-warning-foreground: #8A4B00;
-    --color-insight-warning-foreground-dark: #FFCD86;
+    --color-insight-warning: #8A4B00;
+    --color-insight-warning-text: #8A4B00;
+    --color-insight-warning-text-dark: #FFCD86;
     --color-insight-warning-action: #8A4B00;
     --color-insight-warning-action-hover: #744000;
     --color-insight-warning-action-active: #5E3400;
     --color-insight-warning-action-dark: #8A4B00;
     --color-insight-warning-action-hover-dark: #744000;
     --color-insight-warning-action-active-dark: #5E3400;
-    --color-insight-warning-soft: #FFF0D4;         /* Warning banner background */
-    --color-insight-warning-hover: #744000;
-    --color-insight-warning-active: #5E3400;
+    --color-insight-warning-on-action: #FFFFFF;
+    --color-insight-warning-on-action-dark: #FFFFFF;
+    --color-insight-warning-soft: #FFF0D4;
     --color-insight-warning-soft-dark: #433215;
-    --color-insight-warning-hover-dark: #FFBC5E;
-    --color-insight-warning-active-dark: #FFCD86;
-    --color-insight-warning-text: #FFFFFF;         /* Text on filled warning buttons */
 
     /*
-    * Danger color (error/destructive)
-    * Error states, destructive actions (delete), validation errors.
+    * Danger: errors, destructive actions, validation errors.
+    * Tokens as described for primary.
     */
-    --color-insight-danger: #B70002;               /* Error icons, delete buttons */
-    --color-insight-danger-foreground: #B70002;
-    --color-insight-danger-foreground-dark: #FF988B;
+    --color-insight-danger: #B70002;
+    --color-insight-danger-text: #B70002;
+    --color-insight-danger-text-dark: #FF988B;
     --color-insight-danger-action: #B70002;
     --color-insight-danger-action-hover: #990001;
     --color-insight-danger-action-active: #7A0001;
     --color-insight-danger-action-dark: #B70002;
     --color-insight-danger-action-hover-dark: #990001;
     --color-insight-danger-action-active-dark: #7A0001;
-    --color-insight-danger-soft: #FFE7E4;          /* Error banner background, input error state */
-    --color-insight-danger-hover: #990001;
-    --color-insight-danger-active: #7A0001;
+    --color-insight-danger-on-action: #FFFFFF;
+    --color-insight-danger-on-action-dark: #FFFFFF;
+    --color-insight-danger-soft: #FFE7E4;
     --color-insight-danger-soft-dark: #4D2622;
-    --color-insight-danger-hover-dark: #FF7A6E;
-    --color-insight-danger-active-dark: #FF988B;
-    --color-insight-danger-text: #FFFFFF;          /* Text on filled danger buttons */
 
     /*
-    * Info color
-    * Neutral hints, help text, informational badges.
+    * Info: neutral hints, informational badges.
+    * Tokens as described for primary.
     */
-    --color-insight-info: #006580;                 /* Info icons, tooltip triggers */
-    --color-insight-info-foreground: #006580;
-    --color-insight-info-foreground-dark: #77E1FF;
+    --color-insight-info: #006580;
+    --color-insight-info-text: #006580;
+    --color-insight-info-text-dark: #77E1FF;
     --color-insight-info-action: #006580;
     --color-insight-info-action-hover: #00546C;
     --color-insight-info-action-active: #00455A;
     --color-insight-info-action-dark: #006580;
     --color-insight-info-action-hover-dark: #00546C;
     --color-insight-info-action-active-dark: #00455A;
-    --color-insight-info-soft: #DAF4FD;            /* Info banner background */
-    --color-insight-info-hover: #00546C;
-    --color-insight-info-active: #00455A;
+    --color-insight-info-on-action: #FFFFFF;
+    --color-insight-info-on-action-dark: #FFFFFF;
+    --color-insight-info-soft: #DAF4FD;
     --color-insight-info-soft-dark: #0F3845;
-    --color-insight-info-hover-dark: #50CBF2;
-    --color-insight-info-active-dark: #77E1FF;
-    --color-insight-info-text: #FFFFFF;            /* Text on filled info buttons */
+
+    /*
+    * Light
+    * White controls on dark or colored surfaces (e.g. a primary-colored band).
+    * Identical in both themes, because the surface does not change with the theme.
+    */
+    --color-insight-light: #FFFFFF;
+    --color-insight-light-hover: #E5E7EB;
+    --color-insight-light-active: #D1D5DB;
+    --color-insight-on-light: #1C1C1E;
 
     /*
     * Focus
@@ -251,7 +267,9 @@
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
     --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
-    --color-insight-text-link-hover: #72AEFF;
+    --color-insight-text-link-dark: #72AEFF;
+    --color-insight-text-link-hover: #1555B0;       /* Darker on hover in the light theme */
+    --color-insight-text-link-hover-dark: #90C5FF;  /* Lighter on hover in the dark theme */
 
     /*
     * ========================================================
@@ -310,13 +328,13 @@
     *   - overlay: Maximum shadow for floating elements (modals)
     *   - focus:   Ring for focus states (accessibility)
     *
+    *   The tokens are defined in "@layer theme" below this block, not here: Tailwind writes
+    *   theme shadows into its shadow-* classes as fixed values, so a theme stylesheet could
+    *   not change them. The shadow-insight-* utilities read the variables instead.
+    *   They set box-shadow on their own, so "none" is a valid token value. Elements with one of
+    *   them show focus with an outline, not a ring: a ring is a box-shadow too and would replace it.
+    *
     */
-
-    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
     /*
     * ========================================================
@@ -391,6 +409,17 @@
     }
 }
 
+/* Shadow tokens, outside @theme on purpose (see "Shadows" above); used by the shadow-insight-* utilities. */
+@layer theme {
+    :root {
+        --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
+    }
+}
+
 /*
 * ============================================================================
 *   @layer base - Browser Defaults & Dark Mode
@@ -416,6 +445,22 @@
     }
 
     /*
+    * Page spacing.
+    * --insight-gutter: distance between the window edge and the page's content, shared by the
+    *   navbar, sidebars, page header, content and footer so their edges line up. It grows with the
+    *   window from 1rem (phones) to 2rem (from about 64rem); override it with one value.
+    * --insight-content-max-width: width of the content box; base.html overrides it from
+    *   INSIGHT_UI["content_max_width"] or the content_max_width template variable.
+    * --insight-navbar-height: height of the navbar. Sticky sidebars, the drawer button and the scroll
+    *   padding for anchor targets start below it; change it here, not per element.
+    */
+    :root {
+        --insight-gutter: clamp(var(--spacing-insight-m), 4vw - 0.5rem, var(--spacing-insight-l));
+        --insight-content-max-width: 80rem;
+        --insight-navbar-height: 4rem;
+    }
+
+    /*
     * Dark mode token mapping.
     * When data-theme="dark" is set, all *-dark tokens are mapped to their
     * base equivalents. This allows using bg-insight-primary without
@@ -434,53 +479,47 @@
         --color-insight-border-raised: var(--color-insight-border-raised-dark);
         --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
         /* Primary */
-        --color-insight-primary-foreground: var(--color-insight-primary-foreground-dark);
+        --color-insight-primary-text: var(--color-insight-primary-text-dark);
         --color-insight-primary-action: var(--color-insight-primary-action-dark);
         --color-insight-primary-action-hover: var(--color-insight-primary-action-hover-dark);
         --color-insight-primary-action-active: var(--color-insight-primary-action-active-dark);
+        --color-insight-primary-on-action: var(--color-insight-primary-on-action-dark);
         --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
-        --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
-        --color-insight-primary-active: var(--color-insight-primary-active-dark);
         /* Secondary */
-        --color-insight-secondary-foreground: var(--color-insight-secondary-foreground-dark);
+        --color-insight-secondary-text: var(--color-insight-secondary-text-dark);
         --color-insight-secondary-action: var(--color-insight-secondary-action-dark);
         --color-insight-secondary-action-hover: var(--color-insight-secondary-action-hover-dark);
         --color-insight-secondary-action-active: var(--color-insight-secondary-action-active-dark);
+        --color-insight-secondary-on-action: var(--color-insight-secondary-on-action-dark);
         --color-insight-secondary-soft: var(--color-insight-secondary-soft-dark);
-        --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
-        --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
         /* Success */
-        --color-insight-success-foreground: var(--color-insight-success-foreground-dark);
+        --color-insight-success-text: var(--color-insight-success-text-dark);
         --color-insight-success-action: var(--color-insight-success-action-dark);
         --color-insight-success-action-hover: var(--color-insight-success-action-hover-dark);
         --color-insight-success-action-active: var(--color-insight-success-action-active-dark);
+        --color-insight-success-on-action: var(--color-insight-success-on-action-dark);
         --color-insight-success-soft: var(--color-insight-success-soft-dark);
-        --color-insight-success-hover: var(--color-insight-success-hover-dark);
-        --color-insight-success-active: var(--color-insight-success-active-dark);
         /* Warning */
-        --color-insight-warning-foreground: var(--color-insight-warning-foreground-dark);
+        --color-insight-warning-text: var(--color-insight-warning-text-dark);
         --color-insight-warning-action: var(--color-insight-warning-action-dark);
         --color-insight-warning-action-hover: var(--color-insight-warning-action-hover-dark);
         --color-insight-warning-action-active: var(--color-insight-warning-action-active-dark);
+        --color-insight-warning-on-action: var(--color-insight-warning-on-action-dark);
         --color-insight-warning-soft: var(--color-insight-warning-soft-dark);
-        --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
-        --color-insight-warning-active: var(--color-insight-warning-active-dark);
         /* Danger */
-        --color-insight-danger-foreground: var(--color-insight-danger-foreground-dark);
+        --color-insight-danger-text: var(--color-insight-danger-text-dark);
         --color-insight-danger-action: var(--color-insight-danger-action-dark);
         --color-insight-danger-action-hover: var(--color-insight-danger-action-hover-dark);
         --color-insight-danger-action-active: var(--color-insight-danger-action-active-dark);
+        --color-insight-danger-on-action: var(--color-insight-danger-on-action-dark);
         --color-insight-danger-soft: var(--color-insight-danger-soft-dark);
-        --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
-        --color-insight-danger-active: var(--color-insight-danger-active-dark);
         /* Info */
-        --color-insight-info-foreground: var(--color-insight-info-foreground-dark);
+        --color-insight-info-text: var(--color-insight-info-text-dark);
         --color-insight-info-action: var(--color-insight-info-action-dark);
         --color-insight-info-action-hover: var(--color-insight-info-action-hover-dark);
         --color-insight-info-action-active: var(--color-insight-info-action-active-dark);
+        --color-insight-info-on-action: var(--color-insight-info-on-action-dark);
         --color-insight-info-soft: var(--color-insight-info-soft-dark);
-        --color-insight-info-hover: var(--color-insight-info-hover-dark);
-        --color-insight-info-active: var(--color-insight-info-active-dark);
         /* Focus */
         --color-insight-focus: var(--color-insight-focus-dark);
         /* Text */
@@ -489,6 +528,8 @@
         --color-insight-text-muted: var(--color-insight-text-muted-dark);
         --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
         --color-insight-text-inverse: var(--color-insight-text-inverse-dark);
+        --color-insight-text-link: var(--color-insight-text-link-dark);
+        --color-insight-text-link-hover: var(--color-insight-text-link-hover-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
         /* Divider */
@@ -584,12 +625,11 @@
 
 /*
 * ============================================================================
-*   @layer utilities - Shorthand Utility Classes
+*   @utility - Shorthand Utility Classes
 * ============================================================================
 *
-*   Custom utility classes that simplify common patterns.
-*   These have higher specificity than Tailwind's generated utilities
-*   but lower than component classes.
+*   Custom utilities that simplify common patterns. Tailwind sorts them with its
+*   own utilities and generates their variants; component classes still win.
 *
 *   Naming convention:
 *   - bg-insight-{elevation} instead of bg-insight-bg-{elevation}
@@ -597,51 +637,85 @@
 *
 */
 
-@layer utilities {
-    /*
-    * Elevation-based background utilities.
-    * Shorthand for the verbose token names.
-    *
-    * Usage:
-    *   <div class="bg-insight-surface">Card content</div>
-    *   <div class="bg-insight-raised">Highlighted row</div>
-    */
-    .bg-insight-base {
-        background-color: var(--color-insight-bg-base);
-    }
-    .bg-insight-surface {
-        background-color: var(--color-insight-bg-surface);
-    }
-    .bg-insight-raised {
-        background-color: var(--color-insight-bg-raised);
-    }
-    .bg-insight-overlay {
-        background-color: var(--color-insight-bg-overlay);
-    }
+/*
+* Defined with @utility instead of plain classes in @layer utilities: only then does Tailwind
+* generate their variants (hover:, even:, md:, after:, dark:, ...). Plain classes ignore variants silently.
+*/
 
-    /*
-    * Elevation-based border utilities.
-    * Match borders to the appropriate elevation level.
-    */
-    .border-insight-surface {
-        border-color: var(--color-insight-border-surface);
-    }
-    .border-insight-raised {
-        border-color: var(--color-insight-border-raised);
-    }
-    .border-insight-overlay {
-        border-color: var(--color-insight-border-overlay);
-    }
+/*
+* Elevation-based background utilities.
+* Shorthand for the verbose token names.
+*
+* Usage:
+*   <div class="bg-insight-surface">Card content</div>
+*   <div class="hover:bg-insight-raised">Highlighted row</div>
+*/
+@utility bg-insight-base {
+    background-color: var(--color-insight-bg-base);
+}
+@utility bg-insight-surface {
+    background-color: var(--color-insight-bg-surface);
+}
+@utility bg-insight-raised {
+    background-color: var(--color-insight-bg-raised);
+}
+@utility bg-insight-overlay {
+    background-color: var(--color-insight-bg-overlay);
+}
 
-    /*
-    * Semantic text utilities.
-    * Shorthand for common text hierarchy patterns.
-    */
-    .text-insight-headline { @apply text-insight-text-headline; }
-    .text-insight-body { @apply text-insight-text-body; }
-    .text-insight-muted { @apply text-insight-text-muted; }
-    .text-insight-disabled { @apply text-insight-text-disabled; }
-    .text-insight-inverse { @apply text-insight-text-inverse; }
+/*
+* Elevation-based border utilities.
+* Match borders to the appropriate elevation level.
+*/
+@utility border-insight-surface {
+    border-color: var(--color-insight-border-surface);
+}
+@utility border-insight-raised {
+    border-color: var(--color-insight-border-raised);
+}
+@utility border-insight-overlay {
+    border-color: var(--color-insight-border-overlay);
+}
+
+/*
+* Semantic text utilities.
+* Shorthand for common text hierarchy patterns.
+*/
+@utility text-insight-headline {
+    color: var(--color-insight-text-headline);
+}
+@utility text-insight-body {
+    color: var(--color-insight-text-body);
+}
+@utility text-insight-muted {
+    color: var(--color-insight-text-muted);
+}
+@utility text-insight-disabled {
+    color: var(--color-insight-text-disabled);
+}
+@utility text-insight-inverse {
+    color: var(--color-insight-text-inverse);
+}
+
+/*
+* Elevation shadows. They read the shadow tokens at runtime and set box-shadow alone, unlike Tailwind's
+* shadow-* that share one list with ring-*: a theme may set a token to "none" without breaking anything else.
+* Do not combine them with ring-* on one element; show focus with an outline instead.
+*/
+@utility shadow-insight-subtle {
+    box-shadow: var(--shadow-insight-subtle);
+}
+@utility shadow-insight-surface {
+    box-shadow: var(--shadow-insight-surface);
+}
+@utility shadow-insight-raised {
+    box-shadow: var(--shadow-insight-raised);
+}
+@utility shadow-insight-overlay {
+    box-shadow: var(--shadow-insight-overlay);
+}
+@utility shadow-insight-focus {
+    box-shadow: var(--shadow-insight-focus);
 }
 
 /*
@@ -692,6 +766,74 @@
         border: 1px solid var(--color-insight-border-overlay);
         box-shadow: var(--shadow-insight-overlay);
         border-radius: var(--radius-insight-overlay);
+    }
+
+    /*
+    * Page spacing.
+    * insight-gutter: horizontal padding at the window edge (navbar, sidebars, footer).
+    * insight-content-box: centered box of the content width with the gutter on both sides.
+    * insight-content-grid: three columns (gutter | content | gutter). Children sit in the content
+    *   column; children with insight-full-bleed span all three, e.g. {% page %} bands, which put
+    *   their own content back into the box so text lines up with everything else.
+    * A box that already sits in the content column or in another box adds no second gutter.
+    */
+    .insight-gutter {
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-box {
+        width: 100%;
+        max-width: calc(var(--insight-content-max-width) + 2 * var(--insight-gutter));
+        margin-inline: auto;
+        padding-inline: var(--insight-gutter);
+    }
+
+    .insight-content-grid {
+        display: grid;
+        grid-template-columns:
+            [full-start] minmax(var(--insight-gutter), 1fr)
+            [content-start] minmax(0, var(--insight-content-max-width))
+            [content-end] minmax(var(--insight-gutter), 1fr)
+            [full-end];
+        align-content: start;
+    }
+
+    /* min-width: 0 lets wide content (code blocks, tables) scroll inside the column instead of widening it. */
+    .insight-content-grid > * {
+        grid-column: content;
+        min-width: 0;
+    }
+
+    .insight-content-grid > .insight-full-bleed {
+        grid-column: full;
+    }
+
+    .insight-content-box .insight-content-box,
+    .insight-content-grid > :not(.insight-full-bleed) .insight-content-box {
+        max-width: none;
+        padding-inline: 0;
+    }
+
+    /*
+    * Text diff: removed words struck through, added words underlined, so the change does not
+    * depend on color alone (WCAG 1.4.1). Code diffs are styled in prism.css.
+    */
+    .insight-diff-delete {
+        background-color: var(--color-insight-danger-soft);
+        color: var(--color-insight-danger-text);
+        text-decoration: line-through;
+    }
+
+    .insight-diff-insert {
+        background-color: var(--color-insight-success-soft);
+        color: var(--color-insight-success-text);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    /* A replaced word: keep the removed and the added version apart. */
+    .insight-diff-delete + .insight-diff-insert {
+        margin-inline-start: 0.25em;
     }
 
     /*
@@ -807,28 +949,44 @@
     *   Button Component
     * ========================================================
     *
-    *   Button classes follow the pattern: .btn .btn-{color} .btn-{size}
+    *   Pattern: .btn [.btn-{variant}] [.btn-{color}] .btn-{size}
     *
-    *   Variants (visual style):
-    *   - Fill (default): Solid background, white text
-    *   - Outline: Transparent bg, colored border and text, fill on hover
-    *   - Subtle: No border, light hover background
+    *   Without a variant class a button is solid, without a color class it is primary.
+    *   Color classes only set CSS variables; the variant builds the look from them:
+    *   - solid:   filled with the color (default; .btn-solid only for elements without .btn, e.g. labels)
+    *   - outline: colored border and text, fills on hover
+    *   - subtle:  colored text, tinted background on hover
+    *   - link:    link-styled text (ignores the color)
+    *   - plain:   text color of the theme, grey hover (ignores the color; e.g. close icons)
+    *
+    *   Colors: primary, secondary, success, warning, danger, info, light
+    *   (light = white controls for dark or colored surfaces)
+    *
+    *   States come from attributes, so they also apply when JavaScript changes them:
+    *   :disabled / [aria-disabled="true"] (links) / .btn-disabled (elements that cannot be disabled, e.g. labels)
     *
     *   Sizes: xs, s, m (default), l, xl
     *   Icon-only sizes: btn-icon-xs, btn-icon-s, btn-icon-m, btn-icon-l, btn-icon-xl (square)
     *   Modifiers: btn-round (pill shape)
     *
     *   Usage:
-    *     <button class="btn btn-primary">Submit</button>
-    *     <button class="btn btn-outline-danger btn-s">Delete</button>
-    *     <button class="btn btn-subtle-secondary btn-icon-m"><svg>...</svg></button>
+    *     <button class="btn btn-m">Submit</button>  (solid primary)
+    *     <button class="btn btn-secondary btn-m">Cancel</button>
+    *     <button class="btn btn-outline btn-danger btn-s">Delete</button>
+    *     <button class="btn btn-plain btn-icon-m" aria-label="Close"><svg>...</svg></button>
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control transition-colors;
+        /* Default color: primary (overridden by the color classes below) */
+        --tone-fill: var(--color-insight-primary-action);
+        --tone-fill-hover: var(--color-insight-primary-action-hover);
+        --tone-fill-active: var(--color-insight-primary-action-active);
+        --tone-on-action: var(--color-insight-primary-on-action);
+        --tone-ink: var(--color-insight-primary-text);
     }
 
-    /* Size modifiers - combine with color variant */
+    /* Size modifiers */
     .btn-xs { @apply text-xs px-2 py-0.5; }
     .btn-s { @apply text-sm px-4 py-1; }
     .btn-m { @apply text-sm px-5 py-1.5; }
@@ -842,86 +1000,153 @@
     .btn-icon-l { @apply p-2.5; }
     .btn-icon-xl { @apply p-3; }
 
-    .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
+    /* Pill-shaped button */
+    .btn-round { @apply rounded-insight-full; }
 
-    /* Fill variant (solid background) - default button style */
-    .btn-primary {
-        @apply bg-insight-primary-action border-insight-primary-action text-insight-primary-text hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
+    /* Colors: only set the variables used by the variants; form controls share them as .control-{color}. */
+    .btn-primary,
+    .control-primary {
+        --tone-fill: var(--color-insight-primary-action);
+        --tone-fill-hover: var(--color-insight-primary-action-hover);
+        --tone-fill-active: var(--color-insight-primary-action-active);
+        --tone-on-action: var(--color-insight-primary-on-action);
+        --tone-ink: var(--color-insight-primary-text);
     }
-    .btn-secondary {
-        @apply bg-insight-secondary-action border-insight-secondary-action text-insight-secondary-text hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
+    .btn-secondary,
+    .control-secondary {
+        --tone-fill: var(--color-insight-secondary-action);
+        --tone-fill-hover: var(--color-insight-secondary-action-hover);
+        --tone-fill-active: var(--color-insight-secondary-action-active);
+        --tone-on-action: var(--color-insight-secondary-on-action);
+        --tone-ink: var(--color-insight-secondary-text);
     }
-    .btn-success {
-        @apply bg-insight-success-action border-insight-success-action text-insight-success-text hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
+    .btn-success,
+    .control-success {
+        --tone-fill: var(--color-insight-success-action);
+        --tone-fill-hover: var(--color-insight-success-action-hover);
+        --tone-fill-active: var(--color-insight-success-action-active);
+        --tone-on-action: var(--color-insight-success-on-action);
+        --tone-ink: var(--color-insight-success-text);
     }
-    .btn-warning {
-        @apply bg-insight-warning-action border-insight-warning-action text-insight-warning-text hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
+    .btn-warning,
+    .control-warning {
+        --tone-fill: var(--color-insight-warning-action);
+        --tone-fill-hover: var(--color-insight-warning-action-hover);
+        --tone-fill-active: var(--color-insight-warning-action-active);
+        --tone-on-action: var(--color-insight-warning-on-action);
+        --tone-ink: var(--color-insight-warning-text);
     }
-    .btn-danger {
-        @apply bg-insight-danger-action border-insight-danger-action text-insight-danger-text hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
+    .btn-danger,
+    .control-danger {
+        --tone-fill: var(--color-insight-danger-action);
+        --tone-fill-hover: var(--color-insight-danger-action-hover);
+        --tone-fill-active: var(--color-insight-danger-action-active);
+        --tone-on-action: var(--color-insight-danger-on-action);
+        --tone-ink: var(--color-insight-danger-text);
     }
-    .btn-info {
-        @apply bg-insight-info-action border-insight-info-action text-insight-info-text hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
+    .btn-info,
+    .control-info {
+        --tone-fill: var(--color-insight-info-action);
+        --tone-fill-hover: var(--color-insight-info-action-hover);
+        --tone-fill-active: var(--color-insight-info-action-active);
+        --tone-on-action: var(--color-insight-info-on-action);
+        --tone-ink: var(--color-insight-info-text);
     }
-    .btn-neutral {
-        @apply bg-white dark:border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline dark:text-insight-text-inverse;
+    .btn-light,
+    .control-light {
+        --tone-fill: var(--color-insight-light);
+        --tone-fill-hover: var(--color-insight-light-hover);
+        --tone-fill-active: var(--color-insight-light-active);
+        --tone-on-action: var(--color-insight-on-light);
+        --tone-ink: var(--color-insight-light);
     }
+    /* Neutral has no button color; components that offer it (corner ribbon) fill with the raised surface. */
+    .control-neutral {
+        --tone-fill: var(--color-insight-bg-raised);
+        --tone-fill-hover: var(--color-insight-bg-overlay);
+        --tone-fill-active: var(--color-insight-bg-overlay);
+        --tone-on-action: var(--color-insight-text-body);
+        --tone-ink: var(--color-insight-text-body);
+    }
+
+    /* Variants. Hover and active only apply to enabled buttons. Solid is the default of .btn. */
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain),
+    .btn-solid {
+        background-color: var(--tone-fill);
+        border-color: var(--tone-fill);
+        color: var(--tone-on-action);
+    }
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover,
+    .btn-solid:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: var(--tone-fill-hover);
+        border-color: var(--tone-fill-hover);
+    }
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active,
+    .btn-solid:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: var(--tone-fill-active);
+        border-color: var(--tone-fill-active);
+    }
+
+    /* Outline: colored border and text on a transparent background, fills with the color on hover. */
+    .btn-outline {
+        border-color: var(--tone-fill);
+        color: var(--tone-ink);
+    }
+    .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: var(--tone-fill-hover);
+        border-color: var(--tone-fill-hover);
+        color: var(--tone-on-action);
+    }
+    .btn-outline:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: var(--tone-fill-active);
+        border-color: var(--tone-fill-active);
+        color: var(--tone-on-action);
+    }
+
+    /* Subtle: colored text without border, a light tint of the color appears on hover. */
+    .btn-subtle {
+        color: var(--tone-ink);
+    }
+    .btn-subtle:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: color-mix(in srgb, var(--tone-ink) 10%, transparent);
+    }
+    .btn-subtle:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: color-mix(in srgb, var(--tone-ink) 20%, transparent);
+    }
+
+    /* Link: looks like an underlined text link in the link color; ignores the button color. */
     .btn-link {
-        @apply border-0 text-insight-text-link hover:text-insight-text-link-hover underline px-6 py-2;
+        @apply border-0 px-6 py-2 text-insight-text-link underline;
     }
-    .btn-disabled {
-        @apply bg-insight-text-disabled border-insight-text-disabled text-white dark:text-gray-400;
+    .btn-link:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        @apply text-insight-text-link-hover;
     }
 
-    /* Outline variant - transparent bg, colored border, fills on hover */
-    .btn-outline-primary {
-        @apply border-insight-primary-action text-insight-primary-foreground hover:text-white hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
+    /* Plain: text color of the theme without border, grey on hover; for icon buttons like close or copy. */
+    .btn-plain {
+        @apply text-insight-text-headline;
     }
-    .btn-outline-secondary {
-        @apply border-insight-secondary-action text-insight-secondary-foreground hover:text-white hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
+    .btn-plain:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):hover {
+        background-color: color-mix(in srgb, currentColor 15%, transparent);
     }
-    .btn-outline-success {
-        @apply border-insight-success-action text-insight-success-foreground hover:text-white hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
+    .btn-plain:where(:not(:disabled, [aria-disabled="true"], .btn-disabled)):active {
+        background-color: color-mix(in srgb, currentColor 25%, transparent);
     }
-    .btn-outline-warning {
-        @apply border-insight-warning-action text-insight-warning-foreground hover:text-white hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
+
+    /* Disabled: one look per variant, whatever the color */
+    .btn:is(:disabled, [aria-disabled="true"], .btn-disabled) {
+        @apply cursor-not-allowed;
     }
-    .btn-outline-danger {
-        @apply border-insight-danger-action text-insight-danger-foreground hover:text-white hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
+    .btn:not(.btn-outline, .btn-subtle, .btn-link, .btn-plain):is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-solid:is(:disabled, [aria-disabled="true"], .btn-disabled) {
+        @apply bg-insight-text-disabled border-insight-text-disabled text-insight-inverse dark:text-insight-muted;
     }
-    .btn-outline-info {
-        @apply border-insight-info-action text-insight-info-foreground hover:text-white hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
-    }
-    .btn-outline-neutral {
-        @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
-    }
-    .btn-outline-disabled {
+    .btn-outline:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply border-insight-text-disabled text-insight-text-disabled;
     }
-
-    /* Subtle variant - no border, light background on hover, minimal visual weight */
-    .btn-subtle-primary {
-        @apply text-insight-primary-foreground hover:text-insight-primary-foreground active:text-insight-primary-foreground hover:bg-insight-primary-foreground/10 active:bg-insight-primary-foreground/20;
-    }
-    .btn-subtle-secondary {
-        @apply text-insight-secondary-foreground hover:text-insight-secondary-foreground active:text-insight-secondary-foreground hover:bg-insight-secondary-foreground/10 active:bg-insight-secondary-foreground/20;
-    }
-    .btn-subtle-success {
-        @apply text-insight-success-foreground hover:text-insight-success-foreground active:text-insight-success-foreground hover:bg-insight-success-foreground/10 active:bg-insight-success-foreground/20;
-    }
-    .btn-subtle-warning {
-        @apply text-insight-warning-foreground hover:text-insight-warning-foreground active:text-insight-warning-foreground hover:bg-insight-warning-foreground/10 active:bg-insight-warning-foreground/20;
-    }
-    .btn-subtle-danger {
-        @apply text-insight-danger-foreground hover:text-insight-danger-foreground active:text-insight-danger-foreground hover:bg-insight-danger-foreground/10 active:bg-insight-danger-foreground/20;
-    }
-    .btn-subtle-info {
-        @apply text-insight-info-foreground hover:text-insight-info-foreground active:text-insight-info-foreground hover:bg-insight-info-foreground/10 active:bg-insight-info-foreground/20;
-    }
-    .btn-subtle-neutral {
-        @apply hover:bg-black/20 dark:hover:bg-white/20 active:bg-black/30 dark:active:bg-white/30 text-insight-text-headline dark:text-insight-text-headline-dark;
-    }
-    .btn-subtle-disabled {
+    .btn-subtle:is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-link:is(:disabled, [aria-disabled="true"], .btn-disabled),
+    .btn-plain:is(:disabled, [aria-disabled="true"], .btn-disabled) {
         @apply text-insight-text-disabled;
     }
 
@@ -931,7 +1156,7 @@
     * ========================================================
     *
     *   Inline labels for status, counts, or categories.
-    *   Pattern: .badge .badge-{color} .badge-{size}
+    *   Pattern: .badge .badge-{color} .badge-{size} (+ .badge-disabled)
     *
     *   Usage:
     *     <span class="badge badge-success">Active</span>
@@ -949,25 +1174,30 @@
 
     /* Color variants - subtle background with matching text */
     .badge-primary {
-        @apply bg-insight-primary-soft text-insight-primary-foreground;
+        @apply bg-insight-primary-soft text-insight-primary-text;
     }
     .badge-secondary {
-        @apply bg-insight-secondary-soft text-insight-secondary-foreground;
+        @apply bg-insight-secondary-soft text-insight-secondary-text;
     }
     .badge-success {
-        @apply bg-insight-success-soft text-insight-success-foreground;
+        @apply bg-insight-success-soft text-insight-success-text;
     }
     .badge-warning {
-        @apply bg-insight-warning-soft text-insight-warning-foreground;
+        @apply bg-insight-warning-soft text-insight-warning-text;
     }
     .badge-danger {
-        @apply bg-insight-danger-soft text-insight-danger-foreground;
+        @apply bg-insight-danger-soft text-insight-danger-text;
     }
     .badge-info {
-        @apply bg-insight-info-soft text-insight-info-foreground;
+        @apply bg-insight-info-soft text-insight-info-text;
     }
     .badge-neutral {
-        @apply bg-white border border-gray-300 text-insight-text-body dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-body;
+        @apply bg-insight-surface border border-insight-overlay text-insight-body;
+    }
+
+    /* Disabled state: dimmed, whatever the color */
+    .badge-disabled {
+        @apply opacity-60;
     }
 
     /*
@@ -982,7 +1212,7 @@
     * Usage: <code class="inline-tag">Ctrl+S</code>
     */
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary-foreground rounded-insight-control px-1 py-px text-nowrap;
+        @apply bg-insight-raised font-mono text-insight-primary-text rounded-insight-control px-1 py-px text-nowrap;
     }
 
     /*
@@ -991,10 +1221,10 @@
     * Includes focus ring, placeholder styling, disabled state.
     */
     .input {
-        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:outline-2 focus:outline-offset-0 focus:outline-insight-primary focus:border-insight-primary transition-colors duration-200;
 
         &:disabled {
-            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-disabled cursor-not-allowed;
+            @apply bg-insight-raised text-insight-text-disabled cursor-not-allowed;
 
             &::placeholder {
                 @apply text-insight-text-disabled;
@@ -1004,7 +1234,7 @@
 
     /* Multiselect component disabled state */
     [data-insight-multiselect][data-disabled="true"] .input {
-        @apply bg-neutral-100 dark:bg-neutral-900 cursor-not-allowed;
+        @apply bg-insight-raised cursor-not-allowed;
     }
 
     /* Multiselect search input - transparent within the multiselect container */
@@ -1021,6 +1251,197 @@
     }
 
     /*
+    * ========================================================
+    *   Form controls: toggle, switch, radio block, slider
+    * ========================================================
+    *
+    *   .control-{color} sets the colors of a control; it shares its variables with the button color classes
+    *   above: --tone-fill (selected fill, track, thumb), --tone-fill-hover, --tone-on-action (text and
+    *   thumb on the fill) and --tone-ink (text of an unselected option).
+    */
+    /*
+    * Choice: the visible label of a toggle button or radio block option, placed right after its
+    * input. The input is visually hidden, or transparent on top of the label so it can carry a tooltip.
+    * The selected choice is semibold with heavier icon strokes; .choice-text reserves that width, so
+    * nothing shifts. Variants, like the button variants (neutral ignores the control color):
+    *   .choice-neutral  off: faint grey; selected: raised light knob with a border
+    *   .choice-subtle   off: faint tint of the color; selected: filled with the color
+    *   .choice-outline  off: outlined in the color; selected: filled with the color
+    * A radio block is a .choice-group-{variant}: neutral and subtle put their options on a track,
+    * outline options share their borders. Size and outline corners come from the template.
+    */
+    .choice {
+        @apply relative flex gap-2 items-center justify-center border-2 border-transparent select-none cursor-pointer transition-colors;
+    }
+    :checked + .choice {
+        z-index: 1;
+        @apply font-semibold;
+
+        & svg {
+            stroke-width: 2.25;
+        }
+    }
+    :focus-visible + .choice {
+        z-index: 2;
+        @apply outline-2 outline-offset-2 outline-insight-focus;
+    }
+    .choice-text {
+        @apply inline-flex flex-col;
+
+        &::after {
+            content: attr(data-text);
+            @apply h-0 overflow-hidden invisible font-semibold select-none;
+        }
+    }
+
+    /* Neutral */
+    .choice-neutral {
+        border-width: 1px;
+        @apply text-insight-text-body;
+        background-color: color-mix(in srgb, var(--color-insight-text-body) 8%, transparent);
+    }
+    :not(:checked, :disabled) + .choice-neutral:hover,
+    :not(:checked, :disabled):hover + .choice-neutral {
+        background-color: color-mix(in srgb, var(--color-insight-text-body) 14%, transparent);
+    }
+    :checked + .choice-neutral {
+        @apply bg-insight-bg-base text-insight-text-headline shadow-insight-subtle;
+        border-color: color-mix(in srgb, var(--color-insight-text-muted) 55%, transparent);
+
+        @variant dark {
+            @apply bg-insight-bg-overlay;
+            border-color: color-mix(in srgb, var(--color-insight-text-muted) 70%, transparent);
+        }
+    }
+
+    /* Subtle */
+    .choice-subtle {
+        color: var(--tone-ink);
+        background-color: color-mix(in srgb, var(--tone-ink) 12%, transparent);
+    }
+    :not(:checked, :disabled) + .choice-subtle:hover,
+    :not(:checked, :disabled):hover + .choice-subtle {
+        background-color: color-mix(in srgb, var(--tone-ink) 20%, transparent);
+    }
+
+    /* Outline */
+    .choice-outline {
+        border-color: var(--tone-fill);
+        color: var(--tone-ink);
+    }
+    :not(:checked, :disabled) + .choice-outline:hover,
+    :not(:checked, :disabled):hover + .choice-outline {
+        background-color: color-mix(in srgb, var(--tone-ink) 10%, transparent);
+    }
+
+    /* Subtle and outline fill the selected choice with the control color. */
+    :checked + :is(.choice-subtle, .choice-outline) {
+        background-color: var(--tone-fill);
+        border-color: var(--tone-fill);
+        color: var(--tone-on-action);
+    }
+    :checked:not(:disabled) + :is(.choice-subtle, .choice-outline):hover,
+    :checked:not(:disabled):hover + :is(.choice-subtle, .choice-outline) {
+        background-color: var(--tone-fill-hover);
+        border-color: var(--tone-fill-hover);
+    }
+
+    /* Disabled: no fill while off, so it differs from a faint unselected choice; grey fill while selected. */
+    :disabled + .choice {
+        @apply text-insight-text-disabled cursor-not-allowed shadow-none;
+    }
+    :disabled:not(:checked) + .choice {
+        @apply bg-transparent border-insight-border-surface;
+    }
+    :checked:disabled + .choice {
+        @apply bg-insight-text-disabled border-insight-text-disabled text-insight-inverse dark:text-insight-muted;
+    }
+
+    /* Groups: neutral and subtle options sit on a track; unselected options show the track. */
+    .choice-group-neutral,
+    .choice-group-subtle {
+        @apply gap-0.5 p-0.5 rounded-insight-control;
+
+        & .choice {
+            border-radius: calc(var(--radius-insight-control) - 2px);
+        }
+        & :not(:checked) + .choice {
+            @apply bg-transparent;
+        }
+        & :not(:checked):not(:disabled) + .choice:hover,
+        & :not(:checked, :disabled):hover + .choice {
+            background-color: color-mix(in srgb, currentColor 10%, transparent);
+        }
+        & :disabled:not(:checked) + .choice {
+            @apply border-transparent;
+        }
+    }
+    .choice-group-neutral {
+        @apply bg-insight-bg-raised border border-insight-border-raised dark:bg-insight-bg-base dark:border-insight-border-overlay;
+    }
+    .choice-group-subtle {
+        background-color: color-mix(in srgb, var(--tone-ink) 12%, transparent);
+    }
+
+    /*
+    * Switch: a 44x24 track after a visually hidden checkbox. Off: outlined track with a small muted thumb.
+    * On: track in the control color with a larger thumb in the color on it. Logical insets mirror it in RTL.
+    */
+    .switch-track {
+        @apply relative shrink-0 w-11 h-6 bg-insight-bg-raised border-2 border-insight-text-muted rounded-insight-full transition-colors;
+
+        &::after {
+            content: "";
+            @apply absolute top-1/2 start-0.5 size-3 bg-insight-text-muted rounded-insight-full -translate-y-1/2;
+            transition: inset-inline-start 0.15s, width 0.15s, height 0.15s, background-color 0.15s;
+        }
+    }
+    :checked + .switch-track {
+        background-color: var(--tone-fill);
+        border-color: var(--tone-fill);
+
+        &::after {
+            @apply start-5 size-4;
+            background-color: var(--tone-on-action);
+        }
+    }
+    :focus-visible + .switch-track {
+        @apply outline-2 outline-offset-2 outline-insight-focus;
+    }
+    :disabled + .switch-track {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    /*
+    * Forced colors (e.g. Windows contrast themes) replace backgrounds, which would hide the selected fill
+    * and the switch thumb. The selected choice and the switched-on track use the system highlight instead.
+    */
+    @media (forced-colors: active) {
+        :checked + .choice,
+        :checked + .switch-track {
+            forced-color-adjust: none;
+            background-color: Highlight;
+            border-color: Highlight;
+            color: HighlightText;
+        }
+        .switch-track::after {
+            forced-color-adjust: none;
+            background-color: CanvasText;
+        }
+        :checked + .switch-track::after {
+            background-color: HighlightText;
+        }
+        :disabled + .choice {
+            border-color: GrayText;
+            color: GrayText;
+        }
+        :checked:disabled + .choice {
+            background-color: GrayText;
+            color: Canvas;
+        }
+    }
+
+    /*
     * Range slider styling.
     * Custom track and thumb styling for <input type="range">.
     * Uses CSS custom property --insight-control-range-progress for fill.
@@ -1028,50 +1449,227 @@
     */
     .range-custom::-webkit-slider-runnable-track {
         @apply h-2 rounded-insight-control;
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--tone-fill) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     .range-custom::-moz-range-track {
         @apply h-2 rounded-insight-control;
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--tone-fill) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
+    /*
+    * Right-to-left sliders fill from the right; :dir() also covers a right-to-left container in a
+    * left-to-right page. The dark theme needs no rules: --color-insight-bg-raised switches with it.
+    */
+    .range-custom:dir(rtl)::-webkit-slider-runnable-track {
+        background: linear-gradient(to left, var(--tone-fill) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    [data-theme="dark"] .range-custom::-moz-range-track,
-    [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
+    .range-custom:dir(rtl)::-moz-range-track {
+        background: linear-gradient(to left, var(--tone-fill) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
-    html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
+    /*
+    * Slider thumb, shared by the single slider and both inputs of the dual slider.
+    * Chromium and Safari style the thumb only without its native appearance; Firefox does not need it.
+    */
+    .range-thumb::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        @apply size-6 bg-insight-bg-base border-2 rounded-insight-full cursor-pointer -mt-2;
+        border-color: var(--tone-fill);
     }
 
-    html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
+    .range-thumb::-moz-range-thumb {
+        @apply size-6 bg-insight-bg-base border-2 rounded-insight-full cursor-pointer;
+        border-color: var(--tone-fill);
     }
 
-    html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
-    html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
+    /*
+    * Dual slider: two inputs lie on top of each other. Only their thumbs take pointer events, and the
+    * focus ring sits on the focused thumb because each input spans the whole track.
+    */
+    /* Chromium places the thumb relative to the input's own track: an invisible track as high as the
+       single slider's lets the shared -mt-2 center the thumb on the visible track behind it. */
+    .slider-dual-container .range-thumb::-webkit-slider-runnable-track {
+        @apply h-2 bg-transparent;
     }
 
-    html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
-    html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
-    html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
+    .slider-dual-container .range-thumb::-moz-range-track {
+        @apply h-2 bg-transparent;
     }
 
-    .range-custom::-webkit-slider-thumb {
-        @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-2;
+    .slider-dual-container .range-thumb::-webkit-slider-thumb {
+        @apply pointer-events-auto;
     }
 
-    .range-custom::-moz-range-thumb {
-        @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
+    .slider-dual-container .range-thumb::-moz-range-thumb {
+        @apply pointer-events-auto;
+    }
+
+    .slider-dual-container .range-thumb:focus-visible::-webkit-slider-thumb {
+        @apply ring-2 ring-insight-focus ring-offset-2;
+    }
+
+    .slider-dual-container .range-thumb:focus-visible::-moz-range-thumb {
+        @apply ring-2 ring-insight-focus ring-offset-2;
+    }
+
+    /*
+    * Slider legend.
+    * Each item is centered under the thumb position of its value: the thumb center moves from half a thumb
+    * width to the track length minus half a thumb width. The first and last item stay inside the slider:
+    * a long label is shifted inwards instead of overflowing. --insight-legend-position (0 to 1) is set per item.
+    * --insight-slider-thumb must match the thumb size above (size-6).
+    */
+    .slider-legend {
+        --insight-slider-thumb: 1.5rem;
+        @apply relative h-5;
+    }
+
+    /* Physical left/right: in the rotate legend mode an item's own writing mode turns inset-inline into top. */
+    .slider-legend-item {
+        --insight-legend-offset: calc(
+            var(--insight-slider-thumb) / 2 + var(--insight-legend-position) * (100% - var(--insight-slider-thumb))
+        );
+        @apply absolute top-0 whitespace-nowrap;
+        left: var(--insight-legend-offset);
+        translate: -50% 0;
+    }
+
+    .slider-legend-item:first-child {
+        translate: calc(-1 * min(50%, var(--insight-slider-thumb) / 2)) 0;
+    }
+
+    .slider-legend-item:last-child {
+        translate: calc(-1 * max(50%, 100% - var(--insight-slider-thumb) / 2)) 0;
+    }
+
+    /* Right-to-left layouts measure from the right and shift the other way. */
+    .slider-legend-item:dir(rtl) {
+        left: auto;
+        right: var(--insight-legend-offset);
+        translate: 50% 0;
+    }
+
+    .slider-legend-item:first-child:dir(rtl) {
+        translate: min(50%, var(--insight-slider-thumb) / 2) 0;
+    }
+
+    .slider-legend-item:last-child:dir(rtl) {
+        translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
+    }
+
+    /*
+    * ========================================================
+    *   Ring Carousel
+    * ========================================================
+    *
+    *   insight-ui-ring-carousel.js sets the size and place of every item and the height of the stage.
+    *   These rules keep the 3D context, the solid backs and the clipping: the ring sets the item
+    *   width, media shrink to it and wider content is clipped, so neighbouring items never overlap.
+    */
+    /* The items beside the ring reach past the carousel; they must not widen the page. */
+    .ring-carousel {
+        overflow-x: clip;
+    }
+
+    .ring-carousel-stage {
+        position: relative;
+        perspective: 1000px;
+    }
+
+    .ring-carousel-ring {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+    }
+
+    .ring-carousel-item {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform-style: preserve-3d;
+        /* visibility stays visible while it transitions, so a leaving item is hidden once it has faded out. */
+        transition: transform var(--insight-ring-carousel-duration) ease, visibility var(--insight-ring-carousel-duration);
+    }
+
+    .ring-carousel-faces {
+        display: grid;
+        height: 100%;
+        transform-style: preserve-3d;
+    }
+
+    /* Fading the faces, not the item: opacity on a 3D item flattens it and shows its mirrored front. */
+    .ring-carousel-faces > * {
+        grid-area: 1 / 1;
+        height: 100%;
+        backface-visibility: hidden;
+        opacity: var(--insight-ring-carousel-fade, 1);
+        transition: opacity var(--insight-ring-carousel-duration) ease;
+    }
+
+    .ring-carousel-front {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Items behind the front one fade towards the page background: lighter in light mode, darker in
+       dark mode, so the front item stands out in both. */
+    .ring-carousel-faces > ::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius-insight-surface);
+        background-color: var(--color-insight-bg-base);
+        opacity: 0.45;
+        pointer-events: none;
+        transition: opacity var(--insight-ring-carousel-duration) ease;
+    }
+
+    .ring-carousel-item[data-current] .ring-carousel-faces > ::after {
+        opacity: 0;
+    }
+
+    /* A height, not a minimum: content such as a card brings its own min-height utility, which wins. */
+    .ring-carousel-front > * {
+        height: 100%;
+    }
+
+    .ring-carousel-front img,
+    .ring-carousel-front video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Content above the height limit scrolls in the front item. */
+    .ring-carousel-item[data-current] .ring-carousel-front {
+        overflow-y: auto;
+    }
+
+    .ring-carousel-back {
+        transform: rotateY(180deg);
+        background-color: var(--color-insight-bg-raised);
+        border: 1px solid var(--color-insight-border-raised);
+        border-radius: var(--radius-insight-surface);
+    }
+
+    /* Nothing moves before the first layout, while an item jumps to its place, or with reduced motion. */
+    .ring-carousel:not([data-ready]) .ring-carousel-item,
+    .ring-carousel:not([data-ready]) .ring-carousel-faces > *,
+    .ring-carousel:not([data-ready]) .ring-carousel-faces > ::after,
+    .ring-carousel-item[data-snap],
+    .ring-carousel-item[data-snap] .ring-carousel-faces > *,
+    .ring-carousel-item[data-snap] .ring-carousel-faces > ::after {
+        transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ring-carousel-item,
+        .ring-carousel-faces > *,
+        .ring-carousel-faces > ::after {
+            transition: none;
+        }
     }
 
 }

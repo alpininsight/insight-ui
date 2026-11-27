@@ -196,13 +196,13 @@ describe('WeakMap Singleton Pattern', () => {
     });
   });
 
-  describe('ThreeDCarousel', () => {
+  describe('RingCarousel', () => {
     beforeEach(() => {
-      loadComponent('insight-ui-3D-carousel.js');
+      loadComponent('insight-ui-ring-carousel.js');
     });
 
     it('should have static instances WeakMap', () => {
-      expect(InsightUI.ThreeDCarousel.instances).toBeInstanceOf(WeakMap);
+      expect(InsightUI.RingCarousel.instances).toBeInstanceOf(WeakMap);
     });
   });
 

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Tests for the chart component."""
 
+import json
+
 from bs4 import BeautifulSoup
 from insight_ui.configs import ChartConfig, ChartDatasetConfig
 
@@ -62,3 +64,26 @@ class TestChart(TemplateTagsTestCase):
             "5",
         ]
         assert "ResizeObserver" in rendered
+
+    def test_chart_texts_reach_the_script_as_data(self) -> None:
+        """Titles, series names and axis labels stay data, even with quotes or a closing script tag."""
+        text = '"</script><img src=x onerror=alert(1)>'
+        chart_config = ChartConfig(
+            tag_id="quoted-chart",
+            dataset=ChartDatasetConfig(title=text, x_axis_legend=[text], series=[text], data=[[1]]),
+        )
+
+        for tag in ("bar_chart", "line_chart"):
+            with self.subTest(tag=tag):
+                rendered = self.render_template(
+                    f"{{% load insight_tags %}}{{% {tag} config=chart_config %}}", {"chart_config": chart_config}
+                )
+                soup = BeautifulSoup(rendered, "html.parser")
+
+                assert soup.find("img") is None
+                assert json.loads(soup.find("script", id="quoted-chart-data").string) == {
+                    "title": text,
+                    "x_axis_legend": [text],
+                    "series": [text],
+                    "data": [[1]],
+                }

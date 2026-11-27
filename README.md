@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/main/.github/assets/hero-title.svg" alt="Django-Insight-UI" width="600">
+<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/main/.github/assets/hero-title.svg?v=django-insight-ui" alt="Django-Insight-UI" width="600">
 
 <br>
 
@@ -18,10 +18,13 @@ HTMX-powered · Tailwind-based · RTL & i18n ready
 <br>
 
 [![PyPI](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
-[![Latest on Django Packages](https://img.shields.io/badge/PyPI-insight-ui-tags-8c3c26.svg)](https://djangopackages.org/packages/p/insight-ui/)
+[![Insight UI Python package publication](https://github.com/alpininsight/.github-private/actions/workflows/insight-ui-publish-python.yml/badge.svg?branch=main&event=workflow_dispatch)](https://github.com/alpininsight/.github-private/actions/workflows/insight-ui-publish-python.yml)
+[![Django Packages](https://img.shields.io/badge/Django%20Packages-insight--ui-8c3c26.svg)](https://djangopackages.org/packages/p/insight-ui/)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/alpininsight/insight-ui/blob/main/LICENSE)
+
+*The publication workflow is private and requires maintainer access.*
 
 </div>
 
@@ -83,9 +86,9 @@ Use components in your templates:
 {% block title %}My application{% endblock %}
 
 {% block content %}
-    {% button label="Get started" type="primary" %}
+    {% button label="Get started" color="primary" %}
     {% card title="Welcome" subtitle="Your first card" content="Card content goes here." %}
-    {% alert type="success" message="Component rendered successfully." %}
+    {% alert severity="success" message="Component rendered successfully." %}
 {% endblock %}
 ```
 
@@ -98,6 +101,7 @@ The following guides describe the public package and contributor workflow on Git
 | Guide | Description |
 |-------|-------------|
 | [Getting Started](https://github.com/alpininsight/insight-ui/blob/main/docs/getting-started.md) | Installation and configuration |
+| [Migrating to 2.0](https://github.com/alpininsight/insight-ui/blob/main/docs/migration-2.0.md) | Breaking changes from v1.15.1 |
 | [Components](https://github.com/alpininsight/insight-ui/blob/main/docs/components.md) | Template tag API and patterns |
 | [Design System](https://github.com/alpininsight/insight-ui/blob/main/docs/design-system.md) | Tokens, theming, and customization |
 | [Static Assets](https://github.com/alpininsight/insight-ui/blob/main/docs/static-assets.md) | Staticfiles and CDN configuration |

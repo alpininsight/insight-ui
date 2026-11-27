@@ -63,6 +63,23 @@ compatible additions use a minor release and incompatible public API changes
 need a major release with migration guidance. Do not delete and re-upload a
 release to correct its description or classifier.
 
+## Develop To Main For The 2.0 Line
+
+Feature and documentation PRs target Develop. Only this repository's Develop
+branch may target Main. The abandoned one-off 1.x maintenance exception is
+removed; a review, branch name, old base SHA or small file list cannot revive it.
+Future maintenance arrangements require a separate, reviewed release strategy.
+
+This metadata-only check is a contributor guardrail, not an authorization
+boundary: a PR can edit its own workflow. Repository rulesets, exact-head
+independent review and the release gates above remain separate controls; this
+source cleanup changes none of their settings. It adds no publication path,
+credentials, approval bypass, bot-comment parser or consumer activation.
+
+The breaking 2.0 line needs migration guidance and an explicitly selected RC
+version before consumer trial. Main promotion, artifact/version/hash approval,
+Trusted Publishing and actual consumer acceptance retain their own gates.
+
 ## Reference Application
 
 `insight-ui` owns generic components and package tests. `insight-ui-docs` owns

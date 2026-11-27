@@ -7,7 +7,7 @@
 {% endif %}
 
 {% if page_header_config.description %}
-    <div class="{{ max_width|default:'max-w-4xl' }} space-y-4 text-insight-headline text-lg leading-loose">
+    <div class="space-y-4 max-w-4xl text-insight-headline text-lg leading-loose">
         {% for paragraph in page_header_config.description %}
             {{ paragraph|markdownify }}
         {% endfor %}

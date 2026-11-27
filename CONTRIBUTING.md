@@ -68,7 +68,7 @@ migration; authentication and application endpoints need a separate test host.
 
 ## 2. Choose The Component Shape
 
-Check the [component reference](https://insight-ui.com/docs/configs) and existing
+Check the [component reference](https://django-insight-ui.com/docs/configs) and existing
 source before adding a new component. Prefer composing existing components over
 copying their markup or behavior.
 
@@ -216,7 +216,7 @@ uv run pytest tests/insight_ui/unit/components/test_example_panel.py
 If you added JavaScript, run its focused test too:
 
 ```bash
-npm test -- tests/js/example-panel.test.js
+npx --no-install vitest run tests/js/example-panel.test.js
 ```
 
 Then run the package checks before opening the PR:
@@ -257,6 +257,9 @@ uv run pytest tests/insight_ui/unit/test_devtools.py \
   tests/insight_ui/unit/configs/test_docstring_integrity.py
 ```
 
+On Windows without developer mode or admin rights, the tests that redirect
+files through symlinks are skipped; CI runs them.
+
 These checks do not replace rendering tests for your completed component and its
 examples, or prove that a separate reference application already supports it.
 
@@ -271,6 +274,11 @@ Conventional Commit title such as `feat(components): add example panel`.
 Explain the use case, why existing components are not enough, how composition
 works, and which checks you ran. Point to the Config, its `__example__`, the real
 tag/template and their tests. Mention any missing tests or known limits.
+
+For a bug fix, include the [regression evidence](docs/testing.md#bug-fixes-and-regression-evidence):
+the failing case before the correction and its passing result afterwards, or the
+existing test that already covers it. Do not replace a missing behavioral
+regression with assertions that only describe the implementation.
 
 Include a useful preview image in the PR when appearance changes. Temporary
 debugging screenshots, browser profiles, caches, and credentials do not belong
