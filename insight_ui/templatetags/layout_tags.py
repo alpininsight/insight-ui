@@ -1383,7 +1383,8 @@ class ListNode(LayoutNode):
 
         content = self.nodelist.render(context)
 
-        return f'<{tag}{id_attr} class="{escape(class_str)}"{aria_attr}>{content}</{tag}>'
+        # Safari drops the list semantics of a list without visible markers; the role keeps them.
+        return f'<{tag}{id_attr} class="{escape(class_str)}" role="list"{aria_attr}>{content}</{tag}>'
 
 
 class ListItemNode(LayoutNode):
