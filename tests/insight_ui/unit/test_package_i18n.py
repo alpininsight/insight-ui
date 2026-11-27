@@ -1,6 +1,9 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Verify compiled app-local catalogs, rendered shell text and build failures."""
+"""Verify compiled app-local catalogs, targeted translation rules and build failures.
+
+That the built package ships and activates its catalogs is checked on the artifact by scripts/smoke_distribution.py.
+"""
 
 import gettext
 import re
@@ -15,7 +18,6 @@ from babel.messages.catalog import Catalog
 from babel.messages.pofile import read_po, write_po
 from bs4 import BeautifulSoup
 from django.template import Context, Template
-from django.template.loader import render_to_string
 from django.test import RequestFactory, override_settings
 from django.utils.translation import gettext as translate, override
 from django.views.i18n import JavaScriptCatalog
@@ -24,39 +26,20 @@ from insight_ui.configs import (
     ButtonConfig,
     CarouselConfig,
     FooterConfig,
-    FooterContactConfig,
     HtmxConfig,
     IconConfig,
     InfiniteScrollConfig,
-    LegalNoticeConfig,
     ListConfig,
     LiveContentConfig,
     MultiselectConfig,
     NavbarConfig,
     NavbarLinkConfig,
     RingCarouselConfig,
-    SearchBarConfig,
     ToggleViewConfig,
 )
 from scripts.hatch_i18n import CustomBuildHook, compile_catalogs, extract_source_messages
 
 ROOT = Path(__file__).resolve().parents[3]
-MESSAGES = {
-    "Contact": "Kontakt",
-    "Imprint": "Impressum",
-    "Privacy": "Datenschutz",
-    "Do you have any questions or feedback?": "Haben Sie Fragen oder Anregungen?",
-    "All rights reserved.": "Alle Rechte vorbehalten.",
-    "Jump to main content": "Zum Hauptinhalt springen",
-    "Main navigation": "Hauptnavigation",
-    "Side navigation": "Seitennavigation",
-    "Search": "Suchen",
-    "Search results": "Suchergebnisse",
-    "No results found": "Keine Ergebnisse gefunden",
-    "Toggle theme": "Design umschalten",
-    "Open menu": "Menü öffnen",
-    "Close": "Schließen",
-}
 
 
 def _fixture_catalogs(root: Path) -> None:
@@ -298,7 +281,7 @@ def test_ordered_list_description_translates_prose_around_double_backtick_code()
     field = next(field for field in fields(ListConfig) if field.name == "ordered")
     with override("de"):
         description = str(field.metadata["doc"])
-    assert "Verwenden Sie" in description
+    assert "verwenden" in description
     assert "anstelle von" in description
     assert "``<ol>``" in description
     assert "``<ul>``" in description
@@ -364,41 +347,6 @@ def test_all_package_messages_compile_without_fuzzy_or_missing_forms(domain: str
             assert message.string
             if isinstance(message.string, tuple):
                 assert all(message.string)
-
-
-@override_settings(LOCALE_PATHS=[])
-@pytest.mark.parametrize("language", ["de", "en"])
-def test_app_local_shell_and_accessible_names_render_in_active_language(language: str) -> None:
-    """Real package tags translate visible text and aria labels without host catalogs."""
-    context = {
-        **get_config(),
-        "footer": FooterConfig(
-            contact=FooterContactConfig(email="team@example.com", imprint_url="/imprint/", privacy_url="/privacy/"),
-            legal=LegalNoticeConfig(year=2026, holder="Example"),
-        ),
-        "navbar": NavbarConfig(show_theme_toggle=True, show_language_selector=True, hide_login=True),
-        "search": SearchBarConfig(enable_search=True),
-    }
-    source = """{% load insight_tags layout_tags %}
-        {% navbar config=navbar %}{% footer config=footer %}{% search_bar config=search %}
-        {% sidebar static=False %}Contents{% endsidebar %}
-        {% modal id="translated-modal" title="Example" %}Content{% endmodal %}"""
-    with override(language):
-        rendered = Template(source).render(Context(context))
-        base = render_to_string("insight_ui/base.html", get_config())
-    soup = BeautifulSoup(rendered, "html.parser")
-    expected = {message: translated if language == "de" else message for message, translated in MESSAGES.items()}
-    for message in ("Contact", "Imprint", "Privacy", "Do you have any questions or feedback?", "All rights reserved."):
-        assert expected[message] in soup.get_text(" ", strip=True)
-    assert soup.select_one("nav[aria-label]")["aria-label"] == expected["Main navigation"]
-    assert soup.select_one("aside[aria-label]")["aria-label"] == expected["Side navigation"]
-    assert soup.select_one("button[data-insight-collapsible]")["aria-label"] == expected["Open menu"]
-    assert soup.select_one("button[data-insight-theme-toggle]")["aria-label"] == expected["Toggle theme"]
-    assert soup.select_one('[data-insight-dismiss="modal"][aria-label]')["aria-label"] == expected["Close"]
-    assert soup.select_one('label[for="search"]').get_text(strip=True) == expected["Search"]
-    assert soup.select_one('[role="listbox"]')["aria-label"] == expected["Search results"]
-    assert expected["No results found"] in str(soup.select_one('template[data-search-template="no-results"]'))
-    assert expected["Jump to main content"] in base
 
 
 def test_javascript_catalog_delivers_translations_and_plural_forms() -> None:

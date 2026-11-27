@@ -41,13 +41,13 @@ def page_links(soup: BeautifulSoup) -> dict[str, str]:
         pytest.param(
             1,
             "previous",
-            "To previous page (Deactivated because there are no more previous pages)",
+            "To previous page (disabled, this is the first page)",
             id="first-page",
         ),
         pytest.param(
             3,
             "next",
-            "To next page (Deactivated because there are no more next pages)",
+            "To next page (disabled, this is the last page)",
             id="last-page",
         ),
     ],

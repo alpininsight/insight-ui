@@ -62,7 +62,7 @@ class NavbarLinkConfig:
 
     Attributes:
         text: Label of the link.
-        request_url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
+        request_url: The URL to be called when clicking on the link, unless it opens a modal or a dropdown menu.
         icon: An optional icon displayed before the text.
         htmx: Optional HTMX configuration for dynamic content loading.
         need_auth: The link is only displayed for logged-in users.
@@ -86,7 +86,9 @@ class NavbarLinkConfig:
     text: str = field(metadata={"doc": _("Label of the link.")})
     request_url: str = field(
         default="",
-        metadata={"doc": _("The URL to be called when clicking on the link, if not opening a modal or dropdown menu.")},
+        metadata={
+            "doc": _("The URL to be called when clicking on the link, unless it opens a modal or a dropdown menu.")
+        },
     )
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(
@@ -447,7 +449,7 @@ class SidebarConfig:
         static: If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible).
         width: Width of the sidebar ("narrow", "normal", "wide").
         mobile_behavior: Behavior on mobile viewports ("hidden", "drawer").
-        sidebar_data: Content for the navigation variant (only used with ``sidebar_nav.html``).
+        sidebar_data: Content for the navigation variant (only used with `sidebar_nav.html`).
 
     """
 
@@ -480,7 +482,7 @@ class SidebarConfig:
     )
     sidebar_data: SidebarDataConfig | None = field(
         default=None,
-        metadata={"doc": _("Content for the navigation variant (only used with ``sidebar_nav.html``).")},
+        metadata={"doc": _("Content for the navigation variant (only used with `sidebar_nav.html`).")},
     )
 
 
@@ -742,7 +744,7 @@ class MinimalStepperConfig:
         step_count: Number of process steps. (Only if 'steps' is not set!)
         current_step: Current step of the process. (Only if 'steps' is not set!)
         current_step_status: Status of the current step. (Only if 'steps' is not set!)
-        icon_size: Size of the icons in the progress bar.
+        icon_size: Size of the step icons.
 
     """
 
@@ -758,7 +760,7 @@ class MinimalStepperConfig:
     current_step_status: StepStatus = field(
         default="current", metadata={"doc": _("Status of the current step. (Only if 'steps' is not set!)")}
     )
-    icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
+    icon_size: Size = field(default="xs", metadata={"doc": _("Size of the step icons.")})
 
     def __post_init__(self) -> None:
         """Validate icon_size and step status values after initialization."""

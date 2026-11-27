@@ -52,7 +52,7 @@ function builderHTML(rowCount = 1, maxFilters = 20) {
   return `
     <form id="books" data-insight-query-builder data-param-name="filters" data-max-filters="${maxFilters}">
       <script id="books-fields" type="application/json">${JSON.stringify(FIELDS)}</script>
-      <p data-insight-query-builder-help hidden>AND binds tighter than OR</p>
+      <p data-insight-query-builder-help hidden>AND is evaluated before OR</p>
       <div data-insight-query-builder-rows>${Array.from({ length: rowCount }, (_, index) => rowHTML(index)).join('')}</div>
       <template data-insight-query-builder-template>${rowHTML(0)}</template>
       <button type="button" data-insight-query-builder-add>Add filter</button>

@@ -91,10 +91,10 @@ class FormConfig:
         submit_label: Label for the submit button.
         reset_label: Label for the reset button.
         request_url: Target URL for form submission.
-        method: HTTP method for form submission (get or post).
+        method: HTTP method for form submission ('get' or 'post').
         htmx: HTMX configuration for AJAX submission.
         show_loading_indicator: Whether to show the loading indicator of the form during HTMX requests.
-        turnstile: Optional Turnstile widget; the host must verify its token.
+        turnstile: Optional Turnstile widget; the host application must verify its token server-side.
 
     """
 
@@ -132,7 +132,7 @@ class FormConfig:
     submit_label: str = field(default="", metadata={"doc": _("Label for the submit button.")})
     reset_label: str = field(default="", metadata={"doc": _("Label for the reset button.")})
     request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
-    method: str = field(default="post", metadata={"doc": _("HTTP method for form submission (get or post).")})
+    method: str = field(default="post", metadata={"doc": _("HTTP method for form submission ('get' or 'post').")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
     show_loading_indicator: bool = field(
         default=True,
@@ -140,7 +140,8 @@ class FormConfig:
     )
     # Keep the existing positional fields stable.
     turnstile: TurnstileConfig | None = field(
-        default=None, metadata={"doc": _("Optional Turnstile widget; the host must verify its token.")}
+        default=None,
+        metadata={"doc": _("Optional Turnstile widget; the host application must verify its token server-side.")},
     )
 
     def __post_init__(self) -> None:

@@ -1876,7 +1876,7 @@ def turnstile(
     size: Literal["normal", "flexible", "compact"] | _Unset = UNSET,
     action: str | _Unset = UNSET,
 ) -> dict[str, TurnstileConfig]:
-    """Render the public Turnstile widget; the host must verify its token."""
+    """Render the public Turnstile widget; the host application must verify its token server-side."""
     config = build_config(TurnstileConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"turnstile_config": config}
 
