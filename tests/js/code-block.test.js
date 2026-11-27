@@ -391,6 +391,51 @@ describe('CodeBlock Component', () => {
       }
     });
 
+    it('highlights a code diff without the file header rule of the diff grammar', () => {
+      // Prism 1.30's diff grammar: "coord" treats lines starting with "---" or "+++" as file headers, so a removed
+      // line whose code starts with "--" or an added line starting with "++" would lose its diff marking.
+      const diffGrammar = {
+        coord: [/^(?:\*{3}|-{3}|\+{3}).*$/m, /^@@.*@@$/m, /^\d.*$/m],
+        'deleted-sign': /^-.*/m,
+        'inserted-sign': /^\+.*/m,
+        unchanged: /^ .*/m,
+      };
+      const hooks = {};
+      const used = new Map();
+      const originalPrism = globalThis.Prism;
+      // Follows Prism.highlightElement: the diff-highlight plugin sets the diff grammar for "diff-<lang>" in
+      // before-sanity-check, then before-highlight runs, then the code is highlighted with env.grammar.
+      globalThis.Prism = {
+        languages: { diff: diffGrammar },
+        hooks: { add: (name, callback) => (hooks[name] ??= []).push(callback) },
+        highlightElement: (element) => {
+          const language = element.closest('pre').className.match(/language-([\w-]+)/)[1];
+          const env = { element, language, grammar: Prism.languages[language], code: element.textContent };
+          if (language.startsWith('diff-') && !env.grammar) env.grammar = Prism.languages.diff;
+          (hooks['before-highlight'] ?? []).forEach(callback => callback(env));
+          used.set(element, env.grammar);
+          (hooks.complete ?? []).forEach(callback => callback(env));
+        },
+      };
+      try {
+        const element = TestUtils.createDOM(
+          `<pre id="cb-dashes" data-insight-code-block="css" data-diff>---color-a: red;\n+++i;\n --color-b: blue;</pre>`
+        ).querySelector('[data-insight-code-block]');
+        new InsightUI.CodeBlock(element);
+
+        const grammar = used.get(document.querySelector('#cb-dashes code'));
+        expect(Object.keys(grammar)).toEqual(['deleted-sign', 'inserted-sign', 'unchanged']);
+
+        // Other diffs on the page keep their file headers.
+        const foreign = TestUtils.createDOM('<pre class="language-diff-css"><code>--- a/app.css</code></pre>');
+        Prism.highlightElement(foreign.querySelector('code'));
+        expect(used.get(foreign.querySelector('code'))).toBe(diffGrammar);
+        expect(diffGrammar.coord).toBeDefined();
+      } finally {
+        globalThis.Prism = originalPrism;
+      }
+    });
+
     it('marks the intended characters when astral characters precede the change', () => {
       const text = '-message = "😀"; x = 1\n+message = "😀"; x = 2';
       const element = document.createElement('pre');
