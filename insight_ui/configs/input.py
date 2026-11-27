@@ -39,6 +39,8 @@ class ButtonConfig:
     Attributes:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
+        name: Name sent with the form data when this button submits the form.
+        value: Value sent under `name` when this button submits the form.
         request_url: URL of the link (renders as <a>).
         external: **True** to open the link in a new tab.
         on_click: The name of the JavaScript method to be called when clicking on the button.
@@ -55,6 +57,7 @@ class ButtonConfig:
         disabled: **True** to disable the button.
         disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         button_type: HTML type attribute: 'button', 'submit', or 'reset'.
+        form: ID of the form this button belongs to when it is placed outside of it.
         extra_classes: Additional CSS classes to append to the button element.
         data_attrs: List of custom data attributes to add to the button element.
         aria_attrs: List of ARIA attributes to add to the button element.
@@ -83,10 +86,16 @@ class ButtonConfig:
             extra_classes="w-full",
             data_attrs=[DataAttrConfig(name="testid", value="submit-btn")],
         )
+        ButtonConfig(name="action_primary", label="Make primary", button_type="submit")
+        ButtonConfig(label="Log out", button_type="submit", form="logout-form")
         """
 
     label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    name: str = field(
+        default="", metadata={"doc": _("Name sent with the form data when this button submits the form.")}
+    )
+    value: str = field(default="", metadata={"doc": _("Value sent under `name` when this button submits the form.")})
     request_url: str = field(default="", metadata={"doc": "URL of the link (renders as <a>)."})
     external: bool = field(default=False, metadata={"doc": _("**True** to open the link in a new tab.")})
     on_click: str = field(
@@ -124,6 +133,9 @@ class ButtonConfig:
     )
     button_type: HtmlButtonType = field(
         default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
+    )
+    form: str = field(
+        default="", metadata={"doc": _("ID of the form this button belongs to when it is placed outside of it.")}
     )
     extra_classes: str = field(
         default="", metadata={"doc": _("Additional CSS classes to append to the button element.")}
@@ -166,12 +178,13 @@ class ButtonConfig:
         validate_button_variant(self.variant)
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
-        # A request_url renders an <a>: it has no type or onclick of a button, and without it there is no link.
+        # A request_url renders an <a>: it has no type, onclick or form data of a button, and without it no link.
         if self.external and not self.request_url:
             raise ValueError(f"ButtonConfig {self.label}: external only applies together with request_url.")  # noqa: TRY003
-        if self.request_url and (self.on_click or self.button_type != "button"):
+        if self.request_url and (self.on_click or self.button_type != "button" or self.name or self.value or self.form):
             raise ValueError(  # noqa: TRY003
-                f"ButtonConfig {self.label}: on_click and button_type only apply to buttons without request_url."
+                f"ButtonConfig {self.label}: on_click, button_type, name, value and form only apply to buttons "
+                "without request_url."
             )
         if self.disabled and self.disabled_reason is None:
             warnings.warn(

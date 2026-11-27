@@ -8,7 +8,7 @@ import warnings
 import pytest
 from bs4 import BeautifulSoup, Tag
 from django.template import Context, Template
-from insight_ui.configs import ButtonConfig, HtmxConfig
+from insight_ui.configs import ButtonConfig, HtmxConfig, StatusScreenConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -161,6 +161,44 @@ def test_external_icon_link_names_the_new_tab() -> None:
     link = render_button('label="Docs" icon_name="arrow-right" icon_only=True request_url="/x/" external=True')
 
     assert link["aria-label"] == "Docs (opens in a new tab)"
+
+
+def test_submit_button_sends_its_name_and_value() -> None:
+    """Only the clicked submit button sends its name and value, so one form can offer several actions."""
+    button = render_button('label="Make primary" button_type="submit" name="action_primary" value="2"')
+
+    assert button.name == "button"
+    assert button["type"] == "submit"
+    assert button["name"] == "action_primary"
+    assert button["value"] == "2"
+
+
+def test_button_submits_a_form_elsewhere_on_the_page() -> None:
+    """The form attribute ties a button outside the <form> to that form."""
+    button = render_button('label="Log out" button_type="submit" form="logout-form"')
+
+    assert button["form"] == "logout-form"
+
+
+def test_button_without_form_options_has_no_form_attributes() -> None:
+    """Name, value and form appear only when they are set; empty attributes would change the submitted data."""
+    button = render_button('label="Save" button_type="submit"')
+
+    assert not {"name", "value", "form"} & set(button.attrs)
+
+
+def test_status_screen_action_submits_a_form_outside_the_screen() -> None:
+    """Actions of components render where the component puts them; form connects such an action to a POST form."""
+    config = StatusScreenConfig(
+        title="Signed in",
+        actions=[ButtonConfig(label="Log out", button_type="submit", form="logout-form")],
+    )
+    html = Template("{% load insight_tags %}{% status_screen config=config %}").render(Context({"config": config}))
+    action = BeautifulSoup(html, "html.parser").find("button", string=lambda text: text and "Log out" in text)
+
+    assert action is not None
+    assert action["type"] == "submit"
+    assert action["form"] == "logout-form"
 
 
 def test_internal_link_has_no_new_tab_hint() -> None:
