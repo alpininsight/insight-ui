@@ -642,8 +642,10 @@ def accordion(config: AccordionConfig) -> dict[str, Any]:
 def button(
     config: ButtonConfig | None = None,
     *,
-    tag_id: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
+    tag_id: str | _Unset = UNSET,
+    name: str | _Unset = UNSET,
+    value: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     external: bool | _Unset = UNSET,
     download: bool | str | _Unset = UNSET,
@@ -663,6 +665,7 @@ def button(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
     button_type: HtmlButtonType | _Unset = UNSET,
+    form: str | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -730,8 +733,10 @@ def button(
     config = build_config(
         ButtonConfig,
         config,
-        tag_id=tag_id,
         label=label,
+        tag_id=tag_id,
+        name=name,
+        value=value,
         request_url=request_url,
         external=external,
         download=download,
@@ -749,6 +754,7 @@ def button(
         disabled=disabled,
         disabled_reason=disabled_reason,
         button_type=button_type,
+        form=form,
         extra_classes=extra_classes,
         data_attrs=data_attrs,
         aria_attrs=aria_attrs,

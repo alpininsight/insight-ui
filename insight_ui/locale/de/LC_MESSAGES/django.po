@@ -892,6 +892,10 @@ msgstr "ID eines zu öffnenden modalen Dialogfelds. Das modale Dialogfeld muss a
 msgid "ID of element that labels this section."
 msgstr "ID des Elements, das diesen Abschnitt kennzeichnet."
 
+#: configs/input.py:138
+msgid "ID of the form this button belongs to when it is placed outside of it."
+msgstr "ID des Formulars, zu dem diese Schaltfläche gehört, wenn sie außerhalb davon steht."
+
 #: configs/utils.py:143
 msgid "Icon configuration used when type is 'icon'."
 msgstr "Symbolkonfiguration, die verwendet wird, wenn der Typ „icon‘ ist."
@@ -1363,6 +1367,10 @@ msgstr "Name des Abfrageparameters für die Seitenzahl."
 #: configs/filter.py:74
 msgid "Name of the request parameter."
 msgstr "Name des Anfrageparameters."
+
+#: configs/input.py:134
+msgid "Name sent with the form data when this button submits the form."
+msgstr "Name, der mit den Formulardaten gesendet wird, wenn diese Schaltfläche das Formular absendet."
 
 #: templates/insight_ui/components/carousels/ring_carousel.html:36
 msgid "Next item"
@@ -2385,6 +2393,10 @@ msgstr "Wert (der Schlüsselwert, falls die Optionen als Dict übergeben wurden)
 #: configs/input.py:538
 msgid "Value of the respective radio button."
 msgstr "Wert des jeweiligen Optionsfelds."
+
+#: configs/input.py:136
+msgid "Value sent under `name` when this button submits the form."
+msgstr "Wert, der unter `name` gesendet wird, wenn diese Schaltfläche das Formular absendet."
 
 #: configs/input.py:349
 msgid "Value submitted when checked."

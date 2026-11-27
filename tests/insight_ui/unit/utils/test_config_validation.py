@@ -421,10 +421,13 @@ def test_button_config_rejects_external_without_link() -> None:
     [
         pytest.param({"on_click": "save()"}, id="on_click"),
         pytest.param({"button_type": "submit"}, id="button_type"),
+        pytest.param({"name": "action"}, id="name"),
+        pytest.param({"value": "1"}, id="value"),
+        pytest.param({"form": "logout-form"}, id="form"),
     ],
 )
 def test_button_config_rejects_button_options_on_links(options: dict) -> None:
-    """A request_url renders an <a>, which has neither onclick handler of the config nor a button type."""
+    """A request_url renders an <a>, which has neither the config's onclick handler nor a button's form attributes."""
     with pytest.raises(ValueError, match="only apply to buttons without request_url"):
         ButtonConfig(label="Docs", request_url="/docs/", **options)
 
