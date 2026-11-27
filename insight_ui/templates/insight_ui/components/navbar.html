@@ -39,7 +39,7 @@
         {% if navbar_config.links %}
           <ul class="flex flex-col justify-items-stretch w-full lg:flex-row lg:items-center lg:w-fit">
             {% for link in navbar_config.links %}
-              {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
+              {% if not link.need_auth or user.is_authenticated %}{% if not link.staff_only or user.is_staff %}
                 <li data-insight-nav>
                   {% if link.request_url %}
                     <a
@@ -49,7 +49,6 @@
                         hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                       {% endif %}
                       class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
-                      {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
                       {% if link.icon %}
@@ -60,12 +59,18 @@
                     </a>
                   {% elif link.dropdown %}
                     <div class="relative">
-                      <button data-insight-dropdown="{{ link.dropdown.tag_id }}" class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap">
+                      <button
+                        type="button"
+                        data-insight-dropdown="{{ link.dropdown.tag_id }}"
+                        aria-expanded="false"
+                        aria-controls="{{ link.dropdown.tag_id }}"
+                        class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
+                      >
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}
                         {{ link.text }}
-                        {% if link.chevron %}
+                        {% if link.dropdown.show_arrow %}
                           {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
@@ -93,7 +98,7 @@
                     </button>
                   {% endif %}
                 </li>
-              {% endif %}
+              {% endif %}{% endif %}
             {% endfor %}
           </ul>
         {% endif %}

@@ -6,9 +6,11 @@ import warnings
 
 import pytest
 from bs4 import BeautifulSoup
+from django.contrib.auth.models import AnonymousUser, User
 from django.test import override_settings
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.filter import SearchBarConfig
+from insight_ui.configs.input import DropdownConfig, DropdownItemConfig
 from insight_ui.configs.navigation import (
     NavbarBrandConfig,
     NavbarConfig,
@@ -280,12 +282,101 @@ class TestNavbar(TemplateTagsTestCase):
         assert "data-insight-theme-toggle" in rendered
 
 
-def render_navbar(config: NavbarConfig) -> BeautifulSoup:
-    """Render a navbar with the given config."""
+def render_navbar(config: NavbarConfig, user: User | AnonymousUser | None = None) -> BeautifulSoup:
+    """Render a navbar with the given config, optionally for a user."""
     from django.template import Context, Template  # noqa: PLC0415
 
-    html = Template("{% load insight_tags %}{% navbar config=config %}").render(Context({"config": config}))
+    html = Template("{% load insight_tags %}{% navbar config=config %}").render(
+        Context({"config": config, "user": user})
+    )
     return BeautifulSoup(html, "html.parser")
+
+
+def packages_dropdown(*, show_arrow: bool = True) -> NavbarLinkConfig:
+    """Navbar entry that opens a dropdown menu."""
+    return NavbarLinkConfig(
+        text="Packages",
+        dropdown=DropdownConfig(
+            tag_id="packages-menu",
+            title="Packages",
+            show_arrow=show_arrow,
+            items=[DropdownItemConfig(text="Insight UI User", request_url="/user/")],
+        ),
+    )
+
+
+@pytest.mark.parametrize(("show_arrow", "expected"), [(True, True), (False, False)])
+def test_navbar_dropdown_trigger_shows_the_arrow_from_its_config(show_arrow: bool, expected: bool) -> None:
+    """The dropdown trigger shows an arrow exactly when DropdownConfig.show_arrow asks for it."""
+    soup = render_navbar(NavbarConfig(links=[packages_dropdown(show_arrow=show_arrow)]))
+
+    trigger = soup.select_one('button[data-insight-dropdown="packages-menu"]')
+    assert trigger is not None
+    assert (trigger.find("svg") is not None) is expected
+
+
+def test_navbar_dropdown_trigger_announces_its_collapsed_menu() -> None:
+    """Before the first click the trigger already tells assistive technology that it controls a closed menu."""
+    soup = render_navbar(NavbarConfig(links=[packages_dropdown()]))
+
+    trigger = soup.select_one('button[data-insight-dropdown="packages-menu"]')
+    assert trigger is not None
+    assert trigger.get("type") == "button"
+    assert trigger.get("aria-expanded") == "false"
+    assert trigger.get("aria-controls") == "packages-menu"
+    assert soup.find(id="packages-menu") is not None
+
+
+VISITOR = AnonymousUser()
+MEMBER = User(username="member")
+ADMIN = User(username="admin", is_staff=True)
+
+
+@pytest.mark.parametrize(
+    ("need_auth", "staff_only", "user", "visible"),
+    [
+        (False, False, VISITOR, True),
+        (False, True, VISITOR, False),
+        (True, False, VISITOR, False),
+        (True, True, VISITOR, False),
+        (False, False, MEMBER, True),
+        (False, True, MEMBER, False),
+        (True, False, MEMBER, True),
+        (True, True, MEMBER, False),
+        (False, False, ADMIN, True),
+        (False, True, ADMIN, True),
+        (True, False, ADMIN, True),
+        (True, True, ADMIN, True),
+    ],
+    ids=lambda value: (value.username or "visitor") if isinstance(value, User | AnonymousUser) else None,
+)
+def test_navbar_link_visibility_follows_need_auth_and_staff_only(
+    need_auth: bool,
+    staff_only: bool,
+    user: User | AnonymousUser,
+    visible: bool,
+) -> None:
+    """need_auth limits a link to logged-in users and staff_only to administrators, each on its own."""
+    link = NavbarLinkConfig(text="Reports", request_url="/reports/", need_auth=need_auth, staff_only=staff_only)
+    soup = render_navbar(NavbarConfig(links=[link]), user=user)
+
+    assert (soup.find("a", href="/reports/") is not None) is visible
+
+
+def test_user_menu_leaves_no_empty_entry_for_a_hidden_staff_link() -> None:
+    """A staff-only user menu link is left out together with its list item, so the list counts only visible links."""
+    user_menu = UserMenuConfig(
+        links=[
+            UserMenuLinkConfig(text="Profile", request_url="/profile/"),
+            UserMenuLinkConfig(text="Admin", request_url="/admin/", staff_only=True),
+        ]
+    )
+
+    member_items = render_navbar(NavbarConfig(user_menu=user_menu), user=MEMBER).select("#user-menu li")
+    admin_items = render_navbar(NavbarConfig(user_menu=user_menu), user=ADMIN).select("#user-menu li")
+
+    assert [item.get_text(strip=True) for item in member_items] == ["Profile"]
+    assert [item.get_text(strip=True) for item in admin_items] == ["Profile", "Admin"]
 
 
 def test_external_navbar_link_tells_screen_readers_about_the_new_tab() -> None:
