@@ -3,7 +3,7 @@
 {# Screen reader alternative: list of all locations #}
 <div class="sr-only" id="{{ map_config.tag_id }}-locations-list">
   <h2>{% trans "Map locations" %}</h2>
-  <ul>
+  <ul role="list">
     {% for dataset in map_config.datasets %}
       {% for marker in dataset.data %}
         <li>{{ marker.title }}{% if marker.description %}: {{ marker.description }}{% endif %}</li>

@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<ol class="divide-y divide-insight-border-surface flex flex-col w-full bg-insight-surface border border-insight-surface rounded-insight-surface md:flex-row md:divide-y-0">
+<ol class="divide-y divide-insight-border-surface flex flex-col w-full bg-insight-surface border border-insight-surface rounded-insight-surface md:flex-row md:divide-y-0" role="list">
     {% for item in items %}
         <li class="flex gap-4 items-center px-6 w-full h-20"{% if item.status == "current" %} aria-current="step"{% endif %}>
             {% if item.status == "completed" %}
