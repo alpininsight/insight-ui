@@ -235,23 +235,53 @@ export class CodeBlock {
         this.copyButton.addEventListener('click', this.copyEvent);
     }
 
-    /** @type {WeakMap<HTMLElement, Array<[number, number]>>} Diff marks of each highlighted code element */
+    /** @type {WeakMap<HTMLElement, Array<[number, number]>>} Diff marks of each highlighted diff code element */
     static pendingMarks = new WeakMap();
 
-    /** @type {boolean} Whether the Prism hook that applies the diff marks is registered */
+    /** @type {boolean} Whether the Prism hooks for diffs are registered */
     static #hookRegistered = false;
 
+    /** @type {WeakMap<Object, Object>} Prism's diff grammar without its file header rule, per grammar */
+    static #lineGrammars = new WeakMap();
+
     /**
-     * Apply the diff marks after every highlighting pass. Prism's autoloader highlights again once the
-     * grammar has loaded and replaces the content, so marks set right after highlightElement would be lost.
+     * Register the Prism hooks for diffs once.
+     *
+     * - before-highlight: a diff block has no file headers, so it is highlighted without the "coord" rule of
+     *   Prism's diff grammar. That rule takes every line starting with "---" or "+++" for a header, which would
+     *   leave a removed line whose code starts with "--" (CSS variables, SQL comments) or an added line starting
+     *   with "++" unmarked. Other diffs on the page keep the full grammar.
+     * - complete: apply the diff marks after every highlighting pass. Prism's autoloader highlights again once the
+     *   grammar has loaded and replaces the content, so marks set right after highlightElement would be lost.
      */
     static #watchHighlighting() {
         if (CodeBlock.#hookRegistered || !Prism.hooks) return;
+        Prism.hooks.add('before-highlight', (env) => {
+            if (env.grammar && CodeBlock.pendingMarks.has(env.element)) {
+                env.grammar = CodeBlock.#withoutFileHeaders(env.grammar);
+            }
+        });
         Prism.hooks.add('complete', (env) => {
             const ranges = CodeBlock.pendingMarks.get(env.element);
             if (ranges) CodeBlock.markRanges(env.element, ranges);
         });
         CodeBlock.#hookRegistered = true;
+    }
+
+    /**
+     * Copy of a diff grammar without its "coord" rule; the copy keeps the order of the other rules.
+     *
+     * @param {Object} grammar Prism's diff grammar.
+     * @returns {Object} The grammar without the file header rule.
+     */
+    static #withoutFileHeaders(grammar) {
+        if (!('coord' in grammar)) return grammar;
+        if (!CodeBlock.#lineGrammars.has(grammar)) {
+            const lines = { ...grammar };
+            delete lines.coord;
+            CodeBlock.#lineGrammars.set(grammar, lines);
+        }
+        return CodeBlock.#lineGrammars.get(grammar);
     }
 
     /**

@@ -52,8 +52,10 @@ class TableOfContents {
      * Builds the nested ToC structure from headings.
      */
     buildTOC() {
+        // Safari drops the list semantics of lists without markers; role="list" keeps them.
         const rootList = document.createElement("ul");
         rootList.className = "list-none";
+        rootList.setAttribute("role", "list");
 
         const listStack = [rootList];
         let currentLevel = 1;
@@ -75,6 +77,7 @@ class TableOfContents {
             while (level > currentLevel) {
                 const ul = document.createElement("ul");
                 ul.className = "list-none";
+                ul.setAttribute("role", "list");
 
                 listStack[listStack.length - 1]
                     .lastElementChild

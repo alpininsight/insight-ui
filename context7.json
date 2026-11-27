@@ -1,0 +1,37 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/alpininsight/insight-ui",
+  "public_key": "pk_VWZLPfLHdTXNbuwS6HLCt",
+  "projectTitle": "Insight UI",
+  "description": "A reusable Django component library that provides production-ready UI building blocks as template tags with typed configuration dataclasses, styled with Tailwind CSS and enhanced with HTMX. Accessibility (WCAG 2.2 AA) is a design target.",
+  "folders": [
+    "docs"
+  ],
+  "excludeFolders": [
+    "tests",
+    "devtools",
+    "scripts",
+    "archive",
+    "archived",
+    "old",
+    "docs/old",
+    "deprecated",
+    "legacy",
+    "previous",
+    "outdated",
+    "superseded",
+    "_snaps",
+    "benchmark",
+    "benchmarks",
+    "benches",
+    "node_modules",
+    "dist",
+    "build",
+    "coverage"
+  ],
+  "rules": [
+    "Use Insight UI components through their Django template tags and typed configuration dataclasses.",
+    "Treat WCAG 2.2 AA as a design target; assess conformance on complete pages and processes in the consuming application.",
+    "Prefer HTMX for interactivity; do not introduce a JavaScript UI framework as a requirement."
+  ]
+}
