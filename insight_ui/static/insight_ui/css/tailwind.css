@@ -1566,6 +1566,9 @@
   .py-1 {
     padding-block: var(--spacing);
   }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
@@ -3531,6 +3534,29 @@
   }
   .slider-legend-item:last-child:dir(rtl) {
     translate: max(50%, 100% - var(--insight-slider-thumb) / 2) 0;
+  }
+  .minimal-stepper {
+    --minimal-stepper-tip: 4px;
+  }
+  .minimal-stepper > li {
+    margin-inline-start: calc(-1 * var(--minimal-stepper-tip));
+    clip-path: polygon( 0% 0%, calc(100% - var(--minimal-stepper-tip)) 0%, 100% 50%, calc(100% - var(--minimal-stepper-tip)) 100%, 0% 100%, var(--minimal-stepper-tip) 50% );
+  }
+  .minimal-stepper > li:last-child {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, var(--minimal-stepper-tip) 50%);
+  }
+  .minimal-stepper > li:first-child {
+    margin-inline-start: 0;
+    clip-path: polygon( 0% 0%, calc(100% - var(--minimal-stepper-tip)) 0%, 100% 50%, calc(100% - var(--minimal-stepper-tip)) 100%, 0% 100% );
+  }
+  .minimal-stepper > li:dir(rtl) {
+    clip-path: polygon( 0% 50%, var(--minimal-stepper-tip) 0%, 100% 0%, calc(100% - var(--minimal-stepper-tip)) 50%, 100% 100%, var(--minimal-stepper-tip) 100% );
+  }
+  .minimal-stepper > li:last-child:dir(rtl) {
+    clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--minimal-stepper-tip)) 50%, 100% 100%, 0% 100%);
+  }
+  .minimal-stepper > li:first-child:dir(rtl) {
+    clip-path: polygon( 0% 50%, var(--minimal-stepper-tip) 0%, 100% 0%, 100% 100%, var(--minimal-stepper-tip) 100% );
   }
   .ring-carousel {
     overflow-x: clip;

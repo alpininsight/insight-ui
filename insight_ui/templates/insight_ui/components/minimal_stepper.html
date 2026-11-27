@@ -1,12 +1,12 @@
 {% load i18n insight_tags %}
 
 <ol
-    class="flex gap-0.5 items-stretch min-w-fit rounded-insight-control overflow-hidden"
+    class="minimal-stepper flex gap-0.5 items-stretch min-w-fit rounded-insight-control overflow-hidden"
     aria-label="{% trans 'Progress indicator' %}"
 >
     {% for status in steps %}
         <li
-            class="flex-1 flex justify-center items-center {% if status == 'completed' %}text-insight-success-on-action bg-insight-success-action{% elif status == 'failed' %}text-insight-danger-on-action bg-insight-danger-action{% elif status == 'current' %}text-insight-primary-on-action bg-insight-primary-action{% else %}text-insight-inverse bg-insight-text-muted{% endif %} {% if icon_size == 'xl' %}px-4{% elif icon_size == 'l' %}px-3{% elif icon_size == 'm' %}px-2{% elif icon_size == 's' %}px-1.5{% elif icon_size == 'xs' %}px-1.5{% endif %} py-0.5 {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group"
+            class="flex-1 flex justify-center items-center {% if status == 'completed' %}text-insight-success-on-action bg-insight-success-action{% elif status == 'failed' %}text-insight-danger-on-action bg-insight-danger-action{% elif status == 'current' %}text-insight-primary-on-action bg-insight-primary-action{% else %}text-insight-inverse bg-insight-text-muted{% endif %} {% if icon_size == 'xl' %}px-4{% elif icon_size == 'l' %}px-3{% elif icon_size == 'm' %}px-2{% elif icon_size == 's' %}px-1.5{% elif icon_size == 'xs' %}px-1.5{% endif %} py-1.5 group"
             aria-label="{% blocktrans with step=forloop.counter %}Step {{ step }}{% endblocktrans %}: {% if status == 'completed' %}{% trans 'Completed' %}{% elif status == 'failed' %}{% trans 'Failed' %}{% elif status == 'current' %}{% trans 'In progress' %}{% else %}{% trans 'Pending' %}{% endif %}"
             {% if status == 'current' %}aria-current="step"{% endif %}
         >
@@ -15,46 +15,10 @@
             {% elif status == "failed" %}
                 {% icon name="x-mark" size=icon_size %}
             {% elif status == "current" %}
-                <div>{% icon name="cog-8-tooth" size=icon_size %}</div>
+                {% icon name="cog-8-tooth" size=icon_size %}
             {% else %}
-                <div>{% icon name="minus" size=icon_size %}</div>
+                {% icon name="minus" size=icon_size %}
             {% endif %}
         </li>
     {% endfor %}
-    <style>
-        :root {
-            --chevron-offset: 4px;
-        }
-
-        /* LTR: arrows point right -> */
-        .chevron-start {
-            clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%);
-        }
-        .chevron-mid {
-            clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%, var(--chevron-offset) 50%);
-            margin-left: calc(-1 * var(--chevron-offset));
-        }
-        .chevron-end {
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, var(--chevron-offset) 50%);
-            margin-left: calc(-1 * var(--chevron-offset));
-        }
-
-        /* RTL: arrows point left <- */
-        [dir="rtl"] .chevron-start {
-            /* Arrow left, flat right */
-            clip-path: polygon(0% 50%, var(--chevron-offset) 0%, 100% 0%, 100% 100%, var(--chevron-offset) 100%);
-        }
-        [dir="rtl"] .chevron-mid {
-            /* Arrow left, notch right (notch points inward) */
-            clip-path: polygon(0% 50%, var(--chevron-offset) 0%, 100% 0%, calc(100% - var(--chevron-offset)) 50%, 100% 100%, var(--chevron-offset) 100%);
-            margin-left: 0;
-            margin-right: calc(-1 * var(--chevron-offset));
-        }
-        [dir="rtl"] .chevron-end {
-            /* Flat left, notch right */
-            clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--chevron-offset)) 50%, 100% 100%, 0% 100%);
-            margin-left: 0;
-            margin-right: calc(-1 * var(--chevron-offset));
-        }
-    </style>
 </ol>

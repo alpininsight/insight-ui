@@ -1561,6 +1561,53 @@
     }
 
     /*
+    * Minimal stepper: every step is a chevron pointing to the next one. The first step is flat at the
+    * start, the last one flat at the end; a step after the first reaches under the tip of the one before
+    * it (negative inline margin) and shows it in a notch. A single step is shaped like a first step.
+    * clip-path has no logical form, so right-to-left layouts get mirrored polygons.
+    */
+    .minimal-stepper {
+        --minimal-stepper-tip: 4px;
+    }
+
+    .minimal-stepper > li {
+        margin-inline-start: calc(-1 * var(--minimal-stepper-tip));
+        clip-path: polygon(
+            0% 0%, calc(100% - var(--minimal-stepper-tip)) 0%, 100% 50%,
+            calc(100% - var(--minimal-stepper-tip)) 100%, 0% 100%, var(--minimal-stepper-tip) 50%
+        );
+    }
+
+    .minimal-stepper > li:last-child {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, var(--minimal-stepper-tip) 50%);
+    }
+
+    .minimal-stepper > li:first-child {
+        margin-inline-start: 0;
+        clip-path: polygon(
+            0% 0%, calc(100% - var(--minimal-stepper-tip)) 0%, 100% 50%,
+            calc(100% - var(--minimal-stepper-tip)) 100%, 0% 100%
+        );
+    }
+
+    .minimal-stepper > li:dir(rtl) {
+        clip-path: polygon(
+            0% 50%, var(--minimal-stepper-tip) 0%, 100% 0%,
+            calc(100% - var(--minimal-stepper-tip)) 50%, 100% 100%, var(--minimal-stepper-tip) 100%
+        );
+    }
+
+    .minimal-stepper > li:last-child:dir(rtl) {
+        clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--minimal-stepper-tip)) 50%, 100% 100%, 0% 100%);
+    }
+
+    .minimal-stepper > li:first-child:dir(rtl) {
+        clip-path: polygon(
+            0% 50%, var(--minimal-stepper-tip) 0%, 100% 0%, 100% 100%, var(--minimal-stepper-tip) 100%
+        );
+    }
+
+    /*
     * ========================================================
     *   Ring Carousel
     * ========================================================
