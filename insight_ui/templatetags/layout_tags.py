@@ -217,9 +217,16 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext
 
-from insight_ui.configs import ButtonConfig, DataAttrConfig, HtmxConfig, IconConfig, ModalConfig, TabsConfig
+from insight_ui.configs import (
+    ButtonConfig,
+    DataAttrConfig,
+    HtmxConfig,
+    IconConfig,
+    ModalConfig,
+    TabsConfig,
+    build_config,
+)
 from insight_ui.configs.types import LINK_URL_SCHEMES, url_scheme
-from insight_ui.templatetags.insight_tags import build_config
 
 if TYPE_CHECKING:
     from collections.abc import Callable

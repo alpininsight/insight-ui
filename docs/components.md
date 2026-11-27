@@ -59,7 +59,9 @@ Tags declare their arguments with an `UNSET` default (the `create_component`
 scaffold does this for `tag_id`), so omission does not overwrite a Config value.
 Follow that pattern for every argument you add. `False` is an override;
 `None` is also an override, valid only where the field allows it. Keep field
-types, metadata, examples and rendering tests aligned.
+types, metadata, examples and rendering tests aligned. Extensions import the
+same helpers from `insight_ui.configs`; see the
+[public Config contract](component-config-contract.md).
 
 The button also supports documented `data_*`, `aria_*` and `hx_*` arguments:
 
